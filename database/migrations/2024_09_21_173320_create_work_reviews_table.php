@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('work_reviews', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('work_id');
-            $table->unsignedInteger('user_id');
+            $table->foreignId('work_id')->constrained('works')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('post_title');
             $table->string('body');
             $table->string('image1')->nullable();

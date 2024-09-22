@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('anime_pilgrimage_posts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('anime_pilgrimage_id');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('anime_pilgrimage_id')->constrained('anime_pilgrimages')->onDelete('cascade');
             $table->string('title');
             $table->string('scene');
             $table->string('body');

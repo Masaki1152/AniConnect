@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('work_category', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('work_category_id');
-            $table->unsignedInteger('work_id');
+            $table->foreignId('work_category_id')->constrained('work_categories')->onDelete('cascade');
+            $table->foreignId('work_id')->constrained('works')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });
     }

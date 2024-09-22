@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('character_post_category', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('character_post_category_id');
-            $table->unsignedInteger('character_post_id');
+            $table->foreignId('character_post_category_id')->constrained('character_post_categories')->onDelete('cascade');
+            $table->foreignId('character_post_id')->constrained('character_posts')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });
     }
