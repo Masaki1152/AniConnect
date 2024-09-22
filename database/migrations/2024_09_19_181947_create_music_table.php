@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('music', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('singer_id');
-            $table->unsignedInteger('lyric_writer_id');
-            $table->unsignedInteger('composer_id');
+            $table->foreignId('singer_id')->constrained('singers')->onDelete('cascade');
+            $table->foreignId('lyric_writer_id')->constrained('lyric_writers')->onDelete('cascade');
+            $table->foreignId('composer_id')->constrained('composers')->onDelete('cascade');
             $table->string('name');
             $table->date('release_date');
             $table->string('wiki_link');

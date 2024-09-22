@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('characters', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('voice_artist_id');
+            $table->foreignId('voice_artist_id')->constrained('voice_artists')->onDelete('cascade');
             $table->string('name');
             $table->string('image')->nullable();
             $table->string('wiki_link');

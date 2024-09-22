@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('anime_pilgrimages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('prefecture_id');
+            $table->foreignId('prefecture_id')->constrained('prefectures')->onDelete('cascade');
             $table->string('name');
             $table->string('place');
             $table->string('map_link');
