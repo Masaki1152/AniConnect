@@ -11,13 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('musics', function (Blueprint $table) {
+        Schema::create('music', function (Blueprint $table) {
             $table->id();
             $table->unsignedInteger('singer_id');
             $table->unsignedInteger('lyric_writer_id');
             $table->unsignedInteger('composer_id');
             $table->string('name');
-            $table->string('release_date');
+            $table->date('release_date');
             $table->string('wiki_link');
             $table->string('youtube_link');
             $table->timestamps();
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('musics');
+        Schema::dropIfExists('music');
     }
 };
