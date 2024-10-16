@@ -14,8 +14,8 @@ use App\Http\Controllers\Work_Review_PostController;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+/*Route::get('/', function () {
+    return view('posts.work_review_index');
+});*/
 
-Route::get('/posts', [Work_Review_PostController::class, 'index']);
+Route::get('/', [Work_Review_PostController::class, 'index']);

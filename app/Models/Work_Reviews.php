@@ -10,4 +10,10 @@ class Work_Reviews extends Model
     use HasFactory;
     // 参照させたいwork_reviewsを指定
     protected $table = 'work_reviews';
+
+    // created_atで降順に並べたあと、limitで件数制限をかける
+    public function getByLimit(int $limit_count = 5)
+    {
+        return $this->orderBy('created_at', 'DESC')->limit($limit_count)->get();
+    }
 }
