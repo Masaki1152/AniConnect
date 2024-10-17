@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use App\Models\WorkReview;
+use App\Http\Requests\WorkReviewRequest;
 
 class WorkReviewController extends Controller
 {
@@ -27,7 +27,7 @@ class WorkReviewController extends Controller
     }
 
     // 新しく記述した内容を保存する
-    public function store(Request $request, WorkReview $workreview)
+    public function store(WorkReview $workreview, WorkReviewRequest $request)
     {
         $input = $request['work_review'];
         $workreview->fill($input)->save();
