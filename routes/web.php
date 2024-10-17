@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Work_Review_PostController;
+use App\Http\Controllers\WorkReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +18,25 @@ use App\Http\Controllers\Work_Review_PostController;
     return view('posts.work_review_index');
 });*/
 
-Route::get('/', [Work_Review_PostController::class, 'index']);
+Route::get('/', [WorkReviewController::class, 'index']);
+
+// 新規投稿作成ボタン押下で、createメソッドを実行
+Route::get('/work_reviews/create', [WorkReviewController::class, 'create']);
+
+// 作成するボタン押下で、storeメソッドを実行
+Route::post('/work_reviews', [WorkReviewController::class, 'store']);
+
+// '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
+Route::get('/work_reviews/{workreview}', [WorkReviewController::class ,'show']);
+
+// 感想投稿編集画面を表示するeditメソッドを実行
+Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edit']);
+
+// 感想投稿の編集を実行するupdateメソッドを実行
+Route::put('/work_reviews/{workreview}', [WorkReviewController::class, 'update']);
+
+// 感想投稿の削除を行うdeleteメソッドを実行
+Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
+
+// 感想投稿詳細画面から削除を行うdeleteメソッドを実行
+//Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
