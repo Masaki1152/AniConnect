@@ -33,4 +33,18 @@ class WorkReviewController extends Controller
         $workreview->fill($input)->save();
         return redirect('/work_reviews/' . $workreview->id);
     }
+
+    // 感想投稿編集画面を表示する
+    public function edit(WorkReview $workreview)
+    {
+        return view('work_reviews.edit')->with(['post' => $workreview]);
+    }
+
+    // 感想投稿の編集を実行する
+    public function update(WorkReviewRequest $request, WorkReview $workreview)
+    {
+        $input_post = $request['work_review'];
+        $workreview->fill($input_post)->save();
+        return redirect('/work_reviews/' . $workreview->id);
+    }
 }

@@ -28,3 +28,9 @@ Route::post('/work_reviews', [WorkReviewController::class, 'store']);
 
 // '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
 Route::get('/work_reviews/{workreview}', [WorkReviewController::class ,'show']);
+
+// 感想投稿編集画面を表示するeditメソッドを実行
+Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edit']);
+
+// 感想投稿の編集を実行するupdateメソッドを実行
+Route::put('/work_reviews/{workreview}', [WorkReviewController::class, 'update']);
