@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Work_Reviews extends Model
+class WorkReview extends Model
 {
     use HasFactory;
     // 参照させたいwork_reviewsを指定

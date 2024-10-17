@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\Work_Review_PostController;
+use App\Http\Controllers\WorkReviewController;
 
 /*
 |--------------------------------------------------------------------------
@@ -18,4 +18,7 @@ use App\Http\Controllers\Work_Review_PostController;
     return view('posts.work_review_index');
 });*/
 
-Route::get('/', [Work_Review_PostController::class, 'index']);
+Route::get('/', [WorkReviewController::class, 'index']);
+
+// '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
+Route::get('/work_reviews/{workreview}', [WorkReviewController::class ,'show']);
