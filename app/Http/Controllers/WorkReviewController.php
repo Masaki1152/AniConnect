@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\WorkReview;
 use App\Http\Requests\WorkReviewRequest;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WorkReviewController extends Controller
 {
+    use SoftDeletes;
+    
     // インポートしたPostをインスタンス化して$postとして使用。
     public function index(WorkReview $work_reviews)
     {
@@ -46,5 +49,12 @@ class WorkReviewController extends Controller
         $input_post = $request['work_review'];
         $workreview->fill($input_post)->save();
         return redirect('/work_reviews/' . $workreview->id);
+    }
+
+    // 感想投稿を削除する
+    public function delete(WorkReview $workreview)
+    {
+        $workreview->delete();
+        return redirect('/');
     }
 }

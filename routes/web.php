@@ -34,3 +34,9 @@ Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edi
 
 // 感想投稿の編集を実行するupdateメソッドを実行
 Route::put('/work_reviews/{workreview}', [WorkReviewController::class, 'update']);
+
+// 感想投稿の削除を行うdeleteメソッドを実行
+Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
+
+// 感想投稿詳細画面から削除を行うdeleteメソッドを実行
+//Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
