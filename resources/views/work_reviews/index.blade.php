@@ -10,6 +10,7 @@
 
 <body>
     <h1>Blog Name</h1>
+    <a href='/work_reviews/create'>新規投稿作成</a>
     <div class='posts'>
         <div class='post'>
             @foreach ($posts as $post)

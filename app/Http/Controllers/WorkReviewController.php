@@ -19,4 +19,18 @@ class WorkReviewController extends Controller
     {
         return view('work_reviews.show')->with(['post' => $workreview]);
     }
+
+    // 新規投稿作成画面を表示する
+    public function create()
+    {
+        return view('work_reviews.create');
+    }
+
+    // 新しく記述した内容を保存する
+    public function store(Request $request, WorkReview $workreview)
+    {
+        $input = $request['work_review'];
+        $workreview->fill($input)->save();
+        return redirect('/work_reviews/' . $workreview->id);
+    }
 }

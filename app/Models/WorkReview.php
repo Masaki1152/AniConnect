@@ -8,6 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class WorkReview extends Model
 {
     use HasFactory;
+
+    // fillを実行するための記述
+    protected $fillable = [
+        'work_id',
+        'post_title',
+        'user_id',
+        'body',
+    ];
+
     // 参照させたいwork_reviewsを指定
     protected $table = 'work_reviews';
 
