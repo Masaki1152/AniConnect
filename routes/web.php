@@ -38,5 +38,4 @@ Route::put('/work_reviews/{workreview}', [WorkReviewController::class, 'update']
 // 感想投稿の削除を行うdeleteメソッドを実行
 Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
 
-// 感想投稿詳細画面から削除を行うdeleteメソッドを実行
-//Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
+

@@ -16,9 +16,9 @@
     <div class="content">
         <div class="content__post">
             <h3>作品名</h3>
-            <p>{{ $post->work_id }}</p>
+            <p>{{ $post->work->name }}</p>
             <h3>投稿者</h3>
-            <p>{{ $post->user_id }}</p>
+            <p>{{ $post->user->name }}</p>
             <h3>本文</h3>
             <p>{{ $post->body }}</p>
             <h3>作成日</h3>

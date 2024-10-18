@@ -12,6 +12,9 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+    // 参照させたいworksを指定
+    protected $table = 'users';
+
     /**
      * The attributes that are mass assignable.
      *
@@ -42,4 +45,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    // WorkReviewに対するリレーション 1対1の関係
+    public function workreview()
+    {
+        return $this->belongsTo(WorkReview::class);
+    }
 }
