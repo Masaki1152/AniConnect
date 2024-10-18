@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkReviewController;
+use App\Http\Controllers\WorkController; 
 
 /*
 |--------------------------------------------------------------------------
@@ -18,6 +19,10 @@ use App\Http\Controllers\WorkReviewController;
     return view('posts.work_review_index');
 });*/
 
+// 作品一覧の表示
+Route::get('/works', [WorkController::class, 'index']);
+
+// 各作品ごとの感想投稿一覧の表示
 Route::get('/', [WorkReviewController::class, 'index']);
 
 // 新規投稿作成ボタン押下で、createメソッドを実行
