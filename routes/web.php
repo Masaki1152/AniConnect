@@ -22,6 +22,9 @@ use App\Http\Controllers\WorkController;
 // 作品一覧の表示
 Route::get('/works', [WorkController::class, 'index']);
 
+// 各作品の詳細表示
+Route::get('/works/{work}', [WorkController::class ,'show']);
+
 // 各作品ごとの感想投稿一覧の表示
 Route::get('/', [WorkReviewController::class, 'index']);
 

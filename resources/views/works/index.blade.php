@@ -13,7 +13,9 @@
     <div class='works'>
         @foreach ($works as $work)
         <div class='work'>
-            <h2 class='title'>{{ $work->name }}</h2>
+            <h2 class='name'>
+                <a href="/works/{{ $work->id }}">{{ $work->name }}</a>
+            </h2>
             <p class='term'>{{ $work->term }}</p>
         </div>
         @endforeach
