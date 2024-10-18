@@ -25,4 +25,16 @@ class WorkReview extends Model
     {
         return $this->orderBy('created_at', 'DESC')->paginate($limit_count);
     }
+
+    // Workに対するリレーション 1対1の関係
+    public function work()
+    {
+        return $this->belongsTo(Work::class);
+    }
+
+    // Userに対するリレーション 1対1の関係
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
