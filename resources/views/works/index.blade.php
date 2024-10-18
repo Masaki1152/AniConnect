@@ -18,6 +18,9 @@
         </div>
         @endforeach
     </div>
+    <div class='paginate'>
+        {{ $works->links() }}
+    </div>
 </body>
 
 </html>
