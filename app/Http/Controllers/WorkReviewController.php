@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class WorkReviewController extends Controller
 {
     use SoftDeletes;
-    
+
     // インポートしたPostをインスタンス化して$postとして使用。
     public function index(WorkReview $work_reviews)
     {
