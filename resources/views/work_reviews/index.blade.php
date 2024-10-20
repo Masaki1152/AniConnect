@@ -10,7 +10,7 @@
 
 <body>
     <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
-    <a href='/work_reviews/create'>新規投稿作成</a>
+    <a href="{{ route('work_reviews.create', ['work_id' => $work->work_id]) }}">新規投稿作成</a>
     <div class='posts'>
         <div class='post'>
             @foreach ($posts as $post)

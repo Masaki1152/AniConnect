@@ -29,7 +29,7 @@ Route::get('/works/{work}', [WorkController::class ,'show']);
 Route::get('/work_reviews/{work_id}', [WorkReviewController::class, 'index'])->name('work_reviews.index');
 
 // 新規投稿作成ボタン押下で、createメソッドを実行
-Route::get('/work_reviews/create', [WorkReviewController::class, 'create']);
+Route::get('/work_reviews/{work_id}/create', [WorkReviewController::class, 'create'])->name('work_reviews.create');
 
 // 作成するボタン押下で、storeメソッドを実行
 Route::post('/work_reviews', [WorkReviewController::class, 'store']);

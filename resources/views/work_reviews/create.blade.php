@@ -5,7 +5,7 @@
         <title>作品の感想投稿</title>
     </head>
     <body>
-        <h1>作品の新規感想投稿</h1>
+        <h1>「{{$workreview->work->name}}」への新規感想投稿</h1>
         <form action="/work_reviews" method="POST">
             @csrf
             <div class="work_id">
