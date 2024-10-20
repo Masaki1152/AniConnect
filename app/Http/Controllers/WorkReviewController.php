@@ -9,18 +9,19 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class WorkReviewController extends Controller
 {
     use SoftDeletes;
-    
+
     // インポートしたPostをインスタンス化して$postとして使用。
-    public function index(WorkReview $work_reviews)
+    public function index(WorkReview $work_reviews, $work_id)
     {
         // blade内の変数postsにインスタンス化した$work_reviewsを代入
-        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit()]);
+        // 指定したidのアニメの投稿のみを表示
+        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit($work_id)]);
     }
 
-    // 'post'はbladeファイルで使う変数。$postはid=1のWorkReviewインスタンス。
-    public function show(WorkReview $workreview)
+    // 'post'はbladeファイルで使う変数。
+    public function show(WorkReview $workreview, $work_id, $post_id)
     {
-        return view('work_reviews.show')->with(['post' => $workreview]);
+        return view('work_reviews.show')->with(['post' => $workreview->getDetailPost($work_id, $post_id)]);
     }
 
     // 新規投稿作成画面を表示する

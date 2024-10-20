@@ -17,4 +17,10 @@ class Work extends Model
     {
         return $this->belongsTo(WorkReview::class);
     }
+
+    // created_atで降順に並べたあと、limitで件数制限をかける
+    public function getPaginateByLimit(int $limit_count = 5)
+    {
+        return $this->orderBy('id', 'ASC')->paginate($limit_count);
+    }
 }
