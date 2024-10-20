@@ -26,7 +26,7 @@ Route::get('/works', [WorkController::class, 'index']);
 Route::get('/works/{work}', [WorkController::class ,'show']);
 
 // 各作品ごとの感想投稿一覧の表示
-Route::get('/', [WorkReviewController::class, 'index']);
+Route::get('/work_reviews/{work_id}', [WorkReviewController::class, 'index'])->name('work_reviews.index');
 
 // 新規投稿作成ボタン押下で、createメソッドを実行
 Route::get('/work_reviews/create', [WorkReviewController::class, 'create']);
@@ -35,7 +35,7 @@ Route::get('/work_reviews/create', [WorkReviewController::class, 'create']);
 Route::post('/work_reviews', [WorkReviewController::class, 'store']);
 
 // '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
-Route::get('/work_reviews/{workreview}', [WorkReviewController::class ,'show']);
+Route::get('/work_reviews/{work_id}/work_reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');
 
 // 感想投稿編集画面を表示するeditメソッドを実行
 Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edit']);

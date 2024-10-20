@@ -32,7 +32,7 @@
         <button type="button" data-post-id="{{ $post->id }}" class="delete-button">投稿を削除する</button>
     </form>
     <div class="footer">
-        <a href="/">戻る</a>
+        <a href="{{ route('work_reviews.index', ['work_id' => $post->work_id]) }}">戻る</a>
     </div>
 
     <script>

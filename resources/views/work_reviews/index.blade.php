@@ -16,7 +16,7 @@
             @foreach ($posts as $post)
             <div class='post'>
                 <h2 class='title'>
-                    <a href="/work_reviews/{{ $post->id }}">{{ $post->post_title }}</a>
+                    <a href="{{ route('work_reviews.show', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">{{ $post->post_title }}</a>
                 </h2>
                 <p class='body'>{{ $post->body }}</p>
                 <form action="/work_reviews/{{ $post->id }}" id="form_{{ $post->id }}" method="post">

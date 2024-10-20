@@ -33,6 +33,7 @@
             <p>{{ $work->wiki_link }}</p>
             <h3>Twitterへのリンク</h3>
             <p>{{ $work->twitter_link }}</p>
+            <a href="{{ route('work_reviews.index', ['work_id' => $work->id]) }}">作品感想一覧</a>
         </div>
     </div>
     <div class="footer">

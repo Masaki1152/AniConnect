@@ -20,10 +20,21 @@ class WorkReview extends Model
     // 参照させたいwork_reviewsを指定
     protected $table = 'work_reviews';
 
+    // 条件を満たすデータだけを取得する
+
     // created_atで降順に並べたあと、limitで件数制限をかける
-    public function getPaginateByLimit(int $limit_count = 5)
+    public function getPaginateByLimit($work_id, int $limit_count = 5)
     {
-        return $this->orderBy('created_at', 'DESC')->paginate($limit_count);
+        return $this->where('work_id', $work_id)->orderBy('created_at', 'DESC')->paginate($limit_count);
+    }
+
+    // 作品idと投稿idを指定して、投稿の詳細表示を行う
+    public function getDetailPost($work_id, $post_id)
+    {
+        return $this->where([
+            ['work_id', $work_id],
+            ['id', $post_id],
+        ])->first();
     }
 
     // Workに対するリレーション 1対1の関係
