@@ -35,7 +35,7 @@ class WorkReviewController extends Controller
     {
         $input = $request['work_review'];
         $workreview->fill($input)->save();
-        return redirect('/work_reviews/' . $workreview->id);
+        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'post_id' => $workreview->id]);
     }
 
     // 感想投稿編集画面を表示する

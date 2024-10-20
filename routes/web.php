@@ -32,7 +32,7 @@ Route::get('/work_reviews/{work_id}', [WorkReviewController::class, 'index'])->n
 Route::get('/work_reviews/{work_id}/create', [WorkReviewController::class, 'create'])->name('work_reviews.create');
 
 // 作成するボタン押下で、storeメソッドを実行
-Route::post('/work_reviews', [WorkReviewController::class, 'store']);
+Route::post('/work_reviews/{work_id}/store', [WorkReviewController::class, 'store'])->name('work_reviews.store');
 
 // '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
 Route::get('/work_reviews/{work_id}/reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');

@@ -12,8 +12,8 @@ class WorkReview extends Model
     // fillを実行するための記述
     protected $fillable = [
         'work_id',
-        'post_title',
         'user_id',
+        'post_title',
         'body',
     ];
 
