@@ -39,17 +39,19 @@ class WorkReviewController extends Controller
     }
 
     // 感想投稿編集画面を表示する
-    public function edit(WorkReview $workreview)
+    public function edit(WorkReview $workreview, $work_id, $post_id)
     {
-        return view('work_reviews.edit')->with(['post' => $workreview]);
+        return view('work_reviews.edit')->with(['post' => $workreview->getDetailPost($work_id, $post_id)]);
     }
 
     // 感想投稿の編集を実行する
-    public function update(WorkReviewRequest $request, WorkReview $workreview)
+    public function update(WorkReviewRequest $request, WorkReview $workreview, $work_id, $post_id)
     {
         $input_post = $request['work_review'];
-        $workreview->fill($input_post)->save();
-        return redirect('/work_reviews/' . $workreview->id);
+        // 編集の対象となるデータを取得
+        $targetworkreview = $workreview->getDetailPost($work_id, $post_id);
+        $targetworkreview->fill($input_post)->save();
+        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'post_id' => $targetworkreview->id]);
     }
 
     // 感想投稿を削除する

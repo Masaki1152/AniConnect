@@ -25,7 +25,9 @@
             <p>{{ $post->created_at }}</p>
         </div>
     </div>
-    <div class="edit"><a href="/work_reviews/{{ $post->id }}/edit">編集する</a></div>
+    <div class="edit">
+        <a href="{{ route('work_reviews.edit', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">編集する</a>
+    </div>
     <form action="/work_reviews/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
         @csrf
         @method('DELETE')

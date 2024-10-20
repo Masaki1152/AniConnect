@@ -37,7 +37,7 @@
         </div>
     </div>
     <div class="footer">
-        <a href="/works">戻る</a>
+        <a href="/works">作品一覧へ</a>
     </div>
 </body>
 

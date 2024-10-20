@@ -14,7 +14,6 @@
             <input type="hidden" name="work_review[work_id]" value="{{ $workreview->work_id }}">
         </div>
         <div class="user_id">
-            <h2>投稿者</h2>
             <input type="hidden" name="work_review[user_id]" value="{{ $workreview->user_id }}">
         </div>
         <div class="title">

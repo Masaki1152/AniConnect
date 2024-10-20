@@ -38,10 +38,10 @@ Route::post('/work_reviews/{work_id}/store', [WorkReviewController::class, 'stor
 Route::get('/work_reviews/{work_id}/reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');
 
 // 感想投稿編集画面を表示するeditメソッドを実行
-Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edit']);
+Route::get('/work_reviews/{work_id}/reviews/{post_id}/edit', [WorkReviewController::class, 'edit'])->name('work_reviews.edit');
 
 // 感想投稿の編集を実行するupdateメソッドを実行
-Route::put('/work_reviews/{workreview}', [WorkReviewController::class, 'update']);
+Route::put('/work_reviews/{work_id}/update/{post_id}', [WorkReviewController::class, 'update'])->name('work_reviews.update');
 
 // 感想投稿の削除を行うdeleteメソッドを実行
 Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
