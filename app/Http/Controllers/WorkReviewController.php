@@ -55,9 +55,11 @@ class WorkReviewController extends Controller
     }
 
     // 感想投稿を削除する
-    public function delete(WorkReview $workreview)
+    public function delete(WorkReview $workreview, $work_id, $post_id)
     {
-        $workreview->delete();
-        return redirect('/');
+        // 編集の対象となるデータを取得
+        $targetworkreview = $workreview->getDetailPost($work_id, $post_id);
+        $targetworkreview->delete();
+        return redirect()->route('work_reviews.index', ['work_id' => $work_id]);
     }
 }

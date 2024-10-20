@@ -28,7 +28,7 @@
     <div class="edit">
         <a href="{{ route('work_reviews.edit', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">編集する</a>
     </div>
-    <form action="/work_reviews/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
+    <form action="{{ route('work_reviews.delete', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}" id="form_{{ $post->id }}" method="post">
         @csrf
         @method('DELETE')
         <button type="button" data-post-id="{{ $post->id }}" class="delete-button">投稿を削除する</button>
