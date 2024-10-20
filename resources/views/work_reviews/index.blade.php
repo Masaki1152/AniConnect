@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1>Blog Name</h1>
+    <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
     <a href='/work_reviews/create'>新規投稿作成</a>
     <div class='posts'>
         <div class='post'>
@@ -27,6 +27,9 @@
             </div>
             @endforeach
         </div>
+    </div>
+    <div class="footer">
+        <a href="/works/{{ $post->work_id }}">作品詳細画面へ</a>
     </div>
     <div class='paginate'>
         {{ $posts->links() }}

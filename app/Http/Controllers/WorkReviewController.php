@@ -15,7 +15,7 @@ class WorkReviewController extends Controller
     {
         // blade内の変数postsにインスタンス化した$work_reviewsを代入
         // 指定したidのアニメの投稿のみを表示
-        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit($work_id)]);
+        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit($work_id), 'work' => $work_reviews->getRestrictedPost('work_id', $work_id)]);
     }
 
     // 'post'はbladeファイルで使う変数。

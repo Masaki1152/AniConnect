@@ -37,6 +37,12 @@ class WorkReview extends Model
         ])->first();
     }
 
+    // 条件とその値を指定してデータを1件取得する
+    public function getRestrictedPost($condition, $column_name)
+    {
+        return $this->where($condition, $column_name)->first();
+    }
+
     // Workに対するリレーション 1対1の関係
     public function work()
     {

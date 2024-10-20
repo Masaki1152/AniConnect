@@ -35,7 +35,7 @@ Route::get('/work_reviews/create', [WorkReviewController::class, 'create']);
 Route::post('/work_reviews', [WorkReviewController::class, 'store']);
 
 // '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
-Route::get('/work_reviews/{work_id}/work_reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');
+Route::get('/work_reviews/{work_id}/reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');
 
 // 感想投稿編集画面を表示するeditメソッドを実行
 Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edit']);
