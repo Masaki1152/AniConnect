@@ -14,7 +14,8 @@
             <input type="hidden" name="work_review[work_id]" value="{{ $workreview->work_id }}">
         </div>
         <div class="user_id">
-            <input type="hidden" name="work_review[user_id]" value="{{ $workreview->user_id }}">
+            <p>{{ $user }}</p>
+            <input type="hidden" name="work_review[user_id]" value="{{ $workreview->work_id }}">
         </div>
         <div class="title">
             <h2>タイトル</h2>

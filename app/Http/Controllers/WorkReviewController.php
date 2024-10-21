@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\WorkReview;
 use App\Http\Requests\WorkReviewRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 
 class WorkReviewController extends Controller
 {
@@ -27,7 +28,9 @@ class WorkReviewController extends Controller
     // 新規投稿作成画面を表示する
     public function create(WorkReview $workreview, $work_id)
     {
-        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id)]);
+        // ログインしているユーザー名の取得
+        $user = Auth::user()->name;
+        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id), 'user' => $user]);
     }
 
     // 新しく記述した内容を保存する
