@@ -28,15 +28,15 @@ class WorkReviewController extends Controller
     // 新規投稿作成画面を表示する
     public function create(WorkReview $workreview, $work_id)
     {
-        // ログインしているユーザーidの取得
-        $user_id = Auth::id();
-        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id), 'user_id' => $user_id]);
+        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id)]);
     }
 
     // 新しく記述した内容を保存する
     public function store(WorkReview $workreview, WorkReviewRequest $request)
     {
         $input = $request['work_review'];
+        // ログインしているユーザーidの登録
+        $input['user_id'] = Auth::id();
         $workreview->fill($input)->save();
         return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'post_id' => $workreview->id]);
     }

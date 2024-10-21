@@ -13,9 +13,6 @@
         <div class="work_id">
             <input type="hidden" name="work_review[work_id]" value="{{ $workreview->work_id }}">
         </div>
-        <div class="user_id">
-            <input type="hidden" name="work_review[user_id]" value="{{ $user_id }}">
-        </div>
         <div class="title">
             <h2>タイトル</h2>
             <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ old('work_review.post_title') }}" />
