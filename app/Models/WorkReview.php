@@ -12,8 +12,8 @@ class WorkReview extends Model
     // fillを実行するための記述
     protected $fillable = [
         'work_id',
-        'post_title',
         'user_id',
+        'post_title',
         'body',
     ];
 
@@ -35,6 +35,12 @@ class WorkReview extends Model
             ['work_id', $work_id],
             ['id', $post_id],
         ])->first();
+    }
+
+    // 条件とその値を指定してデータを1件取得する
+    public function getRestrictedPost($condition, $column_name)
+    {
+        return $this->where($condition, $column_name)->first();
     }
 
     // Workに対するリレーション 1対1の関係

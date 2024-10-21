@@ -9,8 +9,8 @@
 </head>
 
 <body>
-    <h1>Blog Name</h1>
-    <a href='/work_reviews/create'>新規投稿作成</a>
+    <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
+    <a href="{{ route('work_reviews.create', ['work_id' => $work->work_id]) }}">新規投稿作成</a>
     <div class='posts'>
         <div class='post'>
             @foreach ($posts as $post)
@@ -19,7 +19,7 @@
                     <a href="{{ route('work_reviews.show', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">{{ $post->post_title }}</a>
                 </h2>
                 <p class='body'>{{ $post->body }}</p>
-                <form action="/work_reviews/{{ $post->id }}" id="form_{{ $post->id }}" method="post">
+                <form action="{{ route('work_reviews.delete', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}" id="form_{{ $post->id }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="button" data-post-id="{{ $post->id }}" class="delete-button">投稿を削除する</button>
@@ -27,6 +27,9 @@
             </div>
             @endforeach
         </div>
+    </div>
+    <div class="footer">
+        <a href="/works/{{ $post->work_id }}">作品詳細画面へ</a>
     </div>
     <div class='paginate'>
         {{ $posts->links() }}

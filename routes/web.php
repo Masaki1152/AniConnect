@@ -29,21 +29,21 @@ Route::get('/works/{work}', [WorkController::class ,'show']);
 Route::get('/work_reviews/{work_id}', [WorkReviewController::class, 'index'])->name('work_reviews.index');
 
 // 新規投稿作成ボタン押下で、createメソッドを実行
-Route::get('/work_reviews/create', [WorkReviewController::class, 'create']);
+Route::get('/work_reviews/{work_id}/create', [WorkReviewController::class, 'create'])->name('work_reviews.create');
 
 // 作成するボタン押下で、storeメソッドを実行
-Route::post('/work_reviews', [WorkReviewController::class, 'store']);
+Route::post('/work_reviews/{work_id}/store', [WorkReviewController::class, 'store'])->name('work_reviews.store');
 
 // '/work_reviews/{対象データのID}'にGetリクエストが来たら、showメソッドを実行
-Route::get('/work_reviews/{work_id}/work_reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');
+Route::get('/work_reviews/{work_id}/reviews/{post_id}', [WorkReviewController::class ,'show'])->name('work_reviews.show');
 
 // 感想投稿編集画面を表示するeditメソッドを実行
-Route::get('/work_reviews/{workreview}/edit', [WorkReviewController::class, 'edit']);
+Route::get('/work_reviews/{work_id}/reviews/{post_id}/edit', [WorkReviewController::class, 'edit'])->name('work_reviews.edit');
 
 // 感想投稿の編集を実行するupdateメソッドを実行
-Route::put('/work_reviews/{workreview}', [WorkReviewController::class, 'update']);
+Route::put('/work_reviews/{work_id}/update/{post_id}', [WorkReviewController::class, 'update'])->name('work_reviews.update');
 
 // 感想投稿の削除を行うdeleteメソッドを実行
-Route::delete('/work_reviews/{workreview}', [WorkReviewController::class,'delete']);
+Route::delete('/work_reviews/{work_id}/reviews/{post_id}/delete', [WorkReviewController::class,'delete'])->name('work_reviews.delete');
 
 

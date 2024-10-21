@@ -18,8 +18,6 @@ class WorkReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'work_review.work_id' => 'required|integer',
-            'work_review.user_id' => 'required|integer',
             'work_review.post_title' => 'required|string|max:100',
             'work_review.body' => 'required|string|max:4000',
         ];
