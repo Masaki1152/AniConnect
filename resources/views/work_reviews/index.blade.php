@@ -18,6 +18,11 @@
                 <h2 class='title'>
                     <a href="{{ route('work_reviews.show', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">{{ $post->post_title }}</a>
                 </h2>
+                <h5 class='category'>
+                    @foreach($post->categories as $category)
+                    {{ $category->name }}
+                    @endforeach
+                </h5>
                 <p class='body'>{{ $post->body }}</p>
                 <form action="{{ route('work_reviews.delete', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}" id="form_{{ $post->id }}" method="post">
                     @csrf

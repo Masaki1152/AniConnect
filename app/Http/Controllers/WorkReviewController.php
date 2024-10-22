@@ -13,17 +13,17 @@ class WorkReviewController extends Controller
     use SoftDeletes;
 
     // インポートしたPostをインスタンス化して$postとして使用。
-    public function index(WorkReview $work_reviews, $work_id)
+    public function index(WorkReview $work_reviews, WorkReviewCategory $category, $work_id)
     {
         // blade内の変数postsにインスタンス化した$work_reviewsを代入
         // 指定したidのアニメの投稿のみを表示
-        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit($work_id), 'work' => $work_reviews->getRestrictedPost('work_id', $work_id)]);
+        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit($work_id), 'work' => $work_reviews->getRestrictedPost('work_id', $work_id), 'categories' => $category->get()]);
     }
 
     // 'post'はbladeファイルで使う変数。
-    public function show(WorkReview $workreview, $work_id, $post_id)
+    public function show(WorkReview $workreview, WorkReviewCategory $category, $work_id, $post_id)
     {
-        return view('work_reviews.show')->with(['post' => $workreview->getDetailPost($work_id, $post_id)]);
+        return view('work_reviews.show')->with(['post' => $workreview->getDetailPost($work_id, $post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
