@@ -22,8 +22,19 @@
             </div>
             <div class="title">
                 <h2>タイトル</h2>
-                <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ $post->post_title }}"/>
+                <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ $post->post_title }}" />
                 <p class="title__error" style="color:red">{{ $errors->first('work_review.post_title') }}</p>
+            </div>
+            <div class="category">
+                <h2>カテゴリー（3個まで）</h2>
+                @foreach($categories as $category)
+                <label>
+                    <input type="checkbox" value="{{ $category->id }}" name="categories_array[]"
+                    {{ $category->workreviews->contains('id', $post->id) ? 'checked' : ''}} />
+                    {{$category->name}}
+                    </input>
+                </label>
+                @endforeach
             </div>
             <div class="body">
                 <h2>内容</h2>
