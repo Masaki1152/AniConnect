@@ -35,10 +35,13 @@ class WorkReviewController extends Controller
     // 新しく記述した内容を保存する
     public function store(WorkReview $workreview, WorkReviewRequest $request)
     {
-        $input = $request['work_review'];
+        $input_review = $request['work_review'];
+        $input_categories = $request->categories_array;
         // ログインしているユーザーidの登録
-        $input['user_id'] = Auth::id();
-        $workreview->fill($input)->save();
+        $input_review['user_id'] = Auth::id();
+        $workreview->fill($input_review)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        $workreview->categories()->attach($input_categories);
         return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'post_id' => $workreview->id]);
     }
 
