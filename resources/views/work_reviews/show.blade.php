@@ -19,6 +19,12 @@
             <p>{{ $post->work->name }}</p>
             <h3>投稿者</h3>
             <p>{{ $post->user->name }}</p>
+            <h3>カテゴリー</h3>
+            <h5 class='category'>
+                @foreach($post->categories as $category)
+                {{ $category->name }}
+                @endforeach
+            </h5>
             <h3>本文</h3>
             <p>{{ $post->body }}</p>
             <h3>作成日</h3>

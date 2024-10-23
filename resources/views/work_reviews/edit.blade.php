@@ -9,31 +9,51 @@
 </head>
 
 <body>
-    <h1 class="title">{{ $post->work->name }}への投稿編集画面</h1>
+    <h1 class="title">{{ $work_review->work->name }}への投稿編集画面</h1>
     <div class="content">
-        <form action="{{ route('work_reviews.update', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}" method="POST">
+        <form action="{{ route('work_reviews.update', ['work_id' => $work_review->work_id, 'post_id' => $work_review->id]) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="work_id">
-                <input type="hidden" name="work_review[work_id]" value="{{ $post->work_id }}">
+                <input type="hidden" name="work_review[work_id]" value="{{ $work_review->work_id }}">
             </div>
             <div class="user_id">
-                <input type="hidden" name="work_review[user_id]" value="{{ $post->user_id }}">
+                <input type="hidden" name="work_review[user_id]" value="{{ $work_review->user_id }}">
             </div>
             <div class="title">
                 <h2>タイトル</h2>
-                <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ $post->post_title }}"/>
+                <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ $work_review->post_title }}" />
                 <p class="title__error" style="color:red">{{ $errors->first('work_review.post_title') }}</p>
+            </div>
+            <div class="category">
+                <h2>カテゴリー（3個まで）</h2>
+                @php
+                // old() が存在すればそれを使用し、なければ過去の保存値を使用
+                $existingCategories = $work_review->categories->pluck('id')->toArray();
+                $selectedCategories = old('work_review.categories_array', $existingCategories);
+                @endphp
+                <select name="work_review[categories_array][]" multiple>
+                    @foreach($categories as $category)
+                    <option value="{{ $category->id }}"
+                        {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
+                        {{ $category->name }}
+                    </option>
+                    @endforeach
+                </select>
+
+                @if ($errors->has('work_review.categories_array'))
+                <p class="category__error" style="color:red">{{ $errors->first('work_review.categories_array') }}</p>
+                @endif
             </div>
             <div class="body">
                 <h2>内容</h2>
-                <textarea name="work_review[body]" placeholder="内容を記入してください。">{{ $post->body }}</textarea>
+                <textarea name="work_review[body]" placeholder="内容を記入してください。">{{ $work_review->body }}</textarea>
                 <p class="body__error" style="color:red">{{ $errors->first('work_review.body') }}</p>
             </div>
             <button type="submit">変更を保存する</button>
         </form>
     </div>
     <div class="footer">
-        <a href="{{ route('work_reviews.show', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">保存しないで戻る</a>
+        <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'post_id' => $work_review->id]) }}">保存しないで戻る</a>
     </div>
 </body>

@@ -20,8 +20,6 @@ class WorkReview extends Model
     // 参照させたいwork_reviewsを指定
     protected $table = 'work_reviews';
 
-    // 条件を満たすデータだけを取得する
-
     // created_atで降順に並べたあと、limitで件数制限をかける
     public function getPaginateByLimit($work_id, int $limit_count = 5)
     {
@@ -53,5 +51,11 @@ class WorkReview extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    // カテゴリーに対するリレーション 多対多の関係
+    public function categories()
+    {
+        return $this->belongsToMany(WorkReviewCategory::class);
     }
 }

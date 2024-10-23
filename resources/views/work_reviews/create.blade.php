@@ -18,6 +18,19 @@
             <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ old('work_review.post_title') }}" />
             <p class="title__error" style="color:red">{{ $errors->first('work_review.post_title') }}</p>
         </div>
+        <div class="category">
+            <h2>カテゴリー（3個まで）</h2>
+            <select name="work_review[categories_array][]" multiple>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}" @if(in_array($category->id, old('work_review.categories_array', []))) selected @endif>
+                    {{$category->name}}
+                </option>
+                @endforeach
+            </select>
+            @if ($errors->has('work_review.categories_array'))
+            <p class="category__error" style="color:red">{{ $errors->first('work_review.categories_array') }}</p>
+            @endif
+        </div>
         <div class="body">
             <h2>内容</h2>
             <textarea name="work_review[body]" placeholder="内容を記入してください。">{{ old('work_review.body') }}</textarea>
