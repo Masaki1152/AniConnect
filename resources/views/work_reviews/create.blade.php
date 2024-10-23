@@ -20,13 +20,14 @@
         </div>
         <div class="category">
             <h2>カテゴリー（3個まで）</h2>
-            @foreach($categories as $category)
-            <label>
-                <input type="checkbox" value="{{ $category->id }}" name="categories_array[]">
-                {{$category->name}}
-                </input>
-            </label>
-            @endforeach
+            <select name="categories_array[]" multiple>
+                @foreach($categories as $category)
+                <option value="{{ $category->id }}">{{$category->name}}</option>
+                @endforeach
+            </select>
+            @if ($errors->has('categories_array'))
+            <p class="category__error" style="color:red">{{ $errors->first('categories_array') }}</p>
+            @endif
         </div>
         <div class="body">
             <h2>内容</h2>

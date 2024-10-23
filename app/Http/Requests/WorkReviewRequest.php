@@ -20,6 +20,7 @@ class WorkReviewRequest extends FormRequest
         return [
             'work_review.post_title' => 'required|string|max:100',
             'work_review.body' => 'required|string|max:4000',
+            'categories_array' => 'required|array|max:3'
         ];
     }
 }

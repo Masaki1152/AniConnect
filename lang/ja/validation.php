@@ -91,7 +91,7 @@ return [
     ],
     'mac_address' => 'The :attribute field must be a valid MAC address.',
     'max' => [
-        'array' => 'The :attribute field must not have more than :max items.',
+        'array' => ':attributeは3個まで選択できます。',
         'file' => 'The :attribute field must not be greater than :max kilobytes.',
         'numeric' => ':attributeは:max文字以内にしてください。',
         'string' => ':attributeは:max文字以内にしてください。',
@@ -192,6 +192,7 @@ return [
         'work_review.user_id' => '投稿者名',
         'work_review.post_title' => 'タイトル',
         'work_review.body' => '内容',
+        'categories_array' => 'カテゴリー',
     ],
 
 ];
