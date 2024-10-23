@@ -48,7 +48,7 @@ class WorkReviewController extends Controller
     // 感想投稿編集画面を表示する
     public function edit(WorkReview $workreview, WorkReviewCategory $category, $work_id, $post_id)
     {
-        return view('work_reviews.edit')->with(['post' => $workreview->getDetailPost($work_id, $post_id), 'categories' => $category->get()]);
+        return view('work_reviews.edit')->with(['work_review' => $workreview->getDetailPost($work_id, $post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する

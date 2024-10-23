@@ -18,16 +18,11 @@
             <input type="text" name="work_review[post_title]" placeholder="タイトル" value="{{ old('work_review.post_title') }}" />
             <p class="title__error" style="color:red">{{ $errors->first('work_review.post_title') }}</p>
         </div>
-        <div class="a">
-            @foreach($categories as $category)
-            {{ $category->workreviews}}
-            @endforeach
-        </div>
         <div class="category">
             <h2>カテゴリー（3個まで）</h2>
             <select name="work_review[categories_array][]" multiple>
                 @foreach($categories as $category)
-                <option value="{{ $category->id }}" @if($category->id ==old('work_review[categories_array]')) selected @endif>
+                <option value="{{ $category->id }}" @if(in_array($category->id, old('work_review.categories_array', []))) selected @endif>
                     {{$category->name}}
                 </option>
                 @endforeach
