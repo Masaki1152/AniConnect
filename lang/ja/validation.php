@@ -192,7 +192,7 @@ return [
         'work_review.user_id' => '投稿者名',
         'work_review.post_title' => 'タイトル',
         'work_review.body' => '内容',
-        'categories_array' => 'カテゴリー',
+        'work_review.categories_array' => 'カテゴリー',
     ],
 
 ];

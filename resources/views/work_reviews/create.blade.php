@@ -20,13 +20,13 @@
         </div>
         <div class="category">
             <h2>カテゴリー（3個まで）</h2>
-            <select name="categories_array[]" multiple>
+            <select name="work_review[categories_array][]" multiple>
                 @foreach($categories as $category)
                 <option value="{{ $category->id }}">{{$category->name}}</option>
                 @endforeach
             </select>
-            @if ($errors->has('categories_array'))
-            <p class="category__error" style="color:red">{{ $errors->first('categories_array') }}</p>
+            @if ($errors->has('work_review.categories_array'))
+            <p class="category__error" style="color:red">{{ $errors->first('work_review.categories_array') }}</p>
             @endif
         </div>
         <div class="body">

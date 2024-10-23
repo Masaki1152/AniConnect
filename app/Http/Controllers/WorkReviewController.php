@@ -36,7 +36,7 @@ class WorkReviewController extends Controller
     public function store(WorkReview $workreview, WorkReviewRequest $request)
     {
         $input_review = $request['work_review'];
-        $input_categories = $request->categories_array;
+        $input_categories = $request->work_review['categories_array'];
         // ログインしているユーザーidの登録
         $input_review['user_id'] = Auth::id();
         $workreview->fill($input_review)->save();
