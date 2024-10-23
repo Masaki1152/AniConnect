@@ -55,7 +55,7 @@ class WorkReviewController extends Controller
     public function update(WorkReviewRequest $request, WorkReview $workreview, $work_id, $post_id)
     {
         $input_post = $request['work_review'];
-        $input_categories = $request->categories_array;
+        $input_categories = $request->work_review['categories_array'];
         // 編集の対象となるデータを取得
         $targetworkreview = $workreview->getDetailPost($work_id, $post_id);
         $targetworkreview->fill($input_post)->save();

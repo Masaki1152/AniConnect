@@ -27,14 +27,14 @@
             </div>
             <div class="category">
                 <h2>カテゴリー（3個まで）</h2>
-                @foreach($categories as $category)
-                <label>
-                    <input type="checkbox" value="{{ $category->id }}" name="categories_array[]"
-                    {{ $category->workreviews->contains('id', $post->id) ? 'checked' : ''}} />
-                    {{$category->name}}
-                    </input>
-                </label>
-                @endforeach
+                <select name="work_review[categories_array][]" multiple>
+                    @foreach($categories as $category)
+                    <option value="{{ $category->id }}">{{$category->name}}</option>
+                    @endforeach
+                </select>
+                @if ($errors->has('work_review.categories_array'))
+                <p class="category__error" style="color:red">{{ $errors->first('work_review.categories_array') }}</p>
+                @endif
             </div>
             <div class="body">
                 <h2>内容</h2>
