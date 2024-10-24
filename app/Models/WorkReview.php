@@ -27,11 +27,11 @@ class WorkReview extends Model
     }
 
     // 作品idと投稿idを指定して、投稿の詳細表示を行う
-    public function getDetailPost($work_id, $post_id)
+    public function getDetailPost($work_id, $work_review_id)
     {
         return $this->where([
             ['work_id', $work_id],
-            ['id', $post_id],
+            ['id', $work_review_id],
         ])->first();
     }
 

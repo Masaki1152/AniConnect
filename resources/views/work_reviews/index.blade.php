@@ -11,33 +11,33 @@
 <body>
     <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
     <a href="{{ route('work_reviews.create', ['work_id' => $work->work_id]) }}">新規投稿作成</a>
-    <div class='posts'>
-        <div class='post'>
-            @foreach ($posts as $post)
-            <div class='post'>
+    <div class='work_reviews'>
+        <div class='work_review'>
+            @foreach ($work_reviews as $work_review)
+            <div class='work_review'>
                 <h2 class='title'>
-                    <a href="{{ route('work_reviews.show', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">{{ $post->post_title }}</a>
+                    <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
                 </h2>
                 <h5 class='category'>
-                    @foreach($post->categories as $category)
+                    @foreach($work_review->categories as $category)
                     {{ $category->name }}
                     @endforeach
                 </h5>
-                <p class='body'>{{ $post->body }}</p>
-                <form action="{{ route('work_reviews.delete', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}" id="form_{{ $post->id }}" method="post">
+                <p class='body'>{{ $work_review->body }}</p>
+                <form action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" id="form_{{ $work_review->id }}" method="post">
                     @csrf
                     @method('DELETE')
-                    <button type="button" data-post-id="{{ $post->id }}" class="delete-button">投稿を削除する</button>
+                    <button type="button" data-post-id="{{ $work_review->id }}" class="delete-button">投稿を削除する</button>
                 </form>
             </div>
             @endforeach
         </div>
     </div>
     <div class="footer">
-        <a href="/works/{{ $post->work_id }}">作品詳細画面へ</a>
+        <a href="/works/{{ $work_review->work_id }}">作品詳細画面へ</a>
     </div>
     <div class='paginate'>
-        {{ $posts->links() }}
+        {{ $work_reviews->links() }}
     </div>
 
     <script>

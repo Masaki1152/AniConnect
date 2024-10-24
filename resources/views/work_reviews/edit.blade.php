@@ -11,7 +11,7 @@
 <body>
     <h1 class="title">{{ $work_review->work->name }}への投稿編集画面</h1>
     <div class="content">
-        <form action="{{ route('work_reviews.update', ['work_id' => $work_review->work_id, 'post_id' => $work_review->id]) }}" method="POST">
+        <form action="{{ route('work_reviews.update', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
             @csrf
             @method('PUT')
             <div class="work_id">
@@ -54,6 +54,6 @@
         </form>
     </div>
     <div class="footer">
-        <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'post_id' => $work_review->id]) }}">保存しないで戻る</a>
+        <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">保存しないで戻る</a>
     </div>
 </body>

@@ -47,13 +47,13 @@ Route::controller(WorkReviewController::class)->middleware(['auth'])->group(func
     // 作成するボタン押下で、storeメソッドを実行
     Route::post('/work_reviews/{work_id}/store', 'store')->name('work_reviews.store');
     // 各作品の感想投稿一覧ボタン押下で、showメソッドを実行
-    Route::get('/work_reviews/{work_id}/reviews/{post_id}', 'show')->name('work_reviews.show');
+    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}', 'show')->name('work_reviews.show');
     // 感想投稿編集画面を表示するeditメソッドを実行
-    Route::get('/work_reviews/{work_id}/reviews/{post_id}/edit', 'edit')->name('work_reviews.edit');
+    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/edit', 'edit')->name('work_reviews.edit');
     // 感想投稿の編集を実行するupdateメソッドを実行
-    Route::put('/work_reviews/{work_id}/update/{post_id}', 'update')->name('work_reviews.update');
+    Route::put('/work_reviews/{work_id}/update/{work_review_id}', 'update')->name('work_reviews.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
-    Route::delete('/work_reviews/{work_id}/reviews/{post_id}/delete', 'delete')->name('work_reviews.delete');
+    Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
 });
 
 require __DIR__ . '/auth.php';
