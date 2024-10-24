@@ -11,36 +11,36 @@
 
 <body>
     <h1 class="title">
-        {{ $post->post_title }}
+        {{ $work_review->post_title }}
     </h1>
     <div class="content">
-        <div class="content__post">
+        <div class="content__work_review">
             <h3>作品名</h3>
-            <p>{{ $post->work->name }}</p>
+            <p>{{ $work_review->work->name }}</p>
             <h3>投稿者</h3>
-            <p>{{ $post->user->name }}</p>
+            <p>{{ $work_review->user->name }}</p>
             <h3>カテゴリー</h3>
             <h5 class='category'>
-                @foreach($post->categories as $category)
+                @foreach($work_review->categories as $category)
                 {{ $category->name }}
                 @endforeach
             </h5>
             <h3>本文</h3>
-            <p>{{ $post->body }}</p>
+            <p>{{ $work_review->body }}</p>
             <h3>作成日</h3>
-            <p>{{ $post->created_at }}</p>
+            <p>{{ $work_review->created_at }}</p>
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('work_reviews.edit', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}">編集する</a>
+        <a href="{{ route('work_reviews.edit', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">編集する</a>
     </div>
-    <form action="{{ route('work_reviews.delete', ['work_id' => $post->work_id, 'post_id' => $post->id]) }}" id="form_{{ $post->id }}" method="post">
+    <form action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" id="form_{{ $work_review->id }}" method="post">
         @csrf
         @method('DELETE')
-        <button type="button" data-post-id="{{ $post->id }}" class="delete-button">投稿を削除する</button>
+        <button type="button" data-post-id="{{ $work_review->id }}" class="delete-button">投稿を削除する</button>
     </form>
     <div class="footer">
-        <a href="{{ route('work_reviews.index', ['work_id' => $post->work_id]) }}">戻る</a>
+        <a href="{{ route('work_reviews.index', ['work_id' => $work_review->work_id]) }}">戻る</a>
     </div>
 
     <script>

@@ -12,18 +12,18 @@ class WorkReviewController extends Controller
 {
     use SoftDeletes;
 
-    // インポートしたPostをインスタンス化して$postとして使用。
+    // インポートしたWorkreviewをインスタンス化して$work_reviewsとして使用。
     public function index(WorkReview $work_reviews, WorkReviewCategory $category, $work_id)
     {
-        // blade内の変数postsにインスタンス化した$work_reviewsを代入
+        // blade内の変数work_reviewsにインスタンス化した$work_reviewsを代入
         // 指定したidのアニメの投稿のみを表示
-        return view('work_reviews.index')->with(['posts' => $work_reviews->getPaginateByLimit($work_id), 'work' => $work_reviews->getRestrictedPost('work_id', $work_id), 'categories' => $category->get()]);
+        return view('work_reviews.index')->with(['work_reviews' => $work_reviews->getPaginateByLimit($work_id), 'work' => $work_reviews->getRestrictedPost('work_id', $work_id), 'categories' => $category->get()]);
     }
 
-    // 'post'はbladeファイルで使う変数。
-    public function show(WorkReview $workreview, WorkReviewCategory $category, $work_id, $post_id)
+    // 'work_review'はbladeファイルで使う変数。
+    public function show(WorkReview $workreview, WorkReviewCategory $category, $work_id, $work_review_id)
     {
-        return view('work_reviews.show')->with(['post' => $workreview->getDetailPost($work_id, $post_id), 'categories' => $category->get()]);
+        return view('work_reviews.show')->with(['work_review' => $workreview->getDetailPost($work_id, $work_review_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
@@ -42,34 +42,34 @@ class WorkReviewController extends Controller
         $workreview->fill($input_review)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $workreview->categories()->attach($input_categories);
-        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'post_id' => $workreview->id]);
+        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'work_review_id' => $workreview->id]);
     }
 
     // 感想投稿編集画面を表示する
-    public function edit(WorkReview $workreview, WorkReviewCategory $category, $work_id, $post_id)
+    public function edit(WorkReview $workreview, WorkReviewCategory $category, $work_id, $work_review_id)
     {
-        return view('work_reviews.edit')->with(['work_review' => $workreview->getDetailPost($work_id, $post_id), 'categories' => $category->get()]);
+        return view('work_reviews.edit')->with(['work_review' => $workreview->getDetailPost($work_id, $work_review_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する
-    public function update(WorkReviewRequest $request, WorkReview $workreview, $work_id, $post_id)
+    public function update(WorkReviewRequest $request, WorkReview $workreview, $work_id, $work_review_id)
     {
-        $input_post = $request['work_review'];
+        $input_review = $request['work_review'];
         $input_categories = $request->work_review['categories_array'];
         // 編集の対象となるデータを取得
-        $targetworkreview = $workreview->getDetailPost($work_id, $post_id);
-        $targetworkreview->fill($input_post)->save();
+        $targetworkreview = $workreview->getDetailPost($work_id, $work_review_id);
+        $targetworkreview->fill($input_review)->save();
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetworkreview->categories()->sync($input_categories);
-        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'post_id' => $targetworkreview->id]);
+        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'work_review_id' => $targetworkreview->id]);
     }
 
     // 感想投稿を削除する
-    public function delete(WorkReview $workreview, $work_id, $post_id)
+    public function delete(WorkReview $workreview, $work_id, $work_review_id)
     {
         // 編集の対象となるデータを取得
-        $targetworkreview = $workreview->getDetailPost($work_id, $post_id);
+        $targetworkreview = $workreview->getDetailPost($work_id, $work_review_id);
         $targetworkreview->delete();
         return redirect()->route('work_reviews.index', ['work_id' => $work_id]);
     }
