@@ -58,4 +58,10 @@ class WorkReview extends Model
     {
         return $this->belongsToMany(WorkReviewCategory::class);
     }
+
+    // いいねをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
