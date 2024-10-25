@@ -16,6 +16,7 @@
     <div class="like">
         <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
             @csrf
+            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
             <button type="submit" class="{{ $work_review->users->contains(auth()->user()) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700' }} text-white font-bold py-2 px-4 rounded">
                 {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
             </button>
