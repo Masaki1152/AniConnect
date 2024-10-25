@@ -13,6 +13,15 @@
     <h1 class="title">
         {{ $work_review->post_title }}
     </h1>
+    <div class="like">
+        <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
+            @csrf
+            <button type="submit" class="{{ $work_review->users->contains(auth()->user()) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700' }} text-white font-bold py-2 px-4 rounded">
+                {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+            </button>
+        </form>
+        {{ $work_review->users->count() }}
+    </div>
     <div class="content">
         <div class="content__work_review">
             <h3>作品名</h3>

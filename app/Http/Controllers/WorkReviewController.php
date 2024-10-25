@@ -73,4 +73,24 @@ class WorkReviewController extends Controller
         $targetworkreview->delete();
         return redirect()->route('work_reviews.index', ['work_id' => $work_id]);
     }
+
+    // 投稿にいいねを行う
+    public function like(WorkReview $workreview, $work_id, $work_review_id)
+    {
+        // 現在ログインしているユーザ－の取得
+        $user = Auth::user();
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $user->workreviews()->where('work_review_id', $work_review_id)->exists();
+        if ($isLiked) {
+            // 既にいいねしている感想投稿のidを配列で取得
+            $existingwork_review_id = $user->workreviews()->where('work_review_id', $work_review_id)->pluck('work_review_id')->toArray();
+            $user->workreviews()->detach($existingwork_review_id);
+        } else {
+            // 初めてのいいねの場合
+            $existingwork_review_id = array('0' => $work_review_id);
+            $user->workreviews()->attach($existingwork_review_id);
+        }
+
+        return back();
+    }
 }

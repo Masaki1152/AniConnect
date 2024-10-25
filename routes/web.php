@@ -54,6 +54,8 @@ Route::controller(WorkReviewController::class)->middleware(['auth'])->group(func
     Route::put('/work_reviews/{work_id}/update/{work_review_id}', 'update')->name('work_reviews.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
+    // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
 });
 
 require __DIR__ . '/auth.php';

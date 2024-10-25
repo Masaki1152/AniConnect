@@ -7,39 +7,39 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 
-class Work_Review_Category_Seeder extends Seeder
+class Work_Review_Work_Review_Category_Seeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('work_review_category')->insert([
+        DB::table('work_review_work_review_category')->insert([
             'work_review_category_id' => 3,
             'work_review_id' => 1,
             'created_at' => new DateTime(),
         ]);
-        DB::table('work_review_category')->insert([
+        DB::table('work_review_work_review_category')->insert([
             'work_review_category_id' => 2,
             'work_review_id' => 2,
             'created_at' => new DateTime(),
         ]);
-        DB::table('work_review_category')->insert([
+        DB::table('work_review_work_review_category')->insert([
             'work_review_category_id' => 1,
             'work_review_id' => 3,
             'created_at' => new DateTime(),
         ]);
-        DB::table('work_review_category')->insert([
+        DB::table('work_review_work_review_category')->insert([
             'work_review_category_id' => 4,
             'work_review_id' => 4,
             'created_at' => new DateTime(),
         ]);
-        DB::table('work_review_category')->insert([
+        DB::table('work_review_work_review_category')->insert([
             'work_review_category_id' => 1,
             'work_review_id' => 5,
             'created_at' => new DateTime(),
         ]);
-        DB::table('work_review_category')->insert([
+        DB::table('work_review_work_review_category')->insert([
             'work_review_category_id' => 2,
             'work_review_id' => 6,
             'created_at' => new DateTime(),
