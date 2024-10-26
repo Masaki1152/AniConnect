@@ -26,7 +26,11 @@
                             {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                         </button>
                     </form>
-                    {{ $work_review->users->count() }}
+                    <div class="like_user">
+                        <a href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
+                            {{ $work_review->users->count() }}
+                        </a>
+                    </div>
                 </div>
                 <h5 class='category'>
                     @foreach($work_review->categories as $category)
