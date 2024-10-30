@@ -77,6 +77,11 @@ class WorkReviewController extends Controller
     // 投稿にいいねを行う
     public function like(WorkReview $workreview, $work_id, $work_review_id)
     {
+        // 投稿が見つからない場合の処理
+        $post = WorkReview::find($work_review_id);
+        if (!$post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
         // 現在ログインしているユーザ－の取得
         $user = Auth::user();
         // 現在ログインしているユーザーが既にいいねしていればtrueを返す
@@ -85,12 +90,13 @@ class WorkReviewController extends Controller
             // 既にいいねしている感想投稿のidを配列で取得
             $existingwork_review_id = $user->workreviews()->where('work_review_id', $work_review_id)->pluck('work_review_id')->toArray();
             $user->workreviews()->detach($existingwork_review_id);
+            //return response()->json(['status' => 'unliked']);
         } else {
             // 初めてのいいねの場合
             $existingwork_review_id = array('0' => $work_review_id);
             $user->workreviews()->attach($existingwork_review_id);
+            //return response()->json(['status' => 'liked']);
         }
-
         return back();
     }
 }
