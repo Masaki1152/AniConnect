@@ -19,10 +19,10 @@
                     <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
                 </h2>
                 <div class="like">
-                    <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
+                    <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" name="like" method="POST">
                         @csrf
                         <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                        <button type="submit" class="{{ $work_review->users->contains(auth()->user()) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700' }} text-white font-bold py-2 px-4 rounded">
+                        <button class="like-button" data-post-id="{{ $work_review->id }}" type="submit">
                             {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                         </button>
                     </form>
@@ -74,6 +74,36 @@
                 document.getElementById(`form_${postId}`).submit();
             }
         }
+
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     const likeButtons = document.querySelectorAll('.like-button');
+        //     likeButtons.forEach(button => {
+        //         button.addEventListener('click', async function() {
+        //             const postId = this.getAttribute('data-post-id');
+        //             try {
+        //                 const response = await fetch('/work_reviews/{$work_review->work_id}/reviews/{$work_review->id}/like', {
+        //                     method: 'POST',
+        //                     headers: {
+        //                         'Content-Type': 'application/json',
+        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
+        //                     },
+        //                     body: JSON.stringify({
+        //                         work_review_id: postId
+        //                     })
+        //                 });
+        //                 const data = await response.json();
+        //                 alert(data);
+        //                 if (data.status === 'liked') {
+        //                     this.innerText = 'Liked';
+        //                 } else if (data.status === 'unliked') {
+        //                     this.innerText = 'Like';
+        //                 }
+        //             } catch (error) {
+        //                 console.error('Error:', error);
+        //             }
+        //         });
+        //     });
+        // });
     </script>
 </body>
 
