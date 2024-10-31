@@ -7,6 +7,7 @@ use App\Models\WorkReviewCategory;
 use App\Http\Requests\WorkReviewRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class WorkReviewController extends Controller
 {
@@ -37,6 +38,12 @@ class WorkReviewController extends Controller
     {
         $input_review = $request['work_review'];
         $input_categories = $request->work_review['categories_array'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if($request->file('image')) {
+            $image_url = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
+            $input_review += ['image1' => $image_url];
+        }
         // ログインしているユーザーidの登録
         $input_review['user_id'] = Auth::id();
         $workreview->fill($input_review)->save();

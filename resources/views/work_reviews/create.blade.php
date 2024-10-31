@@ -8,7 +8,7 @@
 
 <body>
     <h1>「{{$workreview->work->name}}」への新規感想投稿</h1>
-    <form action="{{ route('work_reviews.store', ['work_id' => $workreview->work_id]) }}" method="POST">
+    <form action="{{ route('work_reviews.store', ['work_id' => $workreview->work_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="work_id">
             <input type="hidden" name="work_review[work_id]" value="{{ $workreview->work_id }}">
@@ -35,6 +35,9 @@
             <h2>内容</h2>
             <textarea name="work_review[body]" placeholder="内容を記入してください。">{{ old('work_review.body') }}</textarea>
             <p class="body__error" style="color:red">{{ $errors->first('work_review.body') }}</p>
+        </div>
+        <div class="image">
+            <input type="file" name="image">
         </div>
         <button type="submit">投稿する</button>
     </form>

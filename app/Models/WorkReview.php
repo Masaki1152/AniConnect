@@ -15,6 +15,7 @@ class WorkReview extends Model
         'user_id',
         'post_title',
         'body',
+        'image1',
     ];
 
     // 参照させたいwork_reviewsを指定
