@@ -39,6 +39,7 @@
         <div class="image">
             <h2>画像（4枚まで）</h2>
             <input type="file" name="images[]" multiple>
+            <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
         </div>
         <button type="submit">投稿する</button>
     </form>
