@@ -11,7 +11,7 @@
 <body>
     <h1 class="title">{{ $work_review->work->name }}への投稿編集画面</h1>
     <div class="content">
-        <form action="{{ route('work_reviews.update', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
+        <form action="{{ route('work_reviews.update', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="work_id">
@@ -49,6 +49,11 @@
                 <h2>内容</h2>
                 <textarea name="work_review[body]" placeholder="内容を記入してください。">{{ $work_review->body }}</textarea>
                 <p class="body__error" style="color:red">{{ $errors->first('work_review.body') }}</p>
+            </div>
+            <div class="image">
+                <h2>画像（4枚まで）</h2>
+                <input type="file" name="images[]" multiple>
+                <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
             </div>
             <button type="submit">変更を保存する</button>
         </form>
