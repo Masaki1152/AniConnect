@@ -46,11 +46,19 @@
             <p>{{ $work_review->body }}</p>
             <h3>作成日</h3>
             <p>{{ $work_review->created_at }}</p>
-            @if($work_review->image1)
-            <div>
-                <img src="{{ $work_review->image1 }}" alt="画像が読み込めません。">
-            </div>
-            @endif
+            @php
+                $numbers = array(1, 2, 3, 4);
+            @endphp
+            @foreach($numbers as $number)
+                @php
+                    $image = "image".$number;
+                @endphp
+                @if($work_review->$image)
+                <div>
+                    <img src="{{ $work_review->$image }}" alt="画像が読み込めません。">
+                </div>
+                 @endif
+            @endforeach
         </div>
     </div>
     <div class="edit">

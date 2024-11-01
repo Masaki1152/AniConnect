@@ -16,6 +16,9 @@ class WorkReview extends Model
         'post_title',
         'body',
         'image1',
+        'image2',
+        'image3',
+        'image4',
     ];
 
     // 参照させたいwork_reviewsを指定

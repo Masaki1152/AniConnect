@@ -37,7 +37,8 @@
             <p class="body__error" style="color:red">{{ $errors->first('work_review.body') }}</p>
         </div>
         <div class="image">
-            <input type="file" name="image">
+            <h2>画像（4枚まで）</h2>
+            <input type="file" name="images[]" multiple>
         </div>
         <button type="submit">投稿する</button>
     </form>

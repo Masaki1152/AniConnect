@@ -40,9 +40,14 @@ class WorkReviewController extends Controller
         $input_categories = $request->work_review['categories_array'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
-        if($request->file('image')) {
-            $image_url = Cloudinary::upload($request->file('image')->getRealPath())->getSecurePath();
-            $input_review += ['image1' => $image_url];
+        if($request->file('images')) {
+            $counter = 1;
+            foreach($request->file('images') as $image) 
+            {
+                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $input_review += ["image$counter" => $image_url];
+                $counter++;
+            }
         }
         // ログインしているユーザーidの登録
         $input_review['user_id'] = Auth::id();
