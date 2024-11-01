@@ -22,7 +22,10 @@
                     <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" name="like" method="POST">
                         @csrf
                         <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                        <button class="like-button" data-post-id="{{ $work_review->id }}" type="submit">
+                        <button class="like-button"
+                            data-work-id="{{ $work_review->work_id }}"
+                            data-review-id="{{ $work_review->id }}"
+                            type="submit">
                             {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                         </button>
                     </form>
@@ -38,6 +41,11 @@
                     @endforeach
                 </h5>
                 <p class='body'>{{ $work_review->body }}</p>
+                @if($work_review->image1)
+                <div>
+                    <img src="{{ $work_review->image1 }}" alt="画像が読み込めません。">
+                </div>
+                @endif
                 <form action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" id="form_{{ $work_review->id }}" method="post">
                     @csrf
                     @method('DELETE')
@@ -79,17 +87,15 @@
         //     const likeButtons = document.querySelectorAll('.like-button');
         //     likeButtons.forEach(button => {
         //         button.addEventListener('click', async function() {
-        //             const postId = this.getAttribute('data-post-id');
+        //             const workId = this.getAttribute('data-work-id');
+        //             const reviewId = this.getAttribute('data-review-id');
         //             try {
-        //                 const response = await fetch('/work_reviews/{$work_review->work_id}/reviews/{$work_review->id}/like', {
+        //                 const response = await fetch(`/work_reviews/${workId}/reviews/${reviewId}/like`, {
         //                     method: 'POST',
         //                     headers: {
         //                         'Content-Type': 'application/json',
         //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
         //                     },
-        //                     body: JSON.stringify({
-        //                         work_review_id: postId
-        //                     })
         //                 });
         //                 const data = await response.json();
         //                 alert(data);

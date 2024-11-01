@@ -17,7 +17,10 @@
         <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
             @csrf
             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-            <button type="submit" class="{{ $work_review->users->contains(auth()->user()) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700' }} text-white font-bold py-2 px-4 rounded">
+            <button type="submit"
+                data-work-id="{{ $work_review->work_id }}"
+                data-review-id="{{ $work_review->id }}"
+                class="{{ $work_review->users->contains(auth()->user()) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700' }} text-white font-bold py-2 px-4 rounded">
                 {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
             </button>
         </form>
@@ -43,6 +46,19 @@
             <p>{{ $work_review->body }}</p>
             <h3>作成日</h3>
             <p>{{ $work_review->created_at }}</p>
+            @php
+                $numbers = array(1, 2, 3, 4);
+            @endphp
+            @foreach($numbers as $number)
+                @php
+                    $image = "image".$number;
+                @endphp
+                @if($work_review->$image)
+                <div>
+                    <img src="{{ $work_review->$image }}" alt="画像が読み込めません。">
+                </div>
+                 @endif
+            @endforeach
         </div>
     </div>
     <div class="edit">
