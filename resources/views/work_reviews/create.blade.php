@@ -38,14 +38,39 @@
         </div>
         <div class="image">
             <h2>画像（4枚まで）</h2>
-            <input type="file" name="images[]" multiple>
+            <input id="inputElm" type="file" name="images[]" multiple>
             <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
         </div>
+        <!-- プレビュー画像の表示 -->
+        <div id="preview" style="width: 300px;"></div>
         <button type="submit">投稿する</button>
     </form>
     <div class="footer">
         <a href="{{ route('work_reviews.index', ['work_id' => $workreview->work_id]) }}">戻る</a>
     </div>
 </body>
+<script>
+    // プレビューの表示
+    const inputElm = document.getElementById('inputElm');
+    inputElm.addEventListener('change', (e) => {
+        const file = e.target.files[0];
+
+        const fileReader = new FileReader();
+        // 画像を読み込む
+        fileReader.readAsDataURL(file);
+
+        // 画像読み込み完了時の処理
+        fileReader.addEventListener('load', (e) => {
+            // imgタグ生成
+            const imgElm = document.createElement('img');
+            // e.target.resultに読み込んだ画像のURLを格納
+            imgElm.src = e.target.result;
+
+            // imgタグを挿入
+            const targetElm = document.getElementById('preview');
+            targetElm.appendChild(imgElm);
+        });
+    });
+</script>
 
 </html>
