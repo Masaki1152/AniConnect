@@ -14,19 +14,16 @@
         {{ $work_review->post_title }}
     </h1>
     <div class="like">
-        <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" method="POST">
-            @csrf
-            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-            <button type="submit"
-                data-work-id="{{ $work_review->work_id }}"
-                data-review-id="{{ $work_review->id }}"
-                class="{{ $work_review->users->contains(auth()->user()) ? 'bg-red-500 hover:bg-red-700' : 'bg-blue-500 hover:bg-blue-700' }} text-white font-bold py-2 px-4 rounded">
-                {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-            </button>
-        </form>
+        <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+        <button id="like_button"
+            data-work-id="{{ $work_review->work_id }}"
+            data-review-id="{{ $work_review->id }}"
+            type="submit">
+            {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+        </button>
         <div class="like_user">
             <a href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
-                {{ $work_review->users->count() }}
+                <p id="like_count">{{ $work_review->users->count() }}</p>
             </a>
         </div>
     </div>
@@ -47,17 +44,17 @@
             <h3>作成日</h3>
             <p>{{ $work_review->created_at }}</p>
             @php
-                $numbers = array(1, 2, 3, 4);
+            $numbers = array(1, 2, 3, 4);
             @endphp
             @foreach($numbers as $number)
-                @php
-                    $image = "image".$number;
-                @endphp
-                @if($work_review->$image)
-                <div>
-                    <img src="{{ $work_review->$image }}" alt="画像が読み込めません。">
-                </div>
-                 @endif
+            @php
+            $image = "image".$number;
+            @endphp
+            @if($work_review->$image)
+            <div>
+                <img src="{{ $work_review->$image }}" alt="画像が読み込めません。">
+            </div>
+            @endif
             @endforeach
         </div>
     </div>
@@ -93,6 +90,43 @@
                 document.getElementById(`form_${postId}`).submit();
             }
         }
+
+        // いいね処理を非同期で行う
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeClasses = document.querySelectorAll('.like');
+            likeClasses.forEach(element => {
+                // いいねボタンのクラスの取得
+                let button = element.querySelector('#like_button');
+                // いいねしたユーザー数のクラス取得とpタグの取得
+                let likeClass = element.querySelector('.like_user');
+                let users = likeClass.querySelector('#like_count');
+
+                //いいねボタンクリックによる非同期処理
+                button.addEventListener('click', async function() {
+                    const workId = button.getAttribute('data-work-id');
+                    const reviewId = button.getAttribute('data-review-id');
+                    try {
+                        const response = await fetch(`/work_reviews/${workId}/reviews/${reviewId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.status === 'liked') {
+                            button.innerText = 'いいね取り消し';
+                            users.innerText = data.like_user;
+                        } else if (data.status === 'unliked') {
+                            button.innerText = 'いいね';
+                            users.innerText = data.like_user;
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
