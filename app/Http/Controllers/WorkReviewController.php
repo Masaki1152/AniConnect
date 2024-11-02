@@ -101,24 +101,24 @@ class WorkReviewController extends Controller
     public function like(WorkReview $workreview, $work_id, $work_review_id)
     {
         // 投稿が見つからない場合の処理
-        $post = WorkReview::find($work_review_id);
-        if (!$post) {
+        $work_review = WorkReview::find($work_review_id);
+        if (!$work_review) {
             return response()->json(['message' => 'Post not found'], 404);
         }
-        // 現在ログインしているユーザ－の取得
-        $user = Auth::user();
         // 現在ログインしているユーザーが既にいいねしていればtrueを返す
-        $isLiked = $user->workreviews()->where('work_review_id', $work_review_id)->exists();
+        $isLiked = $work_review->users()->where('user_id', Auth::id())->exists();
         if ($isLiked) {
-            // 既にいいねしている感想投稿のidを配列で取得
-            $existingwork_review_id = $user->workreviews()->where('work_review_id', $work_review_id)->pluck('work_review_id')->toArray();
-            $user->workreviews()->detach($existingwork_review_id);
-            return response()->json(['status' => 'unliked']);
+            // 既にいいねしている場合
+            $work_review->users()->detach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($work_review->users()->pluck('work_review_id')->toArray());
+            return response()->json(['status' => 'unliked', 'like_user' => $count]);
         } else {
             // 初めてのいいねの場合
-            $existingwork_review_id = array('0' => $work_review_id);
-            $user->workreviews()->attach($existingwork_review_id);
-            return response()->json(['status' => 'liked']);
+            $work_review->users()->attach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($work_review->users()->pluck('work_review_id')->toArray());
+            return response()->json(['status' => 'liked', 'like_user' => $count]);
         }
         return back();
     }
