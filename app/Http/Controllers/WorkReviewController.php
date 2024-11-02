@@ -113,12 +113,12 @@ class WorkReviewController extends Controller
             // 既にいいねしている感想投稿のidを配列で取得
             $existingwork_review_id = $user->workreviews()->where('work_review_id', $work_review_id)->pluck('work_review_id')->toArray();
             $user->workreviews()->detach($existingwork_review_id);
-            //return response()->json(['status' => 'unliked']);
+            return response()->json(['status' => 'unliked']);
         } else {
             // 初めてのいいねの場合
             $existingwork_review_id = array('0' => $work_review_id);
             $user->workreviews()->attach($existingwork_review_id);
-            //return response()->json(['status' => 'liked']);
+            return response()->json(['status' => 'liked']);
         }
         return back();
     }

@@ -19,16 +19,15 @@
                     <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
                 </h2>
                 <div class="like">
-                    <form action="{{ route('work_reviews.like', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" name="like" method="POST">
-                        @csrf
+                    
                         <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                         <button class="like-button"
                             data-work-id="{{ $work_review->work_id }}"
                             data-review-id="{{ $work_review->id }}"
                             type="submit">
-                            {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                            
                         </button>
-                    </form>
+                    
                     <div class="like_user">
                         <a href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
                             {{ $work_review->users->count() }}
@@ -83,33 +82,33 @@
             }
         }
 
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const likeButtons = document.querySelectorAll('.like-button');
-        //     likeButtons.forEach(button => {
-        //         button.addEventListener('click', async function() {
-        //             const workId = this.getAttribute('data-work-id');
-        //             const reviewId = this.getAttribute('data-review-id');
-        //             try {
-        //                 const response = await fetch(`/work_reviews/${workId}/reviews/${reviewId}/like`, {
-        //                     method: 'POST',
-        //                     headers: {
-        //                         'Content-Type': 'application/json',
-        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //                     },
-        //                 });
-        //                 const data = await response.json();
-        //                 alert(data);
-        //                 if (data.status === 'liked') {
-        //                     this.innerText = 'Liked';
-        //                 } else if (data.status === 'unliked') {
-        //                     this.innerText = 'Like';
-        //                 }
-        //             } catch (error) {
-        //                 console.error('Error:', error);
-        //             }
-        //         });
-        //     });
-        // });
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeButtons = document.querySelectorAll('.like-button');
+            likeButtons.forEach(button => {
+                button.addEventListener('click', async function() {
+                    const workId = this.getAttribute('data-work-id');
+                    const reviewId = this.getAttribute('data-review-id');
+                    try {
+                        const response = await fetch(`/work_reviews/${workId}/reviews/${reviewId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                        });
+                        const data = await response.json();
+                        alert(data);
+                        if (data.status === 'liked') {
+                            this.innerText = 'いいね';
+                        } else if (data.status === 'unliked') {
+                            this.innerText = 'いいね取り消し';
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

@@ -52,7 +52,7 @@
             </div>
             <div class="image">
                 <h2>画像（4枚まで）</h2>
-                <input id="inputElm" type="file" name="images[]" multiple>
+                <input id="inputElm" type="file" name="images[]" multiple onchange="loadImage(this);">
                 <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
             </div>
             <!-- プレビュー画像の表示 -->
@@ -65,27 +65,38 @@
     </div>
 </body>
 <script>
-    // プレビューの表示
-    const inputElm = document.getElementById('inputElm');
-    inputElm.addEventListener('change', (e) => {
-        const file = e.target.files[0];
+    let key = 0;
 
-        const fileReader = new FileReader();
-        // 画像を読み込む
-        fileReader.readAsDataURL(file);
-
-        // 画像読み込み完了時の処理
-        fileReader.addEventListener('load', (e) => {
-            // imgタグ生成
-            const imgElm = document.createElement('img');
-            // e.target.resultに読み込んだ画像のURLを格納
-            imgElm.src = e.target.result;
-
-            // imgタグを挿入
-            const targetElm = document.getElementById('preview');
-            targetElm.appendChild(imgElm);
+    function loadImage(obj) {
+        // 以前に選択したファイルは保持されないため削除
+        document.querySelectorAll('figure').forEach(function(figure) {
+            figure.remove();
+            key = 0;
         });
-    });
+        // 選択されたファイルの枚数分だけ画像を追加
+        for (i = 0; i < obj.files.length; i++) {
+            var fileReader = new FileReader();
+            fileReader.onload = (function(e) {
+                var field = document.getElementById("preview");
+                var figure = document.createElement("figure");
+                var rmBtn = document.createElement("input");
+                var img = new Image();
+                img.src = e.target.result;
+                rmBtn.type = "button";
+                rmBtn.name = key;
+                rmBtn.value = "削除";
+                rmBtn.onclick = (function() {
+                    var element = document.getElementById("img-" + String(rmBtn.name)).remove();
+                });
+                figure.setAttribute("id", "img-" + key);
+                figure.appendChild(img);
+                figure.appendChild(rmBtn)
+                field.appendChild(figure);
+                key++;
+            });
+            fileReader.readAsDataURL(obj.files[i]);
+        }
+    }
 </script>
 
 </html>
