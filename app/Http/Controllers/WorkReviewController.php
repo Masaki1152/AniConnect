@@ -18,7 +18,15 @@ class WorkReviewController extends Controller
     {
         // blade内の変数work_reviewsにインスタンス化した$work_reviewsを代入
         // 指定したidのアニメの投稿のみを表示
-        return view('work_reviews.index')->with(['work_reviews' => $work_reviews->getPaginateByLimit($work_id), 'work' => $work_reviews->getRestrictedPost('work_id', $work_id), 'categories' => $category->get()]);
+        $work_reviews = WorkReview::where('work_id',$work_id)->orderBy('id', 'ASC')->where(function($query) {
+            // キーワード検索がなされた場合
+            if($search = request('search')) {
+                $query->where('post_title', 'LIKE', "%{$search}%")
+                ->orWhere('body', 'LIKE', "%{$search}%");
+            }
+        })->paginate(5);
+        $work = WorkReview::where('work_id',$work_id)->first();
+        return view('work_reviews.index')->with(['work_reviews' => $work_reviews, 'work' => $work, 'categories' => $category->get()]);
     }
 
     // 'work_review'はbladeファイルで使う変数。

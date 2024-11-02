@@ -10,7 +10,20 @@
 
 <body>
     <h1>作品一覧</h1>
+    <!-- 検索機能 -->
+    <div class=serch>
+        <form action="{{ route('works.index') }}" method="GET">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
+            <input type="submit" value="検索">
+        </form>
+        <div class="cancel">
+            <a href="{{ route('works.index') }}">キャンセル</a>
+        </div>
+    </div>
     <div class='works'>
+        @if($works->isEmpty())
+        <h2 class='no_result'>結果がありません。</h2>
+        @else
         @foreach ($works as $work)
         <div class='work'>
             <h2 class='name'>
@@ -19,9 +32,10 @@
             <p class='term'>{{ $work->term }}</p>
         </div>
         @endforeach
+        @endif
     </div>
     <div class='paginate'>
-        {{ $works->links() }}
+        {{ $works->appends(request()->query())->links() }}
     </div>
 </body>
 
