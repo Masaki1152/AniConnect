@@ -71,7 +71,7 @@
         <a href="/works/{{ $work->work->id }}">作品詳細画面へ</a>
     </div>
     <div class='paginate'>
-        {{ $work_reviews->links() }}
+        {{ $work_reviews->appends(request()->query())->links() }}
     </div>
 
     <script>

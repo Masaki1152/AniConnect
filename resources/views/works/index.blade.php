@@ -35,7 +35,7 @@
         @endif
     </div>
     <div class='paginate'>
-        {{ $works->links() }}
+        {{ $works->appends(request()->query())->links() }}
     </div>
 </body>
 
