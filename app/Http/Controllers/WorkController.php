@@ -10,8 +10,6 @@ class WorkController extends Controller
     // 作品一覧画面の表示
     public function index()
     {
-        // 検索時のキーワードの取得
-        //$keyword = $request->input('keyword');
         $works = Work::orderBy('id', 'ASC')->where(function($query) {
             // キーワード検索がなされた場合
             if($search = request('search')) {

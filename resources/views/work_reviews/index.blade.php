@@ -11,7 +11,20 @@
 <body>
     <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
     <a href="{{ route('work_reviews.create', ['work_id' => $work->work_id]) }}">新規投稿作成</a>
+    <!-- 検索機能 -->
+    <div class=serch>
+        <form action="{{ route('work_reviews.index', ['work_id' => $work->work->id]) }}" method="GET">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
+            <input type="submit" value="キーワード検索">
+        </form>
+        <div class="cancel">
+            <a href="{{ route('work_reviews.index', ['work_id' => $work->work->id]) }}">キャンセル</a>
+        </div>
+    </div>
     <div class='work_reviews'>
+        @if($work_reviews->isEmpty())
+        <h2 class='no_result'>結果がありません。</h2>
+        @else
         <div class='work_review'>
             @foreach ($work_reviews as $work_review)
             <div class='work_review'>
@@ -52,9 +65,10 @@
             </div>
             @endforeach
         </div>
+        @endif
     </div>
     <div class="footer">
-        <a href="/works/{{ $work_review->work_id }}">作品詳細画面へ</a>
+        <a href="/works/{{ $work->work->id }}">作品詳細画面へ</a>
     </div>
     <div class='paginate'>
         {{ $work_reviews->links() }}
