@@ -19,14 +19,46 @@
             <p>{{ $work->name }}</p>
             <h3>放映期間</h3>
             <p>{{ $work->term }}</p>
-            <h3>制作会社</h3>
-            <p>{{ $work->creator_id }}</p>
-            <h3>楽曲</h3>
-            <p>{{ $work->music_id }}</p>
-            <h3>登場人物</h3>
-            <p>{{ $work->character_id }}</p>
-            <h3>聖地</h3>
-            <p>{{ $work->anime_pilgrimage_id }}</p>
+            <div class='creator'>
+                <h3>制作会社</h3>
+                <h3>{{ $work->creator->name }}</h3>
+            </div>
+            <div class='music'>
+                <h3>楽曲</h3>
+                @if($work->music->isEmpty())
+                <h3 class='no_music'>結果がありません。</h3>
+                @else
+                @foreach ($work->music as $music)
+                <div class='music_name'>
+                    <h3>{{ $music->name }}</h3>
+                </div>
+                @endforeach
+                @endif
+            </div>
+            <div class='character'>
+                <h3>登場人物</h3>
+                @if($work->characters->isEmpty())
+                <h3 class='no_character'>結果がありません。</h3>
+                @else
+                @foreach ($work->characters as $character)
+                <div class='character_name'>
+                    <h3>{{ $character->name }}</h3>
+                </div>
+                @endforeach
+                @endif
+            </div>
+            <div class='anime_pilgrimage'>
+                <h3>聖地</h3>
+                @if($work->animePilgrimages->isEmpty())
+                <h3 class='no_anime_pilgrimage'>結果がありません。</h3>
+                @else
+                @foreach ($work->animePilgrimages as $anime_pilgrimage)
+                <div class='anime_pilgrimage_name'>
+                    <h3>{{ $anime_pilgrimage->name }}</h3>
+                </div>
+                @endforeach
+                @endif
+            </div>
             <h3>公式サイトへのリンク</h3>
             <p>{{ $work->official_site_link }}</p>
             <h3>Wikipediaへのリンク</h3>
