@@ -16,9 +16,6 @@ class WorkSeeder extends Seeder
     {
         DB::table('works')->insert([
             'creator_id' => 2,
-            'music_id' => 1,
-            'character_id' => 4,
-            'anime_pilgrimage_id' => 1,
             'name' => '魔法少女まどか☆マギカ',
             'image' => '',
             'term' => '2011年1月7日 - 4月22日',
@@ -30,9 +27,6 @@ class WorkSeeder extends Seeder
         ]);
         DB::table('works')->insert([
             'creator_id' => 1,
-            'music_id' => 2,
-            'character_id' => 1,
-            'anime_pilgrimage_id' => 1,
             'name' => 'ひぐらしのなく頃に',
             'image' => '',
             'term' => '2006年4月 - 9月',
@@ -44,9 +38,6 @@ class WorkSeeder extends Seeder
         ]);
         DB::table('works')->insert([
             'creator_id' => 4,
-            'music_id' => 6,
-            'character_id' => 1,
-            'anime_pilgrimage_id' => 3,
             'name' => 'ラブライブ!（1期）',
             'image' => '',
             'term' => '2013年1月6日 - 3月31日',
@@ -58,9 +49,6 @@ class WorkSeeder extends Seeder
         ]);
         DB::table('works')->insert([
             'creator_id' => 4,
-            'music_id' => 1,
-            'character_id' => 1,
-            'anime_pilgrimage_id' => 3,
             'name' => 'ラブライブ!（2期）',
             'image' => '',
             'term' => '2014年4月6日 - 6月29日',
@@ -72,9 +60,6 @@ class WorkSeeder extends Seeder
         ]);
         DB::table('works')->insert([
             'creator_id' => 3,
-            'music_id' => 3,
-            'character_id' => 5,
-            'anime_pilgrimage_id' => 1,
             'name' => 'Fate/Zero',
             'image' => '',
             'term' => '2011年10月 - 12月 2012年4月 - 6月',
@@ -86,9 +71,6 @@ class WorkSeeder extends Seeder
         ]);
         DB::table('works')->insert([
             'creator_id' => 1,
-            'music_id' => 2,
-            'character_id' => 1,
-            'anime_pilgrimage_id' => 1,
             'name' => 'ひぐらしのなく頃に業',
             'image' => '',
             'term' => '2020年10月1日 - 2021年3月19日',

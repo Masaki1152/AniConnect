@@ -15,6 +15,6 @@ class AnimePilgrimage extends Model
     // Workに対するリレーション 1対多の関係
     public function work()
     {
-        return $this->belongsTo(Work::class, 'id', 'anime_pilgrimage_id');
+        return $this->belongsTo(Work::class, 'work_id', 'id');
     }
 }

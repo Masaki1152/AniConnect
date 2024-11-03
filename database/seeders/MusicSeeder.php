@@ -15,6 +15,7 @@ class MusicSeeder extends Seeder
     public function run(): void
     {
         DB::table('music')->insert([
+            'work_id' => 1,
             'singer_id' => 1,
             'lyric_writer_id' => 1,
             'composer_id' => 2,
@@ -26,6 +27,7 @@ class MusicSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('music')->insert([
+            'work_id' => 2,
             'singer_id' => 3,
             'lyric_writer_id' => 2,
             'composer_id' => 1,
@@ -37,6 +39,7 @@ class MusicSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('music')->insert([
+            'work_id' => 5,
             'singer_id' => 2,
             'lyric_writer_id' => 1,
             'composer_id' => 2,
@@ -48,6 +51,7 @@ class MusicSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('music')->insert([
+            'work_id' => 6,
             'singer_id' => 2,
             'lyric_writer_id' => 4,
             'composer_id' => 4,
@@ -59,6 +63,7 @@ class MusicSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('music')->insert([
+            'work_id' => 5,
             'singer_id' => 4,
             'lyric_writer_id' => 3,
             'composer_id' => 3,
@@ -70,6 +75,7 @@ class MusicSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('music')->insert([
+            'work_id' => 3,
             'singer_id' => 5,
             'lyric_writer_id' => 5,
             'composer_id' => 5,

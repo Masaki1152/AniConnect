@@ -14,32 +14,32 @@ class Character_Category_Seeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('character_category')->insert([
+        DB::table('characters_character_categories')->insert([
             'character_category_id' => 1,
             'character_id' => 1,
             'created_at' => new DateTime(),
         ]);
-        DB::table('character_category')->insert([
+        DB::table('characters_character_categories')->insert([
             'character_category_id' => 2,
             'character_id' => 4,
             'created_at' => new DateTime(),
         ]);
-        DB::table('character_category')->insert([
+        DB::table('characters_character_categories')->insert([
             'character_category_id' => 4,
             'character_id' => 5,
             'created_at' => new DateTime(),
         ]);
-        DB::table('character_category')->insert([
+        DB::table('characters_character_categories')->insert([
             'character_category_id' => 4,
             'character_id' => 1,
             'created_at' => new DateTime(),
         ]);
-        DB::table('character_category')->insert([
+        DB::table('characters_character_categories')->insert([
             'character_category_id' => 5,
             'character_id' => 1,
             'created_at' => new DateTime(),
         ]);
-        DB::table('character_category')->insert([
+        DB::table('characters_character_categories')->insert([
             'character_category_id' => 1,
             'character_id' => 3,
             'created_at' => new DateTime(),

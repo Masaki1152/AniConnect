@@ -21,13 +21,13 @@ class Work extends Model
     // AnimePilgrimageに対するリレーション 1対多の関係
     public function animePilgrimages()
     {
-        return $this->hasMany(AnimePilgrimage::class, 'id', 'anime_pilgrimage_id');
+        return $this->hasMany(AnimePilgrimage::class, 'work_id', 'id');
     }
 
     // Characterに対するリレーション 1対多の関係
     public function characters()
     {
-        return $this->hasMany(Character::class, 'id', 'character_id');
+        return $this->hasMany(Character::class, 'work_id', 'id');
     }
 
     // Creatorに対するリレーション 1対多の関係
@@ -39,7 +39,7 @@ class Work extends Model
     // Musicに対するリレーション 1対多の関係
     public function music()
     {
-        return $this->hasMany(Music::class, 'id', 'music_id');
+        return $this->hasMany(Music::class, 'work_id', 'id');
     }
 
     // created_atで降順に並べたあと、limitで件数制限をかける

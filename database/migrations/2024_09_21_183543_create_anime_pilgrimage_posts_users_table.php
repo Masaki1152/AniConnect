@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('character_post_likes', function (Blueprint $table) {
+        Schema::create('anime_pilgrimage_posts_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('character_post_id')->constrained('character_posts')->onDelete('cascade');
+            $table->foreignId('anime_pilgrimage_post_id')->constrained('anime_pilgrimage_posts')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('character_post_likes');
+        Schema::dropIfExists('anime_pilgrimage_posts_users');
     }
 };

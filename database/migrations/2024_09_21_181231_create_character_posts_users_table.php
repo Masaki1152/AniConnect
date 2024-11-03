@@ -11,9 +11,9 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('music_post_likes', function (Blueprint $table) {
+        Schema::create('character_posts_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('music_post_id')->constrained('music_posts')->onDelete('cascade');
+            $table->foreignId('character_post_id')->constrained('character_posts')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('music_post_likes');
+        Schema::dropIfExists('character_posts_users');
     }
 };
