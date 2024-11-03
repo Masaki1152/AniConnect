@@ -14,9 +14,6 @@ return new class extends Migration
         Schema::create('works', function (Blueprint $table) {
             $table->id();
             $table->foreignId('creator_id')->constrained('creators')->onDelete('cascade');
-            $table->foreignId('music_id')->constrained('music')->onDelete('cascade');
-            $table->foreignId('character_id')->constrained('characters')->onDelete('cascade');
-            $table->foreignId('anime_pilgrimage_id')->constrained('anime_pilgrimages')->onDelete('cascade');
             $table->string('name');
             $table->string('image');
             $table->string('term');

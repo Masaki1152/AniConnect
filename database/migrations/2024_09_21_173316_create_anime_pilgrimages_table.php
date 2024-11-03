@@ -11,15 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('anime_pilgrimages', function (Blueprint $table) {
             $table->id();
-            $table->string('user_name', 20);
-            $table->string('email');
-            $table->integer('age');
-            $table->string('sex');
-            $table->string('image')->nullable();
-            $table->string('password');
-            $table->string('introduction', 100);
+            $table->foreignId('work_id')->constrained('works')->onDelete('cascade');
+            $table->foreignId('prefecture_id')->constrained('prefectures')->onDelete('cascade');
+            $table->string('name');
+            $table->string('place');
+            $table->string('map_link');
+            $table->string('wiki_link');
             $table->timestamps();
             $table->softDeletes();
         });
@@ -30,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('anime_pilgrimages');
     }
 };

@@ -18,6 +18,30 @@ class Work extends Model
         return $this->belongsTo(WorkReview::class);
     }
 
+    // AnimePilgrimageに対するリレーション 1対多の関係
+    public function animePilgrimages()
+    {
+        return $this->hasMany(AnimePilgrimage::class, 'work_id', 'id');
+    }
+
+    // Characterに対するリレーション 1対多の関係
+    public function characters()
+    {
+        return $this->hasMany(Character::class, 'work_id', 'id');
+    }
+
+    // Creatorに対するリレーション 1対多の関係
+    public function creator()
+    {
+        return $this->belongsTo(Creator::class, 'creator_id');
+    }
+
+    // Musicに対するリレーション 1対多の関係
+    public function music()
+    {
+        return $this->hasMany(Music::class, 'work_id', 'id');
+    }
+
     // created_atで降順に並べたあと、limitで件数制限をかける
     public function getPaginateByLimit(int $limit_count = 5)
     {
