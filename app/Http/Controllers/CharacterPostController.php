@@ -14,7 +14,7 @@ class CharacterPostController extends Controller
     public function index(CharacterPostCategory $category, $character_id)
     {
         // 指定したidの登場人物の投稿のみを表示
-        $character_posts = CharacterPost::where('character_id', $character_id)->orderBy('id', 'ASC')->where(function ($query) {
+        $character_posts = CharacterPost::where('character_id', $character_id)->orderBy('id', 'DESC')->where(function ($query) {
             // キーワード検索がなされた場合
             if ($search = request('search')) {
                 // 検索語のスペースを半角に統一
@@ -96,5 +96,14 @@ class CharacterPostController extends Controller
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetCharacterPost->categories()->sync($input_categories);
         return redirect()->route('character_posts.show', ['character_id' => $targetCharacterPost->character_id, 'character_post_id' => $targetCharacterPost->id]);
+    }
+
+    // 感想投稿を削除する
+    public function delete(CharacterPost $characterPost, $character_id, $character_post_id)
+    {
+        // 編集の対象となるデータを取得
+        $targetCharacterPost = $characterPost->getDetailPost($character_id, $character_post_id);
+        $targetCharacterPost->delete();
+        return redirect()->route('character_posts.index', ['character_id' => $character_id]);
     }
 }

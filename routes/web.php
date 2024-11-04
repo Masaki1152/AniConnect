@@ -99,7 +99,7 @@ Route::controller(CharacterPostController::class)->middleware(['auth'])->group(f
     // 感想投稿の編集を実行するupdateメソッドを実行
     Route::put('/character_posts/{character_id}/update/{character_post_id}', 'update')->name('character_posts.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
-    Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
+    Route::delete('/character_posts/{character_id}/posts/{character_post_id}/delete', 'delete')->name('character_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
 });

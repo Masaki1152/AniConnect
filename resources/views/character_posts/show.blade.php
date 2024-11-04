@@ -60,7 +60,7 @@
     <div class="edit">
         <a href="{{ route('character_posts.edit', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">編集する</a>
     </div>
-    <form action="{{ route('work_reviews.delete', ['work_id' => $character_post->work_id, 'work_review_id' => $character_post->id]) }}" id="form_{{ $character_post->id }}" method="post">
+    <form action="{{ route('character_posts.delete', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}" id="form_{{ $character_post->id }}" method="post">
         @csrf
         @method('DELETE')
         <button type="button" data-post-id="{{ $character_post->id }}" class="delete-button">投稿を削除する</button>
@@ -70,25 +70,25 @@
     </div>
 
     <script>
-        // // DOMツリー読み取り完了後にイベント発火
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // delete-buttonに一致するすべてのHTML要素を取得
-        //     document.querySelectorAll('.delete-button').forEach(function(button) {
-        //         button.addEventListener('click', function() {
-        //             const postId = button.getAttribute('data-post-id');
-        //             deletePost(postId);
-        //         });
-        //     });
-        // });
+        // DOMツリー読み取り完了後にイベント発火
+        document.addEventListener('DOMContentLoaded', function() {
+            // delete-buttonに一致するすべてのHTML要素を取得
+            document.querySelectorAll('.delete-button').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const postId = button.getAttribute('data-post-id');
+                    deletePost(postId);
+                });
+            });
+        });
 
-        // // 削除処理を行う
-        // function deletePost(postId) {
-        //     'use strict'
+        // 削除処理を行う
+        function deletePost(postId) {
+            'use strict'
 
-        //     if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
-        //         document.getElementById(`form_${postId}`).submit();
-        //     }
-        // }
+            if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                document.getElementById(`form_${postId}`).submit();
+            }
+        }
 
         // // いいね処理を非同期で行う
         // document.addEventListener('DOMContentLoaded', function() {
