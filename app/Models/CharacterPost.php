@@ -29,4 +29,13 @@ class CharacterPost extends Model
     {
         return $this->belongsToMany(CharacterPostCategory::class, 'character_post_category', 'character_post_id', 'character_post_category_id');
     }
+
+    // 登場人物idと投稿idを指定して、投稿の詳細表示を行う
+    public function getDetailPost($character_id, $character_post_id)
+    {
+        return $this->where([
+            ['character_id', $character_id],
+            ['id', $character_post_id],
+        ])->first();
+    }
 }

@@ -93,7 +93,7 @@ Route::controller(CharacterPostController::class)->middleware(['auth'])->group(f
     // 作成するボタン押下で、storeメソッドを実行
     Route::post('/work_reviews/{work_id}/store', 'store')->name('work_reviews.store');
     // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
-    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}', 'show')->name('work_reviews.show');
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}', 'show')->name('character_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行
     Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/edit', 'edit')->name('work_reviews.edit');
     // 感想投稿の編集を実行するupdateメソッドを実行

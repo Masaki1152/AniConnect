@@ -30,4 +30,10 @@ class CharacterPostController extends Controller
         $character_first = CharacterPost::where('character_id', $character_id)->first();
         return view('character_posts.index')->with(['character_posts' => $character_posts, 'character_first' => $character_first, 'categories' => $category->get()]);
     }
+
+    // 登場人物感想投稿詳細の表示
+    public function show(CharacterPost $characterPost, CharacterPostCategory $category, $character_id, $character_post_id)
+    {
+        return view('character_posts.show')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'categories' => $category->get()]);
+    }
 }
