@@ -58,7 +58,7 @@
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('work_reviews.edit', ['work_id' => $character_post->work_id, 'work_review_id' => $character_post->id]) }}">編集する</a>
+        <a href="{{ route('character_posts.edit', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">編集する</a>
     </div>
     <form action="{{ route('work_reviews.delete', ['work_id' => $character_post->work_id, 'work_review_id' => $character_post->id]) }}" id="form_{{ $character_post->id }}" method="post">
         @csrf

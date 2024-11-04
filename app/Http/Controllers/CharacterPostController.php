@@ -67,4 +67,34 @@ class CharacterPostController extends Controller
         $characterPost->categories()->attach($input_categories);
         return redirect()->route('character_posts.show', ['character_id' => $characterPost->character_id, 'character_post_id' => $characterPost->id]);
     }
+
+    // 感想投稿編集画面を表示する
+    public function edit(CharacterPost $characterPost, CharacterPostCategory $category, $character_id, $character_post_id)
+    {
+        return view('character_posts.edit')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'categories' => $category->get()]);
+    }
+
+    // 感想投稿の編集を実行する
+    public function update(CharacterPostRequest $request, CharacterPost $characterPost, $character_id, $character_post_id)
+    {
+        $input_post = $request['character_post'];
+        $input_categories = $request->character_post['categories_array'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if ($request->file('images')) {
+            $counter = 1;
+            foreach ($request->file('images') as $image) {
+                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $input_post["image$counter"] = $image_url;
+                $counter++;
+            }
+        }
+        // 編集の対象となるデータを取得
+        $targetCharacterPost = $characterPost->getDetailPost($character_id, $character_post_id);
+        $targetCharacterPost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
+        $targetCharacterPost->categories()->sync($input_categories);
+        return redirect()->route('character_posts.show', ['character_id' => $targetCharacterPost->character_id, 'character_post_id' => $targetCharacterPost->id]);
+    }
 }

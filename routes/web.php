@@ -95,9 +95,9 @@ Route::controller(CharacterPostController::class)->middleware(['auth'])->group(f
     // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
     Route::get('/character_posts/{character_id}/posts/{character_post_id}', 'show')->name('character_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行
-    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/edit', 'edit')->name('work_reviews.edit');
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}/edit', 'edit')->name('character_posts.edit');
     // 感想投稿の編集を実行するupdateメソッドを実行
-    Route::put('/work_reviews/{work_id}/update/{work_review_id}', 'update')->name('work_reviews.update');
+    Route::put('/character_posts/{character_id}/update/{character_post_id}', 'update')->name('character_posts.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行

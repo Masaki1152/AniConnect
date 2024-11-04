@@ -188,12 +188,18 @@ return [
 
     'attributes' => [
         // バリデーションエラーを日本語化する処理
+        // 作品感想投稿のバリデーション
         'work_review.work_id' => '作品名',
         'work_review.user_id' => '投稿者名',
         'work_review.post_title' => 'タイトル',
         'work_review.body' => '内容',
         'work_review.categories_array' => 'カテゴリー',
         'images' => '画像',
+        // 登場人物の感想投稿のバリデーション
+        'character_post.post_title' => 'タイトル',
+        'character_post.body' => '内容',
+        'character_post.categories_array' => 'カテゴリー',
+        'character_post.star_num' => '評価数',
     ],
 
 ];
