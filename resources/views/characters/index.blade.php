@@ -37,7 +37,9 @@
                 </a>
             </p>
             <p class='voice_artist'>
+            <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
                 CV:{{ $character->voiceArtist->name }}
+            </a>
             </p>
         </div>
         @endforeach

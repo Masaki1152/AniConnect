@@ -42,7 +42,9 @@
                 @else
                 @foreach ($work->characters as $character)
                 <div class='character_name'>
-                    <h3>{{ $character->name }}</h3>
+                    <a href="{{ route('characters.show', ['character_id' => $character->id]) }}">
+                        {{ $character->name }}
+                    </a>
                 </div>
                 @endforeach
                 @endif

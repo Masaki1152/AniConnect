@@ -18,7 +18,9 @@
             <h3>名前</h3>
             <p>{{ $character->name }}</p>
             <h3>声優</h3>
-            <p>{{ $character->voiceArtist->name }}</p>
+            <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
+                CV:{{ $character->voiceArtist->name }}
+            </a>
             <h3>登場作品</h3>
             <div class='work'>
                 <a href="{{ route('works.show', ['work' => $character->work->id]) }}">
