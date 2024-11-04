@@ -23,4 +23,10 @@ class Character extends Model
     {
         return $this->belongsTo(VoiceArtist::class, 'voice_artist_id', 'id');
     }
+
+    // CharacterPostに対するリレーション 1対1の関係
+    public function characterPost()
+    {
+        return $this->belongsTo(CharacterPost::class, 'id', 'character_id');
+    }
 }

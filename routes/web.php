@@ -7,7 +7,9 @@ use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\CharacterPostController;
 use App\Http\Controllers\VoiceArtistController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +82,26 @@ Route::controller(CharacterController::class)->middleware(['auth'])->group(funct
     Route::get('/characters', 'index')->name('characters.index');
     // 登場人物の詳細表示
     Route::get('/characters/{character_id}', 'show')->name('characters.show');
+});
+
+// CharacterPostControllerに関するルーティング
+Route::controller(CharacterPostController::class)->middleware(['auth'])->group(function () {
+    // 登場人物ごとの感想投稿一覧の表示
+    Route::get('/character_posts/{character_id}', 'index')->name('character_posts.index');
+    // 新規投稿作成ボタン押下で、createメソッドを実行
+    Route::get('/work_reviews/{work_id}/create', 'create')->name('work_reviews.create');
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/work_reviews/{work_id}/store', 'store')->name('work_reviews.store');
+    // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
+    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}', 'show')->name('work_reviews.show');
+    // 感想投稿編集画面を表示するeditメソッドを実行
+    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/edit', 'edit')->name('work_reviews.edit');
+    // 感想投稿の編集を実行するupdateメソッドを実行
+    Route::put('/work_reviews/{work_id}/update/{work_review_id}', 'update')->name('work_reviews.update');
+    // 感想投稿の削除を行うdeleteメソッドを実行
+    Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
+    // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
 });
 
 // VoiceArtistControllerに関するルーティング

@@ -30,6 +30,10 @@
             <h3>pixivへのリンク</h3>
             <p>{{ $character->wiki_link }}</p>
         </div>
+    </div class="post_link">
+        <a href="{{ route('character_posts.index', ['character_id' => $character->id]) }}">登場人物感想一覧</a>
+    <div>
+
     </div>
     <div class="footer">
         <a href="/works">作品一覧へ</a>
