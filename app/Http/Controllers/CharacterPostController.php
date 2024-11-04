@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\CharacterPostRequest;
 use App\Models\CharacterPost;
 use App\Models\CharacterPostCategory;
+use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class CharacterPostController extends Controller
 {
@@ -35,5 +37,34 @@ class CharacterPostController extends Controller
     public function show(CharacterPost $characterPost, CharacterPostCategory $category, $character_id, $character_post_id)
     {
         return view('character_posts.show')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'categories' => $category->get()]);
+    }
+
+    // 新規投稿作成画面を表示する
+    public function create(CharacterPost $characterPost, CharacterPostCategory $category, $character_id)
+    {
+        return view('character_posts.create')->with(['character_post' => $characterPost->getRestrictedPost('character_id', $character_id), 'categories' => $category->get()]);
+    }
+
+    // 新しく記述した内容を保存する
+    public function store(CharacterPost $characterPost, CharacterPostRequest $request)
+    {
+        $input_post = $request['character_post'];
+        $input_categories = $request->character_post['categories_array'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if ($request->file('images')) {
+            $counter = 1;
+            foreach ($request->file('images') as $image) {
+                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $input_post += ["image$counter" => $image_url];
+                $counter++;
+            }
+        }
+        // ログインしているユーザーidの登録
+        $input_post['user_id'] = Auth::id();
+        $characterPost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        $characterPost->categories()->attach($input_categories);
+        return redirect()->route('character_posts.show', ['character_id' => $characterPost->character_id, 'character_post_id' => $characterPost->id]);
     }
 }

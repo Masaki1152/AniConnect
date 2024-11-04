@@ -89,9 +89,9 @@ Route::controller(CharacterPostController::class)->middleware(['auth'])->group(f
     // 登場人物ごとの感想投稿一覧の表示
     Route::get('/character_posts/{character_id}', 'index')->name('character_posts.index');
     // 新規投稿作成ボタン押下で、createメソッドを実行
-    Route::get('/work_reviews/{work_id}/create', 'create')->name('work_reviews.create');
+    Route::get('/character_posts/{character_id}/create', 'create')->name('character_posts.create');
     // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/work_reviews/{work_id}/store', 'store')->name('work_reviews.store');
+    Route::post('/character_posts/{character_id}/store', 'store')->name('character_posts.store');
     // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
     Route::get('/character_posts/{character_id}/posts/{character_post_id}', 'show')->name('character_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行

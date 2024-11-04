@@ -10,7 +10,7 @@
 
 <body>
     <h1>「{{ $character_first->character->name }}」の感想投稿一覧</h1>
-    <a href="{{ route('work_reviews.create', ['work_id' => $character_first->character->work_id]) }}">新規投稿作成</a>
+    <a href="{{ route('character_posts.create', ['character_id' => $character_first->character_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('character_posts.index', ['character_id' => $character_first->character_id]) }}" method="GET">

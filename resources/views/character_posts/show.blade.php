@@ -11,13 +11,13 @@
 
 <body>
     <h1 class="title">
-        @php 
+        @php
         //dd($character_post);
         @endphp
         {{ $character_post->post_title }}
     </h1>
     <div class="like">
-        
+
     </div>
     <div class="content">
         <div class="content__character_post">
@@ -34,7 +34,10 @@
                 @endforeach
             </h5>
             <h3>評価</h3>
-            <p>{{ $character_post->star_num }}</p>
+            @php
+            $numbers = array(1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★');
+            @endphp
+            <p>{{ $numbers[$character_post->star_num] }}</p>
             <h3>本文</h3>
             <p>{{ $character_post->body }}</p>
             <h3>作成日</h3>
