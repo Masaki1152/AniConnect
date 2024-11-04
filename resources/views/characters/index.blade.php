@@ -37,7 +37,7 @@
                 </a>
             </p>
             <p class='voice_artist'>
-                CV:{{ $character->name }}
+                CV:{{ $character->voiceArtist->name }}
             </p>
         </div>
         @endforeach

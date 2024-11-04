@@ -17,4 +17,10 @@ class Character extends Model
     {
         return $this->belongsTo(Work::class, 'work_id', 'id');
     }
+
+    // VoiceArtistに対するリレーション 1対多の関係
+    public function voiceArtist()
+    {
+        return $this->belongsTo(VoiceArtist::class, 'voice_artist_id', 'id');
+    }
 }
