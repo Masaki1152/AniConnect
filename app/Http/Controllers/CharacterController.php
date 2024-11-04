@@ -28,9 +28,9 @@ class CharacterController extends Controller
     }
 
     // 詳細な作品情報を表示する
-    public function show(Work $work)
+    public function show($character_id)
     {
-        //$creator = Creator::find($creator_id);
-        return view('works.show')->with(['work' => $work]);
+        $character = Character::find($character_id);
+        return view('characters.show')->with(['character' => $character]);
     }
 }

@@ -27,7 +27,9 @@
         @foreach ($characters as $character)
         <div class='character'>
             <h2 class='name'>
-                {{ $character->name }}
+                <a href="{{ route('characters.show', ['character_id' => $character->id]) }}">
+                    {{ $character->name }}
+                </a>
             </h2>
             <p class='work'>
                 <a href="{{ route('works.show', ['work' => $character->work->id]) }}">
