@@ -21,7 +21,7 @@
             <p>{{ $work->term }}</p>
             <div class='creator'>
                 <h3>制作会社</h3>
-                <h3>{{ $work->creator->name }}</h3>
+                <a href="{{ route('creator.show', ['creator_id' => $work->creator->id]) }}">{{ $work->creator->name }}</a>
             </div>
             <div class='music'>
                 <h3>楽曲</h3>

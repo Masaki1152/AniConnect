@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
+use App\Http\Controllers\CreatorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -63,6 +64,12 @@ Route::controller(WorkReviewController::class)->middleware(['auth'])->group(func
 Route::controller(WorkReviewLikeController::class)->middleware(['auth'])->group(function () {
     // 作品一覧の表示
     Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/like/index', 'index')->name('work_review_like.index');
+});
+
+// CreatorControllerに関するルーティング
+Route::controller(CreatorController::class)->middleware(['auth'])->group(function () {
+    // 制作会社の詳細表示
+    Route::get('/creator/{creator_id}', 'show')->name('creator.show');
 });
 
 require __DIR__ . '/auth.php';
