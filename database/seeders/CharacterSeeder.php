@@ -40,7 +40,7 @@ class CharacterSeeder extends Seeder
         ]);
         DB::table('characters')->insert([
             'work_id' => 1,
-            'voice_artist_id' => 4,
+            'voice_artist_id' => 5,
             'name' => '美樹さやか',
             'wiki_link' => 'https://dic.pixiv.net/a/%E7%BE%8E%E6%A0%91%E3%81%95%E3%82%84%E3%81%8B',
             'created_at' => new DateTime(),
