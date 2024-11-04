@@ -6,6 +6,7 @@ use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
 use App\Http\Controllers\CreatorController;
+use App\Http\Controllers\CharacterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -70,6 +71,14 @@ Route::controller(WorkReviewLikeController::class)->middleware(['auth'])->group(
 Route::controller(CreatorController::class)->middleware(['auth'])->group(function () {
     // 制作会社の詳細表示
     Route::get('/creator/{creator_id}', 'show')->name('creator.show');
+});
+
+// CharacterControllerに関するルーティング
+Route::controller(CharacterController::class)->middleware(['auth'])->group(function () {
+    // 登場人物一覧の表示
+    Route::get('/characters', 'index')->name('characters.index');
+    // 登場人物の詳細表示
+    Route::get('/characters/{character_id}', 'show')->name('characters.show');
 });
 
 require __DIR__ . '/auth.php';
