@@ -33,7 +33,7 @@ class Work extends Model
     // Creatorに対するリレーション 1対多の関係
     public function creator()
     {
-        return $this->belongsTo(Creator::class, 'creator_id');
+        return $this->belongsTo(Creator::class, 'creator_id', 'id');
     }
 
     // Musicに対するリレーション 1対多の関係

@@ -15,6 +15,6 @@ class Creator extends Model
     // Workに対するリレーション 1対多の関係
     public function works()
     {
-        return $this->hasMany(Work::class, 'id');
+        return $this->hasMany(Work::class, 'creator_id', 'id');
     }
 }
