@@ -11,6 +11,9 @@ use App\Http\Controllers\CharacterPostController;
 use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\SingerController;
+use App\Http\Controllers\LyricWriterController;
+use App\Http\Controllers\ComposerController;
 
 
 /*
@@ -124,6 +127,24 @@ Route::controller(MusicController::class)->middleware(['auth'])->group(function 
     Route::get('/music', 'index')->name('music.index');
     // 登場人物の詳細表示
     Route::get('/music/{music_id}', 'show')->name('music.show');
+});
+
+// SingerControllerに関するルーティング
+Route::controller(SingerController::class)->middleware(['auth'])->group(function () {
+    // 歌手の詳細表示
+    Route::get('/singer/{singer_id}', 'show')->name('singer.show');
+});
+
+// LyricWriterControllerに関するルーティング
+Route::controller(LyricWriterController::class)->middleware(['auth'])->group(function () {
+    // 作詞者の詳細表示
+    Route::get('/lyric_writer/{lyric_writer_id}', 'show')->name('lyric_writer.show');
+});
+
+// ComposerControllerに関するルーティング
+Route::controller(ComposerController::class)->middleware(['auth'])->group(function () {
+    // 作曲者の詳細表示
+    Route::get('/composer/{composer_id}', 'show')->name('composer.show');
 });
 
 require __DIR__ . '/auth.php';
