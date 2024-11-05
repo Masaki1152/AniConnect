@@ -7,7 +7,10 @@ use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\CharacterPostController;
+use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
+
 
 /*
 |--------------------------------------------------------------------------
@@ -80,6 +83,32 @@ Route::controller(CharacterController::class)->middleware(['auth'])->group(funct
     Route::get('/characters', 'index')->name('characters.index');
     // 登場人物の詳細表示
     Route::get('/characters/{character_id}', 'show')->name('characters.show');
+});
+
+// CharacterPostControllerに関するルーティング
+Route::controller(CharacterPostController::class)->middleware(['auth'])->group(function () {
+    // 登場人物ごとの感想投稿一覧の表示
+    Route::get('/character_posts/{character_id}', 'index')->name('character_posts.index');
+    // 新規投稿作成ボタン押下で、createメソッドを実行
+    Route::get('/character_posts/{character_id}/create', 'create')->name('character_posts.create');
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/character_posts/{character_id}/store', 'store')->name('character_posts.store');
+    // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}', 'show')->name('character_posts.show');
+    // 感想投稿編集画面を表示するeditメソッドを実行
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}/edit', 'edit')->name('character_posts.edit');
+    // 感想投稿の編集を実行するupdateメソッドを実行
+    Route::put('/character_posts/{character_id}/update/{character_post_id}', 'update')->name('character_posts.update');
+    // 感想投稿の削除を行うdeleteメソッドを実行
+    Route::delete('/character_posts/{character_id}/posts/{character_post_id}/delete', 'delete')->name('character_posts.delete');
+    // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/character_posts/{character_id}/posts/{character_post_id}/like', 'like')->name('character_posts.like');
+});
+
+// CharacterPostLikeControllerに関するルーティング
+Route::controller(CharacterPostLikeController::class)->middleware(['auth'])->group(function () {
+    // 作品一覧の表示
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}/like/index', 'index')->name('character_post_like.index');
 });
 
 // VoiceArtistControllerに関するルーティング
