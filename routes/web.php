@@ -101,7 +101,7 @@ Route::controller(CharacterPostController::class)->middleware(['auth'])->group(f
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/character_posts/{character_id}/posts/{character_post_id}/delete', 'delete')->name('character_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
+    Route::post('/character_posts/{character_id}/posts/{character_post_id}/like', 'like')->name('character_posts.like');
 });
 
 // VoiceArtistControllerに関するルーティング

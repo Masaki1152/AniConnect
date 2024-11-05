@@ -5,11 +5,14 @@ namespace App\Http\Controllers;
 use App\Http\Requests\CharacterPostRequest;
 use App\Models\CharacterPost;
 use App\Models\CharacterPostCategory;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class CharacterPostController extends Controller
 {
+    use SoftDeletes;
+
     // 登場人物感想投稿一覧の表示
     public function index(CharacterPostCategory $category, $character_id)
     {
@@ -105,5 +108,31 @@ class CharacterPostController extends Controller
         $targetCharacterPost = $characterPost->getDetailPost($character_id, $character_post_id);
         $targetCharacterPost->delete();
         return redirect()->route('character_posts.index', ['character_id' => $character_id]);
+    }
+
+    // 投稿にいいねを行う
+    public function like(CharacterPost $characterPost, $character_id, $character_post_id)
+    {
+        // 投稿が見つからない場合の処理
+        $character_post = CharacterPost::find($character_post_id);
+        if (!$character_post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $character_post->users()->where('user_id', Auth::id())->exists();
+        if ($isLiked) {
+            // 既にいいねしている場合
+            $character_post->users()->detach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($character_post->users()->pluck('character_post_id')->toArray());
+            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+        } else {
+            // 初めてのいいねの場合
+            $character_post->users()->attach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($character_post->users()->pluck('character_post_id')->toArray());
+            return response()->json(['status' => 'liked', 'like_user' => $count]);
+        }
+        return back();
     }
 }
