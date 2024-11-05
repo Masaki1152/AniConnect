@@ -8,6 +8,7 @@ use App\Http\Controllers\WorkReviewLikeController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\CharacterPostController;
+use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
 
 
@@ -102,6 +103,12 @@ Route::controller(CharacterPostController::class)->middleware(['auth'])->group(f
     Route::delete('/character_posts/{character_id}/posts/{character_post_id}/delete', 'delete')->name('character_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/character_posts/{character_id}/posts/{character_post_id}/like', 'like')->name('character_posts.like');
+});
+
+// CharacterPostLikeControllerに関するルーティング
+Route::controller(CharacterPostLikeController::class)->middleware(['auth'])->group(function () {
+    // 作品一覧の表示
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}/like/index', 'index')->name('character_post_like.index');
 });
 
 // VoiceArtistControllerに関するルーティング

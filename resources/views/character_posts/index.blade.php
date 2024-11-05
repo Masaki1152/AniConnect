@@ -40,7 +40,7 @@
                         {{ $character_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                     </button>
                     <div class="like_user">
-                        <a href="{{ route('character_posts.like', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">
+                        <a href="{{ route('character_post_like.index', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">
                             <p id="like_count">{{ $character_post->users->count() }}</p>
                         </a>
                     </div>
