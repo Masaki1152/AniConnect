@@ -17,18 +17,30 @@
         <div class="content__music">
             <h3>名前</h3>
             <p>{{ $music->name }}</p>
-            <h3>歌手</h3>
-            CV:{{ $music->singer_id }}
-            <h3>登場作品</h3>
+            <div class='singer'>
+                <h3>歌手</h3>
+                <a href="{{ route('singer.show', ['singer_id' => $music->singer_id]) }}">
+                    {{ $music->singer->name }}
+                </a>
+            </div>
             <div class='work'>
+                <h3>登場作品</h3>
                 <a href="{{ route('works.show', ['work' => $music->work_id]) }}">
                     {{ $music->work->name }}
                 </a>
             </div>
-            <h3>作詞者</h3>
-            CV:{{ $music->lyric_writer_id }}
+            <div class='lyric_writer'>
+                <h3>作詞者</h3>
+                <a href="{{ route('lyric_writer.show', ['lyric_writer_id' => $music->lyric_writer_id]) }}">
+                    {{ $music->lyricWriter->name }}
+                </a>
+            </div>
+            <div class='composer'>
             <h3>作曲者</h3>
-            CV:{{ $music->composer_id }}
+            <a href="{{ route('composer.show', ['composer_id' => $music->composer_id]) }}">
+                    {{ $music->composer->name }}
+                </a>
+            </div>
             <h3>Wikipediaへのリンク</h3>
             <p>{{ $music->wiki_link }}</p>
             <h3>YouTubeのリンク</h3>

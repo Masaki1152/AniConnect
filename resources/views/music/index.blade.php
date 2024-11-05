@@ -37,7 +37,10 @@
                 </a>
             </p>
             <p class='singer'>
-                歌手:{{ $music_model->singer_id }}
+            歌手:
+            <a href="{{ route('singer.show', ['singer_id' => $music_model->singer_id]) }}">
+                {{ $music_model->singer->name }}
+            </a>
             </p>
         </div>
         @endforeach
