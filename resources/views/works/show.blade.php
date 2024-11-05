@@ -30,7 +30,9 @@
                 @else
                 @foreach ($work->music as $music)
                 <div class='music_name'>
-                    <h3>{{ $music->name }}</h3>
+                <a href="{{ route('music.show', ['music_id' => $music->id]) }}">
+                    {{ $music->name }}
+                </a>
                 </div>
                 @endforeach
                 @endif

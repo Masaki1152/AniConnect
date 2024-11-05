@@ -10,6 +10,7 @@ use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\CharacterPostController;
 use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
+use App\Http\Controllers\MusicController;
 
 
 /*
@@ -115,6 +116,14 @@ Route::controller(CharacterPostLikeController::class)->middleware(['auth'])->gro
 Route::controller(VoiceArtistController::class)->middleware(['auth'])->group(function () {
     // 声優の詳細表示
     Route::get('/voice_artist/{voice_artist_id}', 'show')->name('voice_artist.show');
+});
+
+// MusicControllerに関するルーティング
+Route::controller(MusicController::class)->middleware(['auth'])->group(function () {
+    // 登場人物一覧の表示
+    Route::get('/music', 'index')->name('music.index');
+    // 登場人物の詳細表示
+    Route::get('/music/{music_id}', 'show')->name('music.show');
 });
 
 require __DIR__ . '/auth.php';
