@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\MusicPostRequest;
 use App\Models\MusicPost;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class MusicPostController extends Controller
 {
+    use SoftDeletes;
+
     // 音楽感想投稿一覧の表示
     public function index($music_id)
     {
@@ -37,4 +39,46 @@ class MusicPostController extends Controller
     {
         return view('music_posts.show')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id)]);
     }
+
+    // 新規投稿作成画面を表示する
+    public function create(MusicPost $musicPost, $music_id)
+    {
+        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id)]);
+    }
+
+    // 新しく記述した内容を保存する
+    public function store(MusicPost $musicPost, MusicPostRequest $request)
+    {
+        $input_post = $request['music_post'];
+        // ログインしているユーザーidの登録
+        $input_post['user_id'] = Auth::id();
+        $musicPost->fill($input_post)->save();
+        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id]);
+    }
+
+    // 感想投稿編集画面を表示する
+    public function edit(MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        return view('music_posts.edit')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id)]);
+    }
+
+    // 感想投稿の編集を実行する
+    public function update(MusicPostRequest $request, MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        $input_post = $request['music_post'];
+        // 編集の対象となるデータを取得
+        $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
+        $targetMusicPost->fill($input_post)->save();
+        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id]);
+    }
+
+    // 感想投稿を削除する
+    public function delete(MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        // 編集の対象となるデータを取得
+        $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
+        $targetMusicPost->delete();
+        return redirect()->route('music_posts.index', ['music_id' => $music_id]);
+    }
+
 }

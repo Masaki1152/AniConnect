@@ -9,6 +9,16 @@ class MusicPost extends Model
 {
     use HasFactory;
 
+    // fillを実行するための記述
+    protected $fillable = [
+        'music_id',
+        'user_id',
+        'work_id',
+        'post_title',
+        'star_num',
+        'body',
+    ];
+
     // 参照させたいmusic_postsを指定
     protected $table = 'music_posts';
 

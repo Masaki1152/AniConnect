@@ -200,6 +200,10 @@ return [
         'character_post.body' => '内容',
         'character_post.categories_array' => 'カテゴリー',
         'character_post.star_num' => '評価数',
+        // 音楽の感想投稿のバリデーション
+        'music_post.post_title' => 'タイトル',
+        'music_post.body' => '内容',
+        'music_post.star_num' => '評価数',
     ],
 
 ];
