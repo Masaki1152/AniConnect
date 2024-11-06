@@ -11,9 +11,6 @@
 
 <body>
     <h1 class="title">
-        @php
-        //dd($character_post);
-        @endphp
         {{ $character_post->post_title }}
     </h1>
     <div class="like">

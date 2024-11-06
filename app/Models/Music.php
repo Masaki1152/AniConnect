@@ -35,4 +35,10 @@ class Music extends Model
     {
         return $this->belongsTo(Singer::class, 'singer_id', 'id');
     }
+
+    // MusicPostに対するリレーション 1対1の関係
+    public function musicPost()
+    {
+        return $this->hasOne(MusicPost::class, 'id', 'music_id');
+    }
 }
