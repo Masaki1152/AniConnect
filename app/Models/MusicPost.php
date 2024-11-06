@@ -40,6 +40,12 @@ class MusicPost extends Model
         return $this->belongsTo(Work::class, 'work_id', 'id');
     }
 
+    // いいねをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'music_posts_users', 'music_post_id', 'user_id');
+    }
+
     // 音楽idと投稿idを指定して、投稿の詳細表示を行う
     public function getDetailPost($music_id, $music_post_id)
     {

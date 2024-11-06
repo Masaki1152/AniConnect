@@ -12,6 +12,7 @@ use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
 use App\Http\Controllers\MusicController;
 use App\Http\Controllers\MusicPostController;
+use App\Http\Controllers\MusicPostLikeController;
 use App\Http\Controllers\SingerController;
 use App\Http\Controllers\LyricWriterController;
 use App\Http\Controllers\ComposerController;
@@ -147,7 +148,13 @@ Route::controller(MusicPostController::class)->middleware(['auth'])->group(funct
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/music_posts/{music_id}/posts/{music_post_id}/delete', 'delete')->name('music_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/character_posts/{character_id}/posts/{character_post_id}/like', 'like')->name('character_posts.like');
+    Route::post('/music_posts/{music_id}/posts/{music_post_id}/like', 'like')->name('music_posts.like');
+});
+
+// MusicPostLikeControllerに関するルーティング
+Route::controller(MusicPostLikeController::class)->middleware(['auth'])->group(function () {
+    // 作品一覧の表示
+    Route::get('/music_posts/{music_id}/posts/{music_post_id}/like/index', 'index')->name('music_post_like.index');
 });
 
 // SingerControllerに関するルーティング
