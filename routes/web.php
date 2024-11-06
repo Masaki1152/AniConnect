@@ -16,7 +16,8 @@ use App\Http\Controllers\MusicPostLikeController;
 use App\Http\Controllers\SingerController;
 use App\Http\Controllers\LyricWriterController;
 use App\Http\Controllers\ComposerController;
-
+use App\Http\Controllers\AnimePilgrimageController;
+use App\Models\AnimePilgrimage;
 
 /*
 |--------------------------------------------------------------------------
@@ -173,6 +174,14 @@ Route::controller(LyricWriterController::class)->middleware(['auth'])->group(fun
 Route::controller(ComposerController::class)->middleware(['auth'])->group(function () {
     // 作曲者の詳細表示
     Route::get('/composer/{composer_id}', 'show')->name('composer.show');
+});
+
+// AnimePilgrimageControllerに関するルーティング
+Route::controller(AnimePilgrimageController::class)->middleware(['auth'])->group(function () {
+    // 登場人物一覧の表示
+    Route::get('/pilgrimages', 'index')->name('pilgrimages.index');
+    // 登場人物の詳細表示
+    Route::get('/pilgrimages/{pilgrimage_id}', 'show')->name('pilgrimages.show');
 });
 
 require __DIR__ . '/auth.php';
