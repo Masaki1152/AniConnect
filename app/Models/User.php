@@ -81,4 +81,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(MusicPost::class, 'music_posts_users', 'user_id', 'music_post_id');
     }
+
+    // AnimePilgrimagePostに対するリレーション 1対1の関係
+    public function animePilgrimagePost()
+    {
+        return $this->hasOne(AnimePilgrimagePost::class, 'id', 'anime_pilgrimage_id');
+    }
 }

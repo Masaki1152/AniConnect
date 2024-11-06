@@ -23,4 +23,10 @@ class AnimePilgrimage extends Model
     {
         return $this->belongsTo(Prefecture::class, 'prefecture_id', 'id');
     }
+
+    // AnimePilgrimagePostに対するリレーション 1対1の関係
+    public function animePilgrimagePost()
+    {
+        return $this->hasOne(AnimePilgrimagePost::class, 'id', 'anime_pilgrimage_id');
+    }
 }
