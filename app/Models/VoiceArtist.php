@@ -12,7 +12,7 @@ class VoiceArtist extends Model
     // 参照させたいvoice_artistsを指定
     protected $table = 'voice_artists';
 
-    // Workに対するリレーション 1対多の関係
+    // Characterに対するリレーション 1対多の関係
     public function characters()
     {
         return $this->hasMany(Character::class, 'voice_artist_id', 'id');

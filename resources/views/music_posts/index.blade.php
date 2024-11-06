@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1>「{{ $music_first->music_id }}」の感想投稿一覧</h1>
+    <h1>「{{ $music_first->music->name }}」の感想投稿一覧</h1>
     <a href="{{ route('music_posts.create', ['music_id' => $music_first->music_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
     <div class=serch>

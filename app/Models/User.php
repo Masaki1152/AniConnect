@@ -58,9 +58,21 @@ class User extends Authenticatable
         return $this->belongsToMany(WorkReview::class);
     }
 
+    // CharacterPostに対するリレーション 1対1の関係
+    public function characterPost()
+    {
+        return $this->hasOne(CharacterPost::class, 'id', 'character_id');
+    }
+
     // いいねをしたCharacterPostに対するリレーション 多対多の関係
     public function characterPosts()
     {
         return $this->belongsToMany(CharacterPost::class, 'character_posts_users', 'user_id', 'character_post_id');
+    }
+
+    // MusicPostに対するリレーション 1対1の関係
+    public function musicPost()
+    {
+        return $this->hasOne(MusicPost::class, 'id', 'music_id');
     }
 }

@@ -19,11 +19,11 @@
     <div class="content">
         <div class="content__character_post">
             <h3>音楽名</h3>
-            <p>{{ $music_post->music_id }}</p>
+            <p>{{ $music_post->music->name }}</p>
             <h3>使用作品</h3>
-            <p>{{ $music_post->work_id }}</p>
+            <p>{{ $music_post->work->name }}</p>
             <h3>投稿者</h3>
-            <p>{{ $music_post->user_id }}</p>
+            <p>{{ $music_post->user->name }}</p>
             <h3>タイトル</h3>
             <p>{{ $music_post->post_title }}</p>
             <h3>評価</h3>
