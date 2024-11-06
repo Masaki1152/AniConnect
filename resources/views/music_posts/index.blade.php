@@ -32,7 +32,18 @@
                     <a href="{{ route('music_posts.show', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">{{ $music_post->post_title }}</a>
                 </h2>
                 <div class="like">
-                    
+                    <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+                    <button id="like_button"
+                        data-music-id="{{ $music_post->music_id }}"
+                        data-post-id="{{ $music_post->id }}"
+                        type="submit">
+                        {{ $music_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                    </button>
+                    <div class="like_user">
+                        <a href="{{ route('music_post_like.index', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">
+                            <p id="like_count">{{ $music_post->users->count() }}</p>
+                        </a>
+                    </div>
                 </div>
                 <p class='body'>{{ $music_post->body }}</p>
                 <form action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}" id="form_{{ $music_post->id }}" method="post">
@@ -73,42 +84,42 @@
             }
         }
 
-        // // いいね処理を非同期で行う
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const likeClasses = document.querySelectorAll('.like');
-        //     likeClasses.forEach(element => {
-        //         // いいねボタンのクラスの取得
-        //         let button = element.querySelector('#like_button');
-        //         // いいねしたユーザー数のクラス取得とpタグの取得
-        //         let likeClass = element.querySelector('.like_user');
-        //         let users = likeClass.querySelector('#like_count');
+        // いいね処理を非同期で行う
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeClasses = document.querySelectorAll('.like');
+            likeClasses.forEach(element => {
+                // いいねボタンのクラスの取得
+                let button = element.querySelector('#like_button');
+                // いいねしたユーザー数のクラス取得とpタグの取得
+                let likeClass = element.querySelector('.like_user');
+                let users = likeClass.querySelector('#like_count');
 
-        //         //いいねボタンクリックによる非同期処理
-        //         button.addEventListener('click', async function() {
-        //             const characterId = button.getAttribute('data-character-id');
-        //             const postId = button.getAttribute('data-post-id');
-        //             try {
-        //                 const response = await fetch(`/character_posts/${characterId}/posts/${postId}/like`, {
-        //                     method: 'POST',
-        //                     headers: {
-        //                         'Content-Type': 'application/json',
-        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //                     },
-        //                 });
-        //                 const data = await response.json();
-        //                 if (data.status === 'liked') {
-        //                     button.innerText = 'いいね取り消し';
-        //                     users.innerText = data.like_user;
-        //                 } else if (data.status === 'unliked') {
-        //                     button.innerText = 'いいね';
-        //                     users.innerText = data.like_user;
-        //                 }
-        //             } catch (error) {
-        //                 console.error('Error:', error);
-        //             }
-        //         });
-        //     });
-        // });
+                //いいねボタンクリックによる非同期処理
+                button.addEventListener('click', async function() {
+                    const musicId = button.getAttribute('data-music-id');
+                    const postId = button.getAttribute('data-post-id');
+                    try {
+                        const response = await fetch(`/music_posts/${musicId}/posts/${postId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.status === 'liked') {
+                            button.innerText = 'いいね取り消し';
+                            users.innerText = data.like_user;
+                        } else if (data.status === 'unliked') {
+                            button.innerText = 'いいね';
+                            users.innerText = data.like_user;
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 

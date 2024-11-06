@@ -81,4 +81,30 @@ class MusicPostController extends Controller
         return redirect()->route('music_posts.index', ['music_id' => $music_id]);
     }
 
+    // 投稿にいいねを行う
+    public function like(MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        // 投稿が見つからない場合の処理
+        $music_post = MusicPost::find($music_post_id);
+        if (!$music_post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $music_post->users()->where('user_id', Auth::id())->exists();
+        if ($isLiked) {
+            // 既にいいねしている場合
+            $music_post->users()->detach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($music_post->users()->pluck('music_post_id')->toArray());
+            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+        } else {
+            // 初めてのいいねの場合
+            $music_post->users()->attach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($music_post->users()->pluck('music_post_id')->toArray());
+            return response()->json(['status' => 'liked', 'like_user' => $count]);
+        }
+        return back();
+    }
+
 }

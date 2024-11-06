@@ -75,4 +75,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(MusicPost::class, 'id', 'music_id');
     }
+
+    // いいねをしたMusicPostに対するリレーション 多対多の関係
+    public function musicPosts()
+    {
+        return $this->belongsToMany(MusicPost::class, 'music_posts_users', 'user_id', 'music_post_id');
+    }
 }
