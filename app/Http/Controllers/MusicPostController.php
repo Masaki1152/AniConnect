@@ -4,10 +4,13 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\MusicPostRequest;
 use App\Models\MusicPost;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
 class MusicPostController extends Controller
 {
+    use SoftDeletes;
+
     // 音楽感想投稿一覧の表示
     public function index($music_id)
     {
@@ -67,6 +70,15 @@ class MusicPostController extends Controller
         $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
         $targetMusicPost->fill($input_post)->save();
         return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id]);
+    }
+
+    // 感想投稿を削除する
+    public function delete(MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        // 編集の対象となるデータを取得
+        $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
+        $targetMusicPost->delete();
+        return redirect()->route('music_posts.index', ['music_id' => $music_id]);
     }
 
 }
