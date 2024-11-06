@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="post_link">
-        <a href="{{ route('character_posts.index', ['character_id' => $pilgrimage->id]) }}">聖地投稿一覧</a>
+        <a href="{{ route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage->id]) }}">聖地投稿一覧</a>
     </div>
     <div class="footer">
         <a href="/works">作品一覧へ</a>
