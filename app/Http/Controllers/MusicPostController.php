@@ -53,4 +53,20 @@ class MusicPostController extends Controller
         return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id]);
     }
 
+    // 感想投稿編集画面を表示する
+    public function edit(MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        return view('music_posts.edit')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id)]);
+    }
+
+    // 感想投稿の編集を実行する
+    public function update(MusicPostRequest $request, MusicPost $musicPost, $music_id, $music_post_id)
+    {
+        $input_post = $request['music_post'];
+        // 編集の対象となるデータを取得
+        $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
+        $targetMusicPost->fill($input_post)->save();
+        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id]);
+    }
+
 }

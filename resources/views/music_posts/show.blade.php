@@ -38,9 +38,9 @@
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('character_posts.edit', ['character_id' => $music_post->music_id, 'character_post_id' => $music_post->id]) }}">編集する</a>
+        <a href="{{ route('music_posts.edit', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">編集する</a>
     </div>
-    <form action="{{ route('character_posts.delete', ['character_id' => $music_post->music_id, 'character_post_id' => $music_post->id]) }}" id="form_{{ $music_post->id }}" method="post">
+    <form action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}" id="form_{{ $music_post->id }}" method="post">
         @csrf
         @method('DELETE')
         <button type="button" data-post-id="{{ $music_post->id }}" class="delete-button">投稿を削除する</button>
