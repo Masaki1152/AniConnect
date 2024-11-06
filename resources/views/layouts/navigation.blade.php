@@ -24,6 +24,9 @@
                     <x-nav-link :href="route('music.index')" :active="request()->routeIs('music.index')">
                         {{ __('音楽一覧') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('pilgrimages.index')" :active="request()->routeIs('pilgrimages.index')">
+                        {{ __('聖地一覧') }}
+                    </x-nav-link>
                 </div>
             </div>
 
