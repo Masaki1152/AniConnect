@@ -11,6 +11,7 @@ use App\Http\Controllers\CharacterPostController;
 use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\MusicPostController;
 use App\Http\Controllers\SingerController;
 use App\Http\Controllers\LyricWriterController;
 use App\Http\Controllers\ComposerController;
@@ -123,10 +124,30 @@ Route::controller(VoiceArtistController::class)->middleware(['auth'])->group(fun
 
 // MusicControllerに関するルーティング
 Route::controller(MusicController::class)->middleware(['auth'])->group(function () {
-    // 登場人物一覧の表示
+    // 音楽一覧の表示
     Route::get('/music', 'index')->name('music.index');
-    // 登場人物の詳細表示
+    // 音楽の詳細表示
     Route::get('/music/{music_id}', 'show')->name('music.show');
+});
+
+// MusicPostControllerに関するルーティング
+Route::controller(MusicPostController::class)->middleware(['auth'])->group(function () {
+    // 音楽人物ごとの感想投稿一覧の表示
+    Route::get('/music_posts/{music_id}', 'index')->name('music_posts.index');
+    // 新規投稿作成ボタン押下で、createメソッドを実行
+    Route::get('/music_posts/{music_id}/create', 'create')->name('music_posts.create');
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/character_posts/{character_id}/store', 'store')->name('character_posts.store');
+    // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
+    Route::get('/music_posts/{music_id}/posts/{music_post_id}', 'show')->name('music_posts.show');
+    // 感想投稿編集画面を表示するeditメソッドを実行
+    Route::get('/character_posts/{character_id}/posts/{character_post_id}/edit', 'edit')->name('character_posts.edit');
+    // 感想投稿の編集を実行するupdateメソッドを実行
+    Route::put('/character_posts/{character_id}/update/{character_post_id}', 'update')->name('character_posts.update');
+    // 感想投稿の削除を行うdeleteメソッドを実行
+    Route::delete('/music_posts/{music_id}/posts/{music_post_id}/delete', 'delete')->name('music_posts.delete');
+    // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/character_posts/{character_id}/posts/{character_post_id}/like', 'like')->name('character_posts.like');
 });
 
 // SingerControllerに関するルーティング

@@ -48,7 +48,7 @@
         </div>
     </div>
     <div class="post_link">
-        <a href="{{ route('character_posts.index', ['character_id' => $music->id]) }}">音楽感想一覧</a>
+        <a href="{{ route('music_posts.index', ['music_id' => $music->id]) }}">音楽感想一覧</a>
     </div>
 </body>
 
