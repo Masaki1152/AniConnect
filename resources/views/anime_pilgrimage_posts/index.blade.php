@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1>「{{ $pilgrimage_first->anime_pilgrimage_id }}」の感想投稿一覧</h1>
+    <h1>「{{ $pilgrimage_first->animePilgrimage->name }}」の感想投稿一覧</h1>
     <a href="{{ route('character_posts.create', ['character_id' => $pilgrimage_first->anime_pilgrimage_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
     <div class=serch>
@@ -31,12 +31,12 @@
                 <h2 class='title'>
                     <a href="{{ route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}">{{ $pilgrimage_post->title }}</a>
                 </h2>
-                <h2 class='user'>
-                    {{ $pilgrimage_post->user_id }}
-                </h2>
-                <h2 class='scene'>
+                <h3 class='user'>
+                    {{ $pilgrimage_post->user->name }}
+                </h3>
+                <h3 class='scene'>
                     {{ $pilgrimage_post->scene }}
-                </h2>
+                </h3>
                 <div class="like">
                     
                 </div>

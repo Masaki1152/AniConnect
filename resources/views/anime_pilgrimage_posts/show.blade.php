@@ -19,9 +19,9 @@
     <div class="content">
         <div class="content__character_post">
             <h3>聖地名</h3>
-            <p>{{ $pilgrimage_post->anime_pilgrimage_id }}</p>
+            <p>{{ $pilgrimage_post->animePilgrimage->name }}</p>
             <h3>投稿者</h3>
-            <p>{{ $pilgrimage_post->user_id }}</p>
+            <p>{{ $pilgrimage_post->user->name }}</p>
             <h3>タイトル</h3>
             <p>{{ $pilgrimage_post->title }}</p>
             <h3>シーン</h3>

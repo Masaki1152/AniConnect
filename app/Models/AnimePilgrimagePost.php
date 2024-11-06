@@ -20,4 +20,16 @@ class AnimePilgrimagePost extends Model
             ['id', $pilgrimage_post_id],
         ])->first();
     }
+
+    // AnimePilgrimageに対するリレーション 1対1の関係
+    public function animePilgrimage()
+    {
+        return $this->belongsTo(AnimePilgrimage::class, 'anime_pilgrimage_id', 'id');
+    }
+
+    // 投稿者に対するリレーション 1対1の関係
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
 }

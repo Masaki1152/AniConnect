@@ -30,9 +30,9 @@
                 @else
                 @foreach ($work->music as $music)
                 <div class='music_name'>
-                <a href="{{ route('music.show', ['music_id' => $music->id]) }}">
-                    {{ $music->name }}
-                </a>
+                    <a href="{{ route('music.show', ['music_id' => $music->id]) }}">
+                        {{ $music->name }}
+                    </a>
                 </div>
                 @endforeach
                 @endif
@@ -58,7 +58,9 @@
                 @else
                 @foreach ($work->animePilgrimages as $anime_pilgrimage)
                 <div class='anime_pilgrimage_name'>
-                    <h3>{{ $anime_pilgrimage->name }}</h3>
+                    <a href="{{ route('pilgrimages.show', ['pilgrimage_id' => $anime_pilgrimage->id]) }}">
+                        {{ $anime_pilgrimage->name }}
+                    </a>
                 </div>
                 @endforeach
                 @endif
