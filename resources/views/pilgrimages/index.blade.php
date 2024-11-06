@@ -13,8 +13,22 @@
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('pilgrimages.index') }}" method="GET">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
-            <input type="submit" value="検索">
+            <div class=keword_serch>
+                <p>聖地検索</p>
+                <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
+                <input type="submit" value="検索">
+            </div>
+            <div class=prefecture_serch>
+                <p>県名検索</p>
+                <select name="prefecture_search" class="form-control" value="{{ request('prefecture_search') }}">
+                  <option value="">未選択</option>
+                  @foreach($prefectures as $id => $prefecture_name)
+                  <option value="{{ $id }}" @if($prefecture_search == $id) selected @endif>
+                    {{ $prefecture_name }}
+                  </option>  
+                  @endforeach
+                </select>
+            </div>
         </form>
         <div class="cancel">
             <a href="{{ route('pilgrimages.index') }}">キャンセル</a>
@@ -37,7 +51,7 @@
                 </a>
             </p>
             <p class='place'>
-                    {{ $pilgrimage->place }}
+                {{ $pilgrimage->place }}
             </p>
         </div>
         @endforeach

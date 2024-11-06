@@ -17,4 +17,10 @@ class AnimePilgrimage extends Model
     {
         return $this->belongsTo(Work::class, 'work_id', 'id');
     }
+
+    // Prefectureに対するリレーション 1対多の関係
+    public function prefectures()
+    {
+        return $this->belongsTo(Prefecture::class, 'prefecture_id', 'id');
+    }
 }

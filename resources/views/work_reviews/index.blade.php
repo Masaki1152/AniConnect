@@ -12,7 +12,7 @@
     <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
     <a href="{{ route('work_reviews.create', ['work_id' => $work->work_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
-    <div class=serch>
+    <div class=search>
         <form action="{{ route('work_reviews.index', ['work_id' => $work->work->id]) }}" method="GET">
             <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
             <input type="submit" value="キーワード検索">

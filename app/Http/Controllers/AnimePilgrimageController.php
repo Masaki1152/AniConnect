@@ -4,12 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\AnimePilgrimage;
+use App\Models\Prefecture;
 
 class AnimePilgrimageController extends Controller
 {
     // 聖地一覧画面の表示
-    public function index()
+    public function index(Prefecture $prefecture)
     {
+        // 県名モデルのカラム取得
+        $prefectures = $prefecture->getLists();
+        // 県名検索の値を取得
+        $prefecture_search = request('prefecture_search');
+
         $pilgrimages = AnimePilgrimage::orderBy('id', 'ASC')->where(function ($query) {
             // キーワード検索がなされた場合
             if ($search = request('search')) {
@@ -24,8 +30,13 @@ class AnimePilgrimageController extends Controller
                     });
                 }
             }
+
+            // 県名検索がなされた場合
+            if ($search = request('prefecture_search')) {
+                $query->where('prefecture_id', $search);
+            }
         })->paginate(5);
-        return view('pilgrimages.index')->with(['pilgrimages' => $pilgrimages]);
+        return view('pilgrimages.index')->with(['pilgrimages' => $pilgrimages, 'prefectures' => $prefectures, 'prefecture_search' => $prefecture_search]);
     }
 
     // 詳細な聖地情報を表示する
