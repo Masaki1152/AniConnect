@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Http\Requests\MusicPostRequest;
 use App\Models\MusicPost;
 use Illuminate\Support\Facades\Auth;
-use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class MusicPostController extends Controller
 {
@@ -37,4 +36,21 @@ class MusicPostController extends Controller
     {
         return view('music_posts.show')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id)]);
     }
+
+    // 新規投稿作成画面を表示する
+    public function create(MusicPost $musicPost, $music_id)
+    {
+        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id)]);
+    }
+
+    // 新しく記述した内容を保存する
+    public function store(MusicPost $musicPost, MusicPostRequest $request)
+    {
+        $input_post = $request['music_post'];
+        // ログインしているユーザーidの登録
+        $input_post['user_id'] = Auth::id();
+        $musicPost->fill($input_post)->save();
+        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id]);
+    }
+
 }

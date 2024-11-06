@@ -137,13 +137,13 @@ Route::controller(MusicPostController::class)->middleware(['auth'])->group(funct
     // 新規投稿作成ボタン押下で、createメソッドを実行
     Route::get('/music_posts/{music_id}/create', 'create')->name('music_posts.create');
     // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/character_posts/{character_id}/store', 'store')->name('character_posts.store');
+    Route::post('/music_posts/{music_id}/store', 'store')->name('music_posts.store');
     // 各登場人物の感想投稿一覧ボタン押下で、showメソッドを実行
     Route::get('/music_posts/{music_id}/posts/{music_post_id}', 'show')->name('music_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行
-    Route::get('/character_posts/{character_id}/posts/{character_post_id}/edit', 'edit')->name('character_posts.edit');
+    Route::get('/music_posts/{music_id}/posts/{music_post_id}/edit', 'edit')->name('music_posts.edit');
     // 感想投稿の編集を実行するupdateメソッドを実行
-    Route::put('/character_posts/{character_id}/update/{character_post_id}', 'update')->name('character_posts.update');
+    Route::put('/music_posts/{music_id}/update/{music_post_id}', 'update')->name('music_posts.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/music_posts/{music_id}/posts/{music_post_id}/delete', 'delete')->name('music_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
