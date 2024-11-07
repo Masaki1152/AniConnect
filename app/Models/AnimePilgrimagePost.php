@@ -9,6 +9,19 @@ class AnimePilgrimagePost extends Model
 {
     use HasFactory;
 
+    // fillを実行するための記述
+    protected $fillable = [
+        'user_id',
+        'anime_pilgrimage_id',
+        'title',
+        'scene',
+        'body',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+    ];
+
     // 参照させたいanime_pilgrimage_postsを指定
     protected $table = 'anime_pilgrimage_posts';
 
@@ -19,6 +32,12 @@ class AnimePilgrimagePost extends Model
             ['anime_pilgrimage_id', $pilgrimage_id],
             ['id', $pilgrimage_post_id],
         ])->first();
+    }
+
+    // 条件とその値を指定してデータを1件取得する
+    public function getRestrictedPost($condition, $column_name)
+    {
+        return $this->where($condition, $column_name)->first();
     }
 
     // AnimePilgrimageに対するリレーション 1対1の関係
