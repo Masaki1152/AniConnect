@@ -87,4 +87,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(AnimePilgrimagePost::class, 'id', 'anime_pilgrimage_id');
     }
+
+    // いいねをしたAnimePilgrimagePostに対するリレーション 多対多の関係
+    public function animePilgrimagePosts()
+    {
+        return $this->belongsToMany(AnimePilgrimagePost::class, 'anime_pilgrimage_posts_users', 'user_id', 'anime_pilgrimage_post_id');
+    }
 }

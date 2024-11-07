@@ -51,4 +51,10 @@ class AnimePilgrimagePost extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    // いいねをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'anime_pilgrimage_posts_users', 'anime_pilgrimage_post_id', 'user_id');
+    }
 }
