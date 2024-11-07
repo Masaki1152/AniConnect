@@ -65,4 +65,30 @@ class AnimePilgrimagePostController extends Controller
         $pilgrimagePost->fill($input_post)->save();
         return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimagePost->id]);
     }
+
+    // 感想投稿編集画面を表示する
+    public function edit(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id, $pilgrimage_post_id)
+    {
+        return view('anime_pilgrimage_posts.edit')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id)]);
+    }
+
+    // 感想投稿の編集を実行する
+    public function update(PilgrimagePostRequest $request, AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id, $pilgrimage_post_id)
+    {
+        $input_post = $request['pilgrimage_post'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if ($request->file('images')) {
+            $counter = 1;
+            foreach ($request->file('images') as $image) {
+                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $input_post["image$counter"] = $image_url;
+                $counter++;
+            }
+        }
+        // 編集の対象となるデータを取得
+        $targetPilgrimagePost = $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id);
+        $targetPilgrimagePost->fill($input_post)->save();
+        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id]);
+    }
 }

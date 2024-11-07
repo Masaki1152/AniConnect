@@ -46,7 +46,7 @@
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('character_posts.edit', ['character_id' => $pilgrimage_post->anime_pilgrimage_id, 'character_post_id' => $pilgrimage_post->id]) }}">編集する</a>
+        <a href="{{ route('pilgrimage_posts.edit', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}">編集する</a>
     </div>
     <form action="{{ route('character_posts.delete', ['character_id' => $pilgrimage_post->anime_pilgrimage_id, 'character_post_id' => $pilgrimage_post->id]) }}" id="form_{{ $pilgrimage_post->id }}" method="post">
         @csrf
