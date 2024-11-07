@@ -10,7 +10,7 @@
 
 <body>
     <h1>「{{ $pilgrimage_first->animePilgrimage->name }}」の感想投稿一覧</h1>
-    <a href="{{ route('character_posts.create', ['character_id' => $pilgrimage_first->anime_pilgrimage_id]) }}">新規投稿作成</a>
+    <a href="{{ route('pilgrimage_posts.create', ['pilgrimage_id' => $pilgrimage_first->anime_pilgrimage_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_first->anime_pilgrimage_id]) }}" method="GET">

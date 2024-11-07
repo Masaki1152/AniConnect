@@ -204,6 +204,10 @@ return [
         'music_post.post_title' => 'タイトル',
         'music_post.body' => '内容',
         'music_post.star_num' => '評価数',
+        // 聖地の感想投稿のバリデーション
+        'pilgrimage_post.title' => 'タイトル',
+        'pilgrimage_post.scene' => 'シーン',
+        'pilgrimage_post.body' => '内容',
     ],
 
 ];

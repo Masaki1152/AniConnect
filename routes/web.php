@@ -189,17 +189,17 @@ Route::controller(AnimePilgrimagePostController::class)->middleware(['auth'])->g
     // 聖地ごとの感想投稿一覧の表示
     Route::get('/pilgrimage_posts/{pilgrimage_id}', 'index')->name('pilgrimage_posts.index');
     // 新規投稿作成ボタン押下で、createメソッドを実行
-    Route::get('/music_posts/{music_id}/create', 'create')->name('music_posts.create');
+    Route::get('/pilgrimage_posts/{pilgrimage_id}/create', 'create')->name('pilgrimage_posts.create');
     // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/music_posts/{music_id}/store', 'store')->name('music_posts.store');
+    Route::post('/pilgrimage_posts/{pilgrimage_id}/store', 'store')->name('pilgrimage_posts.store');
     // 各聖地の感想投稿一覧ボタン押下で、showメソッドを実行
     Route::get('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}', 'show')->name('pilgrimage_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行
-    Route::get('/music_posts/{music_id}/posts/{music_post_id}/edit', 'edit')->name('music_posts.edit');
+    Route::get('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}/edit', 'edit')->name('pilgrimage_posts.edit');
     // 感想投稿の編集を実行するupdateメソッドを実行
-    Route::put('/music_posts/{music_id}/update/{music_post_id}', 'update')->name('music_posts.update');
+    Route::put('/pilgrimage_posts/{pilgrimage_id}/update/{pilgrimage_post_id}', 'update')->name('pilgrimage_posts.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
-    Route::delete('/music_posts/{music_id}/posts/{music_post_id}/delete', 'delete')->name('music_posts.delete');
+    Route::delete('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}/delete', 'delete')->name('pilgrimage_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/music_posts/{music_id}/posts/{music_post_id}/like', 'like')->name('music_posts.like');
 });
