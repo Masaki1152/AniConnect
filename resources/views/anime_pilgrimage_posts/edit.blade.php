@@ -28,7 +28,7 @@
             <div class="scene">
                 <h2>シーン</h2>
                 <input type="text" name="pilgrimage_post[scene]" placeholder="シーン" value="{{ $pilgrimage_post->scene }}" />
-                <p class="title__error" style="color:red">{{ $errors->first('character_post.post_title') }}</p>
+                <p class="title__error" style="color:red">{{ $errors->first('pilgrimage_post.scene') }}</p>
             </div>
             <div class="body">
                 <h2>内容</h2>
