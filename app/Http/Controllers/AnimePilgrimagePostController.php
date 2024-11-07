@@ -102,4 +102,30 @@ class AnimePilgrimagePostController extends Controller
         $targetPilgrimagePost->delete();
         return redirect()->route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_id]);
     }
+
+    // 投稿にいいねを行う
+    public function like($pilgrimage_id, $pilgrimage_post_id)
+    {
+        // 投稿が見つからない場合の処理
+        $pilgrimage_post = AnimePilgrimagePost::find($pilgrimage_post_id);
+        if (!$pilgrimage_post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $pilgrimage_post->users()->where('user_id', Auth::id())->exists();
+        if ($isLiked) {
+            // 既にいいねしている場合
+            $pilgrimage_post->users()->detach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($pilgrimage_post->users()->pluck('anime_pilgrimage_post_id')->toArray());
+            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+        } else {
+            // 初めてのいいねの場合
+            $pilgrimage_post->users()->attach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($pilgrimage_post->users()->pluck('anime_pilgrimage_post_id')->toArray());
+            return response()->json(['status' => 'liked', 'like_user' => $count]);
+        }
+        return back();
+    }
 }

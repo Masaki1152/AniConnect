@@ -18,6 +18,7 @@ use App\Http\Controllers\LyricWriterController;
 use App\Http\Controllers\ComposerController;
 use App\Http\Controllers\AnimePilgrimageController;
 use App\Http\Controllers\AnimePilgrimagePostController;
+use App\Http\Controllers\AnimePilgrimagePostLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -201,7 +202,13 @@ Route::controller(AnimePilgrimagePostController::class)->middleware(['auth'])->g
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}/delete', 'delete')->name('pilgrimage_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/music_posts/{music_id}/posts/{music_post_id}/like', 'like')->name('music_posts.like');
+    Route::post('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}/like', 'like')->name('pilgrimage_posts.like');
+});
+
+// AnimePilgrimagePostLikeControllerに関するルーティング
+Route::controller(AnimePilgrimagePostLikeController::class)->middleware(['auth'])->group(function () {
+    // 作品一覧の表示
+    Route::get('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}/like/index', 'index')->name('pilgrimage_post_like.index');
 });
 
 require __DIR__ . '/auth.php';

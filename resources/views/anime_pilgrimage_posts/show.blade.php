@@ -14,7 +14,18 @@
         {{ $pilgrimage_post->title }}
     </h1>
     <div class="like">
-        
+        <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+        <button id="like_button"
+            data-pilgrimage-id="{{ $pilgrimage_post->anime_pilgrimage_id }}"
+            data-post-id="{{ $pilgrimage_post->id }}"
+            type="submit">
+            {{ $pilgrimage_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+        </button>
+        <div class="like_user">
+            <a href="{{ route('pilgrimage_post_like.index', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}">
+                <p id="like_count">{{ $pilgrimage_post->users->count() }}</p>
+            </a>
+        </div>
     </div>
     <div class="content">
         <div class="content__character_post">
@@ -78,42 +89,42 @@
             }
         }
 
-        // // いいね処理を非同期で行う
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     const likeClasses = document.querySelectorAll('.like');
-        //     likeClasses.forEach(element => {
-        //         // いいねボタンのクラスの取得
-        //         let button = element.querySelector('#like_button');
-        //         // いいねしたユーザー数のクラス取得とpタグの取得
-        //         let likeClass = element.querySelector('.like_user');
-        //         let users = likeClass.querySelector('#like_count');
+        // いいね処理を非同期で行う
+        document.addEventListener('DOMContentLoaded', function() {
+            const likeClasses = document.querySelectorAll('.like');
+            likeClasses.forEach(element => {
+                // いいねボタンのクラスの取得
+                let button = element.querySelector('#like_button');
+                // いいねしたユーザー数のクラス取得とpタグの取得
+                let likeClass = element.querySelector('.like_user');
+                let users = likeClass.querySelector('#like_count');
 
-        //         //いいねボタンクリックによる非同期処理
-        //         button.addEventListener('click', async function() {
-        //             const characterId = button.getAttribute('data-character-id');
-        //             const postId = button.getAttribute('data-post-id');
-        //             try {
-        //                 const response = await fetch(`/character_posts/${characterId}/posts/${postId}/like`, {
-        //                     method: 'POST',
-        //                     headers: {
-        //                         'Content-Type': 'application/json',
-        //                         'X-CSRF-TOKEN': '{{ csrf_token() }}'
-        //                     },
-        //                 });
-        //                 const data = await response.json();
-        //                 if (data.status === 'liked') {
-        //                     button.innerText = 'いいね取り消し';
-        //                     users.innerText = data.like_user;
-        //                 } else if (data.status === 'unliked') {
-        //                     button.innerText = 'いいね';
-        //                     users.innerText = data.like_user;
-        //                 }
-        //             } catch (error) {
-        //                 console.error('Error:', error);
-        //             }
-        //         });
-        //     });
-        // });
+                //いいねボタンクリックによる非同期処理
+                button.addEventListener('click', async function() {
+                    const pilgrimageId = button.getAttribute('data-pilgrimage-id');
+                    const postId = button.getAttribute('data-post-id');
+                    try {
+                        const response = await fetch(`/pilgrimage_posts/${pilgrimageId}/posts/${postId}/like`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                            },
+                        });
+                        const data = await response.json();
+                        if (data.status === 'liked') {
+                            button.innerText = 'いいね取り消し';
+                            users.innerText = data.like_user;
+                        } else if (data.status === 'unliked') {
+                            button.innerText = 'いいね';
+                            users.innerText = data.like_user;
+                        }
+                    } catch (error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
     </script>
 </body>
 
