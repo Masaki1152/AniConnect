@@ -10,6 +10,8 @@ use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class AnimePilgrimagePostController extends Controller
 {
+    use SoftDeletes;
+
     // 聖地感想投稿一覧の表示
     public function index($pilgrimage_id)
     {
@@ -90,5 +92,14 @@ class AnimePilgrimagePostController extends Controller
         $targetPilgrimagePost = $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id);
         $targetPilgrimagePost->fill($input_post)->save();
         return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id]);
+    }
+
+    // 感想投稿を削除する
+    public function delete(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id, $pilgrimage_post_id)
+    {
+        // 編集の対象となるデータを取得
+        $targetPilgrimagePost = $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id);
+        $targetPilgrimagePost->delete();
+        return redirect()->route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_id]);
     }
 }
