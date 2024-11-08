@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('works', function (Blueprint $table) {
+        Schema::create('work_stories', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('creator_id')->constrained('creators')->onDelete('cascade');
-            $table->string('name');
-            $table->string('image');
-            $table->string('term');
-            $table->string('official_site_link');
-            $table->string('wiki_link');
-            $table->string('twitter_link');
+            $table->foreignId('work_id')->constrained('works')->onDelete('cascade');
+            $table->string('episode', 10);
+            $table->string('sub_title', 200);
+            $table->string('body', 500)->nullable();
+            $table->string('official_link')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });
@@ -31,6 +29,5 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('work_stories');
-        Schema::dropIfExists('works');
     }
 };
