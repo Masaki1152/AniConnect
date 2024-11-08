@@ -19,6 +19,7 @@ use App\Http\Controllers\ComposerController;
 use App\Http\Controllers\AnimePilgrimageController;
 use App\Http\Controllers\AnimePilgrimagePostController;
 use App\Http\Controllers\AnimePilgrimagePostLikeController;
+use App\Http\Controllers\WorkStoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -209,6 +210,14 @@ Route::controller(AnimePilgrimagePostController::class)->middleware(['auth'])->g
 Route::controller(AnimePilgrimagePostLikeController::class)->middleware(['auth'])->group(function () {
     // 作品一覧の表示
     Route::get('/pilgrimage_posts/{pilgrimage_id}/posts/{pilgrimage_post_id}/like/index', 'index')->name('pilgrimage_post_like.index');
+});
+
+// WorkStoryControllerに関するルーティング
+Route::controller(WorkStoryController::class)->middleware(['auth'])->group(function () {
+    // あらすじ一覧の表示
+    Route::get('/works/{work_id}/stories', 'index')->name('work_stories.index');
+    // あらすじの詳細表示
+    Route::get('/works/{work_id}/stories/{work_story_id}', 'show')->name('work_stories.show');
 });
 
 require __DIR__ . '/auth.php';

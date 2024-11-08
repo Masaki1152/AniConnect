@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('work_id')->constrained('works')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
-            $table->string('sub_title');
+            $table->foreignId('sub_title_id')->constrained('work_stories')->onDelete('cascade');
             $table->string('post_title');
             $table->string('body');
             $table->string('image1')->nullable();
