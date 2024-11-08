@@ -34,7 +34,7 @@
             @foreach ($work_story_posts as $work_story_post)
             <div class='work_story_post'>
                 <h2 class='title'>
-                    <a href="{{ route('work_story_posts.show', ['work_id' => $work_story_post_first->work_id, 'work_story_id' => $work_story_post_first->sub_title_id, 'work_story_post_id' => $work_story_post_first->id]) }}">{{ $work_story_post->post_title }}</a>
+                    <a href="{{ route('work_story_posts.show', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}">{{ $work_story_post->post_title }}</a>
                 </h2>
                 <div class='user'>
                     <p>{{ $work_story_post->user->name }}</p>

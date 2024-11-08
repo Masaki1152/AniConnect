@@ -32,7 +32,7 @@ class WorkStoryPostController extends Controller
     }
 
     // あらすじ感想投稿詳細の表示
-    public function show(WorkStoryPost $workStoryPost, $work_story_id, $work_story_post_id)
+    public function show(WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
     {
         return view('work_story_posts.show')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id)]);
     }
