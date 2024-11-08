@@ -15,7 +15,7 @@
     <h1>{{ $work_story_post_first->work->name}}</h1>
     <h1>{{ $work_story_post_first->workStory->episode}}</h1>
     <h1>「{{ $work_story_post_first->workStory->sub_title }}」の感想投稿一覧</h1>
-    <a href="{{ route('character_posts.create', ['character_id' => $work_story_post_first->sub_title_id]) }}">新規投稿作成</a>
+    <a href="{{ route('work_story_posts.create', ['work_id' => $work_story_post_first->work_id, 'work_story_id' => $work_story_post_first->sub_title_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('work_story_posts.index', ['work_id' => $work_story_post_first->work_id, 'work_story_id' => $work_story_post_first->sub_title_id]) }}" method="GET">

@@ -9,6 +9,19 @@ class WorkStoryPost extends Model
 {
     use HasFactory;
 
+    // fillを実行するための記述
+    protected $fillable = [
+        'work_id',
+        'user_id',
+        'sub_title_id',
+        'post_title',
+        'body',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+    ];
+
     // 参照させたいwork_story_postsを指定
     protected $table = 'work_story_posts';
 
@@ -19,6 +32,12 @@ class WorkStoryPost extends Model
             ['sub_title_id', $work_story_id],
             ['id', $work_story_post_id],
         ])->first();
+    }
+
+    // 条件とその値を指定してデータを1件取得する
+    public function getRestrictedPost($condition, $column_name)
+    {
+        return $this->where($condition, $column_name)->first();
     }
 
     // Work_Storyに対するリレーション 1対1の関係
