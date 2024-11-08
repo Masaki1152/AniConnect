@@ -9,9 +9,9 @@
 </head>
 
 <body>
-    <h1 class="title">{{ $character_post->character->name }}への投稿編集画面</h1>
+    <h1 class="title">{{ $work_story_post->character->name }}への投稿編集画面</h1>
     <div class="content">
-        <form action="{{ route('character_posts.update', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}" method="POST" enctype="multipart/form-data">
+        <form action="{{ route('work_story_posts.update', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
             @method('PUT')
             <div class="work_id">

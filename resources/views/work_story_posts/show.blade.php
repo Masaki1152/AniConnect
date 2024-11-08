@@ -46,9 +46,9 @@
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('character_posts.edit', ['character_id' => $work_story_post->id, 'character_post_id' => $work_story_post->id]) }}">編集する</a>
+        <a href="{{ route('work_story_posts.edit', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}">編集する</a>
     </div>
-    <form action="{{ route('character_posts.delete', ['character_id' => $work_story_post->id, 'character_post_id' => $work_story_post->id]) }}" id="form_{{ $work_story_post->id }}" method="post">
+    <form action="{{ route('work_story_posts.delete', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}" id="form_{{ $work_story_post->id }}" method="post">
         @csrf
         @method('DELETE')
         <button type="button" data-post-id="{{ $work_story_post->id }}" class="delete-button">投稿を削除する</button>

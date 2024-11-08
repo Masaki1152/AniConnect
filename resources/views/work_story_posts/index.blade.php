@@ -45,7 +45,7 @@
                 <div class='image'>
                     @if($work_story_post->image1)
                     <div>
-                        <img src="{{ $character_post->image1 }}" alt="画像が読み込めません。">
+                        <img src="{{ $work_story_post->image1 }}" alt="画像が読み込めません。">
                     </div>
                     @endif
                 </div>

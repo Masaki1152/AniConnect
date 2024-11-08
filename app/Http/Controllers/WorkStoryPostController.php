@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WorkStoryPostRequest;
 use App\Models\WorkStoryPost;
 use Illuminate\Support\Facades\Auth;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class WorkStoryPostController extends Controller
 {
@@ -61,5 +62,31 @@ class WorkStoryPostController extends Controller
         $input_post['user_id'] = Auth::id();
         $workStoryPost->fill($input_post)->save();
         return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id]);
+    }
+
+    // 感想投稿編集画面を表示する
+    public function edit(WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
+    {
+        return view('work_story_posts.edit')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id)]);
+    }
+
+    // 感想投稿の編集を実行する
+    public function update(WorkStoryPostRequest $request, WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
+    {
+        $input_post = $request['work_story_post'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if ($request->file('images')) {
+            $counter = 1;
+            foreach ($request->file('images') as $image) {
+                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $input_post["image$counter"] = $image_url;
+                $counter++;
+            }
+        }
+        // 編集の対象となるデータを取得
+        $targetWorkStoryPost = $workStoryPost->getDetailPost($work_story_id, $work_story_post_id);
+        $targetWorkStoryPost->fill($input_post)->save();
+        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id]);
     }
 }

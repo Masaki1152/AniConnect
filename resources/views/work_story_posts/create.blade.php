@@ -8,7 +8,7 @@
 
 <body>
     <h1>「{{ $work_story_post->workStory->sub_title }}」への新規感想投稿</h1>
-    <form action="{{ route('work_story_posts.store', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}" method="POST">
+    <form action="{{ route('work_story_posts.store', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="work_id">
             <input type="hidden" name="work_story_post[work_id]" value="{{ $work_story_post->work_id }}">
