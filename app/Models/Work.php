@@ -42,6 +42,12 @@ class Work extends Model
         return $this->hasMany(Music::class, 'work_id', 'id');
     }
 
+    // WorkStoryに対するリレーション 1対多の関係
+    public function workStories()
+    {
+        return $this->hasMany(WorkStory::class, 'work_id', 'id');
+    }
+
     // created_atで降順に並べたあと、limitで件数制限をかける
     public function getPaginateByLimit(int $limit_count = 5)
     {

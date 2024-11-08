@@ -74,6 +74,9 @@
             <a href="{{ route('work_reviews.index', ['work_id' => $work->id]) }}">作品感想一覧</a>
         </div>
     </div>
+    <div class="work_story_link">
+    <a href="{{ route('work_stories.index', ['work_id' => $work->id]) }}">あらすじ一覧</a>
+    </div>
     <div class="footer">
         <a href="/works">作品一覧へ</a>
     </div>
