@@ -5,10 +5,13 @@ namespace App\Http\Controllers;
 use App\Http\Requests\WorkStoryPostRequest;
 use App\Models\WorkStoryPost;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class WorkStoryPostController extends Controller
 {
+    use SoftDeletes;
+
     // あらすじ感想投稿一覧の表示
     public function index($work_id, $work_story_id)
     {
@@ -88,5 +91,14 @@ class WorkStoryPostController extends Controller
         $targetWorkStoryPost = $workStoryPost->getDetailPost($work_story_id, $work_story_post_id);
         $targetWorkStoryPost->fill($input_post)->save();
         return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id]);
+    }
+
+    // 感想投稿を削除する
+    public function delete(WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
+    {
+        // 編集の対象となるデータを取得
+        $targetWorkStoryPost = $workStoryPost->getDetailPost($work_story_id, $work_story_post_id);
+        $targetWorkStoryPost->delete();
+        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id]);
     }
 }
