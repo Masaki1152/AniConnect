@@ -93,4 +93,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(AnimePilgrimagePost::class, 'anime_pilgrimage_posts_users', 'user_id', 'anime_pilgrimage_post_id');
     }
+
+    // WorkStoryPostに対するリレーション 1対1の関係
+    public function workStoryPost()
+    {
+        return $this->hasOne(WorkStoryPost::class, 'id', 'work_story_post_id');
+    }
 }

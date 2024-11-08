@@ -17,4 +17,10 @@ class WorkStory extends Model
     {
         return $this->belongsTo(Work::class, 'work_id', 'id');
     }
+
+    // WorkStoryPostに対するリレーション 1対1の関係
+    public function workStoryPost()
+    {
+        return $this->hasOne(WorkStoryPost::class, 'id', 'sub_title_id');
+    }
 }

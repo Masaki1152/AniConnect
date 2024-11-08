@@ -48,6 +48,12 @@ class Work extends Model
         return $this->hasMany(WorkStory::class, 'work_id', 'id');
     }
 
+    // WorkStoryPostに対するリレーション 1対1の関係
+    public function workStoryPost()
+    {
+        return $this->belongsTo(WorkStoryPost::class, 'work_id', 'id');
+    }
+
     // created_atで降順に並べたあと、limitで件数制限をかける
     public function getPaginateByLimit(int $limit_count = 5)
     {
