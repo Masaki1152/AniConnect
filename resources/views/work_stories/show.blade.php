@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="post_link">
-        <a href="{{ route('music_posts.index', ['music_id' => $work_story->id]) }}">音楽感想一覧</a>
+        <a href="{{ route('work_story_posts.index', ['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]) }}">あらすじ感想一覧</a>
     </div>
 </body>
 
