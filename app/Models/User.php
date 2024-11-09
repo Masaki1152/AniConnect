@@ -99,4 +99,10 @@ class User extends Authenticatable
     {
         return $this->hasOne(WorkStoryPost::class, 'id', 'work_story_post_id');
     }
+
+    // いいねをしたWorkStoryPostに対するリレーション 多対多の関係
+    public function workStoryPosts()
+    {
+        return $this->belongsToMany(WorkStoryPost::class, 'work_story_posts_users', 'user_id', 'work_story_post_id');
+    }
 }

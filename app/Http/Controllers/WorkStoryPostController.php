@@ -101,4 +101,30 @@ class WorkStoryPostController extends Controller
         $targetWorkStoryPost->delete();
         return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id]);
     }
+
+    // 投稿にいいねを行う
+    public function like($work_id, $work_story_id, $work_story_post_id)
+    {
+        // 投稿が見つからない場合の処理
+        $work_story_post = WorkStoryPost::find($work_story_post_id);
+        if (!$work_story_post) {
+            return response()->json(['message' => 'Post not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $work_story_post->users()->where('user_id', Auth::id())->exists();
+        if ($isLiked) {
+            // 既にいいねしている場合
+            $work_story_post->users()->detach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());
+            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+        } else {
+            // 初めてのいいねの場合
+            $work_story_post->users()->attach(Auth::id());
+            // いいねしたユーザー数の取得
+            $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());
+            return response()->json(['status' => 'liked', 'like_user' => $count]);
+        }
+        return back();
+    }
 }
