@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <h1 class="title">{{ $work_story_post->workStory->sub_title }}への投稿編集画面</h1>
+    <h1 class="title">「{{ $work_story_post->workStory->sub_title }}」への投稿編集画面</h1>
     <div class="content">
         <form action="{{ route('work_story_posts.update', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}" method="POST" enctype="multipart/form-data">
             @csrf
