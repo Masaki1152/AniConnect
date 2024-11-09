@@ -15,7 +15,7 @@
     <h1>{{ $work_story_post_first->work->name}}</h1>
     <h1>{{ $work_story_post_first->workStory->episode}}</h1>
     <h1>「{{ $work_story_post_first->workStory->sub_title }}」の感想投稿一覧</h1>
-    <a href="{{ route('character_posts.create', ['character_id' => $work_story_post_first->sub_title_id]) }}">新規投稿作成</a>
+    <a href="{{ route('work_story_posts.create', ['work_id' => $work_story_post_first->work_id, 'work_story_id' => $work_story_post_first->sub_title_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('work_story_posts.index', ['work_id' => $work_story_post_first->work_id, 'work_story_id' => $work_story_post_first->sub_title_id]) }}" method="GET">
@@ -45,11 +45,11 @@
                 <div class='image'>
                     @if($work_story_post->image1)
                     <div>
-                        <img src="{{ $character_post->image1 }}" alt="画像が読み込めません。">
+                        <img src="{{ $work_story_post->image1 }}" alt="画像が読み込めません。">
                     </div>
                     @endif
                 </div>
-                <form action="{{ route('character_posts.delete', ['character_id' => $work_story_post->id, 'character_post_id' => $work_story_post->id]) }}" id="form_{{ $work_story_post->id }}" method="post">
+                <form action="{{ route('work_story_posts.delete', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}" id="form_{{ $work_story_post->id }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="button" data-post-id="{{ $work_story_post->id }}" class="delete-button">投稿を削除する</button>
@@ -67,25 +67,25 @@
     </div>
 
     <script>
-        // // DOMツリー読み取り完了後にイベント発火
-        // document.addEventListener('DOMContentLoaded', function() {
-        //     // delete-buttonに一致するすべてのHTML要素を取得
-        //     document.querySelectorAll('.delete-button').forEach(function(button) {
-        //         button.addEventListener('click', function() {
-        //             const postId = button.getAttribute('data-post-id');
-        //             deletePost(postId);
-        //         });
-        //     });
-        // });
+        // DOMツリー読み取り完了後にイベント発火
+        document.addEventListener('DOMContentLoaded', function() {
+            // delete-buttonに一致するすべてのHTML要素を取得
+            document.querySelectorAll('.delete-button').forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const postId = button.getAttribute('data-post-id');
+                    deletePost(postId);
+                });
+            });
+        });
 
-        // // 削除処理を行う
-        // function deletePost(postId) {
-        //     'use strict'
+        // 削除処理を行う
+        function deletePost(postId) {
+            'use strict'
 
-        //     if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
-        //         document.getElementById(`form_${postId}`).submit();
-        //     }
-        // }
+            if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+                document.getElementById(`form_${postId}`).submit();
+            }
+        }
 
         // // いいね処理を非同期で行う
         // document.addEventListener('DOMContentLoaded', function() {

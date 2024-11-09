@@ -226,17 +226,17 @@ Route::controller(WorkStoryPostController::class)->middleware(['auth'])->group(f
     // あらすじごとの感想投稿一覧の表示
     Route::get('/works/{work_id}/stories/{work_story_id}/posts', 'index')->name('work_story_posts.index');
     // 新規投稿作成ボタン押下で、createメソッドを実行
-    Route::get('/music_posts/{music_id}/create', 'create')->name('music_posts.create');
+    Route::get('/works/{work_id}/stories/{work_story_id}/create', 'create')->name('work_story_posts.create');
     // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/music_posts/{music_id}/store', 'store')->name('music_posts.store');
+    Route::post('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/store', 'store')->name('work_story_posts.store');
     // 各あらすじの感想投稿一覧ボタン押下で、showメソッドを実行
     Route::get('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}', 'show')->name('work_story_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行
-    Route::get('/music_posts/{music_id}/posts/{music_post_id}/edit', 'edit')->name('music_posts.edit');
+    Route::get('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/edit', 'edit')->name('work_story_posts.edit');
     // 感想投稿の編集を実行するupdateメソッドを実行
-    Route::put('/music_posts/{music_id}/update/{music_post_id}', 'update')->name('music_posts.update');
+    Route::put('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/update', 'update')->name('work_story_posts.update');
     // 感想投稿の削除を行うdeleteメソッドを実行
-    Route::delete('/music_posts/{music_id}/posts/{music_post_id}/delete', 'delete')->name('music_posts.delete');
+    Route::delete('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/delete', 'delete')->name('work_story_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/music_posts/{music_id}/posts/{music_post_id}/like', 'like')->name('music_posts.like');
 });
