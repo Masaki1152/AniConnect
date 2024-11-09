@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             Work_Review_Seeder::class,
             Work_Review_Categories_Seeder::class,
             Work_Review_Work_Review_Category_Seeder::class,
-            USER_Work_Review_Seeder::class,
+            User_Work_Review_Seeder::class,
             Work_Categories_Seeder::class,
             Work_Category_Seeder::class,
             Work_StorySeeder::class,
