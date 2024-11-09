@@ -21,6 +21,7 @@ use App\Http\Controllers\AnimePilgrimagePostController;
 use App\Http\Controllers\AnimePilgrimagePostLikeController;
 use App\Http\Controllers\WorkStoryController;
 use App\Http\Controllers\WorkStoryPostController;
+use App\Http\Controllers\WorkStoryPostLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -238,7 +239,13 @@ Route::controller(WorkStoryPostController::class)->middleware(['auth'])->group(f
     // 感想投稿の削除を行うdeleteメソッドを実行
     Route::delete('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/delete', 'delete')->name('work_story_posts.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/music_posts/{music_id}/posts/{music_post_id}/like', 'like')->name('music_posts.like');
+    Route::post('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/like', 'like')->name('work_story_posts.like');
+});
+
+// WorkStoryPostLikeControllerに関するルーティング
+Route::controller(WorkStoryPostLikeController::class)->middleware(['auth'])->group(function () {
+    // いいねしたユーザーの表示
+    Route::get('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/like/index', 'index')->name('work_story_post_like.index');
 });
 
 require __DIR__ . '/auth.php';

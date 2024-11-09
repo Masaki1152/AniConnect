@@ -57,4 +57,10 @@ class WorkStoryPost extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    // いいねをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'work_story_posts_users', 'work_story_post_id', 'user_id');
+    }
 }
