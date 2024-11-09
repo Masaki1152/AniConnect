@@ -7,14 +7,14 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 
-class Work_Story_Review_Seeder extends Seeder
+class Work_Story_Post_Seeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('work_story_reviews')->insert([
+        DB::table('work_story_posts')->insert([
             'work_id' => 1,
             'user_id' => 3,
             'sub_title_id' => 3,
@@ -23,7 +23,7 @@ class Work_Story_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_story_reviews')->insert([
+        DB::table('work_story_posts')->insert([
             'work_id' => 1,
             'user_id' => 5,
             'sub_title_id' => 10,
@@ -32,7 +32,7 @@ class Work_Story_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_story_reviews')->insert([
+        DB::table('work_story_posts')->insert([
             'work_id' => 2,
             'user_id' => 3,
             'sub_title_id' => 4,
@@ -41,7 +41,7 @@ class Work_Story_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_story_reviews')->insert([
+        DB::table('work_story_posts')->insert([
             'work_id' => 5,
             'user_id' => 6,
             'sub_title_id' => 3,
@@ -50,7 +50,7 @@ class Work_Story_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_story_reviews')->insert([
+        DB::table('work_story_posts')->insert([
             'work_id' => 3,
             'user_id' => 4,
             'sub_title_id' => 6,
@@ -59,7 +59,7 @@ class Work_Story_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_story_reviews')->insert([
+        DB::table('work_story_posts')->insert([
             'work_id' => 4,
             'user_id' => 4,
             'sub_title_id' => 7,

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('work_story_posts_users', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('work_story_post_id')->constrained('work_story_reviews')->onDelete('cascade');
+            $table->foreignId('work_story_post_id')->constrained('work_story_posts')->onDelete('cascade');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });

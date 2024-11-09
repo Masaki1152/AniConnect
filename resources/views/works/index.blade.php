@@ -1,42 +1,54 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<x-app-layout>
+    <div class="container mx-auto py-8">
+        <h1 class="text-3xl font-bold text-center mb-6">作品一覧</h1>
+        
+        <!-- 検索機能 -->
+        <div class="flex justify-center mb-6">
+            <form action="{{ route('works.index') }}" method="GET" class="flex items-center space-x-2">
+                <input 
+                    type="text" 
+                    id="search" 
+                    name="search" 
+                    value="{{ request('search') }}" 
+                    placeholder="キーワードを検索" 
+                    aria-label="検索..." 
+                    class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200"
+                >
+                <input 
+                    type="submit" 
+                    value="検索" 
+                    class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
+                >
+            </form>
+            <div class="ml-4">
+                <a 
+                    href="{{ route('works.index') }}" 
+                    class="text-blue-500 hover:underline focus:outline-none"
+                >キャンセル</a>
+            </div>
+        </div>
 
-<head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
+        <!-- 作品リスト -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            @if($works->isEmpty())
+                <h2 class="col-span-full text-center text-gray-500 text-xl">結果がありません。</h2>
+            @else
+                @foreach ($works as $work)
+                    <div class="p-6 border border-gray-200 rounded-lg shadow-sm">
+                        <h2 class="text-xl font-semibold mb-2 text-blue-600">
+                            <a href="{{ route('works.show', ['work' => $work->id]) }}" class="hover:underline">
+                                {{ $work->name }}
+                            </a>
+                        </h2>
+                        <p class="text-gray-600">{{ $work->term }}</p>
+                    </div>
+                @endforeach
+            @endif
+        </div>
 
-<body>
-    <h1>作品一覧</h1>
-    <!-- 検索機能 -->
-    <div class=serch>
-        <form action="{{ route('works.index') }}" method="GET">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
-            <input type="submit" value="検索">
-        </form>
-        <div class="cancel">
-            <a href="{{ route('works.index') }}">キャンセル</a>
+        <!-- ページネーション -->
+        <div class="mt-8">
+            {{ $works->appends(request()->query())->links() }}
         </div>
     </div>
-    <div class='works'>
-        @if($works->isEmpty())
-        <h2 class='no_result'>結果がありません。</h2>
-        @else
-        @foreach ($works as $work)
-        <div class='work'>
-            <h2 class='name'>
-                <a href="/works/{{ $work->id }}">{{ $work->name }}</a>
-            </h2>
-            <p class='term'>{{ $work->term }}</p>
-        </div>
-        @endforeach
-        @endif
-    </div>
-    <div class='paginate'>
-        {{ $works->appends(request()->query())->links() }}
-    </div>
-</body>
-
-</html>
+</x-app-layout>
