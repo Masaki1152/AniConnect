@@ -1,12 +1,7 @@
-<!DOCTYPE HTML>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <title>聖地の感想投稿</title>
-</head>
-
-<body>
+<x-app-layout>
+    <x-slot name="header">
+        新規感想投稿
+    </x-slot>
     <h1>「{{$pilgrimage_post->animePilgrimage->name}}」への新規感想投稿</h1>
     <form action="{{ route('pilgrimage_posts.store', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
@@ -40,41 +35,39 @@
     <div class="footer">
         <a href="{{ route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id]) }}">戻る</a>
     </div>
-</body>
-<script>
-    let key = 0;
+    <script>
+        let key = 0;
 
-    function loadImage(obj) {
-        // 以前に選択したファイルは保持されないため削除
-        document.querySelectorAll('figure').forEach(function(figure) {
-            figure.remove();
-            key = 0;
-        });
-        // 選択されたファイルの枚数分だけ画像を追加
-        for (i = 0; i < obj.files.length; i++) {
-            var fileReader = new FileReader();
-            fileReader.onload = (function(e) {
-                var field = document.getElementById("preview");
-                var figure = document.createElement("figure");
-                var rmBtn = document.createElement("input");
-                var img = new Image();
-                img.src = e.target.result;
-                rmBtn.type = "button";
-                rmBtn.name = key;
-                rmBtn.value = "削除";
-                // 削除ボタン押下で画像プレビューの削除
-                rmBtn.onclick = (function() {
-                    var element = document.getElementById("img-" + String(rmBtn.name)).remove();
-                });
-                figure.setAttribute("id", "img-" + key);
-                figure.appendChild(img);
-                figure.appendChild(rmBtn)
-                field.appendChild(figure);
-                key++;
+        function loadImage(obj) {
+            // 以前に選択したファイルは保持されないため削除
+            document.querySelectorAll('figure').forEach(function(figure) {
+                figure.remove();
+                key = 0;
             });
-            fileReader.readAsDataURL(obj.files[i]);
+            // 選択されたファイルの枚数分だけ画像を追加
+            for (i = 0; i < obj.files.length; i++) {
+                var fileReader = new FileReader();
+                fileReader.onload = (function(e) {
+                    var field = document.getElementById("preview");
+                    var figure = document.createElement("figure");
+                    var rmBtn = document.createElement("input");
+                    var img = new Image();
+                    img.src = e.target.result;
+                    rmBtn.type = "button";
+                    rmBtn.name = key;
+                    rmBtn.value = "削除";
+                    // 削除ボタン押下で画像プレビューの削除
+                    rmBtn.onclick = (function() {
+                        var element = document.getElementById("img-" + String(rmBtn.name)).remove();
+                    });
+                    figure.setAttribute("id", "img-" + key);
+                    figure.appendChild(img);
+                    figure.appendChild(rmBtn)
+                    field.appendChild(figure);
+                    key++;
+                });
+                fileReader.readAsDataURL(obj.files[i]);
+            }
         }
-    }
-</script>
-
-</html>
+    </script>
+</x-app-layout>
