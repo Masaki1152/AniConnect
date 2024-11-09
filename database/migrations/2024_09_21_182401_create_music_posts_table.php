@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('music_posts', function (Blueprint $table) {
             $table->id();
-            $table->unsignedInteger('music_id');
-            $table->unsignedInteger('user_id');
-            $table->unsignedInteger('work_id');
+            $table->foreignId('music_id')->constrained('music')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('work_id')->constrained('works')->onDelete('cascade');
             $table->string('post_title');
             $table->integer('star_num');
             $table->string('body');
