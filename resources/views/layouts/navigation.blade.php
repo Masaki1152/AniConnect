@@ -18,7 +18,7 @@
                     <x-nav-link :href="route('works.index')" :active="request()->routeIs('works.index')">
                         {{ __('作品一覧') }}
                     </x-nav-link>
-                    <x-nav-link :href="route('characters.index')" :active="request()->routeIs('works.index')">
+                    <x-nav-link :href="route('characters.index')" :active="request()->routeIs('characters.index')">
                         {{ __('登場人物一覧') }}
                     </x-nav-link>
                     <x-nav-link :href="route('music.index')" :active="request()->routeIs('music.index')">
