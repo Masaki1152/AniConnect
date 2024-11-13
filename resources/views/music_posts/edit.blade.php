@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-
-<body>
+<x-app-layout>
     <h1 class="title">{{ $music_post->music->name }}への投稿編集画面</h1>
     <div class="content">
         <form action="{{ route('music_posts.update', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}" method="POST">
@@ -52,6 +42,4 @@
     <div class="footer">
         <a href="{{ route('music_posts.show', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">保存しないで戻る</a>
     </div>
-</body>
-
-</html>
+</x-app-layout>
