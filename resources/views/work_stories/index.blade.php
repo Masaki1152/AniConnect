@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <title>あらすじ一覧</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-
-<body>
+<x-app-layout>
     <h1>「{{ $work_story_model->work->name }}」のあらすじ一覧</h1>
     <!-- 検索機能 -->
     <div class=serch>
@@ -41,6 +31,4 @@
     <div class='paginate'>
         {{ $work_stories->appends(request()->query())->links() }}
     </div>
-</body>
-
-</html>
+</x-app-layout>
