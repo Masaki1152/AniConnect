@@ -1,12 +1,4 @@
-<!DOCTYPE HTML>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <title>音楽の感想投稿</title>
-</head>
-
-<body>
+<x-app-layout>
     <h1>「{{ $music_post->music->name }}」への新規感想投稿</h1>
     <form action="{{ route('music_posts.store', ['music_id' => $music_post->music_id]) }}" method="POST">
         @csrf
@@ -45,6 +37,4 @@
     <div class="footer">
         <a href="{{ route('music_posts.index', ['music_id' => $music_post->music_id]) }}">戻る</a>
     </div>
-</body>
-
-</html>
+</x-app-layout>

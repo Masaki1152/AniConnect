@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <title>登場人物一覧</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-
-<body>
+<x-app-layout>
     <h1>登場人物一覧</h1>
     <!-- 検索機能 -->
     <div class=serch>
@@ -37,9 +27,9 @@
                 </a>
             </p>
             <p class='voice_artist'>
-            <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
-                CV:{{ $character->voiceArtist->name }}
-            </a>
+                <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
+                    CV:{{ $character->voiceArtist->name }}
+                </a>
             </p>
         </div>
         @endforeach
@@ -48,6 +38,4 @@
     <div class='paginate'>
         {{ $characters->appends(request()->query())->links() }}
     </div>
-</body>
-
-</html>
+</x-app-layout>

@@ -1,15 +1,4 @@
-<!DOCTYPE HTML>
-<html lang="ja">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>制作会社詳細画面</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-
-<body>
+<x-app-layout>
     <h1 class="title">
         {{ $creator->name }}
     </h1>
@@ -26,15 +15,13 @@
                 @else
                 @foreach ($creator->works as $work)
                 <div class='work_name'>
-                <a href="{{ route('works.show', ['work' => $work->id]) }}">
-                    {{ $work->name }}
-                </a>
+                    <a href="{{ route('works.show', ['work' => $work->id]) }}">
+                        {{ $work->name }}
+                    </a>
                 </div>
                 @endforeach
                 @endif
             </div>
         </div>
     </div>
-</body>
-
-</html>
+</x-app-layout>

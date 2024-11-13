@@ -1,15 +1,4 @@
-<!DOCTYPE HTML>
-<html lang="ja">
-
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>音楽詳細画面</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-
-<body>
+<x-app-layout>
     <h1 class="title">
         {{ $music->name }}
     </h1>
@@ -50,6 +39,4 @@
     <div class="post_link">
         <a href="{{ route('music_posts.index', ['music_id' => $music->id]) }}">音楽感想一覧</a>
     </div>
-</body>
-
-</html>
+</x-app-layout>

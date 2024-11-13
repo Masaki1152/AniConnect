@@ -1,14 +1,4 @@
-<!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-
-<head>
-    <meta charset="utf-8">
-    <title>Blog</title>
-    <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,600" rel="stylesheet">
-</head>
-
-<body>
+<x-app-layout>
     <h1>「{{ $pilgrimage_first->animePilgrimage->name }}」の感想投稿一覧</h1>
     <a href="{{ route('pilgrimage_posts.create', ['pilgrimage_id' => $pilgrimage_first->anime_pilgrimage_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
@@ -132,6 +122,4 @@
             });
         });
     </script>
-</body>
-
-</html>
+</x-app-layout>
