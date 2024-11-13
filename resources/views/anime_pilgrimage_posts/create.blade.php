@@ -1,7 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        新規感想投稿
-    </x-slot>
     <h1>「{{$pilgrimage_post->animePilgrimage->name}}」への新規感想投稿</h1>
     <form action="{{ route('pilgrimage_posts.store', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id]) }}" method="POST" enctype="multipart/form-data">
         @csrf
