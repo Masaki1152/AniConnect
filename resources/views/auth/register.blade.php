@@ -4,21 +4,21 @@
 
         <!-- Name -->
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('ユーザー名')" />
             <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
         <!-- Email Address -->
         <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
+            <x-input-label for="email" :value="__('メールアドレス')" />
             <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
         <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <x-input-label for="password" :value="__('パスワード')" />
 
             <x-text-input id="password" class="block mt-1 w-full"
                             type="password"
@@ -30,7 +30,7 @@
 
         <!-- Confirm Password -->
         <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <x-input-label for="password_confirmation" :value="__('確認用パスワード')" />
 
             <x-text-input id="password_confirmation" class="block mt-1 w-full"
                             type="password"
@@ -39,13 +39,35 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Age -->
+        <div class="mt-4">
+            <x-input-label for="age" :value="__('年齢')" />
+            <x-text-input id="age" class="block mt-1 w-full" type="number" min="0" name="age" :value="old('age')" required autocomplete="age" />
+            <x-input-error :messages="$errors->get('age')" class="mt-2" />
+        </div>
+
+        <!-- Sex -->
+        <div class="mt-4">
+            <x-input-label for="sex" :value="__('性別')" />
+            <x-radio-input id="male" name="sex" value="male" :checked="old('sex') === 'male'" label="男性"/>
+            <x-radio-input id="female" name="sex" value="female" :checked="old('sex') === 'female'" label="女性"/>
+            <x-input-error :messages="$errors->get('sex')" class="mt-2" />
+        </div>
+ 
+        <!-- Introduction -->
+        <div class="mt-4">
+            <x-input-label for="introduction" :value="__('紹介文')" />
+            <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction" :value="old('introduction')" required autofocus autocomplete="introduction" />
+            <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+                {{ __('既に登録されていますか？') }}
             </a>
 
             <x-primary-button class="ms-4">
-                {{ __('Register') }}
+                {{ __('登録') }}
             </x-primary-button>
         </div>
     </form>

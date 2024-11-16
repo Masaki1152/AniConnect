@@ -188,6 +188,14 @@ return [
 
     'attributes' => [
         // バリデーションエラーを日本語化する処理
+        // ログイン画面のバリデーション
+        'name' => 'ユーザー名',
+        'email' => 'メールアドレス',
+        'password' => 'パスワード',
+        'age' => '年齢',
+        'sex' => '性別',
+        'image' => 'プロフィール画像',
+        'introduction' => '紹介文',
         // 作品感想投稿のバリデーション
         'work_review.work_id' => '作品名',
         'work_review.user_id' => '投稿者名',

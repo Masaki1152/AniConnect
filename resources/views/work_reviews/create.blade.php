@@ -64,6 +64,8 @@
                     // 削除ボタン押下で画像プレビューの削除
                     rmBtn.onclick = (function() {
                         var element = document.getElementById("img-" + String(rmBtn.name)).remove();
+                        var inputElm = document.getElementById("inputElm");
+                        inputElm.value = '';
                     });
                     figure.setAttribute("id", "img-" + key);
                     figure.appendChild(img);
