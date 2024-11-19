@@ -39,6 +39,28 @@
             <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
         </div>
 
+        <!-- Age -->
+        <div class="mt-4">
+            <x-input-label for="age" :value="__('Age')" />
+            <x-text-input id="age" class="block mt-1 w-full" type="number" min="0" name="age" :value="old('age')" required autocomplete="age" />
+            <x-input-error :messages="$errors->get('age')" class="mt-2" />
+        </div>
+
+        <!-- Sex -->
+        <div class="mt-4">
+            <x-input-label for="sex" :value="__('Sex')" />
+            <x-radio-input id="male" name="sex" value="male" :checked="old('sex') === 'male'" label="男性"/>
+            <x-radio-input id="female" name="sex" value="female" :checked="old('sex') === 'female'" label="女性"/>
+            <x-input-error :messages="$errors->get('sex')" class="mt-2" />
+        </div>
+ 
+        <!-- Introduction -->
+        <div class="mt-4">
+            <x-input-label for="introduction" :value="__('Introduction')" />
+            <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction" :value="old('introduction')" required autofocus autocomplete="introduction" />
+            <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
+        </div>
+
         <div class="flex items-center justify-end mt-4">
             <a class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" href="{{ route('login') }}">
                 {{ __('Already registered?') }}
