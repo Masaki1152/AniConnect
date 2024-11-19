@@ -137,5 +137,8 @@
     "per page": "毎ページ",
     "results": "件",
     "to": "から",
-    "Showing": "表示中："
+    "Showing": "表示中：",
+    "Age": "年齢",
+    "Sex": "性別",
+    "Introduction": "紹介文"
 }
