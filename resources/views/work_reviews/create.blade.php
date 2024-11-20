@@ -41,38 +41,83 @@
         <a href="{{ route('work_reviews.index', ['work_id' => $workreview->work_id]) }}">戻る</a>
     </div>
     <script>
-        let key = 0;
+        // 元々選択されているファイルのリスト
+        let selectedFiles = [];
 
         function loadImage(obj) {
-            // 以前に選択したファイルは保持されないため削除
-            document.querySelectorAll('figure').forEach(function(figure) {
-                figure.remove();
-                key = 0;
-            });
-            // 選択されたファイルの枚数分だけ画像を追加
-            for (i = 0; i < obj.files.length; i++) {
-                var fileReader = new FileReader();
-                fileReader.onload = (function(e) {
-                    var field = document.getElementById("preview");
-                    var figure = document.createElement("figure");
-                    var rmBtn = document.createElement("input");
-                    var img = new Image();
-                    img.src = e.target.result;
-                    rmBtn.type = "button";
-                    rmBtn.name = key;
-                    rmBtn.value = "削除";
-                    // 削除ボタン押下で画像プレビューの削除
-                    rmBtn.onclick = (function() {
-                        var element = document.getElementById("img-" + String(rmBtn.name)).remove();
-                    });
-                    figure.setAttribute("id", "img-" + key);
-                    figure.appendChild(img);
-                    figure.appendChild(rmBtn)
-                    field.appendChild(figure);
-                    key++;
-                });
-                fileReader.readAsDataURL(obj.files[i]);
+            // 新しく選択されたファイル
+            const newFiles = Array.from(obj.files);
+
+            // 合計が4枚を超える場合のチェック
+            // 元々選択されていたファイルと新しいファイルの合計を確認
+            if (selectedFiles.length + newFiles.length > 4) {
+                alert('画像は4枚までアップロード可能です');
+                // プレビューを更新し、以前選択していたファイルを再表示する
+                // 新しく選択していた方のファイルは破棄
+                renderPreviews();
+                return;
             }
+
+            // 新しいファイルを選択済みリストに追加
+            selectedFiles.push(...newFiles);
+
+            // プレビューの更新
+            renderPreviews();
+        }
+
+        function renderPreviews() {
+            // プレビューを取得後、クリア
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+
+            selectedFiles.forEach((file, index) => {
+                const fileReader = new FileReader();
+
+                fileReader.onload = function(e) {
+                    const figure = document.createElement('figure');
+                    figure.setAttribute('id', `img-${index}`);
+                    figure.className = 'relative flex flex-col items-center mb-4';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'preview';
+                    img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+
+                    const rmBtn = document.createElement('button');
+                    rmBtn.type = 'button';
+                    rmBtn.textContent = '削除';
+                    rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
+                    rmBtn.onclick = function() {
+                        removeImage(index);
+                    };
+
+                    figure.appendChild(img);
+                    figure.appendChild(rmBtn);
+                    preview.appendChild(figure);
+                };
+
+                fileReader.readAsDataURL(file);
+            });
+
+            // 選択しているファイルを反映
+            updateInputElement();
+        }
+
+        function removeImage(index) {
+            // 選択済みファイルリストから該当インデックスのファイルを削除
+            selectedFiles.splice(index, 1);
+
+            // プレビューを再描画
+            renderPreviews();
+        }
+
+        function updateInputElement() {
+            const dataTransfer = new DataTransfer();
+            selectedFiles.forEach(file => dataTransfer.items.add(file));
+
+            // 選択されたファイルを反映
+            const inputElm = document.getElementById('inputElm');
+            inputElm.files = dataTransfer.files;
         }
     </script>
 

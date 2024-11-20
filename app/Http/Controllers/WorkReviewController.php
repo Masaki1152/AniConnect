@@ -81,17 +81,39 @@ class WorkReviewController extends Controller
     // 感想投稿の編集を実行する
     public function update(WorkReviewRequest $request, WorkReview $workreview, $work_id, $work_review_id)
     {
+        // 保存する画像のPathの配列
+        $image_paths = [];
+        // 削除されていない既存画像がある場合のみ以下の処理を実行
+        if ($request['removedImages'][0]) {
+            // JSON文字列をデコードしてPHP配列に変換
+            $removed_images = json_decode($request['removedImages'][0], true);
+            // Pathの配列に削除されていない画像のPathを追加
+            foreach ($removed_images as $removed_image) {
+                array_push($image_paths, $removed_image['url']);
+            }
+        }
+
         $input_review = $request['work_review'];
         $input_categories = $request->work_review['categories_array'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
-            $counter = 1;
             foreach ($request->file('images') as $image) {
-                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
-                $input_review["image$counter"] = $image_url;
-                $counter++;
+                $image_path = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                array_push($image_paths, $image_path);
             }
+        }
+        // 一旦、保存している画像のPathを全削除
+        // $imagePathのうち、Pathのないものにはnullを代入
+        $vacantElementNum = 4 - count($image_paths);
+        for($counter=0; $counter<$vacantElementNum; $counter++){
+            array_push($image_paths, NULL);
+        }
+        $counter = 1;
+        // 今回保存するPathをDBのImageカラムに代入する
+        foreach($image_paths as $imagePath) {
+            $input_review["image$counter"] = $imagePath;
+            $counter++;
         }
         // 編集の対象となるデータを取得
         $targetworkreview = $workreview->getDetailPost($work_id, $work_review_id);
