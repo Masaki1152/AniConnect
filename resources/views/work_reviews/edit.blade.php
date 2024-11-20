@@ -60,6 +60,8 @@
                 </label>
                 <!-- 削除された既存画像のリスト -->
                 <input type="hidden" name="removedImages[]" id="removedImages" value="">
+                <!-- 削除されず残った既存画像のリスト -->
+                <input type="hidden" name="remainedImages[]" id="remainedImages" value="">
                 <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
             </div>
             <!-- プレビュー画像の表示 -->
@@ -76,7 +78,9 @@
         // 既存の画像URLを保持
         let existingImages = [];
         // 既存の画像のうち、削除されていない画像のURLを保持
-        let removedImages = []
+        let remainedImages = [];
+        // 既存の画像のうち、削除された画像のURLを保持
+        let removedImages = [];
 
         // 編集画面にて、以前画像が選択されていた場合、それらの画像を反映する
         // DOMツリー読み取り完了後にイベント発火
@@ -93,7 +97,7 @@
                 renderExistingImages();
             })
             // 削除されていない画像のURLをフォームに反映
-            document.getElementById('removedImages').value = JSON.stringify(existingImages);
+            document.getElementById('remainedImages').value = JSON.stringify(existingImages);
         });
 
         // 既存画像をプレビューとして表示
@@ -193,12 +197,14 @@
         // 既存画像リストから該当画像を削除
         function removeExistingImage(id) {
             const index = existingImages.findIndex(img => img.id === id);
+            removedImages.push(existingImages[index]);
             if (index !== -1) {
                 existingImages.splice(index, 1);
             }
             // 削除されていない画像のURLをフォームに反映
-            document.getElementById('removedImages').value = JSON.stringify(existingImages); 
-            console.log(document.getElementById('removedImages').value);
+            document.getElementById('remainedImages').value = JSON.stringify(existingImages); 
+            // 削除された画像のURLをフォームに反映
+            document.getElementById('removedImages').value = JSON.stringify(removedImages); 
             // プレビューを再描画
             renderPreviews();
         }
