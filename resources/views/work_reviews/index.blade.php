@@ -12,49 +12,52 @@
         </div>
     </div>
     <div class='work_reviews'>
-        @if($work_reviews->isEmpty())
-        <h2 class='no_result'>結果がありません。</h2>
+        @if ($work_reviews->isEmpty())
+            <h2 class='no_result'>結果がありません。</h2>
         @else
-        <div class='work_review'>
-            @foreach ($work_reviews as $work_review)
             <div class='work_review'>
-                <h2 class='title'>
-                    <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
-                </h2>
-                <div class="like">
+                @foreach ($work_reviews as $work_review)
+                    <div class='work_review'>
+                        <h2 class='title'>
+                            <a
+                                href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
+                        </h2>
+                        <div class="like">
 
-                    <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                    <button id="like_button"
-                        data-work-id="{{ $work_review->work_id }}"
-                        data-review-id="{{ $work_review->id }}"
-                        type="submit">
-                        {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                    </button>
-                    <div class="like_user">
-                        <a href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
-                            <p id="like_count">{{ $work_review->users->count() }}</p>
-                        </a>
+                            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+                            <button id="like_button" data-work-id="{{ $work_review->work_id }}"
+                                data-review-id="{{ $work_review->id }}" type="submit">
+                                {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                            </button>
+                            <div class="like_user">
+                                <a
+                                    href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
+                                    <p id="like_count">{{ $work_review->users->count() }}</p>
+                                </a>
+                            </div>
+                        </div>
+                        <h5 class='category'>
+                            @foreach ($work_review->categories as $category)
+                                {{ $category->name }}
+                            @endforeach
+                        </h5>
+                        <p class='body'>{{ $work_review->body }}</p>
+                        @if ($work_review->image1)
+                            <div>
+                                <img src="{{ $work_review->image1 }}" alt="画像が読み込めません。">
+                            </div>
+                        @endif
+                        <form
+                            action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}"
+                            id="form_{{ $work_review->id }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" data-post-id="{{ $work_review->id }}"
+                                class="delete-button">投稿を削除する</button>
+                        </form>
                     </div>
-                </div>
-                <h5 class='category'>
-                    @foreach($work_review->categories as $category)
-                    {{ $category->name }}
-                    @endforeach
-                </h5>
-                <p class='body'>{{ $work_review->body }}</p>
-                @if($work_review->image1)
-                <div>
-                    <img src="{{ $work_review->image1 }}" alt="画像が読み込めません。">
-                </div>
-                @endif
-                <form action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" id="form_{{ $work_review->id }}" method="post">
-                    @csrf
-                    @method('DELETE')
-                    <button type="button" data-post-id="{{ $work_review->id }}" class="delete-button">投稿を削除する</button>
-                </form>
+                @endforeach
             </div>
-            @endforeach
-        </div>
         @endif
     </div>
     <div class="footer">
@@ -100,13 +103,14 @@
                     const workId = button.getAttribute('data-work-id');
                     const reviewId = button.getAttribute('data-review-id');
                     try {
-                        const response = await fetch(`/work_reviews/${workId}/reviews/${reviewId}/like`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                        });
+                        const response = await fetch(
+                            `/work_reviews/${workId}/reviews/${reviewId}/like`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                            });
                         const data = await response.json();
                         if (data.status === 'liked') {
                             button.innerText = 'いいね取り消し';
