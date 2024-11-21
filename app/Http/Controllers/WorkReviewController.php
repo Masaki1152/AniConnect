@@ -139,6 +139,17 @@ class WorkReviewController extends Controller
     {
         // 編集の対象となるデータを取得
         $targetworkreview = $workreview->getDetailPost($work_id, $work_review_id);
+        // 削除する投稿の画像も削除する処理
+        for ($counter = 1; $counter < 5; $counter++) {
+            $removed_image_path = $targetworkreview->{'image' . $counter};
+            // DBのimageの中身がnullであれば処理をスキップする
+            if(is_null($removed_image_path)) {
+                break;
+            }
+            $public_id = $this->extractPublicIdFromUrl($removed_image_path);
+            Cloudinary::destroy($public_id);
+        }
+        // データの削除
         $targetworkreview->delete();
         return redirect()->route('work_reviews.index', ['work_id' => $work_id]);
     }
