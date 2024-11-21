@@ -42,7 +42,26 @@
             </div>
             <div class="image">
                 <h2>画像（4枚まで）</h2>
-                <input id="inputElm" type="file" name="images[]" multiple onchange="loadImage(this);">
+                @php
+                // 既にファイルが選択されている場合はそれらを表示する
+                $existingImages = [];
+                $numbers = array(1, 2, 3, 4);
+                foreach($numbers as $number){
+                $image = "image".$number;
+                if($work_review->$image){
+                array_push($existingImages, $work_review->$image);
+                }
+                }
+                $existingImages = json_encode($existingImages);
+                @endphp
+                <label>
+                    <input id="inputElm" type="file" style="display:none" name="images[]" multiple onchange="loadImage(this);">画像の追加
+                    <div id="count"></div>
+                </label>
+                <!-- 削除された既存画像のリスト -->
+                <input type="hidden" name="removedImages[]" id="removedImages" value="">
+                <!-- 削除されず残った既存画像のリスト -->
+                <input type="hidden" name="remainedImages[]" id="remainedImages" value="">
                 <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
             </div>
             <!-- プレビュー画像の表示 -->
@@ -54,37 +73,167 @@
         <a href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">保存しないで戻る</a>
     </div>
     <script>
-        let key = 0;
+        // 元々選択されている画像のリスト
+        let selectedImages = [];
+        // 既存の画像URLを保持
+        let existingImages = [];
+        // 既存の画像のうち、削除されていない画像のURLを保持
+        let remainedImages = [];
+        // 既存の画像のうち、削除された画像のURLを保持
+        let removedImages = [];
+
+        // 編集画面にて、以前画像が選択されていた場合、それらの画像を反映する
+        // DOMツリー読み取り完了後にイベント発火
+        document.addEventListener('DOMContentLoaded', function() {
+            // 既存の画像を取得
+            const ImagePaths = JSON.parse('<?php echo $existingImages; ?>');
+            ImagePaths.forEach((path, index) => {
+                existingImages.push({
+                    id: index,
+                    url: path
+                });
+
+                // 既存画像をプレビューとして表示
+                renderExistingImages();
+            })
+            // 削除されていない画像のURLをフォームに反映
+            document.getElementById('remainedImages').value = JSON.stringify(existingImages);
+        });
+
+        // 既存画像をプレビューとして表示
+        function renderExistingImages() {
+            const preview = document.getElementById('preview');
+            // プレビューを初期化
+            preview.innerHTML = '';
+            // 選択している画像の枚数を表示する
+            countImages(existingImages);
+
+            existingImages.forEach(image => {
+                const figure = document.createElement('figure');
+                figure.setAttribute('id', `existing-img-${image.id}`);
+                figure.className = 'relative flex flex-col items-center mb-4';
+
+                const img = document.createElement('img');
+                // サーバー上の画像URLを使用
+                img.src = image.url;
+                img.alt = 'existing preview';
+                img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+
+                const rmBtn = document.createElement('button');
+                rmBtn.type = 'button';
+                rmBtn.textContent = '削除';
+                rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
+                rmBtn.onclick = function() {
+                    removeExistingImage(image.id);
+                };
+
+                figure.appendChild(img);
+                figure.appendChild(rmBtn);
+                preview.appendChild(figure);
+            });
+        }
 
         function loadImage(obj) {
-            // 以前に選択したファイルは保持されないため削除
-            document.querySelectorAll('figure').forEach(function(figure) {
-                figure.remove();
-                key = 0;
-            });
-            // 選択されたファイルの枚数分だけ画像を追加
-            for (i = 0; i < obj.files.length; i++) {
-                var fileReader = new FileReader();
-                fileReader.onload = (function(e) {
-                    var field = document.getElementById("preview");
-                    var figure = document.createElement("figure");
-                    var rmBtn = document.createElement("input");
-                    var img = new Image();
-                    img.src = e.target.result;
-                    rmBtn.type = "button";
-                    rmBtn.name = key;
-                    rmBtn.value = "削除";
-                    rmBtn.onclick = (function() {
-                        var element = document.getElementById("img-" + String(rmBtn.name)).remove();
-                    });
-                    figure.setAttribute("id", "img-" + key);
-                    figure.appendChild(img);
-                    figure.appendChild(rmBtn)
-                    field.appendChild(figure);
-                    key++;
-                });
-                fileReader.readAsDataURL(obj.files[i]);
+            // 新しく選択された画像
+            const newImages = Array.from(obj.files);
+            // 合計が4枚を超える場合のチェック
+            // 元々選択されていた画像と新しい画像、以前保存していた画像の合計を確認
+            if (selectedImages.length + newImages.length + existingImages.length > 4) {
+                alert('画像は4枚までアップロード可能です');
+                // プレビューを更新し、以前選択していた画像を再表示する
+                // 新しく選択していた方の画像は破棄
+                renderPreviews();
+                return;
             }
+
+            // 新しい画像を選択済みリストに追加
+            selectedImages.push(...newImages);
+
+            // プレビューの更新
+            renderPreviews();
+        }
+
+        function renderPreviews() {
+            // プレビューを取得後、クリア
+            const preview = document.getElementById('preview');
+            preview.innerHTML = '';
+
+            // 既存画像を表示
+            renderExistingImages();
+            // 新規追加された画像を表示
+            selectedImages.forEach((image, index) => {
+                const fileReader = new FileReader();
+
+                fileReader.onload = function(e) {
+                    const figure = document.createElement('figure');
+                    figure.setAttribute('id', `img-${index}`);
+                    figure.className = 'relative flex flex-col items-center mb-4';
+
+                    const img = document.createElement('img');
+                    img.src = e.target.result;
+                    img.alt = 'preview';
+                    img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+
+                    const rmBtn = document.createElement('button');
+                    rmBtn.type = 'button';
+                    rmBtn.textContent = '削除';
+                    rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
+                    rmBtn.onclick = function() {
+                        removeImage(index);
+                    };
+
+                    figure.appendChild(img);
+                    figure.appendChild(rmBtn);
+                    preview.appendChild(figure);
+                };
+
+                fileReader.readAsDataURL(image);
+            });
+
+            // 選択している画像を反映
+            updateInputElement();
+        }
+
+        // 既存画像リストから該当画像を削除
+        function removeExistingImage(id) {
+            const index = existingImages.findIndex(img => img.id === id);
+            removedImages.push(existingImages[index]);
+            if (index !== -1) {
+                existingImages.splice(index, 1);
+            }
+            // 削除されていない画像のURLをフォームに反映
+            document.getElementById('remainedImages').value = JSON.stringify(existingImages); 
+            // 削除された画像のURLをフォームに反映
+            document.getElementById('removedImages').value = JSON.stringify(removedImages); 
+            // プレビューを再描画
+            renderPreviews();
+        }
+
+        function removeImage(index) {
+            // 選択済み画像リストから該当インデックスの画像を削除
+            selectedImages.splice(index, 1);
+
+            // プレビューを再描画
+            renderPreviews();
+        }
+
+        function updateInputElement() {
+            const dataTransfer = new DataTransfer();
+            selectedImages.forEach(image => dataTransfer.items.add(image));
+
+            // 選択された画像を反映
+            const inputElm = document.getElementById('inputElm');
+            inputElm.files = dataTransfer.files;
+        }
+
+        // 選択している画像の枚数を表示する
+        function countImages() {
+            const count = document.getElementById('count');
+            count.innerHTML = '';
+            const countText = document.createElement('p');
+            const ImageCount = selectedImages.length + existingImages.length;
+            countText.textContent = `現在、${ImageCount}枚の画像を選択しています。`;
+            count.appendChild(countText);
         }
     </script>
 
