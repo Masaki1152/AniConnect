@@ -30,7 +30,10 @@
         </div>
         <div class="image">
             <h2>画像（4枚まで）</h2>
-            <input id="inputElm" type="file" name="images[]" multiple onchange="loadImage(this);">
+            <label>
+                <input id="inputElm" type="file" style="display:none" name="images[]" multiple onchange="loadImage(this);">画像の追加
+                <div id="count">現在、0枚の画像を選択しています。</div>
+            </label>
             <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
         </div>
         <!-- プレビュー画像の表示 -->
@@ -42,15 +45,15 @@
     </div>
     <script>
         // 元々選択されているファイルのリスト
-        let selectedFiles = [];
+        let selectedImages = [];
 
         function loadImage(obj) {
             // 新しく選択されたファイル
-            const newFiles = Array.from(obj.files);
+            const newImages = Array.from(obj.files);
 
             // 合計が4枚を超える場合のチェック
             // 元々選択されていたファイルと新しいファイルの合計を確認
-            if (selectedFiles.length + newFiles.length > 4) {
+            if (selectedImages.length + newImages.length > 4) {
                 alert('画像は4枚までアップロード可能です');
                 // プレビューを更新し、以前選択していたファイルを再表示する
                 // 新しく選択していた方のファイルは破棄
@@ -59,7 +62,7 @@
             }
 
             // 新しいファイルを選択済みリストに追加
-            selectedFiles.push(...newFiles);
+            selectedImages.push(...newImages);
 
             // プレビューの更新
             renderPreviews();
@@ -69,8 +72,10 @@
             // プレビューを取得後、クリア
             const preview = document.getElementById('preview');
             preview.innerHTML = '';
+            // 選択している画像の枚数を表示する
+            countImages(selectedImages);
 
-            selectedFiles.forEach((file, index) => {
+            selectedImages.forEach((image, index) => {
                 const fileReader = new FileReader();
 
                 fileReader.onload = function(e) {
@@ -96,7 +101,7 @@
                     preview.appendChild(figure);
                 };
 
-                fileReader.readAsDataURL(file);
+                fileReader.readAsDataURL(image);
             });
 
             // 選択しているファイルを反映
@@ -105,7 +110,7 @@
 
         function removeImage(index) {
             // 選択済みファイルリストから該当インデックスのファイルを削除
-            selectedFiles.splice(index, 1);
+            selectedImages.splice(index, 1);
 
             // プレビューを再描画
             renderPreviews();
@@ -113,11 +118,21 @@
 
         function updateInputElement() {
             const dataTransfer = new DataTransfer();
-            selectedFiles.forEach(file => dataTransfer.items.add(file));
+            selectedImages.forEach(image => dataTransfer.items.add(image));
 
             // 選択されたファイルを反映
             const inputElm = document.getElementById('inputElm');
             inputElm.files = dataTransfer.files;
+        }
+
+        // 選択している画像の枚数を表示する
+        function countImages() {
+            const count = document.getElementById('count');
+            count.innerHTML = '';
+            const countText = document.createElement('p');
+            const ImageCount = selectedImages.length;
+            countText.textContent = `現在、${ImageCount}枚の画像を選択しています。`;
+            count.appendChild(countText);
         }
     </script>
 
