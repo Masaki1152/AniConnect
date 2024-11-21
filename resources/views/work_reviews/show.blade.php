@@ -4,14 +4,13 @@
     </h1>
     <div class="like">
         <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-        <button id="like_button"
-            data-work-id="{{ $work_review->work_id }}"
-            data-review-id="{{ $work_review->id }}"
+        <button id="like_button" data-work-id="{{ $work_review->work_id }}" data-review-id="{{ $work_review->id }}"
             type="submit">
             {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
         </button>
         <div class="like_user">
-            <a href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
+            <a
+                href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
                 <p id="like_count">{{ $work_review->users->count() }}</p>
             </a>
         </div>
@@ -24,8 +23,8 @@
             <p>{{ $work_review->user->name }}</p>
             <h3>カテゴリー</h3>
             <h5 class='category'>
-                @foreach($work_review->categories as $category)
-                {{ $category->name }}
+                @foreach ($work_review->categories as $category)
+                    {{ $category->name }}
                 @endforeach
             </h5>
             <h3>本文</h3>
@@ -33,24 +32,27 @@
             <h3>作成日</h3>
             <p>{{ $work_review->created_at }}</p>
             @php
-            $numbers = array(1, 2, 3, 4);
+                $numbers = [1, 2, 3, 4];
             @endphp
-            @foreach($numbers as $number)
-            @php
-            $image = "image".$number;
-            @endphp
-            @if($work_review->$image)
-            <div>
-                <img src="{{ $work_review->$image }}" alt="画像が読み込めません。">
-            </div>
-            @endif
+            @foreach ($numbers as $number)
+                @php
+                    $image = 'image' . $number;
+                @endphp
+                @if ($work_review->$image)
+                    <div>
+                        <img src="{{ $work_review->$image }}" alt="画像が読み込めません。">
+                    </div>
+                @endif
             @endforeach
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('work_reviews.edit', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">編集する</a>
+        <a
+            href="{{ route('work_reviews.edit', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">編集する</a>
     </div>
-    <form action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}" id="form_{{ $work_review->id }}" method="post">
+    <form
+        action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}"
+        id="form_{{ $work_review->id }}" method="post">
         @csrf
         @method('DELETE')
         <button type="button" data-post-id="{{ $work_review->id }}" class="delete-button">投稿を削除する</button>
@@ -95,13 +97,14 @@
                     const workId = button.getAttribute('data-work-id');
                     const reviewId = button.getAttribute('data-review-id');
                     try {
-                        const response = await fetch(`/work_reviews/${workId}/reviews/${reviewId}/like`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                        });
+                        const response = await fetch(
+                            `/work_reviews/${workId}/reviews/${reviewId}/like`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                            });
                         const data = await response.json();
                         if (data.status === 'liked') {
                             button.innerText = 'いいね取り消し';
