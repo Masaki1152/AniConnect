@@ -24,4 +24,9 @@
             @endif
         </div>
     </div>
+    <div>
+        <a href="{{ route('profile.edit') }}">プロフィールの編集</a>
+        <a href="{{ route('profile.password') }}">パスワードの更新</a>
+        <a href="{{ route('profile.delete') }}" class="text-red-500">アカウント削除</a>
+    </div>
 </x-app-layout>
