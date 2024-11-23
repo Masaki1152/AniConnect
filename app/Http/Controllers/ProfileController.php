@@ -11,9 +11,15 @@ use Illuminate\View\View;
 
 class ProfileController extends Controller
 {
-    /**
-     * Display the user's profile form.
-     */
+    public function index()
+    {
+        // 現在認証しているユーザーを取得
+        $user = auth()->user();
+        return view('profile.index', [
+            'user' => $user
+        ]);
+    }
+
     public function edit(Request $request): View
     {
         return view('profile.edit', [
