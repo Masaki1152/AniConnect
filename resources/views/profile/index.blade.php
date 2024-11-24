@@ -29,4 +29,12 @@
         <a href="{{ route('profile.password') }}">パスワードの更新</a>
         <a href="{{ route('profile.delete') }}" class="text-red-500">アカウント削除</a>
     </div>
+    @if (session('status'))
+        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
+            class="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
+            <div class="bg-gray-300 text-white text-lg font-bold py-4 px-6 rounded-lg shadow-lg">
+                {{ session('status') }}
+            </div>
+        </div>
+    @endif
 </x-app-layout>

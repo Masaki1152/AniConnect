@@ -88,7 +88,7 @@ class ProfileController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        return redirect()->route('profile.index');
+        return redirect()->route('profile.index')->with('status', 'パスワードを更新しました。');
     }
 
     /**
