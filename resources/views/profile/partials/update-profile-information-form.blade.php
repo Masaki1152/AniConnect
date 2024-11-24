@@ -13,27 +13,30 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)"
+                required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)"
+                required autocomplete="username" />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
+            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                 <div>
                     <p class="text-sm mt-2 text-gray-800">
                         {{ __('Your email address is unverified.') }}
 
-                        <button form="send-verification" class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        <button form="send-verification"
+                            class="underline text-sm text-gray-600 hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
                             {{ __('Click here to re-send the verification email.') }}
                         </button>
                     </p>
@@ -50,37 +53,49 @@
         <!-- Age -->
         <div class="mt-4">
             <x-input-label for="age" :value="__('Age')" />
-            <x-text-input id="age" class="block mt-1 w-full" type="number" min="0" name="age" :value="old('age')" required autocomplete="age" />
+            <x-text-input id="age" class="block mt-1 w-full" type="number" min="0" name="age"
+                :value="old('age', $user->age)" required autocomplete="age" />
             <x-input-error :messages="$errors->get('age')" class="mt-2" />
         </div>
 
         <!-- Sex -->
         <div class="mt-4">
             <x-input-label for="sex" :value="__('Sex')" />
-            <x-radio-input id="male" name="sex" value="male" :checked="old('sex') === 'male'" label="男性"/>
-            <x-radio-input id="female" name="sex" value="female" :checked="old('sex') === 'female'" label="女性"/>
-            <x-input-error :messages="$errors->get('sex')" class="mt-2" />
+            {{ $user->sex }}
         </div>
- 
+
         <!-- Introduction -->
         <div class="mt-4">
             <x-input-label for="introduction" :value="__('Introduction')" />
-            <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction" :value="old('introduction')" required autofocus autocomplete="introduction" />
+            <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction"
+                :value="old('introduction', $user->introduction)" required autofocus autocomplete="introduction" />
             <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
         </div>
+
+        <!-- Image -->
+        @php
+            $existingImagePath = Auth::user()->image;
+        @endphp
+        <div id="existing_image_path" data-php-variable="{{ $existingImagePath }}"></div>
+        <div>
+            <x-input-label for="image" :value="__('User_Image')" />
+            <label>
+                <input id="image" class="block mt-1 w-full" type="file" name="image"
+                    :value="old('image', $user - > image)" style="display:none">画像の選択
+            </label>
+            <x-input-error :messages="$errors->get('image')" class="mt-2" />
+        </div>
+        <!-- プレビュー画像の表示 -->
+        <div id="preview" style="width: 300px;"></div>
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
-                <p
-                    x-data="{ show: true }"
-                    x-show="show"
-                    x-transition
-                    x-init="setTimeout(() => show = false, 2000)"
-                    class="text-sm text-gray-600"
-                >{{ __('Saved.') }}</p>
+                <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"
+                    class="text-sm text-gray-600">{{ __('Saved.') }}</p>
             @endif
         </div>
     </form>
 </section>
+<script src="{{ asset('/js/edit_profile_preview.js') }}"></script>
