@@ -13,7 +13,7 @@
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
         @csrf
         @method('patch')
 
@@ -72,6 +72,22 @@
             <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
         </div>
 
+        <!-- Image -->
+        @php
+            $existingImagePath = Auth::user()->image;
+        @endphp
+        <div id="existing_image_path" data-php-variable="{{ $existingImagePath }}"></div>
+        <div>
+            <x-input-label for="image" :value="__('User_Image')" />
+            <label>
+                <input id="image" class="block mt-1 w-full" type="file" name="image"
+                    :value="old('image', $user - > image)" style="display:none">画像の選択
+            </label>
+            <x-input-error :messages="$errors->get('image')" class="mt-2" />
+        </div>
+        <!-- プレビュー画像の表示 -->
+        <div id="preview" style="width: 300px;"></div>
+
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
@@ -82,3 +98,4 @@
         </div>
     </form>
 </section>
+<script src="{{ asset('/js/edit_profile_preview.js') }}"></script>
