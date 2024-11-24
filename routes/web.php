@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     // ユーザー情報の編集
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    // ユーザー情報の更新処理
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     // パスワードの更新画面の表示
     Route::get('/profile/password', [ProfileController::class, 'editPassword'])->name('profile.password');
     // パスワードの更新処理
@@ -56,7 +58,6 @@ Route::middleware('auth')->group(function () {
     // アカウント削除画面の表示
     Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete.confirm');
     // 保険
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 

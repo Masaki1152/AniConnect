@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProfileController extends Controller
@@ -24,6 +26,7 @@ class ProfileController extends Controller
         ]);
     }
 
+    // 編集画面の表示
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -31,9 +34,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
+    // プロフィール情報の更新
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -59,6 +60,35 @@ class ProfileController extends Controller
         $request->user()->save();
 
         return Redirect::route('profile.index');
+    }
+
+    // パスワード更新ページの表示
+    public function editPassword()
+    {
+        return view('profile.edit-password');
+    }
+
+    // パスワード更新の処理
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => [
+                'required',
+                'confirmed',
+                // 大文字必須、半角英数字のみ
+                'regex:/^(?=.*[A-Z])[a-zA-Z0-9]+$/',
+                Rules\Password::defaults()
+            ],
+        ], [
+            'password.regex' => 'パスワードには少なくとも1つの大文字を含む半角英数字を使用してください。',
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('profile.index');
     }
 
     /**
