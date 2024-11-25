@@ -57,7 +57,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile/delete', [ProfileController::class, 'confirmDelete'])->name('profile.delete');
     // アカウント削除画面の表示
     Route::delete('/profile/delete', [ProfileController::class, 'delete'])->name('profile.delete.confirm');
-    // 保険
+    // パスワードの削除処理
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
