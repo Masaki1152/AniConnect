@@ -101,10 +101,14 @@ class ProfileController extends Controller
         return redirect()->route('profile.index')->with('status', 'パスワードを更新しました。');
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
+    // アカウント削除確認ページの表示
+    public function confirmDelete()
+    {
+        return view('profile.delete-account');
+    }
+
+    // アカウント削除の処理
+    public function destroy(Request $request)
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
@@ -119,7 +123,7 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return Redirect::to('/register')->with('status', 'アカウントが削除されました。');
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する
