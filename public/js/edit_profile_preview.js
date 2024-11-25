@@ -12,6 +12,8 @@ const currentImage = existingImage != '' ? existingImage : noImagePath;
 // 編集画面にて、以前画像が選択されていた場合、それらの画像を反映する
 // DOMツリー読み取り完了後にイベント発火
 document.addEventListener('DOMContentLoaded', function() {
+
+    // 現在の画像の表示
     renderExistingImages(currentImage)
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する

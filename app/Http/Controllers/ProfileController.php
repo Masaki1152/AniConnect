@@ -56,10 +56,27 @@ class ProfileController extends Controller
         } else {
             $request->user()->image = $path;
         }
+        // $path = null;
+        // // 元々ファイルがあり、さらにそのファイルを変更する場合
+        // if ($request->user()->image && $request->hasFile('image')) {
+        //     // 既存のファイルパスの削除
+        //     $currentImage = $request->user()->image;
+        //     $public_id = $this->extractPublicIdFromUrl($currentImage);
+        //     Cloudinary::destroy($public_id);
+        //     // 新しいファイルの追加
+        //     $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
+        //     $request->user()->image = $path;
+        // } elseif ($request->user()->image) {
+        //     // 元々ファイルがあるが、ファイルの変更がない場合
+        //     // 何もしない
+        // } else {
+        //     // nullの代入
+        //     $request->user()->image = $path;
+        // }
 
         $request->user()->save();
 
-        return Redirect::route('profile.index');
+        return Redirect::route('profile.index')->with('status', 'プロフィール情報を更新しました。');
     }
 
     // パスワード更新ページの表示
