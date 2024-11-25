@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Validation\Rules;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class ProfileController extends Controller
@@ -24,6 +26,7 @@ class ProfileController extends Controller
         ]);
     }
 
+    // 編集画面の表示
     public function edit(Request $request): View
     {
         return view('profile.edit', [
@@ -31,9 +34,7 @@ class ProfileController extends Controller
         ]);
     }
 
-    /**
-     * Update the user's profile information.
-     */
+    // プロフィール情報の更新
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -41,30 +42,73 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-        // 古い画像はCloudinaryから削除する
-        if ($currentImage = $request->user()->image) {
+        // プロフィール画像の編集
+        // 元々ファイルがあり、さらにそのファイルを変更する場合
+        if ($request->user()->image && $request->hasFile('image')) {
+            // 既存のファイルパスの削除
+            $currentImage = $request->user()->image;
             $public_id = $this->extractPublicIdFromUrl($currentImage);
             Cloudinary::destroy($public_id);
-        }
-
-        // 画像があればCloudinaryに保存する、なければnullを代入
-        $path = null;
-        if ($request->hasFile('image')) {
+            // 新しいファイルの追加
             $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
             $request->user()->image = $path;
-        } else {
+        } elseif ($request->hasFile('image')) {
+            // 元々ファイルがなく、ファイルの変更がある場合
+            // 新しいファイルの追加
+            $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
             $request->user()->image = $path;
+        } elseif ($request->user()->image && $request['existingImage'] == null) {
+            // 元々ファイルがあり、画像が削除された場合
+            // 既存のファイルパスの削除
+            $currentImage = $request->user()->image;
+            $public_id = $this->extractPublicIdFromUrl($currentImage);
+            Cloudinary::destroy($public_id);
+            $request->user()->image = null;
+            // 元々ファイルがないor元々ファイルがある場合で、ファイルの変更がない場合は何もしない
         }
 
         $request->user()->save();
 
-        return Redirect::route('profile.index');
+        return Redirect::route('profile.index')->with('status', 'プロフィール情報を更新しました。');
     }
 
-    /**
-     * Delete the user's account.
-     */
-    public function destroy(Request $request): RedirectResponse
+    // パスワード更新ページの表示
+    public function editPassword()
+    {
+        return view('profile.edit-password');
+    }
+
+    // パスワード更新の処理
+    public function updatePassword(Request $request)
+    {
+        $request->validate([
+            'current_password' => ['required', 'current_password'],
+            'password' => [
+                'required',
+                'confirmed',
+                // 大文字必須、半角英数字のみ
+                'regex:/^(?=.*[A-Z])[a-zA-Z0-9]+$/',
+                Rules\Password::defaults()
+            ],
+        ], [
+            'password.regex' => 'パスワードには少なくとも1つの大文字を含む半角英数字を使用してください。',
+        ]);
+
+        $request->user()->update([
+            'password' => Hash::make($request->password),
+        ]);
+
+        return redirect()->route('profile.index')->with('status', 'パスワードを更新しました。');
+    }
+
+    // アカウント削除確認ページの表示
+    public function confirmDelete()
+    {
+        return view('profile.delete-account');
+    }
+
+    // アカウント削除の処理
+    public function destroy(Request $request)
     {
         $request->validateWithBag('userDeletion', [
             'password' => ['required', 'current_password'],
@@ -79,7 +123,7 @@ class ProfileController extends Controller
         $request->session()->invalidate();
         $request->session()->regenerateToken();
 
-        return Redirect::to('/');
+        return Redirect::to('/register')->with('status', 'アカウントが削除されました。');
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

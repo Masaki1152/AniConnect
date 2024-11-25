@@ -2,6 +2,14 @@
     <h1 class="title">
         プロフィール
     </h1>
+    @if (session('status'))
+        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
+            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+            <div class="text-white">
+                {{ session('status') }}
+            </div>
+        </div>
+    @endif
     <div class="content">
         <div class="content__user_profile">
             <h3>ユーザー名</h3>
