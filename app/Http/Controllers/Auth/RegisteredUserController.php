@@ -32,12 +32,20 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'age' => ['required'],
             'sex' => ['required', 'string'],
             'image' => [],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'password' => [
+                'required',
+                Rules\Password::defaults(),
+                // 大文字必須、半角英数字のみ
+                'regex:/^(?=.*[A-Z])[a-zA-Z0-9]+$/',
+                'confirmed',
+            ],
             'introduction' => ['required', 'string', 'max:255'],
+        ], [
+            'password.regex' => 'パスワードには少なくとも1つの大文字を含む半角英数字を使用してください。',
         ]);
 
         $user = User::create([
