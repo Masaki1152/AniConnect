@@ -83,6 +83,8 @@
                 <input id="image" class="block mt-1 w-full" type="file" name="image"
                     :value="old('image', $user - > image)" style="display:none">画像の選択
             </label>
+            <!-- 既存画像のパス -->
+            <input type="hidden" name="existingImage" id="existingImage" value="">
             <x-input-error :messages="$errors->get('image')" class="mt-2" />
         </div>
         <!-- プレビュー画像の表示 -->

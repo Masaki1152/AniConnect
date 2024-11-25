@@ -42,37 +42,30 @@ class ProfileController extends Controller
         if ($request->user()->isDirty('email')) {
             $request->user()->email_verified_at = null;
         }
-        // 古い画像はCloudinaryから削除する
-        if ($currentImage = $request->user()->image) {
+        // プロフィール画像の編集
+        // 元々ファイルがあり、さらにそのファイルを変更する場合
+        if ($request->user()->image && $request->hasFile('image')) {
+            // 既存のファイルパスの削除
+            $currentImage = $request->user()->image;
             $public_id = $this->extractPublicIdFromUrl($currentImage);
             Cloudinary::destroy($public_id);
-        }
-
-        // 画像があればCloudinaryに保存する、なければnullを代入
-        $path = null;
-        if ($request->hasFile('image')) {
+            // 新しいファイルの追加
             $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
             $request->user()->image = $path;
-        } else {
+        } elseif ($request->hasFile('image')) {
+            // 元々ファイルがなく、ファイルの変更がある場合
+            // 新しいファイルの追加
+            $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
             $request->user()->image = $path;
+        } elseif ($request->user()->image && $request['existingImage'] == null) {
+            // 元々ファイルがあり、画像が削除された場合
+            // 既存のファイルパスの削除
+            $currentImage = $request->user()->image;
+            $public_id = $this->extractPublicIdFromUrl($currentImage);
+            Cloudinary::destroy($public_id);
+            $request->user()->image = null;
+            // 元々ファイルがないor元々ファイルがある場合で、ファイルの変更がない場合は何もしない
         }
-        // $path = null;
-        // // 元々ファイルがあり、さらにそのファイルを変更する場合
-        // if ($request->user()->image && $request->hasFile('image')) {
-        //     // 既存のファイルパスの削除
-        //     $currentImage = $request->user()->image;
-        //     $public_id = $this->extractPublicIdFromUrl($currentImage);
-        //     Cloudinary::destroy($public_id);
-        //     // 新しいファイルの追加
-        //     $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
-        //     $request->user()->image = $path;
-        // } elseif ($request->user()->image) {
-        //     // 元々ファイルがあるが、ファイルの変更がない場合
-        //     // 何もしない
-        // } else {
-        //     // nullの代入
-        //     $request->user()->image = $path;
-        // }
 
         $request->user()->save();
 
