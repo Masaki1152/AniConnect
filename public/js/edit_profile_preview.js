@@ -5,7 +5,7 @@ const phpVariable = existingImagePath.dataset.phpVariable;
 // 既存の画像を取得
 const existingImage = phpVariable;
 // 画像がない場合の画像パス
-const noImagePath = 'https://res.cloudinary.com/dnumegejl/image/upload/v1732344378/No_User_Image_genl0i.png';
+const noImagePath = 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png';
 // 既存の画像を表示
 const currentImage = existingImage != '' ? existingImage : noImagePath;
 
@@ -36,13 +36,13 @@ function renderExistingImages(currentImage) {
     const img = document.createElement('img');
     img.src = currentImage;
     img.alt = 'existing preview';
-    img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+    img.className = 'w-40 h-40 rounded-full object-cover mr-1';
 
     const rmBtn = document.createElement('button');
     rmBtn.type = 'button';
     rmBtn.setAttribute('id', 'delete_button');
     rmBtn.textContent = '削除';
-    rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
+    rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 mt-2';
     rmBtn.onclick = function() {
         removeExistingImage();
     };
@@ -69,13 +69,13 @@ document.getElementById('image').addEventListener('change', function(event) {
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'preview';
-            img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+            img.className = 'w-40 h-40 rounded-full object-cover mr-1';
             // 画像をリセットボタンの作成
             const rmBtn = document.createElement('button');
             rmBtn.type = 'button';
             rmBtn.textContent = '画像変更のリセット';
             rmBtn.className =
-                'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
+                'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 mt-2';
             rmBtn.onclick = function() {
                 resetImage();
             };

@@ -37,7 +37,7 @@
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                             <!-- アイコン画像 -->
-                            <img src="{{ Auth::user()->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732344378/No_User_Image_genl0i.png' }}"
+                            <img src="{{ Auth::user()->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
                                 alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover mr-1">
 
                             <!-- アカウント名 -->
