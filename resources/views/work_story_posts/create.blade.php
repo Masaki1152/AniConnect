@@ -1,14 +1,14 @@
 <x-app-layout>
-    <h1>「{{ $work_story_post->workStory->sub_title }}」への新規感想投稿</h1>
+    <h1>「{{ $work_story->sub_title }}」への新規感想投稿</h1>
     <form
-        action="{{ route('work_story_posts.store', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}"
+        action="{{ route('work_story_posts.store', ['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]) }}"
         method="POST" enctype="multipart/form-data">
         @csrf
         <div class="work_id">
-            <input type="hidden" name="work_story_post[work_id]" value="{{ $work_story_post->work_id }}">
+            <input type="hidden" name="work_story_post[work_id]" value="{{ $work_story->work_id }}">
         </div>
         <div class="sub_title_id">
-            <input type="hidden" name="work_story_post[sub_title_id]" value="{{ $work_story_post->sub_title_id }}">
+            <input type="hidden" name="work_story_post[sub_title_id]" value="{{ $work_story->id }}">
         </div>
         <div class="title">
             <h2>タイトル</h2>
@@ -36,7 +36,7 @@
     </form>
     <div class="footer">
         <a
-            href="{{ route('work_story_posts.index', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id]) }}">戻る</a>
+            href="{{ route('work_story_posts.index', ['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]) }}">戻る</a>
     </div>
     <script src="{{ asset('/js/create_preview.js') }}"></script>
 
