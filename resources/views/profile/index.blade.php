@@ -22,12 +22,12 @@
             <p>{{ $user->introduction }}</p>
             @if ($user->image)
                 <div>
-                    <img src="{{ $user->image }}" alt="画像が読み込めません。" style="width: 300px;">
+                    <img src="{{ $user->image }}" alt="画像が読み込めません。" class="w-40 h-40 rounded-full object-cover mr-1">
                 </div>
             @else
                 <div>
-                    <img src="https://res.cloudinary.com/dnumegejl/image/upload/v1732344378/No_User_Image_genl0i.png"
-                        alt="画像が読み込めません。" style="width: 300px;">
+                    <img src="https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png"
+                        alt="画像が読み込めません。" class="w-40 h-40 rounded-full object-cover mr-1">
                 </div>
             @endif
         </div>

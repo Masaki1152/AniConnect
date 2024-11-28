@@ -242,7 +242,7 @@ Route::controller(WorkStoryPostController::class)->middleware(['auth'])->group(f
     // 新規投稿作成ボタン押下で、createメソッドを実行
     Route::get('/works/{work_id}/stories/{work_story_id}/create', 'create')->name('work_story_posts.create');
     // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/store', 'store')->name('work_story_posts.store');
+    Route::post('/works/{work_id}/stories/{work_story_id}/posts/store', 'store')->name('work_story_posts.store');
     // 各あらすじの感想投稿一覧ボタン押下で、showメソッドを実行
     Route::get('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}', 'show')->name('work_story_posts.show');
     // 感想投稿編集画面を表示するeditメソッドを実行

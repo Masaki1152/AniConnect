@@ -53,7 +53,7 @@ class User extends Authenticatable
     // WorkReviewに対するリレーション 1対1の関係
     public function workreview()
     {
-        return $this->belongsTo(WorkReview::class);
+        return $this->belongsTo(WorkReview::class, 'id', 'user_id');
     }
 
     // いいねをしたWorkReviewに対するリレーション 多対多の関係

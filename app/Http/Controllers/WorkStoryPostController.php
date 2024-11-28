@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\WorkStoryPostRequest;
+use App\Models\WorkStory;
 use App\Models\WorkStoryPost;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -32,7 +33,7 @@ class WorkStoryPostController extends Controller
             }
         })->paginate(5);
         $work_story_post_first = WorkStoryPost::where('sub_title_id', $work_story_id)->first();
-        return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first]);
+        return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first, 'work_id' => $work_id, 'work_story_id' => $work_story_id]);
     }
 
     // あらすじ感想投稿詳細の表示
@@ -44,7 +45,8 @@ class WorkStoryPostController extends Controller
     // 新規投稿作成画面を表示する
     public function create(WorkStoryPost $workStoryPost, $work_id, $work_story_id)
     {
-        return view('work_story_posts.create')->with(['work_story_post' => $workStoryPost->getRestrictedPost('sub_title_id', $work_story_id)]);
+        $work_story = WorkStory::where('id', $work_story_id)->first();
+        return view('work_story_posts.create')->with(['work_story_post' => $workStoryPost->getRestrictedPost('sub_title_id', $work_story_id), 'work_story' => $work_story]);
     }
 
     // 新しく記述した内容を保存する
