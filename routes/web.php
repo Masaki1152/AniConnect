@@ -22,6 +22,7 @@ use App\Http\Controllers\AnimePilgrimagePostLikeController;
 use App\Http\Controllers\WorkStoryController;
 use App\Http\Controllers\WorkStoryPostController;
 use App\Http\Controllers\WorkStoryPostLikeController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -259,6 +260,14 @@ Route::controller(WorkStoryPostController::class)->middleware(['auth'])->group(f
 Route::controller(WorkStoryPostLikeController::class)->middleware(['auth'])->group(function () {
     // いいねしたユーザーの表示
     Route::get('/works/{work_id}/stories/{work_story_id}/posts/{work_story_post_id}/like/index', 'index')->name('work_story_post_like.index');
+});
+
+// UserControllerに関するルーティング
+Route::controller(UserController::class)->middleware(['auth'])->group(function () {
+    // ユーザー一覧の表示
+    Route::get('/users', 'index')->name('users.index');
+    // ユーザーの詳細表示
+    Route::get('/users/{user_id}', 'show')->name('users.show');
 });
 
 require __DIR__ . '/auth.php';

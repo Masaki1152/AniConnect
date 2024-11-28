@@ -27,6 +27,9 @@
                     <x-nav-link :href="route('pilgrimages.index')" :active="request()->routeIs('pilgrimages.index')">
                         {{ __('聖地一覧') }}
                     </x-nav-link>
+                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('登録メンバー') }}
+                    </x-nav-link>
                 </div>
             </div>
 
