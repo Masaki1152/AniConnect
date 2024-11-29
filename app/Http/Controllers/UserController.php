@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
@@ -25,7 +26,9 @@ class UserController extends Controller
                 }
             }
         })->paginate(10);
-        return view('users.index')->with(['users' => $users]);
+        // ログインしているユーザー
+        $auth_user_id = Auth::id();
+        return view('users.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id]);
     }
 
     // 詳細なユーザー情報を表示する

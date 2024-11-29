@@ -17,9 +17,16 @@
             @foreach ($users as $user)
                 <div class='user'>
                     <h2 class='name'>
-                        <a href="{{ route('users.show', ['user_id' => $user->id]) }}">
-                            {{ $user->name }}
-                        </a>
+                        <!-- 自分のアカウントを選択した場合 -->
+                        @if ($auth_user_id === $user->id)
+                            <a href="{{ route('profile.index') }}">
+                                {{ $user->name }}
+                            </a>
+                        @else
+                            <a href="{{ route('users.show', ['user_id' => $user->id]) }}">
+                                {{ $user->name }}
+                            </a>
+                        @endif
                     </h2>
                     <div class='user_image'>
                         @if ($user->image)
