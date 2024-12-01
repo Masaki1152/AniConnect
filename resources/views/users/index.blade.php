@@ -42,8 +42,6 @@
                         @endif
                     </div>
                     <!-- フォロー機能 -->
-                    <!-- ログインしているアカウントのid取得 -->
-                    <div id="auth_user_id" auth-user-id="{{ Auth::id() }}"></div>
                     <!-- 自分のアカウント以外のみフォローボタンの表示 -->
                     <div class="follow">
                         @if ($auth_user_id !== $user->id)
