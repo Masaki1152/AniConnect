@@ -37,4 +37,43 @@ class UserController extends Controller
         $user = User::where('id', $user_id)->first();
         return view('users.show')->with(['user' => $user]);
     }
+
+    // ユーザーのフォロー行う
+    public function follow($user_id)
+    {
+        // ログインしているユーザーの取得
+        $auth_user = Auth::user();
+        // フォロー対象のユーザーを取得
+        $user = User::find($user_id);
+        // ユーザーが見つからない場合の処理
+        if (!$user) {
+            return response()->json(['message' => 'User not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にフォローしていればtrueを返す
+        $isFollowing = $auth_user->followings()->where('followed_id', $user->id)->exists();
+        if ($isFollowing) {
+            // 既にフォローしている場合、フォローの解除
+            $auth_user->followings()->detach($user->id);
+            $status = 'unfollowed';
+        } else {
+            // 初めてのフォローの場合
+            $auth_user->followings()->attach($user->id);
+            $status = 'followed';
+        }
+
+        // 最新のフォロワー・フォロー数を取得
+        $followingCount = $user->followings()->count();
+        $followersCount = $user->followers()->count();
+        // ログインしているユーザーの最新のフォロワー・フォロー数を取得
+        $authFollowingCount = $auth_user->followings()->count();
+        $authFollowersCount = $auth_user->followers()->count();
+
+        return response()->json([
+            'status' => $status,
+            'followingCount' => $followingCount,
+            'followersCount' => $followersCount,
+            'authFollowingCount' => $authFollowingCount,
+            'authFollowersCount' => $authFollowersCount
+        ]);
+    }
 }

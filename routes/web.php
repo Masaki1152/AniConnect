@@ -23,6 +23,7 @@ use App\Http\Controllers\WorkStoryController;
 use App\Http\Controllers\WorkStoryPostController;
 use App\Http\Controllers\WorkStoryPostLikeController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\UserFollowController;
 
 /*
 |--------------------------------------------------------------------------
@@ -268,6 +269,14 @@ Route::controller(UserController::class)->middleware(['auth'])->group(function (
     Route::get('/users', 'index')->name('users.index');
     // ユーザーの詳細表示
     Route::get('/users/{user_id}', 'show')->name('users.show');
+    // ユーザーをフォローするメソッドを実行
+    Route::post('/users/{user_id}/follow', 'follow')->name('users.follow');
+});
+
+// UserFollowControllerに関するルーティング
+Route::controller(UserFollowController::class)->middleware(['auth'])->group(function () {
+    // フォローしたユーザーの表示
+    Route::get('/users/{user_id}/follow/index', 'index')->name('user_follows.index');
 });
 
 require __DIR__ . '/auth.php';
