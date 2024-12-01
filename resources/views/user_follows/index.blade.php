@@ -1,5 +1,5 @@
 <x-app-layout>
-    <h1>フォロー中のユーザー</h1>
+    <h1>「{{ $selected_user->name }}」がフォロー中のユーザー</h1>
     <div class='works'>
         @if ($users->count() == 0)
             <h2>フォローしているユーザーはいません。</h2>

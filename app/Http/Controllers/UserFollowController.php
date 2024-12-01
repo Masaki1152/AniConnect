@@ -13,8 +13,10 @@ class UserFollowController extends Controller
     {
         // ユーザーテーブルから、対象ユーザーをフォローしたユーザーidを取得
         $users = User::whereId($user_id)->first()->followings()->get();
+        // 対象のユーザー
+        $selected_user = User::find($user_id);
         // ログインしているユーザー
         $auth_user_id = Auth::id();
-        return view('user_follows.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id]);
+        return view('user_follows.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id, 'selected_user' => $selected_user]);
     }
 }
