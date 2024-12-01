@@ -31,6 +31,19 @@
                 </div>
             @endif
         </div>
+        <!-- 自分のアカウントの場合 -->
+        <div class="auth_follow_user">
+            <a href="{{ route('user_follows.indexFollowingUser', ['user_id' => $user->id]) }}">
+                <p id="auth_following_count">
+                    {{ $user->followings->count() }}
+                    フォロー中</p>
+            </a>
+            <a href="{{ route('user_follows.indexFollowedUser', ['user_id' => $user->id]) }}">
+                <p id="auth_followers_count">
+                    {{ $user->followers->count() }}
+                    フォロワー</p>
+            </a>
+        </div>
     </div>
     <div>
         <a href="{{ route('profile.edit') }}">プロフィールの編集</a>

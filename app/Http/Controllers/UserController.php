@@ -35,7 +35,9 @@ class UserController extends Controller
     public function show($user_id)
     {
         $user = User::where('id', $user_id)->first();
-        return view('users.show')->with(['user' => $user]);
+        // ログインしているユーザー
+        $auth_user_id = Auth::id();
+        return view('users.show')->with(['user' => $user, 'auth_user_id' => $auth_user_id]);
     }
 
     // ユーザーのフォロー行う
