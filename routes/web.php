@@ -276,7 +276,9 @@ Route::controller(UserController::class)->middleware(['auth'])->group(function (
 // UserFollowControllerに関するルーティング
 Route::controller(UserFollowController::class)->middleware(['auth'])->group(function () {
     // フォローしたユーザーの表示
-    Route::get('/users/{user_id}/follow/index', 'index')->name('user_follows.index');
+    Route::get('/users/{user_id}/following/index', 'indexFollowingUser')->name('user_follows.indexFollowingUser');
+    // フォロワーの表示
+    Route::get('/users/{user_id}/followed/index', 'indexFollowedUser')->name('user_follows.indexFollowedUser');
 });
 
 require __DIR__ . '/auth.php';

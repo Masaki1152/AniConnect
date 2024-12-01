@@ -52,12 +52,12 @@
                                 {{ Auth::user()->followings->contains($user->id) ? 'フォロー解除' : 'フォローする' }}
                             </button>
                             <div class="follow_user">
-                                <a href="{{ route('user_follows.index', ['user_id' => $user->id]) }}">
+                                <a href="{{ route('user_follows.indexFollowingUser', ['user_id' => $user->id]) }}">
                                     <p id="following_count">
                                         {{ $user->followings->count() }}
                                         フォロー中</p>
                                 </a>
-                                <a href="{{ route('user_follows.index', ['user_id' => $user->id]) }}">
+                                <a href="{{ route('user_follows.indexFollowedUser', ['user_id' => $user->id]) }}">
                                     <p id="followers_count">
                                         {{ $user->followers->count() }}
                                         フォロワー</p>
@@ -66,12 +66,12 @@
                         @else
                             <!-- 自分のアカウントの場合 -->
                             <div class="auth_follow_user">
-                                <a href="{{ route('user_follows.index', ['user_id' => $user->id]) }}">
+                                <a href="{{ route('user_follows.indexFollowingUser', ['user_id' => $user->id]) }}">
                                     <p id="auth_following_count">
                                         {{ $user->followings->count() }}
                                         フォロー中</p>
                                 </a>
-                                <a href="{{ route('user_follows.index', ['user_id' => $user->id]) }}">
+                                <a href="{{ route('user_follows.indexFollowedUser', ['user_id' => $user->id]) }}">
                                     <p id="auth_followers_count">
                                         {{ $user->followers->count() }}
                                         フォロワー</p>
