@@ -49,6 +49,9 @@
                             <button id="follow_button" user-id="{{ $user->id }}" type="submit">
                                 {{ Auth::user()->followings->contains($user->id) ? 'フォロー解除' : 'フォローする' }}
                             </button>
+                            <div class="isFollowed">
+                                {{ $user->followings->contains(Auth::id()) ? 'フォローされています' : '' }}
+                            </div>
                             <div class="follow_user">
                                 <a href="{{ route('user_follows.indexFollowingUser', ['user_id' => $user->id]) }}">
                                     <p id="following_count">

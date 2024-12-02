@@ -15,9 +15,7 @@ class UserFollowController extends Controller
         $users = User::whereId($user_id)->first()->followings()->get();
         // 対象のユーザー
         $selected_user = User::find($user_id);
-        // ログインしているユーザー
-        $auth_user_id = Auth::id();
-        return view('user_followings.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id, 'selected_user' => $selected_user]);
+        return view('user_followings.index')->with(['users' => $users, 'selected_user' => $selected_user]);
     }
 
     // フォロワーの表示
@@ -27,8 +25,6 @@ class UserFollowController extends Controller
         $users = User::whereId($user_id)->first()->followers()->get();
         // 対象のユーザー
         $selected_user = User::find($user_id);
-        // ログインしているユーザー
-        $auth_user_id = Auth::id();
-        return view('user_followers.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id, 'selected_user' => $selected_user]);
+        return view('user_followers.index')->with(['users' => $users, 'selected_user' => $selected_user]);
     }
 }
