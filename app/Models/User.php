@@ -109,4 +109,27 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(WorkStoryPost::class, 'work_story_posts_users', 'user_id', 'work_story_post_id');
     }
+
+    // 自己結合
+    // 自分がフォローしているユーザーに対するリレーション　多対多の関係
+    public function followings()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers', // 中間テーブル名
+            'following_id', // このユーザーがフォローしている（中間テーブルでの自分のカラム）
+            'followed_id' // フォローしている相手のカラム
+        );
+    }
+
+    // 自分をフォローしているユーザーに対するリレーション　多対多の関係
+    public function followers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'followers', // 中間テーブル名
+            'followed_id', // このユーザーがフォローされている（中間テーブルでの自分のカラム）
+            'following_id' // フォローしている相手のカラム
+        );
+    }
 }
