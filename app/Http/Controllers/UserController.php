@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Models\WorkReview;
+use App\Models\WorkStoryPost;
+use App\Models\CharacterPost;
+use App\Models\MusicPost;
+use App\Models\AnimePilgrimagePost;
 
 class UserController extends Controller
 {
@@ -75,5 +80,31 @@ class UserController extends Controller
             'authFollowingCount' => $authFollowingCount,
             'authFollowersCount' => $authFollowersCount
         ]);
+    }
+
+    public function fetchPosts($user_id, $type)
+    {
+        $posts = [];
+
+        // 必要な種類の投稿を取得
+        switch ($type) {
+            case 'work':
+                $posts = WorkReview::where('user_id', $user_id)->get();
+                break;
+            case 'workStory':
+                $posts = WorkStoryPost::where('user_id', $user_id)->get();
+                break;
+            case 'character':
+                $posts = CharacterPost::where('user_id', $user_id)->get();
+                break;
+            case 'music':
+                $posts = MusicPost::where('user_id', $user_id)->get();
+                break;
+            case 'animePilgrimage':
+                $posts = AnimePilgrimagePost::where('user_id', $user_id)->get();
+                break;
+        }
+
+        return response()->json($posts);
     }
 }
