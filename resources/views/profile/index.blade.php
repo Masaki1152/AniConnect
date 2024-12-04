@@ -50,4 +50,16 @@
         <a href="{{ route('profile.password') }}">パスワードの更新</a>
         <a href="{{ route('profile.delete') }}" class="text-red-500">アカウント削除</a>
     </div>
+    <div class="post-buttons flex space-x-4">
+        <button class="post-button active bg-blue-500 text-white px-4 py-2 rounded" data-type="work">作品感想</button>
+        <button class="post-button bg-blue-300 text-white px-4 py-2 rounded" data-type="workStory">あらすじ感想</button>
+        <button class="post-button bg-blue-300 text-white px-4 py-2 rounded" data-type="character">登場人物感想</button>
+        <button class="post-button bg-blue-300 text-white px-4 py-2 rounded" data-type="music">音楽感想</button>
+        <button class="post-button bg-blue-300 text-white px-4 py-2 rounded" data-type="animePilgrimage">聖地感想</button>
+    </div>
+    <div id="post-container" class="mt-4">
+        <!-- 投稿データの表示 -->
+    </div>
+    <div id="user_id" data-user-id="{{ $user->id }}"></div>
+    <script src="{{ asset('/js/fetch_post.js') }}"></script>
 </x-app-layout>

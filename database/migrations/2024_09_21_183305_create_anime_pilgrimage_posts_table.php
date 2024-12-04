@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('anime_pilgrimage_id')->constrained('anime_pilgrimages')->onDelete('cascade');
-            $table->string('title');
+            $table->string('post_title');
             $table->string('scene');
             $table->string('body');
             $table->string('image1')->nullable();
