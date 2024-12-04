@@ -24,21 +24,31 @@ document.addEventListener('DOMContentLoaded', async function () {
                     const typeDescription = describeGroup(type, post);
 
                     const postElement = document.createElement('div');
-                    postElement.className = 'post-item p-4 mb-4 bg-gray-100 rounded';
+                    postElement.className = 'post-item p-4 mb-4 bg-gray-100 rounded max-w-3xl text-left';
                     postElement.innerHTML = `
                         <div class="post-header flex items-center mb-4">
                             <img src="${post.user.image || 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png'}" 
-                                alt="${post.user.name}'s avatar" 
+                                alt="${post.user.name}のアバター" 
                                 class="w-10 h-10 rounded-full mr-4">
                                 <a href="/users/${post.user.id}" class="text-lg font-bold">${post.user.name || '名無し'}</a>
                         </div>
-                        <h3 class="text-lg font-bold">
-                            <p>${typeDescription}</p>
-                            <a href="${postDetailUrl}" class="hover:underline">
-                                ${post.post_title || 'No Title'}
-                            </a>
-                        </h3>
-                        <p class="text-gray-700">${post.body || 'No Content'}</p>
+                        <p>${typeDescription}</p>
+                        <div class="post-content flex items-start gap-4 max-w-[800px] mx-auto">
+                            <div class="flex-1">
+                                <h3 class="text-lg font-bold">
+                                    <a href="${postDetailUrl}" class="hover:underline">
+                    ${post.post_title || 'タイトルがありません'}
+                                    </a>
+                                </h3>
+                                <p class="text-gray-700">${post.body || '内容がありません'}</p>
+                            </div>
+                            ${post.image1 ? `
+                            <div class="flex-shrink-0">
+                                <img src="${post.image1}" 
+                 alt="投稿画像"
+                 class="w-24 h-24 object-cover rounded border border-gray-300">
+                            </div>` : ''}
+                        </div>
                     `;
                     postContainer.appendChild(postElement);
                 });
