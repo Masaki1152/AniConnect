@@ -82,29 +82,12 @@ class UserController extends Controller
         ]);
     }
 
-    public function fetchPosts($user_id, $type)
+    public function fetchPosts(Request $request, User $user, $user_id, $type)
     {
-        $posts = [];
-
+        // 検索キーワードがあれば取得
+        $keyword = $request->input('keyword', '');
         // 必要な種類の投稿を取得
-        // 合わせて投稿者情報をリレーションで取得
-        switch ($type) {
-            case 'work':
-                $posts = WorkReview::where('user_id', $user_id)->with(['user', 'work'])->get();
-                break;
-            case 'workStory':
-                $posts = WorkStoryPost::where('user_id', $user_id)->with(['user', 'work', 'workStory'])->get();
-                break;
-            case 'character':
-                $posts = CharacterPost::where('user_id', $user_id)->with(['user', 'character'])->get();
-                break;
-            case 'music':
-                $posts = MusicPost::where('user_id', $user_id)->with(['user', 'music'])->get();
-                break;
-            case 'animePilgrimage':
-                $posts = AnimePilgrimagePost::where('user_id', $user_id)->with(['user', 'animePilgrimage'])->get();
-                break;
-        }
+        $posts = $user->fetchPosts($user_id, $type, $keyword);
 
         return response()->json($posts);
     }

@@ -50,6 +50,111 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // 投稿の種類とユーザーidで投稿を取得する処理
+    public function fetchPosts($user_id, $type, $search)
+    {
+        // 必要な種類の投稿を取得
+        // 合わせて投稿者情報をリレーションで取得
+        switch ($type) {
+            case 'work':
+                $posts = WorkReview::where('user_id', $user_id)
+                    ->with(['user', 'work'])
+                    ->where(function ($query) use ($search) {
+                        // キーワード検索がなされた場合
+                        if ($search != '') {
+                            // 検索語のスペースを半角に統一
+                            $search_split = mb_convert_kana($search, 's');
+                            // 半角スペースで単語ごとに分割して配列にする
+                            $search_array = preg_split('/[\s]+/', $search_split);
+                            foreach ($search_array as $search_word) {
+                                $query->where(function ($query) use ($search_word) {
+                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+                                });
+                            }
+                        }
+                    })->get();
+                break;
+            case 'workStory':
+                $posts = WorkStoryPost::where('user_id', $user_id)
+                    ->with(['user', 'work', 'workStory'])
+                    ->where(function ($query) use ($search) {
+                        // キーワード検索がなされた場合
+                        if ($search != '') {
+                            // 検索語のスペースを半角に統一
+                            $search_split = mb_convert_kana($search, 's');
+                            // 半角スペースで単語ごとに分割して配列にする
+                            $search_array = preg_split('/[\s]+/', $search_split);
+                            foreach ($search_array as $search_word) {
+                                $query->where(function ($query) use ($search_word) {
+                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+                                });
+                            }
+                        }
+                    })->get();
+                break;
+            case 'character':
+                $posts = CharacterPost::where('user_id', $user_id)
+                    ->with(['user', 'character'])
+                    ->where(function ($query) use ($search) {
+                        // キーワード検索がなされた場合
+                        if ($search != '') {
+                            // 検索語のスペースを半角に統一
+                            $search_split = mb_convert_kana($search, 's');
+                            // 半角スペースで単語ごとに分割して配列にする
+                            $search_array = preg_split('/[\s]+/', $search_split);
+                            foreach ($search_array as $search_word) {
+                                $query->where(function ($query) use ($search_word) {
+                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+                                });
+                            }
+                        }
+                    })->get();
+                break;
+            case 'music':
+                $posts = MusicPost::where('user_id', $user_id)
+                    ->with(['user', 'music'])
+                    ->where(function ($query) use ($search) {
+                        // キーワード検索がなされた場合
+                        if ($search != '') {
+                            // 検索語のスペースを半角に統一
+                            $search_split = mb_convert_kana($search, 's');
+                            // 半角スペースで単語ごとに分割して配列にする
+                            $search_array = preg_split('/[\s]+/', $search_split);
+                            foreach ($search_array as $search_word) {
+                                $query->where(function ($query) use ($search_word) {
+                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+                                });
+                            }
+                        }
+                    })->get();
+                break;
+            case 'animePilgrimage':
+                $posts = AnimePilgrimagePost::where('user_id', $user_id)
+                    ->with(['user', 'animePilgrimage'])
+                    ->where(function ($query) use ($search) {
+                        // キーワード検索がなされた場合
+                        if ($search != '') {
+                            // 検索語のスペースを半角に統一
+                            $search_split = mb_convert_kana($search, 's');
+                            // 半角スペースで単語ごとに分割して配列にする
+                            $search_array = preg_split('/[\s]+/', $search_split);
+                            foreach ($search_array as $search_word) {
+                                $query->where(function ($query) use ($search_word) {
+                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+                                });
+                            }
+                        }
+                    })->get();
+                break;
+        }
+        return $posts;
+    }
+
     // WorkReviewに対するリレーション 1対1の関係
     public function workreview()
     {

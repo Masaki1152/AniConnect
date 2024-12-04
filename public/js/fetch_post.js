@@ -11,11 +11,15 @@ document.addEventListener('DOMContentLoaded', async function () {
     // デフォルトの投稿を読み込む
     async function fetchAndDisplayPosts(type) {
         try {
+            // 検索キーワードを取得
+            const searchInput = document.getElementById('search-input').value.trim();
+
             // データの取得
-            const response = await fetch(`/users/${userId}/posts/${type}`);
+            const response = await fetch(`/users/${userId}/posts/${type}?keyword=${encodeURIComponent(searchInput)}`);
             const posts = await response.json();
             // 表示を更新
             postContainer.innerHTML = '';
+            // 投稿の表示
             if (posts.length > 0) {
                 posts.forEach(post => {
                     // 投稿の種類に応じたURLを取得
@@ -76,7 +80,8 @@ document.addEventListener('DOMContentLoaded', async function () {
                 btn.classList.add('bg-blue-300', 'text-white');
             });
             this.classList.add('active', 'bg-blue-500', 'text-white');
-
+            // 検索状態をリセット
+            document.getElementById('search-input').value = '';
             // 投稿データを更新
             await fetchAndDisplayPosts(type);
         });
@@ -121,4 +126,20 @@ document.addEventListener('DOMContentLoaded', async function () {
         const typeGroup = typeToGroup[type];
         return typeGroup;
     }
+
+    // 検索を行うメソッド
+    document.getElementById('search-button').addEventListener('click', async function () {
+        const activeButton = document.querySelector('.post-button.active');
+        const type = activeButton ? activeButton.dataset.type : 'work';
+        await fetchAndDisplayPosts(type);
+    });
+
+    // キャンセルを行うメソッド
+    document.getElementById('cancel-button').addEventListener('click', async function () {
+        // 検索状態をリセット
+        document.getElementById('search-input').value = '';
+        const activeButton = document.querySelector('.post-button.active');
+        const type = activeButton ? activeButton.dataset.type : 'work';
+        await fetchAndDisplayPosts(type);
+    });
 });
