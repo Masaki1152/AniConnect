@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             // データの取得
             const response = await fetch(`/users/${userId}/posts/${type}?keyword=${encodeURIComponent(searchInput)}`);
             const posts = await response.json();
+
             // 表示を更新
             postContainer.innerHTML = '';
             // 投稿の表示

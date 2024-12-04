@@ -13,7 +13,7 @@ class AnimePilgrimagePost extends Model
     protected $fillable = [
         'user_id',
         'anime_pilgrimage_id',
-        'title',
+        'post_title',
         'scene',
         'body',
         'image1',

@@ -68,8 +68,14 @@ class User extends Authenticatable
                             $search_array = preg_split('/[\s]+/', $search_split);
                             foreach ($search_array as $search_word) {
                                 $query->where(function ($query) use ($search_word) {
+                                    // 自身のカラムでの検索
                                     $query->where('post_title', 'LIKE', "%{$search_word}%")
                                         ->orWhere('body', 'LIKE', "%{$search_word}%");
+
+                                    // リレーション先のWorksテーブルのカラムでの検索
+                                    $query->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                        $workQuery->where('name', 'like', '%' . $search_word . '%');
+                                    });
                                 });
                             }
                         }
@@ -87,8 +93,20 @@ class User extends Authenticatable
                             $search_array = preg_split('/[\s]+/', $search_split);
                             foreach ($search_array as $search_word) {
                                 $query->where(function ($query) use ($search_word) {
+                                    // 自身のカラムでの検索
                                     $query->where('post_title', 'LIKE', "%{$search_word}%")
                                         ->orWhere('body', 'LIKE', "%{$search_word}%");
+
+                                    // リレーション先のWorksテーブルのカラムでの検索
+                                    $query->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                        $workQuery->where('name', 'like', '%' . $search_word . '%');
+                                    });
+
+                                    // リレーション先のWork_storiesテーブルのカラムでの検索
+                                    $query->orWhereHas('workStory', function ($workStoryQuery) use ($search_word) {
+                                        $workStoryQuery->where('sub_title', 'like', '%' . $search_word . '%')
+                                            ->orWhere('episode', 'like', '%' . $search_word . '%');
+                                    });
                                 });
                             }
                         }
@@ -96,7 +114,7 @@ class User extends Authenticatable
                 break;
             case 'character':
                 $posts = CharacterPost::where('user_id', $user_id)
-                    ->with(['user', 'character'])
+                    ->with(['user', 'character', 'character.work', 'character.voiceArtist'])
                     ->where(function ($query) use ($search) {
                         // キーワード検索がなされた場合
                         if ($search != '') {
@@ -106,8 +124,24 @@ class User extends Authenticatable
                             $search_array = preg_split('/[\s]+/', $search_split);
                             foreach ($search_array as $search_word) {
                                 $query->where(function ($query) use ($search_word) {
+                                    // 自身のカラムでの検索
                                     $query->where('post_title', 'LIKE', "%{$search_word}%")
                                         ->orWhere('body', 'LIKE', "%{$search_word}%");
+
+                                    // リレーション先のCharactersテーブルのカラムでの検索
+                                    $query->orWhereHas('character', function ($characterQuery) use ($search_word) {
+                                        $characterQuery->where('name', 'like', '%' . $search_word . '%');
+
+                                        // リレーション先のWorksテーブルのカラムでの検索
+                                        $characterQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                            $workQuery->where('name', 'LIKE', "%{$search_word}%");
+                                        });
+
+                                        // リレーション先のvoice_artistsテーブルのカラムでの検索
+                                        $characterQuery->orWhereHas('voiceArtist', function ($voiceArtistQuery) use ($search_word) {
+                                            $voiceArtistQuery->where('name', 'LIKE', "%{$search_word}%");
+                                        });
+                                    });
                                 });
                             }
                         }
@@ -115,7 +149,7 @@ class User extends Authenticatable
                 break;
             case 'music':
                 $posts = MusicPost::where('user_id', $user_id)
-                    ->with(['user', 'music'])
+                    ->with(['user', 'music', 'music.work', 'music.singer'])
                     ->where(function ($query) use ($search) {
                         // キーワード検索がなされた場合
                         if ($search != '') {
@@ -125,8 +159,24 @@ class User extends Authenticatable
                             $search_array = preg_split('/[\s]+/', $search_split);
                             foreach ($search_array as $search_word) {
                                 $query->where(function ($query) use ($search_word) {
+                                    // 自身のカラムでの検索
                                     $query->where('post_title', 'LIKE', "%{$search_word}%")
                                         ->orWhere('body', 'LIKE', "%{$search_word}%");
+
+                                    // リレーション先のMusicsテーブルのカラムでの検索
+                                    $query->orWhereHas('music', function ($musicQuery) use ($search_word) {
+                                        $musicQuery->where('name', 'like', '%' . $search_word . '%');
+
+                                        // リレーション先のWorksテーブルのカラムでの検索
+                                        $musicQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                            $workQuery->where('name', 'LIKE', "%{$search_word}%");
+                                        });
+
+                                        // リレーション先のsingersテーブルのカラムでの検索
+                                        $musicQuery->orWhereHas('singer', function ($singerQuery) use ($search_word) {
+                                            $singerQuery->where('name', 'LIKE', "%{$search_word}%");
+                                        });
+                                    });
                                 });
                             }
                         }
@@ -144,8 +194,21 @@ class User extends Authenticatable
                             $search_array = preg_split('/[\s]+/', $search_split);
                             foreach ($search_array as $search_word) {
                                 $query->where(function ($query) use ($search_word) {
+                                    // 自身のカラムでの検索
                                     $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+                                        ->orWhere('body', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('scene', 'LIKE', "%{$search_word}%");
+
+                                    // リレーション先のanime_pilgrimagesテーブルのカラムでの検索
+                                    $query->orWhereHas('animePilgrimage', function ($animePilgrimageQuery) use ($search_word) {
+                                        $animePilgrimageQuery->where('name', 'like', '%' . $search_word . '%')
+                                            ->orWhere('place', 'LIKE', "%{$search_word}%");
+
+                                        // リレーション先のWorksテーブルのカラムでの検索
+                                        $animePilgrimageQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                            $workQuery->where('name', 'LIKE', "%{$search_word}%");
+                                        });;
+                                    });
                                 });
                             }
                         }
