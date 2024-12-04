@@ -90,19 +90,19 @@ class UserController extends Controller
         // 合わせて投稿者情報をリレーションで取得
         switch ($type) {
             case 'work':
-                $posts = WorkReview::where('user_id', $user_id)->with('user')->get();
+                $posts = WorkReview::where('user_id', $user_id)->with(['user', 'work'])->get();
                 break;
             case 'workStory':
-                $posts = WorkStoryPost::where('user_id', $user_id)->with('user')->get();
+                $posts = WorkStoryPost::where('user_id', $user_id)->with(['user', 'work', 'workStory'])->get();
                 break;
             case 'character':
-                $posts = CharacterPost::where('user_id', $user_id)->with('user')->get();
+                $posts = CharacterPost::where('user_id', $user_id)->with(['user', 'character'])->get();
                 break;
             case 'music':
-                $posts = MusicPost::where('user_id', $user_id)->with('user')->get();
+                $posts = MusicPost::where('user_id', $user_id)->with(['user', 'music'])->get();
                 break;
             case 'animePilgrimage':
-                $posts = AnimePilgrimagePost::where('user_id', $user_id)->with('user')->get();
+                $posts = AnimePilgrimagePost::where('user_id', $user_id)->with(['user', 'animePilgrimage'])->get();
                 break;
         }
 

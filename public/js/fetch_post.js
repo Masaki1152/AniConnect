@@ -14,14 +14,14 @@ document.addEventListener('DOMContentLoaded', async function () {
             // データの取得
             const response = await fetch(`/users/${userId}/posts/${type}`);
             const posts = await response.json();
-
             // 表示を更新
             postContainer.innerHTML = '';
             if (posts.length > 0) {
                 posts.forEach(post => {
-
                     // 投稿の種類に応じたURLを取得
                     const postDetailUrl = createTypeToURL(type, post);
+                    // 投稿の種類に応じた文言を取得
+                    const typeDescription = describeGroup(type, post);
 
                     const postElement = document.createElement('div');
                     postElement.className = 'post-item p-4 mb-4 bg-gray-100 rounded';
@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 <a href="/users/${post.user.id}" class="text-lg font-bold">${post.user.name || '名無し'}</a>
                         </div>
                         <h3 class="text-lg font-bold">
+                            <p>${typeDescription}</p>
                             <a href="${postDetailUrl}" class="hover:underline">
                                 ${post.post_title || 'No Title'}
                             </a>
@@ -89,5 +90,25 @@ document.addEventListener('DOMContentLoaded', async function () {
         // 投稿の種類に応じたURLを取得
         const typeUrl = typeToUrlMap[type];
         return `/${typeUrl}/${post.id}`;
+    }
+
+    function describeGroup(type, post) {
+        // 各投稿の種類に追加する文言
+        const typeToGroup = {
+            // 作品感想の文言
+            work: `「${post.work?.name || '不明な作品'}」への感想投稿`,
+            // あらすじ感想の文言
+            workStory: `「${post.work?.name || '不明な作品'}」${post.work_story?.episode || '不明な話数'}「${post.work_story?.sub_title || '不明なサブタイトル'}」への感想投稿`,
+            // 登場人物感想の文言
+            character: `「${post.character?.name || '不明なキャラクター'}」への感想投稿`,
+            // 音楽感想の文言
+            music: `「${post.music?.name || '不明な音楽'}」への感想投稿`,
+            // 聖地感想の文言
+            animePilgrimage: `「${post.anime_pilgrimage?.name || '不明な聖地'}」への感想投稿`,
+        };
+
+        // 投稿の種類に応じたURLを取得
+        const typeGroup = typeToGroup[type];
+        return typeGroup;
     }
 });
