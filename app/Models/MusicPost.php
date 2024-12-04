@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MusicPost extends Model
 {
     use HasFactory;
+    use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [

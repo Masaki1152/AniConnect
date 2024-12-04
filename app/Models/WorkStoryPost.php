@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class WorkStoryPost extends Model
 {
     use HasFactory;
+    use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [

@@ -80,7 +80,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->paginate(10);
+                    })->orderBy('created_at', 'DESC')->paginate(10);
                 break;
             case 'workStory':
                 $posts = WorkStoryPost::where('user_id', $user_id)
@@ -112,7 +112,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->paginate(10);
+                    })->orderBy('created_at', 'DESC')->paginate(10);
                 break;
             case 'character':
                 $posts = CharacterPost::where('user_id', $user_id)
@@ -148,7 +148,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->paginate(10);
+                    })->orderBy('created_at', 'DESC')->paginate(10);
                 break;
             case 'music':
                 $posts = MusicPost::where('user_id', $user_id)
@@ -184,7 +184,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->paginate(10);
+                    })->orderBy('created_at', 'DESC')->paginate(10);
                 break;
             case 'animePilgrimage':
                 $posts = AnimePilgrimagePost::where('user_id', $user_id)
@@ -217,7 +217,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->paginate(10);
+                    })->orderBy('created_at', 'DESC')->paginate(10);
                 break;
         }
         return $posts;
