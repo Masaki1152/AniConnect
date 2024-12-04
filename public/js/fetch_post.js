@@ -58,6 +58,7 @@ document.addEventListener('DOMContentLoaded', async function () {
                                 class="w-10 h-10 rounded-full mr-4">
                                 <a href="/users/${post.user.id}" class="text-lg font-bold">${post.user.name || '名無し'}</a>
                         </div>
+                        <p>${post.created_at}</p>
                         <p>${typeDescription}</p>
                         <div class="post-content flex items-start gap-4 max-w-[800px] mx-auto">
                             <div class="flex-1">

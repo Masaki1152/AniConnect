@@ -24,6 +24,10 @@ class WorkReview extends Model
     // 参照させたいwork_reviewsを指定
     protected $table = 'work_reviews';
 
+    protected $casts = [
+        'created_at' => 'datetime:Y/m/d H:i',
+    ];
+
     // created_atで降順に並べたあと、limitで件数制限をかける
     public function getPaginateByLimit($work_id, int $limit_count = 5)
     {

@@ -25,6 +25,10 @@ class WorkStoryPost extends Model
     // 参照させたいwork_story_postsを指定
     protected $table = 'work_story_posts';
 
+    protected $casts = [
+        'created_at' => 'datetime:Y/m/d H:i',
+    ];
+
     // あらすじidと投稿idを指定して、投稿の詳細表示を行う
     public function getDetailPost($work_story_id, $work_story_post_id)
     {
