@@ -9,28 +9,49 @@ document.addEventListener('DOMContentLoaded', async function () {
     const defaultType = 'work';
 
     // デフォルトの投稿を読み込む
-    async function fetchAndDisplayPosts(type) {
+    async function fetchAndDisplayPosts(type, page = 1) {
         try {
             // 検索キーワードを取得
             const searchInput = document.getElementById('search-input').value.trim();
 
             // データの取得
-            const response = await fetch(`/users/${userId}/posts/${type}?keyword=${encodeURIComponent(searchInput)}`);
-            const posts = await response.json();
+            const response = await fetch(`/users/${userId}/posts/${type}?page=${page}&keyword=${encodeURIComponent(searchInput)}`);
+            const result = await response.json();
+
+            // 投稿データの取得
+            // ページ内の投稿データ
+            const posts = result.data;
+            // 現在のページ番号
+            const currentPage = result.current_page;
+            // 最終ページ番号
+            const lastPage = result.last_page;
 
             // 表示を更新
-            postContainer.innerHTML = '';
-            // 投稿の表示
-            if (posts.length > 0) {
-                posts.forEach(post => {
-                    // 投稿の種類に応じたURLを取得
-                    const postDetailUrl = createTypeToURL(type, post);
-                    // 投稿の種類に応じた文言を取得
-                    const typeDescription = describeGroup(type, post);
+            updatePostContainer(type, posts);
+            // ページネーションの更新
+            updatePagination(type, currentPage, lastPage);
 
-                    const postElement = document.createElement('div');
-                    postElement.className = 'post-item p-4 mb-4 bg-gray-100 rounded max-w-3xl text-left';
-                    postElement.innerHTML = `
+        } catch (error) {
+            console.error('Error fetching posts:', error);
+            postContainer.innerHTML = '<p class="text-red-500">投稿の取得に失敗しました。</p>';
+        }
+    }
+
+    // 投稿の更新処理
+    function updatePostContainer(type, posts) {
+        // 表示を更新
+        postContainer.innerHTML = '';
+        // 投稿の表示
+        if (posts.length > 0) {
+            posts.forEach(post => {
+                // 投稿の種類に応じたURLを取得
+                const postDetailUrl = createTypeToURL(type, post);
+                // 投稿の種類に応じた文言を取得
+                const typeDescription = describeGroup(type, post);
+
+                const postElement = document.createElement('div');
+                postElement.className = 'post-item p-4 mb-4 bg-gray-100 rounded max-w-3xl text-left';
+                postElement.innerHTML = `
                         <div class="post-header flex items-center mb-4">
                             <img src="${post.user.image || 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png'}" 
                                 alt="${post.user.name}のアバター" 
@@ -55,19 +76,50 @@ document.addEventListener('DOMContentLoaded', async function () {
                             </div>` : ''}
                         </div>
                     `;
-                    postContainer.appendChild(postElement);
-                });
-            } else {
-                postContainer.innerHTML = '<p class="text-gray-500">投稿がありません。</p>';
-            }
-        } catch (error) {
-            console.error('Error fetching posts:', error);
-            postContainer.innerHTML = '<p class="text-red-500">投稿の取得に失敗しました。</p>';
+                postContainer.appendChild(postElement);
+            });
+        } else {
+            postContainer.innerHTML = '<p class="text-gray-500">投稿がありません。</p>';
+        }
+    }
+
+    // ページネーションの更新
+    function updatePagination(type, currentPage, lastPage) {
+        const paginationContainer = document.getElementById('pagination-container');
+        paginationContainer.innerHTML = '';
+
+        // 「前のページ」ボタン
+        if (currentPage > 1) {
+            const prevButton = document.createElement('button');
+            prevButton.textContent = '前のページ';
+            prevButton.className = 'bg-blue-500 text-white px-4 py-2 rounded';
+            prevButton.addEventListener('click', () => {
+                fetchAndDisplayPosts(type, currentPage - 1);
+            });
+            paginationContainer.appendChild(prevButton);
+        }
+
+        // 現在のページ番号と総ページ数を表示
+        const pageInfo = document.createElement('span');
+        pageInfo.textContent = `ページ ${currentPage} / ${lastPage}`;
+        // スタイリング
+        pageInfo.className = 'text-gray-700 px-4 py-2';
+        paginationContainer.appendChild(pageInfo);
+
+        // 「次のページ」ボタン
+        if (currentPage < lastPage) {
+            const nextButton = document.createElement('button');
+            nextButton.textContent = '次のページ';
+            nextButton.className = 'bg-blue-500 text-white px-4 py-2 rounded';
+            nextButton.addEventListener('click', () => {
+                fetchAndDisplayPosts(type, currentPage + 1);
+            });
+            paginationContainer.appendChild(nextButton);
         }
     }
 
     // 初期の読み込み
-    await fetchAndDisplayPosts(defaultType);
+    await fetchAndDisplayPosts(defaultType, 1);
 
     // ボタンの切り替えイベント
     postButtons.forEach(button => {
@@ -84,7 +136,7 @@ document.addEventListener('DOMContentLoaded', async function () {
             // 検索状態をリセット
             document.getElementById('search-input').value = '';
             // 投稿データを更新
-            await fetchAndDisplayPosts(type);
+            await fetchAndDisplayPosts(type, 1);
         });
     });
 
@@ -132,7 +184,7 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('search-button').addEventListener('click', async function () {
         const activeButton = document.querySelector('.post-button.active');
         const type = activeButton ? activeButton.dataset.type : 'work';
-        await fetchAndDisplayPosts(type);
+        await fetchAndDisplayPosts(type, 1);
     });
 
     // キャンセルを行うメソッド
@@ -141,6 +193,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         document.getElementById('search-input').value = '';
         const activeButton = document.querySelector('.post-button.active');
         const type = activeButton ? activeButton.dataset.type : 'work';
-        await fetchAndDisplayPosts(type);
+        await fetchAndDisplayPosts(type, 1);
     });
 });

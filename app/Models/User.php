@@ -74,12 +74,13 @@ class User extends Authenticatable
 
                                     // リレーション先のWorksテーブルのカラムでの検索
                                     $query->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                        $workQuery->where('name', 'like', '%' . $search_word . '%');
+                                        $workQuery->where('name', 'like', '%' . $search_word . '%')
+                                            ->orWhere('term', 'like', '%' . $search_word . '%');
                                     });
                                 });
                             }
                         }
-                    })->get();
+                    })->paginate(10);
                 break;
             case 'workStory':
                 $posts = WorkStoryPost::where('user_id', $user_id)
@@ -99,7 +100,8 @@ class User extends Authenticatable
 
                                     // リレーション先のWorksテーブルのカラムでの検索
                                     $query->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                        $workQuery->where('name', 'like', '%' . $search_word . '%');
+                                        $workQuery->where('name', 'like', '%' . $search_word . '%')
+                                            ->orWhere('term', 'like', '%' . $search_word . '%');
                                     });
 
                                     // リレーション先のWork_storiesテーブルのカラムでの検索
@@ -110,7 +112,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->get();
+                    })->paginate(10);
                 break;
             case 'character':
                 $posts = CharacterPost::where('user_id', $user_id)
@@ -134,7 +136,8 @@ class User extends Authenticatable
 
                                         // リレーション先のWorksテーブルのカラムでの検索
                                         $characterQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                            $workQuery->where('name', 'LIKE', "%{$search_word}%");
+                                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                                ->orWhere('term', 'like', '%' . $search_word . '%');
                                         });
 
                                         // リレーション先のvoice_artistsテーブルのカラムでの検索
@@ -145,7 +148,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->get();
+                    })->paginate(10);
                 break;
             case 'music':
                 $posts = MusicPost::where('user_id', $user_id)
@@ -169,7 +172,8 @@ class User extends Authenticatable
 
                                         // リレーション先のWorksテーブルのカラムでの検索
                                         $musicQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                            $workQuery->where('name', 'LIKE', "%{$search_word}%");
+                                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                                ->orWhere('term', 'like', '%' . $search_word . '%');
                                         });
 
                                         // リレーション先のsingersテーブルのカラムでの検索
@@ -180,7 +184,7 @@ class User extends Authenticatable
                                 });
                             }
                         }
-                    })->get();
+                    })->paginate(10);
                 break;
             case 'animePilgrimage':
                 $posts = AnimePilgrimagePost::where('user_id', $user_id)
@@ -206,13 +210,14 @@ class User extends Authenticatable
 
                                         // リレーション先のWorksテーブルのカラムでの検索
                                         $animePilgrimageQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                            $workQuery->where('name', 'LIKE', "%{$search_word}%");
+                                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                                ->orWhere('term', 'like', '%' . $search_word . '%');
                                         });;
                                     });
                                 });
                             }
                         }
-                    })->get();
+                    })->paginate(10);
                 break;
         }
         return $posts;

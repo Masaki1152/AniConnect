@@ -64,6 +64,10 @@
     <div id="post-container" class="mt-4">
         <!-- 投稿データの表示 -->
     </div>
+    <!-- ペジネーション -->
+    <div id="pagination-container" class="mt-4 flex justify-center space-x-2">
+        <!-- ページナビゲーションボタンはJavaScriptで動的に生成 -->
+    </div>
     <div id="user_id" data-user-id="{{ $user->id }}"></div>
     <script src="{{ asset('/js/fetch_post.js') }}"></script>
 </x-app-layout>
