@@ -159,17 +159,15 @@ class WorkStoryPostController extends Controller
         if ($isLiked) {
             // 既にいいねしている場合
             $work_story_post->users()->detach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());
-            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+            $status = 'unliked';
         } else {
             // 初めてのいいねの場合
             $work_story_post->users()->attach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());
-            return response()->json(['status' => 'liked', 'like_user' => $count]);
+            $status = 'liked';
         }
-        return back();
+        // いいねしたユーザー数の取得
+        $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());
+        return response()->json(['status' => $status, 'like_user' => $count]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する
