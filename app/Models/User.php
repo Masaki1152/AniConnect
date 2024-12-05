@@ -81,6 +81,7 @@ class User extends Authenticatable
                             }
                         }
                     })->orderBy('created_at', 'DESC')->paginate(10);
+                $this->addPostType($posts, $type);
                 break;
             case 'workStory':
                 $posts = WorkStoryPost::where('user_id', $user_id)
@@ -113,6 +114,7 @@ class User extends Authenticatable
                             }
                         }
                     })->orderBy('created_at', 'DESC')->paginate(10);
+                $this->addPostType($posts, $type);
                 break;
             case 'character':
                 $posts = CharacterPost::where('user_id', $user_id)
@@ -149,6 +151,7 @@ class User extends Authenticatable
                             }
                         }
                     })->orderBy('created_at', 'DESC')->paginate(10);
+                $this->addPostType($posts, $type);
                 break;
             case 'music':
                 $posts = MusicPost::where('user_id', $user_id)
@@ -185,6 +188,7 @@ class User extends Authenticatable
                             }
                         }
                     })->orderBy('created_at', 'DESC')->paginate(10);
+                $this->addPostType($posts, $type);
                 break;
             case 'animePilgrimage':
                 $posts = AnimePilgrimagePost::where('user_id', $user_id)
@@ -218,9 +222,30 @@ class User extends Authenticatable
                             }
                         }
                     })->orderBy('created_at', 'DESC')->paginate(10);
+                $this->addPostType($posts, $type);
                 break;
         }
         return $posts;
+    }
+
+    // 取得した投稿に投稿の種類を付与する処理
+    public function addPostType($posts, $type)
+    {
+        // 投稿の種類
+        $postTypes = [
+            'work' => '作品感想',
+            'workStory' => 'あらすじ感想',
+            'character' => '登場人物感想',
+            'music' => '音楽感想',
+            'animePilgrimage' => '聖地感想',
+        ];
+
+        // 各投稿に postType を追加
+        $posts->getCollection()->transform(function ($post) use ($postTypes, $type) {
+            // 任意の種類を設定
+            $post->postType = $postTypes[$type];
+            return $post;
+        });
     }
 
     // WorkReviewに対するリレーション 1対1の関係
