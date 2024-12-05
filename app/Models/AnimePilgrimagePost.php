@@ -8,12 +8,13 @@ use Illuminate\Database\Eloquent\Model;
 class AnimePilgrimagePost extends Model
 {
     use HasFactory;
+    use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [
         'user_id',
         'anime_pilgrimage_id',
-        'title',
+        'post_title',
         'scene',
         'body',
         'image1',
@@ -24,6 +25,10 @@ class AnimePilgrimagePost extends Model
 
     // 参照させたいanime_pilgrimage_postsを指定
     protected $table = 'anime_pilgrimage_posts';
+
+    protected $casts = [
+        'created_at' => 'datetime:Y/m/d H:i',
+    ];
 
     // 聖地idと投稿idを指定して、投稿の詳細表示を行う
     public function getDetailPost($pilgrimage_id, $pilgrimage_post_id)

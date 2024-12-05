@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class WorkReview extends Model
 {
     use HasFactory;
+    use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [
@@ -23,6 +24,10 @@ class WorkReview extends Model
 
     // 参照させたいwork_reviewsを指定
     protected $table = 'work_reviews';
+
+    protected $casts = [
+        'created_at' => 'datetime:Y/m/d H:i',
+    ];
 
     // created_atで降順に並べたあと、limitで件数制限をかける
     public function getPaginateByLimit($work_id, int $limit_count = 5)

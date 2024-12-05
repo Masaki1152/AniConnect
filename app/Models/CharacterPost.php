@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class CharacterPost extends Model
 {
     use HasFactory;
+    use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [
@@ -25,6 +26,10 @@ class CharacterPost extends Model
 
     // 参照させたいcharacter_postsを指定
     protected $table = 'character_posts';
+
+    protected $casts = [
+        'created_at' => 'datetime:Y/m/d H:i',
+    ];
 
     // Characterに対するリレーション 1対1の関係
     public function character()

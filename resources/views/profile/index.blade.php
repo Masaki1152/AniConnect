@@ -57,8 +57,16 @@
         <button class="post-button bg-blue-300 text-white px-4 py-2 rounded" data-type="music">音楽感想</button>
         <button class="post-button bg-blue-300 text-white px-4 py-2 rounded" data-type="animePilgrimage">聖地感想</button>
     </div>
+    <!-- 検索バーの設置 -->
+    <input id="search-input" type="text" placeholder="キーワードを入力..." class="border border-gray-300 p-2 rounded mt-1">
+    <button id="search-button" class="bg-blue-500 text-white px-4 py-2 rounded">検索</button>
+    <button id="cancel-button">キャンセル</button>
     <div id="post-container" class="mt-4">
         <!-- 投稿データの表示 -->
+    </div>
+    <!-- ペジネーション -->
+    <div id="pagination-container" class="mt-4 flex justify-center space-x-2">
+        <!-- ページナビゲーションボタンはJavaScriptで動的に生成 -->
     </div>
     <div id="user_id" data-user-id="{{ $user->id }}"></div>
     <script src="{{ asset('/js/fetch_post.js') }}"></script>

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class MusicPost extends Model
 {
     use HasFactory;
+    use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [
@@ -21,6 +22,10 @@ class MusicPost extends Model
 
     // 参照させたいmusic_postsを指定
     protected $table = 'music_posts';
+
+    protected $casts = [
+        'created_at' => 'datetime:Y/m/d H:i',
+    ];
 
     // Musicに対するリレーション 1対1の関係
     public function music()
