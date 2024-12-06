@@ -151,7 +151,7 @@ class WorkReviewController extends Controller
         }
         // データの削除
         $targetworkreview->delete();
-        return redirect()->route('work_reviews.index', ['work_id' => $work_id]);
+        return redirect()->route('work_reviews.index', ['work_id' => $work_id])->with('status', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う

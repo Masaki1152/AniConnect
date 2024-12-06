@@ -142,7 +142,7 @@ class AnimePilgrimagePostController extends Controller
         }
         // データの削除
         $targetPilgrimagePost->delete();
-        return redirect()->route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_id]);
+        return redirect()->route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_id])->with('status', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う

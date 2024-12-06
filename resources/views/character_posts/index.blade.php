@@ -1,4 +1,12 @@
 <x-app-layout>
+    @if (session('status'))
+        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
+            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-red-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+            <div class="text-white">
+                {{ session('status') }}
+            </div>
+        </div>
+    @endif
     <div id="like-message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
@@ -9,7 +17,8 @@
     <div class=serch>
         <form action="{{ route('character_posts.index', ['character_id' => $character_first->character_id]) }}"
             method="GET">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
+            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索"
+                aria-label="検索...">
             <input type="submit" value="キーワード検索">
         </form>
         <div class="cancel">
@@ -73,25 +82,5 @@
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/like_posts/like_character_post.js') }}"></script>
-    <script>
-        // DOMツリー読み取り完了後にイベント発火
-        document.addEventListener('DOMContentLoaded', function() {
-            // delete-buttonに一致するすべてのHTML要素を取得
-            document.querySelectorAll('.delete-button').forEach(function(button) {
-                button.addEventListener('click', function() {
-                    const postId = button.getAttribute('data-post-id');
-                    deletePost(postId);
-                });
-            });
-        });
-
-        // 削除処理を行う
-        function deletePost(postId) {
-            'use strict'
-
-            if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
-                document.getElementById(`form_${postId}`).submit();
-            }
-        }
-    </script>
+    <script src="{{ asset('/js/delete_post.js') }}"></script>
 </x-app-layout>
