@@ -158,17 +158,17 @@ class AnimePilgrimagePostController extends Controller
         if ($isLiked) {
             // 既にいいねしている場合
             $pilgrimage_post->users()->detach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($pilgrimage_post->users()->pluck('anime_pilgrimage_post_id')->toArray());
-            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+            $status = 'unliked';
+            $message = 'いいねを解除しました';
         } else {
             // 初めてのいいねの場合
             $pilgrimage_post->users()->attach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($pilgrimage_post->users()->pluck('anime_pilgrimage_post_id')->toArray());
-            return response()->json(['status' => 'liked', 'like_user' => $count]);
+            $status = 'liked';
+            $message = 'いいねしました';
         }
-        return back();
+        // いいねしたユーザー数の取得
+        $count = count($pilgrimage_post->users()->pluck('anime_pilgrimage_post_id')->toArray());
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

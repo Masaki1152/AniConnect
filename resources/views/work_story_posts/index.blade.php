@@ -1,4 +1,8 @@
 <x-app-layout>
+    <div id="like-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     @if (is_null($work_story_post_first))
         <h2 class='no_post_result'>投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
         <a
@@ -78,7 +82,8 @@
         <div class='paginate'>
             {{ $work_story_posts->appends(request()->query())->links() }}
         </div>
-
+        <meta name="csrf-token" content="{{ csrf_token() }}">
+        <script src="{{ asset('/js/like_posts/like_work_story_post.js') }}"></script>
         <script>
             // DOMツリー読み取り完了後にイベント発火
             document.addEventListener('DOMContentLoaded', function() {
@@ -99,45 +104,6 @@
                     document.getElementById(`form_${postId}`).submit();
                 }
             }
-
-            // いいね処理を非同期で行う
-            document.addEventListener('DOMContentLoaded', function() {
-                const likeClasses = document.querySelectorAll('.like');
-                likeClasses.forEach(element => {
-                    // いいねボタンのクラスの取得
-                    let button = element.querySelector('#like_button');
-                    // いいねしたユーザー数のクラス取得とpタグの取得
-                    let likeClass = element.querySelector('.like_user');
-                    let users = likeClass.querySelector('#like_count');
-
-                    //いいねボタンクリックによる非同期処理
-                    button.addEventListener('click', async function() {
-                        const workId = button.getAttribute('data-work-id');
-                        const workStoryId = button.getAttribute('data-work_story-id');
-                        const postId = button.getAttribute('data-post-id');
-                        try {
-                            const response = await fetch(
-                                `/works/${workId}/stories/${workStoryId}/posts/${postId}/like`, {
-                                    method: 'POST',
-                                    headers: {
-                                        'Content-Type': 'application/json',
-                                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                    },
-                                });
-                            const data = await response.json();
-                            if (data.status === 'liked') {
-                                button.innerText = 'いいね取り消し';
-                                users.innerText = data.like_user;
-                            } else if (data.status === 'unliked') {
-                                button.innerText = 'いいね';
-                                users.innerText = data.like_user;
-                            }
-                        } catch (error) {
-                            console.error('Error:', error);
-                        }
-                    });
-                });
-            });
         </script>
     @endif
 </x-app-layout>

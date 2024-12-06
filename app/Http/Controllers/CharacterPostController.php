@@ -153,7 +153,7 @@ class CharacterPostController extends Controller
     }
 
     // 投稿にいいねを行う
-    public function like(CharacterPost $characterPost, $character_id, $character_post_id)
+    public function like($character_id, $character_post_id)
     {
         // 投稿が見つからない場合の処理
         $character_post = CharacterPost::find($character_post_id);
@@ -165,17 +165,17 @@ class CharacterPostController extends Controller
         if ($isLiked) {
             // 既にいいねしている場合
             $character_post->users()->detach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($character_post->users()->pluck('character_post_id')->toArray());
-            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+            $status = 'unliked';
+            $message = 'いいねを解除しました';
         } else {
             // 初めてのいいねの場合
             $character_post->users()->attach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($character_post->users()->pluck('character_post_id')->toArray());
-            return response()->json(['status' => 'liked', 'like_user' => $count]);
+            $status = 'liked';
+            $message = 'いいねしました';
         }
-        return back();
+        // いいねしたユーザー数の取得
+        $count = count($character_post->users()->pluck('character_post_id')->toArray());
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

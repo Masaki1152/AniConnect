@@ -1,4 +1,8 @@
 <x-app-layout>
+    <div id="like-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     <h1>「{{ $work->work->name }}」の感想投稿一覧</h1>
     <a href="{{ route('work_reviews.create', ['work_id' => $work->work_id]) }}">新規投稿作成</a>
     <!-- 検索機能 -->
@@ -22,6 +26,9 @@
                             <a
                                 href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
                         </h2>
+                        <div class='user'>
+                            <p>{{ $work_review->user->name }}</p>
+                        </div>
                         <div class="like">
 
                             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
@@ -66,7 +73,8 @@
     <div class='paginate'>
         {{ $work_reviews->appends(request()->query())->links() }}
     </div>
-
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
     <script>
         // DOMツリー読み取り完了後にイベント発火
         document.addEventListener('DOMContentLoaded', function() {
@@ -87,43 +95,5 @@
                 document.getElementById(`form_${postId}`).submit();
             }
         }
-
-        // いいね処理を非同期で行う
-        document.addEventListener('DOMContentLoaded', function() {
-            const likeClasses = document.querySelectorAll('.like');
-            likeClasses.forEach(element => {
-                // いいねボタンのクラスの取得
-                let button = element.querySelector('#like_button');
-                // いいねしたユーザー数のクラス取得とpタグの取得
-                let likeClass = element.querySelector('.like_user');
-                let users = likeClass.querySelector('#like_count');
-
-                //いいねボタンクリックによる非同期処理
-                button.addEventListener('click', async function() {
-                    const workId = button.getAttribute('data-work-id');
-                    const reviewId = button.getAttribute('data-review-id');
-                    try {
-                        const response = await fetch(
-                            `/work_reviews/${workId}/reviews/${reviewId}/like`, {
-                                method: 'POST',
-                                headers: {
-                                    'Content-Type': 'application/json',
-                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                                },
-                            });
-                        const data = await response.json();
-                        if (data.status === 'liked') {
-                            button.innerText = 'いいね取り消し';
-                            users.innerText = data.like_user;
-                        } else if (data.status === 'unliked') {
-                            button.innerText = 'いいね';
-                            users.innerText = data.like_user;
-                        }
-                    } catch (error) {
-                        console.error('Error:', error);
-                    }
-                });
-            });
-        });
     </script>
 </x-app-layout>

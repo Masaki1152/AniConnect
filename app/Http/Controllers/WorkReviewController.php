@@ -143,7 +143,7 @@ class WorkReviewController extends Controller
         for ($counter = 1; $counter < 5; $counter++) {
             $removed_image_path = $targetworkreview->{'image' . $counter};
             // DBのimageの中身がnullであれば処理をスキップする
-            if(is_null($removed_image_path)) {
+            if (is_null($removed_image_path)) {
                 break;
             }
             $public_id = $this->extractPublicIdFromUrl($removed_image_path);
@@ -155,7 +155,7 @@ class WorkReviewController extends Controller
     }
 
     // 投稿にいいねを行う
-    public function like(WorkReview $workreview, $work_id, $work_review_id)
+    public function like($work_id, $work_review_id)
     {
         // 投稿が見つからない場合の処理
         $work_review = WorkReview::find($work_review_id);
@@ -167,17 +167,18 @@ class WorkReviewController extends Controller
         if ($isLiked) {
             // 既にいいねしている場合
             $work_review->users()->detach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($work_review->users()->pluck('work_review_id')->toArray());
-            return response()->json(['status' => 'unliked', 'like_user' => $count]);
+            $status = 'unliked';
+            $message = 'いいねを解除しました';
         } else {
             // 初めてのいいねの場合
             $work_review->users()->attach(Auth::id());
-            // いいねしたユーザー数の取得
-            $count = count($work_review->users()->pluck('work_review_id')->toArray());
-            return response()->json(['status' => 'liked', 'like_user' => $count]);
+            $status = 'liked';
+            $message = 'いいねしました';
         }
-        return back();
+        // いいねしたユーザー数の取得
+        $count = count($work_review->users()->pluck('work_review_id')->toArray());
+
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

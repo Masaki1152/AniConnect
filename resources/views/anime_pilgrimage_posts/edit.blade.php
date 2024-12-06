@@ -15,9 +15,9 @@
             </div>
             <div class="title">
                 <h2>タイトル</h2>
-                <input type="text" name="pilgrimage_post[title]" placeholder="タイトル"
-                    value="{{ $pilgrimage_post->title }}" />
-                <p class="title__error" style="color:red">{{ $errors->first('pilgrimage_post.title') }}</p>
+                <input type="text" name="pilgrimage_post[post_title]" placeholder="タイトル"
+                    value="{{ $pilgrimage_post->post_title }}" />
+                <p class="title__error" style="color:red">{{ $errors->first('pilgrimage_post.post_title') }}</p>
             </div>
             <div class="scene">
                 <h2>シーン</h2>
