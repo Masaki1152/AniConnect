@@ -78,7 +78,7 @@ class MusicPostController extends Controller
         // 編集の対象となるデータを取得
         $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
         $targetMusicPost->delete();
-        return redirect()->route('music_posts.index', ['music_id' => $music_id]);
+        return redirect()->route('music_posts.index', ['music_id' => $music_id])->with('status', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う

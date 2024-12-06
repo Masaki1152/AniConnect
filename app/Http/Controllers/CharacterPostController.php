@@ -149,7 +149,7 @@ class CharacterPostController extends Controller
         }
         // データの削除
         $targetCharacterPost->delete();
-        return redirect()->route('character_posts.index', ['character_id' => $character_id]);
+        return redirect()->route('character_posts.index', ['character_id' => $character_id])->with('status', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う

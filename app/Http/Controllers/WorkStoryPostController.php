@@ -143,7 +143,7 @@ class WorkStoryPostController extends Controller
         }
         // データの削除
         $targetWorkStoryPost->delete();
-        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id]);
+        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id])->with('status', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う
