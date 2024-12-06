@@ -53,7 +53,7 @@ class MusicPostController extends Controller
         // ログインしているユーザーidの登録
         $input_post['user_id'] = Auth::id();
         $musicPost->fill($input_post)->save();
-        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id]);
+        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -69,7 +69,7 @@ class MusicPostController extends Controller
         // 編集の対象となるデータを取得
         $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
         $targetMusicPost->fill($input_post)->save();
-        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id]);
+        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id])->with('status', '投稿を編集しました');
     }
 
     // 感想投稿を削除する

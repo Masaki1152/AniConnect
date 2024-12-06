@@ -65,7 +65,7 @@ class AnimePilgrimagePostController extends Controller
         // ログインしているユーザーidの登録
         $input_post['user_id'] = Auth::id();
         $pilgrimagePost->fill($input_post)->save();
-        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimagePost->id]);
+        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimagePost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -122,7 +122,7 @@ class AnimePilgrimagePostController extends Controller
         // 編集の対象となるデータを取得
         $targetPilgrimagePost = $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id);
         $targetPilgrimagePost->fill($input_post)->save();
-        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id]);
+        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id])->with('status', '投稿を編集しました');
     }
 
     // 感想投稿を削除する
