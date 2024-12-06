@@ -95,13 +95,15 @@ class MusicPostController extends Controller
             // 既にいいねしている場合
             $music_post->users()->detach(Auth::id());
             $status = 'unliked';
+            $message = 'いいねを解除しました';
         } else {
             // 初めてのいいねの場合
             $music_post->users()->attach(Auth::id());
             $status = 'liked';
+            $message = 'いいねしました';
         }
         // いいねしたユーザー数の取得
         $count = count($music_post->users()->pluck('music_post_id')->toArray());
-        return response()->json(['status' => $status, 'like_user' => $count]);
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 }

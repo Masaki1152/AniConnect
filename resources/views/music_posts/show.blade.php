@@ -1,17 +1,20 @@
 <x-app-layout>
+    <div id="like-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     <h1 class="title">
         {{ $music_post->post_title }}
     </h1>
     <div class="like">
         <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-        <button id="like_button"
-            data-music-id="{{ $music_post->music_id }}"
-            data-post-id="{{ $music_post->id }}"
+        <button id="like_button" data-music-id="{{ $music_post->music_id }}" data-post-id="{{ $music_post->id }}"
             type="submit">
             {{ $music_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
         </button>
         <div class="like_user">
-            <a href="{{ route('music_post_like.index', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">
+            <a
+                href="{{ route('music_post_like.index', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">
                 <p id="like_count">{{ $music_post->users->count() }}</p>
             </a>
         </div>
@@ -28,7 +31,7 @@
             <p>{{ $music_post->post_title }}</p>
             <h3>評価</h3>
             @php
-            $numbers = array(1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★');
+                $numbers = [1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★'];
             @endphp
             <p>{{ $numbers[$music_post->star_num] }}</p>
             <h3>本文</h3>
@@ -38,9 +41,12 @@
         </div>
     </div>
     <div class="edit">
-        <a href="{{ route('music_posts.edit', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">編集する</a>
+        <a
+            href="{{ route('music_posts.edit', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">編集する</a>
     </div>
-    <form action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}" id="form_{{ $music_post->id }}" method="post">
+    <form
+        action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}"
+        id="form_{{ $music_post->id }}" method="post">
         @csrf
         @method('DELETE')
         <button type="button" data-post-id="{{ $music_post->id }}" class="delete-button">投稿を削除する</button>
@@ -73,6 +79,7 @@
         // いいね処理を非同期で行う
         document.addEventListener('DOMContentLoaded', function() {
             const likeClasses = document.querySelectorAll('.like');
+            const likeMessage = document.getElementById('like-message');
             likeClasses.forEach(element => {
                 // いいねボタンのクラスの取得
                 let button = element.querySelector('#like_button');
@@ -85,13 +92,14 @@
                     const musicId = button.getAttribute('data-music-id');
                     const postId = button.getAttribute('data-post-id');
                     try {
-                        const response = await fetch(`/music_posts/${musicId}/posts/${postId}/like`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                            },
-                        });
+                        const response = await fetch(
+                            `/music_posts/${musicId}/posts/${postId}/like`, {
+                                method: 'POST',
+                                headers: {
+                                    'Content-Type': 'application/json',
+                                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                                },
+                            });
                         const data = await response.json();
                         if (data.status === 'liked') {
                             button.innerText = 'いいね取り消し';
@@ -100,6 +108,16 @@
                             button.innerText = 'いいね';
                             users.innerText = data.like_user;
                         }
+                        // メッセージを表示
+                        likeMessage.textContent = data.message;
+                        likeMessage.classList.remove('hidden');
+                        likeMessage.classList.add('block');
+
+                        // 3秒後にメッセージを非表示
+                        setTimeout(() => {
+                            likeMessage.classList.add('hidden');
+                            likeMessage.classList.remove('block');
+                        }, 3000);
                     } catch (error) {
                         console.error('Error:', error);
                     }

@@ -168,15 +168,17 @@ class WorkReviewController extends Controller
             // 既にいいねしている場合
             $work_review->users()->detach(Auth::id());
             $status = 'unliked';
+            $message = 'いいねを解除しました';
         } else {
             // 初めてのいいねの場合
             $work_review->users()->attach(Auth::id());
             $status = 'liked';
+            $message = 'いいねしました';
         }
         // いいねしたユーザー数の取得
         $count = count($work_review->users()->pluck('work_review_id')->toArray());
 
-        return response()->json(['status' => $status, 'like_user' => $count]);
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

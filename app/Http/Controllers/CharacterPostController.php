@@ -166,14 +166,16 @@ class CharacterPostController extends Controller
             // 既にいいねしている場合
             $character_post->users()->detach(Auth::id());
             $status = 'unliked';
+            $message = 'いいねを解除しました';
         } else {
             // 初めてのいいねの場合
             $character_post->users()->attach(Auth::id());
             $status = 'liked';
+            $message = 'いいねしました';
         }
         // いいねしたユーザー数の取得
         $count = count($character_post->users()->pluck('character_post_id')->toArray());
-        return response()->json(['status' => $status, 'like_user' => $count]);
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

@@ -1,4 +1,8 @@
 <x-app-layout>
+    <div id="like-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     <h1>「{{ $pilgrimage_first->animePilgrimage->name }}」の感想投稿一覧</h1>
     <a
         href="{{ route('pilgrimage_posts.create', ['pilgrimage_id' => $pilgrimage_first->anime_pilgrimage_id]) }}">新規投稿作成</a>
@@ -95,6 +99,7 @@
         // いいね処理を非同期で行う
         document.addEventListener('DOMContentLoaded', function() {
             const likeClasses = document.querySelectorAll('.like');
+            const likeMessage = document.getElementById('like-message');
             likeClasses.forEach(element => {
                 // いいねボタンのクラスの取得
                 let button = element.querySelector('#like_button');
@@ -123,6 +128,16 @@
                             button.innerText = 'いいね';
                             users.innerText = data.like_user;
                         }
+                        // メッセージを表示
+                        likeMessage.textContent = data.message;
+                        likeMessage.classList.remove('hidden');
+                        likeMessage.classList.add('block');
+
+                        // 3秒後にメッセージを非表示
+                        setTimeout(() => {
+                            likeMessage.classList.add('hidden');
+                            likeMessage.classList.remove('block');
+                        }, 3000);
                     } catch (error) {
                         console.error('Error:', error);
                     }

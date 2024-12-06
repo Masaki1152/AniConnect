@@ -1,4 +1,8 @@
 <x-app-layout>
+    <div id="like-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     @if (is_null($work_story_post_first))
         <h2 class='no_post_result'>投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
         <a
@@ -78,7 +82,6 @@
         <div class='paginate'>
             {{ $work_story_posts->appends(request()->query())->links() }}
         </div>
-
         <script>
             // DOMツリー読み取り完了後にイベント発火
             document.addEventListener('DOMContentLoaded', function() {
@@ -103,6 +106,7 @@
             // いいね処理を非同期で行う
             document.addEventListener('DOMContentLoaded', function() {
                 const likeClasses = document.querySelectorAll('.like');
+                const likeMessage = document.getElementById('like-message');
                 likeClasses.forEach(element => {
                     // いいねボタンのクラスの取得
                     let button = element.querySelector('#like_button');
@@ -132,6 +136,16 @@
                                 button.innerText = 'いいね';
                                 users.innerText = data.like_user;
                             }
+                            // メッセージを表示
+                            likeMessage.textContent = data.message;
+                            likeMessage.classList.remove('hidden');
+                            likeMessage.classList.add('block');
+
+                            // 3秒後にメッセージを非表示
+                            setTimeout(() => {
+                                likeMessage.classList.add('hidden');
+                                likeMessage.classList.remove('block');
+                            }, 3000);
                         } catch (error) {
                             console.error('Error:', error);
                         }
