@@ -69,7 +69,7 @@ class WorkReviewController extends Controller
         $workreview->fill($input_review)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $workreview->categories()->attach($input_categories);
-        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'work_review_id' => $workreview->id]);
+        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'work_review_id' => $workreview->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -131,7 +131,7 @@ class WorkReviewController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetworkreview->categories()->sync($input_categories);
-        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'work_review_id' => $targetworkreview->id]);
+        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'work_review_id' => $targetworkreview->id])->with('status', '投稿を編集しました');
     }
 
     // 感想投稿を削除する

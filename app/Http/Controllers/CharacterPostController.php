@@ -68,7 +68,7 @@ class CharacterPostController extends Controller
         $characterPost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $characterPost->categories()->attach($input_categories);
-        return redirect()->route('character_posts.show', ['character_id' => $characterPost->character_id, 'character_post_id' => $characterPost->id]);
+        return redirect()->route('character_posts.show', ['character_id' => $characterPost->character_id, 'character_post_id' => $characterPost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -129,7 +129,7 @@ class CharacterPostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetCharacterPost->categories()->sync($input_categories);
-        return redirect()->route('character_posts.show', ['character_id' => $targetCharacterPost->character_id, 'character_post_id' => $targetCharacterPost->id]);
+        return redirect()->route('character_posts.show', ['character_id' => $targetCharacterPost->character_id, 'character_post_id' => $targetCharacterPost->id])->with('status', '投稿を編集しました');
     }
 
     // 感想投稿を削除する

@@ -66,7 +66,7 @@ class WorkStoryPostController extends Controller
         // ログインしているユーザーidの登録
         $input_post['user_id'] = Auth::id();
         $workStoryPost->fill($input_post)->save();
-        return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id]);
+        return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -123,7 +123,7 @@ class WorkStoryPostController extends Controller
         // 編集の対象となるデータを取得
         $targetWorkStoryPost = $workStoryPost->getDetailPost($work_story_id, $work_story_post_id);
         $targetWorkStoryPost->fill($input_post)->save();
-        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id]);
+        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id])->with('status', '投稿を編集しました');
     }
 
     // 感想投稿を削除する
