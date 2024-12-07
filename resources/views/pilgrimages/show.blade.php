@@ -8,9 +8,12 @@
             <p>{{ $pilgrimage->name }}</p>
             <div class='work'>
                 <h3>登場作品</h3>
-                <a href="{{ route('works.show', ['work' => $pilgrimage->work->id]) }}">
-                    {{ $pilgrimage->work->name }}
-                </a>
+                {{-- 関連する作品の数だけ繰り返す --}}
+                @foreach ($pilgrimage->works as $pilgrimage_work)
+                    <a href="{{ route('works.show', ['work' => $pilgrimage_work->id]) }}">
+                        {{ $pilgrimage_work->name }}
+                    </a>
+                @endforeach
             </div>
             <h3>Google Mapsへのリンク</h3>
             <p>{{ $pilgrimage->map_link }}</p>
