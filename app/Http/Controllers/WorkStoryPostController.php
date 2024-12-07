@@ -21,7 +21,7 @@ class WorkStoryPostController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $work_story_posts = $workStoryPost->fetchWorkStoryPosts($work_story_id, $search);
-        // あらすじ投稿のオブジェクトを1つ取得
+        // 単体のオブジェクトを取得
         $work_story_post_first = WorkStoryPost::where('sub_title_id', $work_story_id)->first();
         return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first, 'work_id' => $work_id, 'work_story_id' => $work_story_id]);
     }
