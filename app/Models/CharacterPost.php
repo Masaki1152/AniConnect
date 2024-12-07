@@ -31,6 +31,28 @@ class CharacterPost extends Model
         'created_at' => 'datetime:Y/m/d H:i',
     ];
 
+    // 登場人物投稿の検索処理
+    public function fetchCharacterPosts($character_id, $search)
+    {
+        // 指定したidの登場人物の投稿のみを表示
+        $character_posts = CharacterPost::where('character_id', $character_id)->orderBy('id', 'DESC')->where(function ($query) use ($search) {
+            // キーワード検索がなされた場合
+            if ($search) {
+                // 検索語のスペースを半角に統一
+                $search_split = mb_convert_kana($search, 's');
+                // 半角スペースで単語ごとに分割して配列にする
+                $search_array = preg_split('/[\s]+/', $search_split);
+                foreach ($search_array as $search_word) {
+                    $query->where(function ($query) use ($search_word) {
+                        $query->where('post_title', 'LIKE', "%{$search_word}%")
+                            ->orWhere('body', 'LIKE', "%{$search_word}%");
+                    });
+                }
+            }
+        })->paginate(5);
+        return $character_posts;
+    }
+
     // Characterに対するリレーション 1対1の関係
     public function character()
     {

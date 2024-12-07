@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\WorkReview;
 use App\Models\WorkReviewCategory;
+use Illuminate\Http\Request;
 use App\Http\Requests\WorkReviewRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -14,25 +15,13 @@ class WorkReviewController extends Controller
     use SoftDeletes;
 
     // インポートしたWorkreviewをインスタンス化して$work_reviewsとして使用。
-    public function index(WorkReview $work_reviews, WorkReviewCategory $category, $work_id)
+    public function index(Request $request, WorkReview $workReview, WorkReviewCategory $category, $work_id)
     {
-        // blade内の変数work_reviewsにインスタンス化した$work_reviewsを代入
-        // 指定したidのアニメの投稿のみを表示
-        $work_reviews = WorkReview::where('work_id', $work_id)->orderBy('id', 'ASC')->where(function ($query) {
-            // キーワード検索がなされた場合
-            if ($search = request('search')) {
-                // 検索語のスペースを半角に統一
-                $search_split = mb_convert_kana($search, 's');
-                // 半角スペースで単語ごとに分割して配列にする
-                $search_array = preg_split('/[\s]+/', $search_split);
-                foreach ($search_array as $search_word) {
-                    $query->where(function ($query) use ($search_word) {
-                        $query->where('post_title', 'LIKE', "%{$search_word}%")
-                            ->orWhere('body', 'LIKE', "%{$search_word}%");
-                    });
-                }
-            }
-        })->paginate(5);
+        // 検索キーワードがあれば取得
+        $search = $request->input('search', '');
+        // キーワードに部分一致する投稿を取得
+        $work_reviews = $workReview->fetchWorkReviews($work_id, $search);
+        // 単体のオブジェクトを取得
         $work = WorkReview::where('work_id', $work_id)->first();
         return view('work_reviews.index')->with(['work_reviews' => $work_reviews, 'work' => $work, 'categories' => $category->get()]);
     }

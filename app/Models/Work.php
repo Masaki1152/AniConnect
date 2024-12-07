@@ -12,6 +12,26 @@ class Work extends Model
     // 参照させたいworksを指定
     protected $table = 'works';
 
+    // 作品の検索処理
+    public function fetchWorks($search)
+    {
+        $works = Work::orderBy('id', 'ASC')->where(function ($query) use ($search) {
+            // キーワード検索がなされた場合
+            if ($search) {
+                // 検索語のスペースを半角に統一
+                $search_split = mb_convert_kana($search, 's');
+                // 半角スペースで単語ごとに分割して配列にする
+                $search_array = preg_split('/[\s]+/', $search_split);
+                foreach ($search_array as $search_word) {
+                    $query->where(function ($query) use ($search_word) {
+                        $query->where('name', 'LIKE', "%{$search_word}%");
+                    });
+                }
+            }
+        })->paginate(5);
+        return $works;
+    }
+
     // WorkReviewに対するリレーション 1対1の関係
     public function workreview()
     {

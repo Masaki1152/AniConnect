@@ -8,22 +8,12 @@ use App\Models\Music;
 class MusicController extends Controller
 {
     // 音楽画面の表示
-    public function index()
+    public function index(Request $request, Music $music)
     {
-        $music = Music::orderBy('id', 'ASC')->where(function($query) {
-            // キーワード検索がなされた場合
-            if ($search = request('search')) {
-                // 検索語のスペースを半角に統一
-                $search_split = mb_convert_kana($search, 's');
-                // 半角スペースで単語ごとに分割して配列にする
-                $search_array = preg_split('/[\s]+/', $search_split);
-                foreach ($search_array as $search_word) {
-                    $query->where(function ($query) use ($search_word) {
-                        $query->where('name', 'LIKE', "%{$search_word}%");
-                    });
-                }
-            }
-        })->paginate(5);
+        // 検索キーワードがあれば取得
+        $search = $request->input('search', '');
+        // キーワードに部分一致する音楽を取得
+        $music = $music->fetchMusic($search);
         return view('music.index')->with(['music' => $music]);
     }
 
