@@ -256,6 +256,31 @@ return [
         'updated_at' => '更新日',
         'username' => 'ユーザー名',
         'year' => '年',
+        // ログイン画面のバリデーション
+        'introduction' => '紹介文',
+        // 作品感想投稿のバリデーション
+        'work_review.work_id' => '作品名',
+        'work_review.user_id' => '投稿者名',
+        'work_review.post_title' => 'タイトル',
+        'work_review.body' => '内容',
+        'work_review.categories_array' => 'カテゴリー',
+        'images' => '画像',
+        // 登場人物の感想投稿のバリデーション
+        'character_post.post_title' => 'タイトル',
+        'character_post.body' => '内容',
+        'character_post.categories_array' => 'カテゴリー',
+        'character_post.star_num' => '評価数',
+        // 音楽の感想投稿のバリデーション
+        'music_post.post_title' => 'タイトル',
+        'music_post.body' => '内容',
+        'music_post.star_num' => '評価数',
+        // 聖地の感想投稿のバリデーション
+        'pilgrimage_post.post_title' => 'タイトル',
+        'pilgrimage_post.scene' => 'シーン',
+        'pilgrimage_post.body' => '内容',
+        // あらすじの感想投稿のバリデーション
+        'work_story_post.post_title' => 'タイトル',
+        'work_story_post.body' => '内容',
     ],
 
 ];
