@@ -85,10 +85,10 @@ class Work extends Model
         return $this->hasMany(AnimePilgrimage::class, 'work_id', 'id');
     }
 
-    // Characterに対するリレーション 1対多の関係
+    // Characterに対するリレーション 多対多の関係
     public function characters()
     {
-        return $this->hasMany(Character::class, 'work_id', 'id');
+        return $this->belongsToMany(Character::class, 'character_work', 'work_id', 'character_id');
     }
 
     // Creatorに対するリレーション 1対多の関係

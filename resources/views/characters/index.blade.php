@@ -11,28 +11,31 @@
         </div>
     </div>
     <div class='characters'>
-        @if($characters->isEmpty())
-        <h2 class='no_result'>結果がありません。</h2>
+        @if ($characters->isEmpty())
+            <h2 class='no_result'>結果がありません。</h2>
         @else
-        @foreach ($characters as $character)
-        <div class='character'>
-            <h2 class='name'>
-                <a href="{{ route('characters.show', ['character_id' => $character->id]) }}">
-                    {{ $character->name }}
-                </a>
-            </h2>
-            <p class='work'>
-                <a href="{{ route('works.show', ['work' => $character->work->id]) }}">
-                    {{ $character->work->name }}
-                </a>
-            </p>
-            <p class='voice_artist'>
-                <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
-                    CV:{{ $character->voiceArtist->name }}
-                </a>
-            </p>
-        </div>
-        @endforeach
+            @foreach ($characters as $character)
+                <div class='character'>
+                    <h2 class='name'>
+                        <a href="{{ route('characters.show', ['character_id' => $character->id]) }}">
+                            {{ $character->name }}
+                        </a>
+                    </h2>
+                    <p class='work'>
+                        {{-- 関連する登場作品の数だけ繰り返す --}}
+                        @foreach ($character->works as $character_work)
+                            <a href="{{ route('works.show', ['work' => $character_work->id]) }}">
+                                {{ $character_work->name }}
+                            </a>
+                        @endforeach
+                    </p>
+                    <p class='voice_artist'>
+                        <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
+                            CV:{{ $character->voiceArtist->name }}
+                        </a>
+                    </p>
+                </div>
+            @endforeach
         @endif
     </div>
     <div class='paginate'>
