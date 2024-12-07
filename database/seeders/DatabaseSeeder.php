@@ -44,6 +44,7 @@ class DatabaseSeeder extends Seeder
             Character_Post_Like_Seeder::class,
             Character_Post_Categories_Seeder::class,
             Character_Post_Category_Seeder::class,
+            Character_WorkSeeder::class
         ]);
     }
 }
