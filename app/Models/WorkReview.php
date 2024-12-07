@@ -33,21 +33,29 @@ class WorkReview extends Model
     public function fetchWorkReviews($work_id, $search)
     {
         // 指定したidのアニメの投稿のみを表示
-        $work_reviews = WorkReview::where('work_id', $work_id)->orderBy('id', 'ASC')->where(function ($query) use ($search) {
-            // キーワード検索がなされた場合
-            if ($search) {
-                // 検索語のスペースを半角に統一
-                $search_split = mb_convert_kana($search, 's');
-                // 半角スペースで単語ごとに分割して配列にする
-                $search_array = preg_split('/[\s]+/', $search_split);
-                foreach ($search_array as $search_word) {
-                    $query->where(function ($query) use ($search_word) {
-                        $query->where('post_title', 'LIKE', "%{$search_word}%")
-                            ->orWhere('body', 'LIKE', "%{$search_word}%");
-                    });
+        $work_reviews = WorkReview::where('work_id', $work_id)->orderBy('id', 'ASC')
+            ->with(['user'])
+            ->where(function ($query) use ($search) {
+                // キーワード検索がなされた場合
+                if ($search) {
+                    // 検索語のスペースを半角に統一
+                    $search_split = mb_convert_kana($search, 's');
+                    // 半角スペースで単語ごとに分割して配列にする
+                    $search_array = preg_split('/[\s]+/', $search_split);
+                    foreach ($search_array as $search_word) {
+                        // 自身のカラムでの検索
+                        $query->where(function ($query) use ($search_word) {
+                            $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                ->orWhere('body', 'LIKE', "%{$search_word}%");
+                        });
+
+                        // リレーション先のUsersテーブルのカラムでの検索
+                        $query->orWhereHas('user', function ($userQuery) use ($search_word) {
+                            $userQuery->where('name', 'like', '%' . $search_word . '%');
+                        });
+                    }
                 }
-            }
-        })->paginate(5);
+            })->paginate(5);
         return $work_reviews;
     }
 

@@ -10,6 +10,9 @@
             <a href="{{ route('characters.index') }}">キャンセル</a>
         </div>
     </div>
+    <div>
+        <p>人物名、作品名、声優、制作会社など何でも検索してみましょう！</p>
+    </div>
     <div class='characters'>
         @if ($characters->isEmpty())
             <h2 class='no_result'>結果がありません。</h2>

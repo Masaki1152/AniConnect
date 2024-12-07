@@ -36,6 +36,7 @@
                             <a
                                 href="{{ route('character_posts.show', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">{{ $character_post->post_title }}</a>
                         </h2>
+                        <p>{{ $character_post->user->name }}</p>
                         <div class="like">
                             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                             <button id="like_button" data-character-id="{{ $character_post->character_id }}"

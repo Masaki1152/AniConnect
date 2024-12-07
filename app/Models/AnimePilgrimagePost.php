@@ -34,22 +34,30 @@ class AnimePilgrimagePost extends Model
     public function fetchAnimePilgrimagePosts($pilgrimage_id, $search)
     {
         // 指定したidの聖地の投稿のみを表示
-        $pilgrimage_posts = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->orderBy('id', 'DESC')->where(function ($query) use ($search) {
-            // キーワード検索がなされた場合
-            if ($search) {
-                // 検索語のスペースを半角に統一
-                $search_split = mb_convert_kana($search, 's');
-                // 半角スペースで単語ごとに分割して配列にする
-                $search_array = preg_split('/[\s]+/', $search_split);
-                foreach ($search_array as $search_word) {
-                    $query->where(function ($query) use ($search_word) {
-                        $query->where('post_title', 'LIKE', "%{$search_word}%")
-                            ->orwhere('scene', 'LIKE', "%{$search_word}%")
-                            ->orWhere('body', 'LIKE', "%{$search_word}%");
-                    });
+        $pilgrimage_posts = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->orderBy('id', 'DESC')
+            ->with(['user'])
+            ->where(function ($query) use ($search) {
+                // キーワード検索がなされた場合
+                if ($search) {
+                    // 検索語のスペースを半角に統一
+                    $search_split = mb_convert_kana($search, 's');
+                    // 半角スペースで単語ごとに分割して配列にする
+                    $search_array = preg_split('/[\s]+/', $search_split);
+                    foreach ($search_array as $search_word) {
+                        // 自身のカラムでの検索
+                        $query->where(function ($query) use ($search_word) {
+                            $query->where('post_title', 'LIKE', "%{$search_word}%")
+                                ->orwhere('scene', 'LIKE', "%{$search_word}%")
+                                ->orWhere('body', 'LIKE', "%{$search_word}%");
+                        });
+
+                        // リレーション先のUsersテーブルのカラムでの検索
+                        $query->orWhereHas('user', function ($userQuery) use ($search_word) {
+                            $userQuery->where('name', 'like', '%' . $search_word . '%');
+                        });
+                    }
                 }
-            }
-        })->paginate(5);
+            })->paginate(5);
         return $pilgrimage_posts;
     }
 

@@ -25,6 +25,9 @@
             <a href="{{ route('pilgrimages.index') }}">キャンセル</a>
         </div>
     </div>
+    <div>
+        <p>聖地名、シーン、住所、作品名、関連人物名など何でも検索してみましょう！</p>
+    </div>
     <div class='pilgrimages'>
         @if ($pilgrimages->isEmpty())
             <h2 class='no_result'>結果がありません。</h2>

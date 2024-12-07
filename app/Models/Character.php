@@ -15,20 +15,39 @@ class Character extends Model
     // 登場人物の検索処理
     public function fetchCharacters($search)
     {
-        $characters = Character::orderBy('id', 'ASC')->where(function ($query) use ($search) {
-            // キーワード検索がなされた場合
-            if ($search) {
-                // 検索語のスペースを半角に統一
-                $search_split = mb_convert_kana($search, 's');
-                // 半角スペースで単語ごとに分割して配列にする
-                $search_array = preg_split('/[\s]+/', $search_split);
-                foreach ($search_array as $search_word) {
-                    $query->where(function ($query) use ($search_word) {
-                        $query->where('name', 'LIKE', "%{$search_word}%");
-                    });
+        $characters = Character::orderBy('id', 'ASC')
+            ->with(['works', 'works.creator', 'voiceArtist'])
+            ->where(function ($query) use ($search) {
+                // キーワード検索がなされた場合
+                if ($search) {
+                    // 検索語のスペースを半角に統一
+                    $search_split = mb_convert_kana($search, 's');
+                    // 半角スペースで単語ごとに分割して配列にする
+                    $search_array = preg_split('/[\s]+/', $search_split);
+                    foreach ($search_array as $search_word) {
+                        // 自身のカラムでの検索
+                        $query->where(function ($query) use ($search_word) {
+                            $query->where('name', 'LIKE', "%{$search_word}%");
+                        });
+
+                        // リレーション先のWorksテーブルのカラムでの検索
+                        $query->orWhereHas('works', function ($workQuery) use ($search_word) {
+                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                ->orWhere('term', 'like', '%' . $search_word . '%');
+
+                            // リレーション先のCreatorsテーブルのカラムでの検索
+                            $workQuery->orWhereHas('creator', function ($creatorQuery) use ($search_word) {
+                                $creatorQuery->where('name', 'like', '%' . $search_word . '%');
+                            });
+                        });
+
+                        // リレーション先のvoice_artistsテーブルのカラムでの検索
+                        $query->orWhereHas('voiceArtist', function ($voiceArtistQuery) use ($search_word) {
+                            $voiceArtistQuery->where('name', 'LIKE', "%{$search_word}%");
+                        });
+                    }
                 }
-            }
-        })->paginate(5);
+            })->paginate(5);
         return $characters;
     }
 
