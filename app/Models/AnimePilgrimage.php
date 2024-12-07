@@ -38,10 +38,10 @@ class AnimePilgrimage extends Model
         return $pilgrimages;
     }
 
-    // Workに対するリレーション 1対多の関係
-    public function work()
+    // Workに対するリレーション 多対多の関係
+    public function works()
     {
-        return $this->belongsTo(Work::class, 'work_id', 'id');
+        return $this->belongsToMany(Work::class, 'anime_pilgrimage_work', 'anime_pilgrimage_id', 'work_id');
     }
 
     // Prefectureに対するリレーション 1対多の関係
