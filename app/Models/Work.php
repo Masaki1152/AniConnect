@@ -88,7 +88,7 @@ class Work extends Model
     // Characterに対するリレーション 1対多の関係
     public function characters()
     {
-        return $this->hasMany(Character::class, 'work_id', 'id');
+        return $this->hasMany(Character::class, 'character_work', 'work_id', 'character_id');
     }
 
     // Creatorに対するリレーション 1対多の関係
