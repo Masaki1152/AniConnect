@@ -30,6 +30,28 @@ class WorkStoryPost extends Model
         'created_at' => 'datetime:Y/m/d H:i',
     ];
 
+    // あらすじ投稿の検索処理
+    public function fetchWorkStoryPosts($work_story_id, $search)
+    {
+        // 指定したidのあらすじの投稿のみを表示
+        $work_story_posts = WorkStoryPost::where('sub_title_id', $work_story_id)->orderBy('id', 'DESC')->where(function ($query) use ($search) {
+            // キーワード検索がなされた場合
+            if ($search) {
+                // 検索語のスペースを半角に統一
+                $search_split = mb_convert_kana($search, 's');
+                // 半角スペースで単語ごとに分割して配列にする
+                $search_array = preg_split('/[\s]+/', $search_split);
+                foreach ($search_array as $search_word) {
+                    $query->where(function ($query) use ($search_word) {
+                        $query->where('post_title', 'LIKE', "%{$search_word}%")
+                            ->orWhere('body', 'LIKE', "%{$search_word}%");
+                    });
+                }
+            }
+        })->paginate(5);
+        return $work_story_posts;
+    }
+
     // あらすじidと投稿idを指定して、投稿の詳細表示を行う
     public function getDetailPost($work_story_id, $work_story_post_id)
     {

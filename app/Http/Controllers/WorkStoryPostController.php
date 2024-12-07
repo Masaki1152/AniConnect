@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
 use App\Http\Requests\WorkStoryPostRequest;
 use App\Models\WorkStory;
 use App\Models\WorkStoryPost;
@@ -14,24 +15,13 @@ class WorkStoryPostController extends Controller
     use SoftDeletes;
 
     // あらすじ感想投稿一覧の表示
-    public function index($work_id, $work_story_id)
+    public function index(Request $request, WorkStoryPost $workStoryPost, $work_id, $work_story_id)
     {
-        // 指定したidのあらすじの投稿のみを表示
-        $work_story_posts = WorkStoryPost::where('sub_title_id', $work_story_id)->orderBy('id', 'DESC')->where(function ($query) {
-            // キーワード検索がなされた場合
-            if ($search = request('search')) {
-                // 検索語のスペースを半角に統一
-                $search_split = mb_convert_kana($search, 's');
-                // 半角スペースで単語ごとに分割して配列にする
-                $search_array = preg_split('/[\s]+/', $search_split);
-                foreach ($search_array as $search_word) {
-                    $query->where(function ($query) use ($search_word) {
-                        $query->where('post_title', 'LIKE', "%{$search_word}%")
-                            ->orWhere('body', 'LIKE', "%{$search_word}%");
-                    });
-                }
-            }
-        })->paginate(5);
+        // 検索キーワードがあれば取得
+        $search = $request->input('search', '');
+        // キーワードに部分一致する投稿を取得
+        $work_story_posts = $workStoryPost->fetchWorkStoryPosts($work_story_id, $search);
+        // あらすじ投稿のオブジェクトを1つ取得
         $work_story_post_first = WorkStoryPost::where('sub_title_id', $work_story_id)->first();
         return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first, 'work_id' => $work_id, 'work_story_id' => $work_story_id]);
     }

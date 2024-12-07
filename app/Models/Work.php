@@ -12,6 +12,67 @@ class Work extends Model
     // 参照させたいworksを指定
     protected $table = 'works';
 
+    // 作品の検索処理
+    public function fetchWorks($search)
+    {
+        $works = Work::orderBy('id', 'ASC')
+            ->with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
+            ->where(function ($query) use ($search) {
+                // キーワード検索がなされた場合
+                if ($search) {
+                    // 検索語のスペースを半角に統一
+                    $search_split = mb_convert_kana($search, 's');
+                    // 半角スペースで単語ごとに分割して配列にする
+                    $search_array = preg_split('/[\s]+/', $search_split);
+                    foreach ($search_array as $search_word) {
+                        // 自身のカラムでの検索
+                        $query->where(function ($query) use ($search_word) {
+                            $query->where('name', 'LIKE', "%{$search_word}%");
+                        });
+
+                        // リレーション先のCreatorsテーブルのカラムでの検索
+                        $query->orWhereHas('creator', function ($creatorQuery) use ($search_word) {
+                            $creatorQuery->where('name', 'like', '%' . $search_word . '%');
+                        });
+
+                        // リレーション先のanime_pilgrimagesテーブルのカラムでの検索
+                        $query->orWhereHas('animePilgrimages', function ($animePilgrimageQuery) use ($search_word) {
+                            $animePilgrimageQuery->where('name', 'like', '%' . $search_word . '%')
+                                ->orWhere('place', 'LIKE', "%{$search_word}%");
+                        });
+
+                        // リレーション先のCharactersテーブルのカラムでの検索
+                        $query->orWhereHas('characters', function ($characterQuery) use ($search_word) {
+                            $characterQuery->where('name', 'like', '%' . $search_word . '%');
+
+                            // リレーション先のvoice_artistsテーブルのカラムでの検索
+                            $characterQuery->orWhereHas('voiceArtist', function ($voiceArtistQuery) use ($search_word) {
+                                $voiceArtistQuery->where('name', 'LIKE', "%{$search_word}%");
+                            });
+                        });
+
+                        // リレーション先のMusicsテーブルのカラムでの検索
+                        $query->orWhereHas('music', function ($musicQuery) use ($search_word) {
+                            $musicQuery->where('name', 'like', '%' . $search_word . '%');
+
+                            // リレーション先のsingersテーブルのカラムでの検索
+                            $musicQuery->orWhereHas('singer', function ($singerQuery) use ($search_word) {
+                                $singerQuery->where('name', 'LIKE', "%{$search_word}%");
+                            });
+                        });
+
+                        // リレーション先のWork_storiesテーブルのカラムでの検索
+                        $query->orWhereHas('workStories', function ($workStoryQuery) use ($search_word) {
+                            $workStoryQuery->where('sub_title', 'like', '%' . $search_word . '%')
+                                ->orWhere('episode', 'like', '%' . $search_word . '%')
+                                ->orWhere('body', 'like', '%' . $search_word . '%');
+                        });
+                    }
+                }
+            })->paginate(5);
+        return $works;
+    }
+
     // WorkReviewに対するリレーション 1対1の関係
     public function workreview()
     {
