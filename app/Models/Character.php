@@ -35,7 +35,7 @@ class Character extends Model
     // Workに対するリレーション 多対多の関係
     public function works()
     {
-        return $this->belongsTo(Work::class, 'character_work', 'character_id', 'work_id');
+        return $this->belongsToMany(Work::class, 'character_work', 'character_id', 'work_id');
     }
 
     // VoiceArtistに対するリレーション 1対多の関係
