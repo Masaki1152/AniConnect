@@ -1,13 +1,13 @@
 <x-app-layout>
-    <h1>「{{ $character_post->character->name }}」への新規感想投稿</h1>
-    <form action="{{ route('character_posts.store', ['character_id' => $character_post->character_id]) }}" method="POST"
+    <h1>「{{ $character->name }}」への新規感想投稿</h1>
+    <form action="{{ route('character_posts.store', ['character_id' => $character->id]) }}" method="POST"
         enctype="multipart/form-data">
         @csrf
         <div class="work_id">
-            <input type="hidden" name="character_post[work_id]" value="{{ $character_post->work_id }}">
+            <input type="hidden" name="character_post[work_id]" value="{{ $character->id }}">
         </div>
         <div class="character_id">
-            <input type="hidden" name="character_post[character_id]" value="{{ $character_post->character_id }}">
+            <input type="hidden" name="character_post[character_id]" value="{{ $character->id }}">
         </div>
         <div class="title">
             <h2>タイトル</h2>
@@ -61,7 +61,7 @@
         <button type="submit">投稿する</button>
     </form>
     <div class="footer">
-        <a href="{{ route('character_posts.index', ['character_id' => $character_post->character_id]) }}">戻る</a>
+        <a href="{{ route('character_posts.index', ['character_id' => $character->id]) }}">戻る</a>
     </div>
     <script src="{{ asset('/js/create_preview.js') }}"></script>
 </x-app-layout>

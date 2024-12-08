@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\CharacterPostRequest;
+use App\Models\Character;
 use App\Models\CharacterPost;
 use App\Models\CharacterPostCategory;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -23,7 +24,9 @@ class CharacterPostController extends Controller
         $character_posts = $characterPost->fetchCharacterPosts($character_id, $search);
         // 単体のオブジェクトを取得
         $character_first = CharacterPost::where('character_id', $character_id)->first();
-        return view('character_posts.index')->with(['character_posts' => $character_posts, 'character_first' => $character_first, 'categories' => $category->get()]);
+        // 登場人物のオブジェクトを取得
+        $character = Character::find($character_id);
+        return view('character_posts.index')->with(['character_posts' => $character_posts, 'character_first' => $character_first, 'character' => $character, 'categories' => $category->get()]);
     }
 
     // 登場人物感想投稿詳細の表示
@@ -35,7 +38,9 @@ class CharacterPostController extends Controller
     // 新規投稿作成画面を表示する
     public function create(CharacterPost $characterPost, CharacterPostCategory $category, $character_id)
     {
-        return view('character_posts.create')->with(['character_post' => $characterPost->getRestrictedPost('character_id', $character_id), 'categories' => $category->get()]);
+        // 登場人物のオブジェクトを取得
+        $character = Character::find($character_id);
+        return view('character_posts.create')->with(['character_post' => $characterPost->getRestrictedPost('character_id', $character_id), 'character' => $character, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
