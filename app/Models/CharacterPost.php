@@ -47,12 +47,11 @@ class CharacterPost extends Model
                         // 自身のカラムでの検索
                         $query->where(function ($query) use ($search_word) {
                             $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                ->orWhere('body', 'LIKE', "%{$search_word}%");
-                        });
-
-                        // リレーション先のUsersテーブルのカラムでの検索
-                        $query->orWhereHas('user', function ($userQuery) use ($search_word) {
-                            $userQuery->where('name', 'like', '%' . $search_word . '%');
+                                ->orWhere('body', 'LIKE', "%{$search_word}%")
+                                // リレーション先のUsersテーブルのカラムでの検索
+                                ->orWhereHas('user', function ($userQuery) use ($search_word) {
+                                    $userQuery->where('name', 'like', '%' . $search_word . '%');
+                                });
                         });
                     }
                 }

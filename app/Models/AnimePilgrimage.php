@@ -28,23 +28,20 @@ class AnimePilgrimage extends Model
                         // 自身のカラムでの検索
                         $query->where(function ($query) use ($search_word) {
                             $query->where('name', 'LIKE', "%{$search_word}%")
-                                ->orWhere('place', 'LIKE', "%{$search_word}%");
-                        });
-
-                        // リレーション先のWorksテーブルのカラムでの検索
-                        $query->orWhereHas('works', function ($workQuery) use ($search_word) {
-                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
-                                ->orWhere('term', 'like', '%' . $search_word . '%');
-
-                            // リレーション先のCharactersテーブルのカラムでの検索
-                            $workQuery->orWhereHas('characters', function ($characterQuery) use ($search_word) {
-                                $characterQuery->where('name', 'like', '%' . $search_word . '%');
-                            });
-                        });
-
-                        // リレーション先のAnimePilgrimagePostsテーブルのカラムでの検索
-                        $query->orWhereHas('animePilgrimagePosts', function ($pilgrimagePostQuery) use ($search_word) {
-                            $pilgrimagePostQuery->where('scene', 'LIKE', "%{$search_word}%");
+                                ->orWhere('place', 'LIKE', "%{$search_word}%")
+                                // リレーション先のWorksテーブルのカラムでの検索
+                                ->orWhereHas('works', function ($workQuery) use ($search_word) {
+                                    $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('term', 'like', '%' . $search_word . '%')
+                                        // リレーション先のCharactersテーブルのカラムでの検索
+                                        ->orWhereHas('characters', function ($characterQuery) use ($search_word) {
+                                            $characterQuery->where('name', 'like', '%' . $search_word . '%');
+                                        });
+                                })
+                                // リレーション先のAnimePilgrimagePostsテーブルのカラムでの検索
+                                ->orWhereHas('animePilgrimagePosts', function ($pilgrimagePostQuery) use ($search_word) {
+                                    $pilgrimagePostQuery->where('scene', 'LIKE', "%{$search_word}%");
+                                });
                         });
                     }
                 }
