@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PilgrimagePostRequest;
+use App\Models\AnimePilgrimage;
 use App\Models\AnimePilgrimagePost;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -22,7 +23,9 @@ class AnimePilgrimagePostController extends Controller
         $pilgrimage_posts = $anime_pilgrimage_posts->fetchAnimePilgrimagePosts($pilgrimage_id, $search);
         // 単体のオブジェクトを取得
         $pilgrimage_first = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->first();
-        return view('anime_pilgrimage_posts.index')->with(['pilgrimage_posts' => $pilgrimage_posts, 'pilgrimage_first' => $pilgrimage_first]);
+        // 聖地のオブジェクトを取得
+        $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
+        return view('anime_pilgrimage_posts.index')->with(['pilgrimage_posts' => $pilgrimage_posts, 'pilgrimage_first' => $pilgrimage_first, 'pilgrimage' => $pilgrimage]);
     }
 
     // 聖地感想投稿詳細の表示
@@ -34,7 +37,9 @@ class AnimePilgrimagePostController extends Controller
     // 新規投稿作成画面を表示する
     public function create(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id)
     {
-        return view('anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id)]);
+        // 聖地のオブジェクトを取得
+        $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
+        return view('anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id), 'pilgrimage' => $pilgrimage]);
     }
 
     // 新しく記述した内容を保存する

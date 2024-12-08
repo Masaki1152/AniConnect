@@ -1,7 +1,4 @@
 <x-app-layout>
-    <x-slot name="header">
-        作品詳細一覧
-    </x-slot>
     <h1 class="title">
         {{ $work->name }}
     </h1>
@@ -13,48 +10,49 @@
             <p>{{ $work->term }}</p>
             <div class='creator'>
                 <h3>制作会社</h3>
-                <a href="{{ route('creator.show', ['creator_id' => $work->creator->id]) }}">{{ $work->creator->name }}</a>
+                <a
+                    href="{{ route('creator.show', ['creator_id' => $work->creator->id]) }}">{{ $work->creator->name }}</a>
             </div>
             <div class='music'>
                 <h3>楽曲</h3>
-                @if($work->music->isEmpty())
-                <h3 class='no_music'>結果がありません。</h3>
+                @if ($work->music->isEmpty())
+                    <h3 class='no_music'>結果がありません。</h3>
                 @else
-                @foreach ($work->music as $music)
-                <div class='music_name'>
-                    <a href="{{ route('music.show', ['music_id' => $music->id]) }}">
-                        {{ $music->name }}
-                    </a>
-                </div>
-                @endforeach
+                    @foreach ($work->music as $music)
+                        <div class='music_name'>
+                            <a href="{{ route('music.show', ['music_id' => $music->id]) }}">
+                                {{ $music->name }}
+                            </a>
+                        </div>
+                    @endforeach
                 @endif
             </div>
             <div class='character'>
                 <h3>登場人物</h3>
-                @if($work->characters->isEmpty())
-                <h3 class='no_character'>結果がありません。</h3>
+                @if ($work->characters->isEmpty())
+                    <h3 class='no_character'>結果がありません。</h3>
                 @else
-                @foreach ($work->characters as $character)
-                <div class='character_name'>
-                    <a href="{{ route('characters.show', ['character_id' => $character->id]) }}">
-                        {{ $character->name }}
-                    </a>
-                </div>
-                @endforeach
+                    @foreach ($work->characters as $character)
+                        <div class='character_name'>
+                            <a href="{{ route('characters.show', ['character_id' => $character->id]) }}">
+                                {{ $character->name }}
+                            </a>
+                        </div>
+                    @endforeach
                 @endif
             </div>
             <div class='anime_pilgrimage'>
                 <h3>聖地</h3>
-                @if($work->animePilgrimages->isEmpty())
-                <h3 class='no_anime_pilgrimage'>結果がありません。</h3>
+                @if ($work->animePilgrimages->isEmpty())
+                    <h3 class='no_anime_pilgrimage'>結果がありません。</h3>
                 @else
-                @foreach ($work->animePilgrimages as $anime_pilgrimage)
-                <div class='anime_pilgrimage_name'>
-                    <a href="{{ route('pilgrimages.show', ['pilgrimage_id' => $anime_pilgrimage->id]) }}">
-                        {{ $anime_pilgrimage->name }}
-                    </a>
-                </div>
-                @endforeach
+                    @foreach ($work->animePilgrimages as $anime_pilgrimage)
+                        <div class='anime_pilgrimage_name'>
+                            <a href="{{ route('pilgrimages.show', ['pilgrimage_id' => $anime_pilgrimage->id]) }}">
+                                {{ $anime_pilgrimage->name }}
+                            </a>
+                        </div>
+                    @endforeach
                 @endif
             </div>
             <h3>公式サイトへのリンク</h3>
@@ -67,9 +65,9 @@
         </div>
     </div>
     <div class="work_story_link">
-    <a href="{{ route('work_stories.index', ['work_id' => $work->id]) }}">あらすじ一覧</a>
+        <a href="{{ route('work_stories.index', ['work_id' => $work->id]) }}">あらすじ一覧</a>
     </div>
     <div class="footer">
         <a href="/works">作品一覧へ</a>
     </div>
-    </x-app-layout>
+</x-app-layout>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Work;
 use App\Models\WorkReview;
 use App\Models\WorkReviewCategory;
 use Illuminate\Http\Request;
@@ -21,9 +22,11 @@ class WorkReviewController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $work_reviews = $workReview->fetchWorkReviews($work_id, $search);
-        // 単体のオブジェクトを取得
-        $work = WorkReview::where('work_id', $work_id)->first();
-        return view('work_reviews.index')->with(['work_reviews' => $work_reviews, 'work' => $work, 'categories' => $category->get()]);
+        // 単体の作品投稿オブジェクトを取得
+        $work_review_first = WorkReview::where('work_id', $work_id)->first();
+        // 作品のオブジェクトを取得
+        $work = Work::find($work_id);
+        return view('work_reviews.index')->with(['work_reviews' => $work_reviews, 'work_review_first' => $work_review_first, 'work' => $work, 'work_id' => $work_id, 'categories' => $category->get()]);
     }
 
     // 'work_review'はbladeファイルで使う変数。
@@ -35,7 +38,9 @@ class WorkReviewController extends Controller
     // 新規投稿作成画面を表示する
     public function create(WorkReview $workreview, WorkReviewCategory $category, $work_id)
     {
-        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id), 'categories' => $category->get()]);
+        // 作品のオブジェクトを取得
+        $work = Work::find($work_id);
+        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id), 'work' => $work, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する

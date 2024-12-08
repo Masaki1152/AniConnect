@@ -1,11 +1,10 @@
 <x-app-layout>
-    <h1>「{{ $pilgrimage_post->animePilgrimage->name }}」への新規感想投稿</h1>
-    <form action="{{ route('pilgrimage_posts.store', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id]) }}"
-        method="POST" enctype="multipart/form-data">
+    <h1>「{{ $pilgrimage->name }}」への新規感想投稿</h1>
+    <form action="{{ route('pilgrimage_posts.store', ['pilgrimage_id' => $pilgrimage->id]) }}" method="POST"
+        enctype="multipart/form-data">
         @csrf
         <div class="anime_pilgrimage_id">
-            <input type="hidden" name="pilgrimage_post[anime_pilgrimage_id]"
-                value="{{ $pilgrimage_post->anime_pilgrimage_id }}">
+            <input type="hidden" name="pilgrimage_post[anime_pilgrimage_id]" value="{{ $pilgrimage->id }}">
         </div>
         <div class="title">
             <h2>タイトル</h2>
@@ -38,8 +37,7 @@
         <button type="submit">投稿する</button>
     </form>
     <div class="footer">
-        <a
-            href="{{ route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id]) }}">戻る</a>
+        <a href="{{ route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage->id]) }}">戻る</a>
     </div>
     <script src="{{ asset('/js/create_preview.js') }}"></script>
 </x-app-layout>

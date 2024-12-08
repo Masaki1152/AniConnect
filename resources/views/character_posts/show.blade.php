@@ -31,6 +31,15 @@
         <div class="content__character_post">
             <h3>登場人物名</h3>
             <p>{{ $character_post->character->name }}</p>
+            <h3>登場作品</h3>
+            <p class='work'>
+                {{-- 関連する登場作品の数だけ繰り返す --}}
+                @foreach ($character->works as $character_work)
+                    <a href="{{ route('works.show', ['work' => $character_work->id]) }}">
+                        {{ $character_work->name }}
+                    </a>
+                @endforeach
+            </p>
             <h3>投稿者</h3>
             <p>{{ $character_post->user->name }}</p>
             <h3>タイトル</h3>

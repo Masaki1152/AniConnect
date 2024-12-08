@@ -12,7 +12,9 @@
     </div>
 
     @if (is_null($work_story_post_first))
-        <h2 class='no_post_result'>投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
+        <h1>{{ $work_story->work->name }}</h1>
+        <h1>{{ $work_story->episode }}</h1>
+        <h2 class='no_post_result'>「{{ $work_story->sub_title }}」へのあらすじ投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
         <a
             href="{{ route('work_story_posts.create', ['work_id' => $work_id, 'work_story_id' => $work_story_id]) }}">新規投稿作成</a>
     @else

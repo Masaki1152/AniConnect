@@ -118,7 +118,7 @@ class User extends Authenticatable
                 break;
             case 'character':
                 $posts = CharacterPost::where('user_id', $user_id)
-                    ->with(['user', 'character', 'character.work', 'character.voiceArtist'])
+                    ->with(['user', 'character', 'character.works', 'character.voiceArtist'])
                     ->where(function ($query) use ($search) {
                         // キーワード検索がなされた場合
                         if ($search != '') {
@@ -137,7 +137,7 @@ class User extends Authenticatable
                                         $characterQuery->where('name', 'like', '%' . $search_word . '%');
 
                                         // リレーション先のWorksテーブルのカラムでの検索
-                                        $characterQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                        $characterQuery->orWhereHas('works', function ($workQuery) use ($search_word) {
                                             $workQuery->where('name', 'LIKE', "%{$search_word}%")
                                                 ->orWhere('term', 'like', '%' . $search_word . '%');
                                         });
