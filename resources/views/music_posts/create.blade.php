@@ -1,28 +1,29 @@
 <x-app-layout>
-    <h1>「{{ $music_post->music->name }}」への新規感想投稿</h1>
-    <form action="{{ route('music_posts.store', ['music_id' => $music_post->music_id]) }}" method="POST">
+    <h1>「{{ $music->name }}」への新規感想投稿</h1>
+    <form action="{{ route('music_posts.store', ['music_id' => $music->id]) }}" method="POST">
         @csrf
         <div class="work_id">
-            <input type="hidden" name="music_post[work_id]" value="{{ $music_post->work_id }}">
+            <input type="hidden" name="music_post[work_id]" value="{{ $music->work_id }}">
         </div>
         <div class="music_id">
-            <input type="hidden" name="music_post[music_id]" value="{{ $music_post->music_id }}">
+            <input type="hidden" name="music_post[music_id]" value="{{ $music->id }}">
         </div>
         <div class="title">
             <h2>タイトル</h2>
-            <input type="text" name="music_post[post_title]" placeholder="タイトル" value="{{ old('music_post.post_title') }}" />
+            <input type="text" name="music_post[post_title]" placeholder="タイトル"
+                value="{{ old('music_post.post_title') }}" />
             <p class="title__error" style="color:red">{{ $errors->first('music_post.post_title') }}</p>
         </div>
         <div class="star_num">
             <h2>星の数</h2>
             <select name="music_post[star_num]">
                 @php
-                $numbers = array(1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★');
+                    $numbers = [1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★'];
                 @endphp
-                @foreach($numbers as $num => $star)
-                <option value="{{ $num }}" @if(old('music_post.star_num') == $num) selected @endif>
-                    {{$star}}
-                </option>
+                @foreach ($numbers as $num => $star)
+                    <option value="{{ $num }}" @if (old('music_post.star_num') == $num) selected @endif>
+                        {{ $star }}
+                    </option>
                 @endforeach
             </select>
             <p class="title__star_num" style="color:red">{{ $errors->first('music_post.star_num') }}</p>
@@ -35,6 +36,6 @@
         <button type="submit">投稿する</button>
     </form>
     <div class="footer">
-        <a href="{{ route('music_posts.index', ['music_id' => $music_post->music_id]) }}">戻る</a>
+        <a href="{{ route('music_posts.index', ['music_id' => $music->id]) }}">戻る</a>
     </div>
 </x-app-layout>

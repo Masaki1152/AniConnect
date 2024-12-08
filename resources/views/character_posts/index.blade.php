@@ -12,7 +12,7 @@
     </div>
 
     @if (is_null($character_first))
-        <h2 class='no_post_result'>「{{ $character->name }}」へのあらすじ投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
+        <h2 class='no_post_result'>「{{ $character->name }}」への感想投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
         <a href="{{ route('character_posts.create', ['character_id' => $character->id]) }}">新規投稿作成</a>
     @else
         <h1>「{{ $character_first->character->name }}」の感想投稿一覧</h1>
@@ -42,6 +42,14 @@
                                     href="{{ route('character_posts.show', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">{{ $character_post->post_title }}</a>
                             </h2>
                             <p>{{ $character_post->user->name }}</p>
+                            <p class='work'>
+                                {{-- 関連する登場作品の数だけ繰り返す --}}
+                                @foreach ($character->works as $character_work)
+                                    <a href="{{ route('works.show', ['work' => $character_work->id]) }}">
+                                        {{ $character_work->name }}
+                                    </a>
+                                @endforeach
+                            </p>
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button" data-character-id="{{ $character_post->character_id }}"

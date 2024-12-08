@@ -32,7 +32,9 @@ class CharacterPostController extends Controller
     // 登場人物感想投稿詳細の表示
     public function show(CharacterPost $characterPost, CharacterPostCategory $category, $character_id, $character_post_id)
     {
-        return view('character_posts.show')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'categories' => $category->get()]);
+        // 登場人物のオブジェクトを取得
+        $character = Character::find($character_id);
+        return view('character_posts.show')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'character' => $character, 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する

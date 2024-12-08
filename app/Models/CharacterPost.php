@@ -12,7 +12,6 @@ class CharacterPost extends Model
 
     // fillを実行するための記述
     protected $fillable = [
-        'work_id',
         'character_id',
         'user_id',
         'post_title',

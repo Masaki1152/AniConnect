@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\MusicPostRequest;
+use App\Models\Music;
 use App\Models\MusicPost;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -21,7 +22,9 @@ class MusicPostController extends Controller
         $music_posts = $musicPost->fetchMusicPosts($music_id, $search);
         // 単体のオブジェクトを取得
         $music_first = MusicPost::where('music_id', $music_id)->first();
-        return view('music_posts.index')->with(['music_posts' => $music_posts, 'music_first' => $music_first]);
+        // 音楽のオブジェクトを取得
+        $music = Music::find($music_id);
+        return view('music_posts.index')->with(['music_posts' => $music_posts, 'music_first' => $music_first, 'music' => $music]);
     }
 
     // 音楽感想投稿詳細の表示
@@ -33,7 +36,9 @@ class MusicPostController extends Controller
     // 新規投稿作成画面を表示する
     public function create(MusicPost $musicPost, $music_id)
     {
-        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id)]);
+        // 音楽のオブジェクトを取得
+        $music = Music::find($music_id);
+        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id), 'music' => $music]);
     }
 
     // 新しく記述した内容を保存する

@@ -3,9 +3,6 @@
     <form action="{{ route('character_posts.store', ['character_id' => $character->id]) }}" method="POST"
         enctype="multipart/form-data">
         @csrf
-        <div class="work_id">
-            <input type="hidden" name="character_post[work_id]" value="{{ $character->id }}">
-        </div>
         <div class="character_id">
             <input type="hidden" name="character_post[character_id]" value="{{ $character->id }}">
         </div>
