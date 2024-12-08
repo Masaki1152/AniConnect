@@ -1,4 +1,6 @@
 <x-app-layout>
+    <h1>{{ $work_story->work->name }}</h1>
+    <h1>{{ $work_story->episode }}</h1>
     <h1>「{{ $work_story->sub_title }}」への新規感想投稿</h1>
     <form
         action="{{ route('work_story_posts.store', ['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]) }}"
