@@ -25,25 +25,22 @@ class Character extends Model
                     // 半角スペースで単語ごとに分割して配列にする
                     $search_array = preg_split('/[\s]+/', $search_split);
                     foreach ($search_array as $search_word) {
-                        // 自身のカラムでの検索
                         $query->where(function ($query) use ($search_word) {
-                            $query->where('name', 'LIKE', "%{$search_word}%");
-                        });
-
-                        // リレーション先のWorksテーブルのカラムでの検索
-                        $query->orWhereHas('works', function ($workQuery) use ($search_word) {
-                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
-                                ->orWhere('term', 'like', '%' . $search_word . '%');
-
-                            // リレーション先のCreatorsテーブルのカラムでの検索
-                            $workQuery->orWhereHas('creator', function ($creatorQuery) use ($search_word) {
-                                $creatorQuery->where('name', 'like', '%' . $search_word . '%');
-                            });
-                        });
-
-                        // リレーション先のvoice_artistsテーブルのカラムでの検索
-                        $query->orWhereHas('voiceArtist', function ($voiceArtistQuery) use ($search_word) {
-                            $voiceArtistQuery->where('name', 'LIKE', "%{$search_word}%");
+                            // 自身のカラムでの検索
+                            $query->where('name', 'LIKE', "%{$search_word}%")
+                                // リレーション先のWorksテーブルのカラムでの検索
+                                ->orWhereHas('works', function ($workQuery) use ($search_word) {
+                                    $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('term', 'like', '%' . $search_word . '%')
+                                        // リレーション先のCreatorsテーブルのカラムでの検索
+                                        ->orWhereHas('creator', function ($creatorQuery) use ($search_word) {
+                                            $creatorQuery->where('name', 'like', '%' . $search_word . '%');
+                                        });
+                                })
+                                // リレーション先のvoice_artistsテーブルのカラムでの検索
+                                ->orWhereHas('voiceArtist', function ($voiceArtistQuery) use ($search_word) {
+                                    $voiceArtistQuery->where('name', 'LIKE', "%{$search_word}%");
+                                });
                         });
                     }
                 }
