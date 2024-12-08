@@ -23,7 +23,7 @@ class AnimePilgrimagePostController extends Controller
         $pilgrimage_posts = $anime_pilgrimage_posts->fetchAnimePilgrimagePosts($pilgrimage_id, $search);
         // 単体のオブジェクトを取得
         $pilgrimage_first = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->first();
-        // 登場人物のオブジェクトを取得
+        // 聖地のオブジェクトを取得
         $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
         return view('anime_pilgrimage_posts.index')->with(['pilgrimage_posts' => $pilgrimage_posts, 'pilgrimage_first' => $pilgrimage_first, 'pilgrimage' => $pilgrimage]);
     }
@@ -37,7 +37,7 @@ class AnimePilgrimagePostController extends Controller
     // 新規投稿作成画面を表示する
     public function create(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id)
     {
-        // 登場人物のオブジェクトを取得
+        // 聖地のオブジェクトを取得
         $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
         return view('anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id), 'pilgrimage' => $pilgrimage]);
     }
