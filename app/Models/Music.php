@@ -26,35 +26,31 @@ class Music extends Model
                     $search_array = preg_split('/[\s]+/', $search_split);
                     foreach ($search_array as $search_word) {
 
-                        // 自身のカラムでの検索
                         $query->where(function ($query) use ($search_word) {
-                            $query->where('name', 'LIKE', "%{$search_word}%");
-                        });
+                            // 自身のカラムでの検索
+                            $query->where('name', 'LIKE', "%{$search_word}%")
+                                // リレーション先のWorksテーブルのカラムでの検索
+                                ->orWhereHas('work', function ($workQuery) use ($search_word) {
+                                    $workQuery->where('name', 'LIKE', "%{$search_word}%")
+                                        ->orWhere('term', 'like', '%' . $search_word . '%')
+                                        // リレーション先のCreatorsテーブルのカラムでの検索
+                                        ->orWhereHas('creator', function ($creatorQuery) use ($search_word) {
+                                            $creatorQuery->where('name', 'like', '%' . $search_word . '%');
+                                        });
+                                })
 
-                        // リレーション先のWorksテーブルのカラムでの検索
-                        $query->orWhereHas('work', function ($workQuery) use ($search_word) {
-                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
-                                ->orWhere('term', 'like', '%' . $search_word . '%');
-
-                            // リレーション先のCreatorsテーブルのカラムでの検索
-                            $workQuery->orWhereHas('creator', function ($creatorQuery) use ($search_word) {
-                                $creatorQuery->where('name', 'like', '%' . $search_word . '%');
-                            });
-                        });
-
-                        // リレーション先のsingersテーブルのカラムでの検索
-                        $query->orWhereHas('singer', function ($singerQuery) use ($search_word) {
-                            $singerQuery->where('name', 'LIKE', "%{$search_word}%");
-                        });
-
-                        // リレーション先のcomposersテーブルのカラムでの検索
-                        $query->orWhereHas('composer', function ($composerQuery) use ($search_word) {
-                            $composerQuery->where('name', 'LIKE', "%{$search_word}%");
-                        });
-
-                        // リレーション先のlyric_writersテーブルのカラムでの検索
-                        $query->orWhereHas('lyricWriter', function ($lyricWriterQuery) use ($search_word) {
-                            $lyricWriterQuery->where('name', 'LIKE', "%{$search_word}%");
+                                // リレーション先のsingersテーブルのカラムでの検索
+                                ->orWhereHas('singer', function ($singerQuery) use ($search_word) {
+                                    $singerQuery->where('name', 'LIKE', "%{$search_word}%");
+                                })
+                                // リレーション先のcomposersテーブルのカラムでの検索
+                                ->orWhereHas('composer', function ($composerQuery) use ($search_word) {
+                                    $composerQuery->where('name', 'LIKE', "%{$search_word}%");
+                                })
+                                // リレーション先のlyric_writersテーブルのカラムでの検索
+                                ->orWhereHas('lyricWriter', function ($lyricWriterQuery) use ($search_word) {
+                                    $lyricWriterQuery->where('name', 'LIKE', "%{$search_word}%");
+                                });
                         });
                     }
                 }
