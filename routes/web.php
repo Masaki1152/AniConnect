@@ -89,6 +89,8 @@ Route::controller(WorkReviewController::class)->middleware(['auth'])->group(func
     Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
+    // カテゴリーを取得して表示
+    Route::get('/work_reviews/{work_id}/categories', 'getCategories')->name('work_reviews.getCategory');
 });
 
 // WorkReviewLikeControllerに関するルーティング

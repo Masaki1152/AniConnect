@@ -30,12 +30,12 @@ class WorkReview extends Model
     ];
 
     // 作品投稿の検索処理
-    public function fetchWorkReviews($work_id, $search)
+    public function fetchWorkReviews($work_id, $search, $categoryIds)
     {
         // 指定したidのアニメの投稿のみを表示
         $work_reviews = WorkReview::where('work_id', $work_id)->orderBy('id', 'ASC')
-            ->with(['user'])
-            ->where(function ($query) use ($search) {
+            ->with(['user', 'categories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -51,6 +51,15 @@ class WorkReview extends Model
                                 ->orWhereHas('user', function ($userQuery) use ($search_word) {
                                     $userQuery->where('name', 'like', '%' . $search_word . '%');
                                 });
+                        });
+                    }
+                }
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    foreach ($categoryIds as $categoryId) {
+                        $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
+                            $categoryQuery->where('work_review_categories.id', $categoryId);
                         });
                     }
                 }
@@ -94,7 +103,7 @@ class WorkReview extends Model
     // カテゴリーに対するリレーション 多対多の関係
     public function categories()
     {
-        return $this->belongsToMany(WorkReviewCategory::class);
+        return $this->belongsToMany(WorkReviewCategory::class, 'work_review_work_review_category', 'work_review_id', 'work_review_category_id');
     }
 
     // いいねをしたUserに対するリレーション　多対多の関係

@@ -10,6 +10,7 @@ use App\Http\Requests\WorkReviewRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use Log;
 
 class WorkReviewController extends Controller
 {
@@ -18,10 +19,18 @@ class WorkReviewController extends Controller
     // インポートしたWorkreviewをインスタンス化して$work_reviewsとして使用。
     public function index(Request $request, WorkReview $workReview, WorkReviewCategory $category, $work_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->input('categories', []);
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
-        $work_reviews = $workReview->fetchWorkReviews($work_id, $search);
+        $work_reviews = $workReview->fetchWorkReviews($work_id, $search, $categoryIds);
+
+        // Jsonが返却されている場合
+        if ($request->wantsJson()) {
+            return response()->json($work_reviews);
+        }
+        //return response()->json($work_reviews);
         // 単体の作品投稿オブジェクトを取得
         $work_review_first = WorkReview::where('work_id', $work_id)->first();
         // 作品のオブジェクトを取得
@@ -187,5 +196,13 @@ class WorkReviewController extends Controller
         }
         // 該当しない場合はnull
         return null;
+    }
+
+    // カテゴリーを取得して表示
+    public function getCategories()
+    {
+        // 全カテゴリーを取得
+        $categories = WorkReviewCategory::all();
+        return response()->json($categories);
     }
 }
