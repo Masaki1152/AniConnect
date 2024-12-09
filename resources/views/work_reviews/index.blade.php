@@ -23,9 +23,9 @@
         <div class=search>
             <form action="{{ route('work_reviews.index', ['work_id' => $work_review_first->work->id]) }}"
                 method="GET">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索"
-                    aria-label="検索...">
-                <input type="submit" value="キーワード検索">
+                <input type="text" name="search" id="search", value="{{ request('search') }}"
+                    placeholder="キーワードを検索" aria-label="検索...">
+                <button id="searchButton" class="bg-blue-500 text-white px-4 py-1 rounded">キーワード検索</button>
             </form>
             <div class="cancel">
                 <a href="{{ route('work_reviews.index', ['work_id' => $work_review_first->work->id]) }}">キャンセル</a>
@@ -54,6 +54,9 @@
                             </h2>
                             <div class='user'>
                                 <p>{{ $work_review->user->name }}</p>
+                            </div>
+                            <div class='created_at'>
+                                <p>{{ $work_review->created_at }}</p>
                             </div>
                             <div class="like">
 
@@ -136,6 +139,12 @@
                     // 投稿を絞り込む
                     filterPosts();
                 });
+                // キーワードの検索ボタンが押されたときの処理
+                const searchButton = document.getElementById('searchButton');
+                searchButton.addEventListener('click', function() {
+                    // キーワード検索を行う
+                    filterPosts();
+                });
 
                 // 投稿を絞り込む関数
                 function filterPosts() {
@@ -144,9 +153,20 @@
                     checkboxes.forEach(checkbox => {
                         selectedCategories.push(checkbox.getAttribute('data-id'));
                     });
+
+                    // キーワードを取得
+                    const searchKeyword = document.getElementById('search').value;
+                    // クエリパラメータを構築
+                    const queryParams = [];
+                    if (searchKeyword) {
+                        queryParams.push(`search=${encodeURIComponent(searchKeyword)}`);
+                    }
+                    selectedCategories.forEach(catId => {
+                        queryParams.push(`categories[]=${catId}`);
+                    });
+                    const queryString = queryParams.join('&');
+
                     // 選択されたカテゴリーで投稿を絞り込む
-                    // データの取得
-                    const queryString = selectedCategories.map(catId => `categories[]=${catId}`).join('&');
                     fetch(`/work_reviews/${workId}?${queryString}`, {
                             headers: {
                                 'Accept': 'application/json'
@@ -178,6 +198,9 @@
                             <div class='user'>
                                 <p>${work_review.user.name}</p>
                             </div>
+                            <div class='created_at'>
+                                <p>${work_review.created_at }</p>
+                            </div>
                             <div class='like'>
 
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
@@ -194,8 +217,8 @@
                             </div>
                             <h5 class='category flex gap-2'>
                                 ${work_review.categories.map(category => `
-                                                                                                <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">${category.name}</span>
-                                                                                            `).join('')}
+                                                                                                                                                <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">${category.name}</span>
+                                                                                                                                            `).join('')}
                             </h5>
                             <p class='body'>${work_review.body }</p>
                             ${work_review.image1 ? `<div><img src="${work_review.image1}" alt="画像が読み込めません。"></div>` : ''}

@@ -10,7 +10,6 @@ use App\Http\Requests\WorkReviewRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
-use Log;
 
 class WorkReviewController extends Controller
 {

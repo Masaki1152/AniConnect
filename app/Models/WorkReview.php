@@ -33,7 +33,7 @@ class WorkReview extends Model
     public function fetchWorkReviews($work_id, $search, $categoryIds)
     {
         // 指定したidのアニメの投稿のみを表示
-        $work_reviews = WorkReview::where('work_id', $work_id)->orderBy('id', 'ASC')
+        $work_reviews = WorkReview::where('work_id', $work_id)
             ->with(['user', 'categories'])
             ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
@@ -63,7 +63,9 @@ class WorkReview extends Model
                         });
                     }
                 }
-            })->paginate(5);
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
         return $work_reviews;
     }
 
