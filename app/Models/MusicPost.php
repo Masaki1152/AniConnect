@@ -74,6 +74,12 @@ class MusicPost extends Model
         return $this->belongsTo(Work::class, 'work_id', 'id');
     }
 
+    // カテゴリーに対するリレーション 多対多の関係
+    public function categories()
+    {
+        return $this->belongsToMany(MusicPostCategory::class, 'category_music_post', 'music_post_id', 'music_post_category_id');
+    }
+
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {

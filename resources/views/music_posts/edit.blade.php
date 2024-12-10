@@ -1,7 +1,9 @@
 <x-app-layout>
     <h1 class="title">{{ $music_post->music->name }}への投稿編集画面</h1>
     <div class="content">
-        <form action="{{ route('music_posts.update', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}" method="POST">
+        <form
+            action="{{ route('music_posts.update', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}"
+            method="POST">
             @csrf
             @method('PUT')
             <div class="work_id">
@@ -15,21 +17,43 @@
             </div>
             <div class="title">
                 <h2>タイトル</h2>
-                <input type="text" name="music_post[post_title]" placeholder="タイトル" value="{{ $music_post->post_title }}" />
+                <input type="text" name="music_post[post_title]" placeholder="タイトル"
+                    value="{{ $music_post->post_title }}" />
                 <p class="title__error" style="color:red">{{ $errors->first('music_post.post_title') }}</p>
             </div>
             <div class="star_num">
                 <h2>星の数</h2>
                 <select name="music_post[star_num]">
                     @php
-                    $numbers = array(1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★');
+                        $numbers = [1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★'];
                     @endphp
-                    @foreach($numbers as $num => $star)
-                    <option value="{{ $num }}" @if($music_post->star_num == $num) selected @endif>
-                        {{$star}}
-                    </option>
+                    @foreach ($numbers as $num => $star)
+                        <option value="{{ $num }}" @if ($music_post->star_num == $num) selected @endif>
+                            {{ $star }}
+                        </option>
                     @endforeach
                 </select>
+            </div>
+            <div class="category">
+                <h2>カテゴリー（3個まで）</h2>
+                @php
+                    // old() が存在すればそれを使用し、なければ過去の保存値を使用
+                    $existingCategories = $music_post->categories->pluck('id')->toArray();
+                    $selectedCategories = old('music_post.categories_array', $existingCategories);
+                @endphp
+                <select name="music_post[categories_array][]" multiple>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @if ($errors->has('music_post.categories_array'))
+                    <p class="category__error" style="color:red">
+                        {{ $errors->first('music_post.categories_array') }}</p>
+                @endif
             </div>
             <div class="body">
                 <h2>内容</h2>
@@ -40,6 +64,7 @@
         </form>
     </div>
     <div class="footer">
-        <a href="{{ route('music_posts.show', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">保存しないで戻る</a>
+        <a
+            href="{{ route('music_posts.show', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">保存しないで戻る</a>
     </div>
 </x-app-layout>

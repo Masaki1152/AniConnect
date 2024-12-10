@@ -40,6 +40,9 @@
                                     href="{{ route('music_posts.show', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">{{ $music_post->post_title }}</a>
                             </h2>
                             <p>{{ $music_post->user->name }}</p>
+                            <div class='created_at'>
+                                <p>{{ $music_post->created_at->format('Y/m/d H:i') }}</p>
+                            </div>
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button" data-music-id="{{ $music_post->music_id }}"
@@ -53,6 +56,13 @@
                                     </a>
                                 </div>
                             </div>
+                            <h5 class='category flex gap-2'>
+                                @foreach ($music_post->categories as $category)
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            </h5>
                             <p class='body'>{{ $music_post->body }}</p>
                             <form
                                 action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}"
