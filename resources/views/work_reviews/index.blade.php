@@ -67,7 +67,7 @@
                                 <p>{{ $work_review->user->name }}</p>
                             </div>
                             <div class='created_at'>
-                                <p>{{ $work_review->created_at }}</p>
+                                <p>{{ $work_review->created_at->format('Y/m/d H:i') }}</p>
                             </div>
                             <div class="like">
 
@@ -125,14 +125,6 @@
                 const toggleCategoriesButton = document.getElementById('toggleCategories');
                 const closeCategoriesButton = document.getElementById('closeCategories');
                 const categoryFilter = document.getElementById('categoryFilter');
-
-                // 各ボタンの初期状態の設定
-                // 検索語、カテゴリーが選択されている場合
-                // const anyCategoryChecked = document.querySelectorAll('.categoryCheckbox:checked');
-                // if (anyCategoryChecked.length > 0) {
-                //     toggleCategoriesButton.style.display = 'none';
-                //     closeCategoriesButton.style.display = 'inline';
-                // }
 
                 // カテゴリーフィルタの表示
                 toggleCategoriesButton.addEventListener('click', () => {

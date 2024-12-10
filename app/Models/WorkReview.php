@@ -26,7 +26,7 @@ class WorkReview extends Model
     protected $table = 'work_reviews';
 
     protected $casts = [
-        'created_at' => 'datetime:Y/m/d H:i',
+        'created_at' => 'datetime',
     ];
 
     // 作品投稿の検索処理
