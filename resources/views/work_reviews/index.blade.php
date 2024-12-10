@@ -28,13 +28,23 @@
                     placeholder="キーワードを検索" aria-label="検索...">
                 <!-- カテゴリー検索機能 -->
                 <div>
-                    <button id='toggleCategories' type='button'>カテゴリーで絞り込む</button>
-                    <button id='closeCategories'>閉じる</button>
-                    <div id='categoryFilter' style='display: none;'>
+                    <button id='toggleCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: none;' : 'display: inline;' }}">カテゴリーで絞り込む</button>
+                    <button id='closeCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: inline;' : 'display: none;' }}">閉じる</button>
+                    <div id='categoryFilter' style="display: {{ request('checkedCategories') ? 'block' : 'none' }};">
                         <h2>カテゴリー</h2>
-                        <ul id='categoryList'></ul>
+                        <ul id='categoryList'>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <input type="checkbox" class="categoryCheckbox" name="checkedCategories[]"
+                                        value="{{ $category->id }}"
+                                        {{ in_array($category->id, request('checkedCategories', [])) ? 'checked' : '' }}>
+                                    <label>{{ $category->name }}</label>
+                                </li>
+                            @endforeach
+                        </ul>
                     </div>
-                    <input type='hidden' id='checkedCategories' name='checkedCategories[]' value=''>
                 </div>
                 <input type="submit" value="検索">
             </form>
@@ -112,53 +122,31 @@
             const workId = <?php echo $work_id; ?>;
 
             document.addEventListener('DOMContentLoaded', function() {
-                // カテゴリー一覧を取得して表示
-                fetch(`/work_reviews/${workId}/categories`)
-                    .then(response => response.json())
-                    .then(categories => {
-                        const categoryList = document.getElementById('categoryList');
-                        categories.forEach(category => {
-                            const li = document.createElement('li');
-                            const checkbox = document.createElement('input');
-                            checkbox.type = 'checkbox';
-                            checkbox.classList.add('categoryCheckbox');
-                            checkbox.setAttribute('data-id', category.id);
-                            li.appendChild(checkbox);
-                            li.appendChild(document.createTextNode(category.name));
-                            categoryList.appendChild(li);
-                        });
-                    });
-                // 「カテゴリーで絞り込む」ボタンの表示/非表示
                 const toggleCategoriesButton = document.getElementById('toggleCategories');
+                const closeCategoriesButton = document.getElementById('closeCategories');
                 const categoryFilter = document.getElementById('categoryFilter');
+
+                // 各ボタンの初期状態の設定
+                // 検索語、カテゴリーが選択されている場合
+                // const anyCategoryChecked = document.querySelectorAll('.categoryCheckbox:checked');
+                // if (anyCategoryChecked.length > 0) {
+                //     toggleCategoriesButton.style.display = 'none';
+                //     closeCategoriesButton.style.display = 'inline';
+                // }
+
+                // カテゴリーフィルタの表示
                 toggleCategoriesButton.addEventListener('click', () => {
-                    categoryFilter.style.display = categoryFilter.style.display === 'none' ? 'block' : 'none';
-                });
-                // カテゴリーの選択状態が変わったときの処理
-                const categoryList = document.getElementById('categoryList');
-                const checkedCategories = document.getElementById('checkedCategories');
-                categoryList.addEventListener('change', function() {
-                    // 選択されているカテゴリーを取得してHTMLに反映
-                    const selectedCategories = [];
-                    const checkboxes = document.querySelectorAll('.categoryCheckbox:checked');
-                    checkboxes.forEach(checkbox => {
-                        selectedCategories.push(checkbox.getAttribute('data-id'));
-                    });
-                    // 配列を格納
-                    checkedCategories.value = selectedCategories;
+                    categoryFilter.style.display = 'block';
+                    toggleCategoriesButton.style.display = 'none';
+                    closeCategoriesButton.style.display = 'inline';
                 });
 
-                // 選択されているカテゴリーを取得してHTMLに反映する関数
-                function getSelectedCategories() {
-                    const selectedCategories = [];
-                    const checkedCategories = document.getElementById('checkedCategories');
-                    const checkboxes = document.querySelectorAll('.categoryCheckbox:checked');
-                    checkboxes.forEach(checkbox => {
-                        selectedCategories.push(checkbox.getAttribute('data-id'));
-                    });
-                    checkedCategories.value = [];
-                    checkedCategories.value = selectedCategories;
-                }
+                // カテゴリーフィルタの非表示
+                closeCategoriesButton.addEventListener('click', () => {
+                    categoryFilter.style.display = 'none';
+                    toggleCategoriesButton.style.display = 'inline';
+                    closeCategoriesButton.style.display = 'none';
+                });
             });
         </script>
     @endif
