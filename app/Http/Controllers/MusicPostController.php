@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\MusicPostRequest;
 use App\Models\Music;
 use App\Models\MusicPost;
+use App\Models\MusicPostCategory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 
@@ -14,7 +15,7 @@ class MusicPostController extends Controller
     use SoftDeletes;
 
     // 音楽感想投稿一覧の表示
-    public function index(Request $request, MusicPost $musicPost, $music_id)
+    public function index(Request $request, MusicPost $musicPost, MusicPostCategory $category, $music_id)
     {
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
@@ -24,46 +25,53 @@ class MusicPostController extends Controller
         $music_first = MusicPost::where('music_id', $music_id)->first();
         // 音楽のオブジェクトを取得
         $music = Music::find($music_id);
-        return view('music_posts.index')->with(['music_posts' => $music_posts, 'music_first' => $music_first, 'music' => $music]);
+        return view('music_posts.index')->with(['music_posts' => $music_posts, 'music_first' => $music_first, 'music' => $music, 'categories' => $category->get()]);
     }
 
     // 音楽感想投稿詳細の表示
-    public function show(MusicPost $musicPost, $music_id, $music_post_id)
+    public function show(MusicPost $musicPost, MusicPostCategory $category, $music_id, $music_post_id)
     {
-        return view('music_posts.show')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id)]);
+        return view('music_posts.show')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
-    public function create(MusicPost $musicPost, $music_id)
+    public function create(MusicPost $musicPost, MusicPostCategory $category, $music_id)
     {
         // 音楽のオブジェクトを取得
         $music = Music::find($music_id);
-        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id), 'music' => $music]);
+        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id), 'music' => $music, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
     public function store(MusicPost $musicPost, MusicPostRequest $request)
     {
         $input_post = $request['music_post'];
+        $input_categories = $request->music_post['categories_array'];
         // ログインしているユーザーidの登録
         $input_post['user_id'] = Auth::id();
         $musicPost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        $musicPost->categories()->attach($input_categories);
         return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
-    public function edit(MusicPost $musicPost, $music_id, $music_post_id)
+    public function edit(MusicPost $musicPost, MusicPostCategory $category, $music_id, $music_post_id)
     {
-        return view('music_posts.edit')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id)]);
+        return view('music_posts.edit')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する
     public function update(MusicPostRequest $request, MusicPost $musicPost, $music_id, $music_post_id)
     {
         $input_post = $request['music_post'];
+        $input_categories = $request->music_post['categories_array'];
         // 編集の対象となるデータを取得
         $targetMusicPost = $musicPost->getDetailPost($music_id, $music_post_id);
         $targetMusicPost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
+        $targetMusicPost->categories()->sync($input_categories);
         return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id])->with('status', '投稿を編集しました');
     }
 

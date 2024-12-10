@@ -28,6 +28,20 @@
             </select>
             <p class="title__star_num" style="color:red">{{ $errors->first('music_post.star_num') }}</p>
         </div>
+        <div class="category">
+            <h2>カテゴリー（3個まで）</h2>
+            <select name="music_post[categories_array][]" multiple>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" @if (in_array($category->id, old('music_post.categories_array', []))) selected @endif>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            @if ($errors->has('music_post.categories_array'))
+                <p class="category__error" style="color:red">{{ $errors->first('music_post.categories_array') }}
+                </p>
+            @endif
+        </div>
         <div class="body">
             <h2>内容</h2>
             <textarea name="music_post[body]" placeholder="内容を記入してください。">{{ old('music_post.body') }}</textarea>

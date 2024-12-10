@@ -37,6 +37,12 @@
             <p>{{ $music_post->user->name }}</p>
             <h3>タイトル</h3>
             <p>{{ $music_post->post_title }}</p>
+            <h3>カテゴリー</h3>
+            <h5 class='category'>
+                @foreach ($music_post->categories as $category)
+                    {{ $category->name }}
+                @endforeach
+            </h5>
             <h3>評価</h3>
             @php
                 $numbers = [1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★'];
