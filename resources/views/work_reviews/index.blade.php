@@ -118,28 +118,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
-        <script>
-            const workId = <?php echo $work_id; ?>;
-
-            document.addEventListener('DOMContentLoaded', function() {
-                const toggleCategoriesButton = document.getElementById('toggleCategories');
-                const closeCategoriesButton = document.getElementById('closeCategories');
-                const categoryFilter = document.getElementById('categoryFilter');
-
-                // カテゴリーフィルタの表示
-                toggleCategoriesButton.addEventListener('click', () => {
-                    categoryFilter.style.display = 'block';
-                    toggleCategoriesButton.style.display = 'none';
-                    closeCategoriesButton.style.display = 'inline';
-                });
-
-                // カテゴリーフィルタの非表示
-                closeCategoriesButton.addEventListener('click', () => {
-                    categoryFilter.style.display = 'none';
-                    toggleCategoriesButton.style.display = 'inline';
-                    closeCategoriesButton.style.display = 'none';
-                });
-            });
-        </script>
+        <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif
 </x-app-layout>
