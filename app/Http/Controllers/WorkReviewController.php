@@ -18,10 +18,15 @@ class WorkReviewController extends Controller
     // インポートしたWorkreviewをインスタンス化して$work_reviewsとして使用。
     public function index(Request $request, WorkReview $workReview, WorkReviewCategory $category, $work_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
-        $work_reviews = $workReview->fetchWorkReviews($work_id, $search);
+        $work_reviews = $workReview->fetchWorkReviews($work_id, $search, $categoryIds);
+
         // 単体の作品投稿オブジェクトを取得
         $work_review_first = WorkReview::where('work_id', $work_id)->first();
         // 作品のオブジェクトを取得

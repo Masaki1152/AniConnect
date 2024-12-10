@@ -26,16 +26,16 @@ class WorkReview extends Model
     protected $table = 'work_reviews';
 
     protected $casts = [
-        'created_at' => 'datetime:Y/m/d H:i',
+        'created_at' => 'datetime',
     ];
 
     // 作品投稿の検索処理
-    public function fetchWorkReviews($work_id, $search)
+    public function fetchWorkReviews($work_id, $search, $categoryIds)
     {
         // 指定したidのアニメの投稿のみを表示
-        $work_reviews = WorkReview::where('work_id', $work_id)->orderBy('id', 'ASC')
-            ->with(['user'])
-            ->where(function ($query) use ($search) {
+        $work_reviews = WorkReview::where('work_id', $work_id)
+            ->with(['user', 'categories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -54,7 +54,18 @@ class WorkReview extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    foreach ($categoryIds as $categoryId) {
+                        $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
+                            $categoryQuery->where('work_review_categories.id', $categoryId);
+                        });
+                    }
+                }
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
         return $work_reviews;
     }
 
@@ -94,7 +105,7 @@ class WorkReview extends Model
     // カテゴリーに対するリレーション 多対多の関係
     public function categories()
     {
-        return $this->belongsToMany(WorkReviewCategory::class);
+        return $this->belongsToMany(WorkReviewCategory::class, 'work_review_work_review_category', 'work_review_id', 'work_review_category_id');
     }
 
     // いいねをしたUserに対するリレーション　多対多の関係
