@@ -193,12 +193,4 @@ class WorkReviewController extends Controller
         // 該当しない場合はnull
         return null;
     }
-
-    // カテゴリーを取得して表示
-    public function getCategories()
-    {
-        // 全カテゴリーを取得
-        $categories = WorkReviewCategory::all();
-        return response()->json($categories);
-    }
 }
