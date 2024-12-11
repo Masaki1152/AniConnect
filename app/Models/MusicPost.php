@@ -24,16 +24,16 @@ class MusicPost extends Model
     protected $table = 'music_posts';
 
     protected $casts = [
-        'created_at' => 'datetime:Y/m/d H:i',
+        'created_at' => 'datetime',
     ];
 
     // 音楽投稿の検索処理
-    public function fetchMusicPosts($music_id, $search)
+    public function fetchMusicPosts($music_id, $search, $categoryIds)
     {
         // 指定したidの音楽の投稿のみを表示
-        $music_posts = MusicPost::where('music_id', $music_id)->orderBy('id', 'DESC')
-            ->with(['user'])
-            ->where(function ($query) use ($search) {
+        $music_posts = MusicPost::where('music_id', $music_id)
+            ->with(['user', 'categories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -52,7 +52,18 @@ class MusicPost extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    foreach ($categoryIds as $categoryId) {
+                        $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
+                            $categoryQuery->where('music_post_categories.id', $categoryId);
+                        });
+                    }
+                }
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
         return $music_posts;
     }
 
