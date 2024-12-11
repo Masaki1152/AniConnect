@@ -18,10 +18,14 @@ class CharacterPostController extends Controller
     // 登場人物感想投稿一覧の表示
     public function index(Request $request, CharacterPost $characterPost, CharacterPostCategory $category, $character_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
-        $character_posts = $characterPost->fetchCharacterPosts($character_id, $search);
+        $character_posts = $characterPost->fetchCharacterPosts($character_id, $search, $categoryIds);
         // 単体のオブジェクトを取得
         $character_first = CharacterPost::where('character_id', $character_id)->first();
         // 登場人物のオブジェクトを取得

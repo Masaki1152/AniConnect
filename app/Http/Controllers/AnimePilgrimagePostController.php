@@ -18,10 +18,14 @@ class AnimePilgrimagePostController extends Controller
     // 聖地感想投稿一覧の表示
     public function index(Request $request, AnimePilgrimagePost $anime_pilgrimage_posts, AnimePilgrimagePostCategory $category, $pilgrimage_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
-        $pilgrimage_posts = $anime_pilgrimage_posts->fetchAnimePilgrimagePosts($pilgrimage_id, $search);
+        $pilgrimage_posts = $anime_pilgrimage_posts->fetchAnimePilgrimagePosts($pilgrimage_id, $search, $categoryIds);
         // 単体のオブジェクトを取得
         $pilgrimage_first = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->first();
         // 聖地のオブジェクトを取得

@@ -27,16 +27,16 @@ class CharacterPost extends Model
     protected $table = 'character_posts';
 
     protected $casts = [
-        'created_at' => 'datetime:Y/m/d H:i',
+        'created_at' => 'datetime',
     ];
 
     // 登場人物投稿の検索処理
-    public function fetchCharacterPosts($character_id, $search)
+    public function fetchCharacterPosts($character_id, $search, $categoryIds)
     {
         // 指定したidの登場人物の投稿のみを表示
-        $character_posts = CharacterPost::where('character_id', $character_id)->orderBy('id', 'DESC')
-            ->with(['user'])
-            ->where(function ($query) use ($search) {
+        $character_posts = CharacterPost::where('character_id', $character_id)
+            ->with(['user', 'categories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -55,7 +55,18 @@ class CharacterPost extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    foreach ($categoryIds as $categoryId) {
+                        $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
+                            $categoryQuery->where('character_post_categories.id', $categoryId);
+                        });
+                    }
+                }
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
         return $character_posts;
     }
 

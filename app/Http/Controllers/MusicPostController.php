@@ -17,10 +17,14 @@ class MusicPostController extends Controller
     // 音楽感想投稿一覧の表示
     public function index(Request $request, MusicPost $musicPost, MusicPostCategory $category, $music_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
-        $music_posts = $musicPost->fetchMusicPosts($music_id, $search);
+        $music_posts = $musicPost->fetchMusicPosts($music_id, $search, $categoryIds);
         // 単体のオブジェクトを取得
         $music_first = MusicPost::where('music_id', $music_id)->first();
         // 音楽のオブジェクトを取得
