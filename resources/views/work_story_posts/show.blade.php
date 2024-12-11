@@ -38,6 +38,12 @@
             <p>{{ $work_story_post->workStory->episode }}</p>
             <h3>タイトル</h3>
             <p>{{ $work_story_post->workStory->sub_title }}</p>
+            <h3>カテゴリー</h3>
+            <h5 class='category'>
+                @foreach ($work_story_post->categories as $category)
+                    {{ $category->name }}
+                @endforeach
+            </h5>
             <h3>本文</h3>
             <p>{{ $work_story_post->body }}</p>
             <h3>作成日</h3>

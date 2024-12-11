@@ -21,6 +21,27 @@
                     value="{{ $work_story_post->post_title }}" />
                 <p class="title__error" style="color:red">{{ $errors->first('work_story_post.post_title') }}</p>
             </div>
+            <div class="category">
+                <h2>カテゴリー（3個まで）</h2>
+                @php
+                    // old() が存在すればそれを使用し、なければ過去の保存値を使用
+                    $existingCategories = $work_story_post->categories->pluck('id')->toArray();
+                    $selectedCategories = old('work_story_post.categories_array', $existingCategories);
+                @endphp
+                <select name="work_story_post[categories_array][]" multiple>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @if ($errors->has('work_story_post.categories_array'))
+                    <p class="category__error" style="color:red">
+                        {{ $errors->first('work_story_post.categories_array') }}</p>
+                @endif
+            </div>
             <div class="body">
                 <h2>内容</h2>
                 <textarea name="work_story_post[body]" placeholder="内容を記入してください。">{{ $work_story_post->body }}</textarea>

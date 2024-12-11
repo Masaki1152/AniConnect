@@ -92,6 +92,12 @@ class WorkStoryPost extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    // カテゴリーに対するリレーション 多対多の関係
+    public function categories()
+    {
+        return $this->belongsToMany(WorkStoryPostCategory::class, 'work_story_post_category', 'work_story_post_id', 'work_story_post_category_id');
+    }
+
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
