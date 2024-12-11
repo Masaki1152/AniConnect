@@ -87,6 +87,12 @@ class AnimePilgrimagePost extends Model
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
 
+    // カテゴリーに対するリレーション 多対多の関係
+    public function categories()
+    {
+        return $this->belongsToMany(AnimePilgrimagePostCategory::class, 'pilgrimage_post_category', 'anime_pilgrimage_post_id', 'pilgrimage_post_category_id');
+    }
+
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {

@@ -37,6 +37,12 @@
             <p>{{ $pilgrimage_post->post_title }}</p>
             <h3>シーン</h3>
             <p>{{ $pilgrimage_post->scene }}</p>
+            <h3>カテゴリー</h3>
+            <h5 class='category'>
+                @foreach ($pilgrimage_post->categories as $category)
+                    {{ $category->name }}
+                @endforeach
+            </h5>
             <h3>本文</h3>
             <p>{{ $pilgrimage_post->body }}</p>
             <h3>作成日</h3>

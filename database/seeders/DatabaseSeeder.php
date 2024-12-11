@@ -47,7 +47,9 @@ class DatabaseSeeder extends Seeder
             Character_WorkSeeder::class,
             Anime_Pilgrimage_WorkSeeder::class,
             Music_Post_Category_Seeder::class,
-            Category_Music_Post_Seeder::class
+            Category_Music_Post_Seeder::class,
+            Pilgrimage_Post_Categories_Seeder::class,
+            Pilgrimage_Post_Category_Seeder::class
         ]);
     }
 }

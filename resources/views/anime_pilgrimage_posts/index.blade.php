@@ -46,6 +46,9 @@
                             <h3 class='user'>
                                 {{ $pilgrimage_post->user->name }}
                             </h3>
+                            <div class='created_at'>
+                                <p>{{ $pilgrimage_post->created_at->format('Y/m/d H:i') }}</p>
+                            </div>
                             <h3 class='scene'>
                                 {{ $pilgrimage_post->scene }}
                             </h3>
@@ -63,6 +66,13 @@
                                     </a>
                                 </div>
                             </div>
+                            <h5 class='category flex gap-2'>
+                                @foreach ($pilgrimage_post->categories as $category)
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            </h5>
                             <p class='body'>{{ $pilgrimage_post->body }}</p>
                             @if ($pilgrimage_post->image1)
                                 <div>

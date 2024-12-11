@@ -25,6 +25,27 @@
                     value="{{ $pilgrimage_post->scene }}" />
                 <p class="title__error" style="color:red">{{ $errors->first('pilgrimage_post.scene') }}</p>
             </div>
+            <div class="category">
+                <h2>カテゴリー（3個まで）</h2>
+                @php
+                    // old() が存在すればそれを使用し、なければ過去の保存値を使用
+                    $existingCategories = $pilgrimage_post->categories->pluck('id')->toArray();
+                    $selectedCategories = old('pilgrimage_post.categories_array', $existingCategories);
+                @endphp
+                <select name="pilgrimage_post[categories_array][]" multiple>
+                    @foreach ($categories as $category)
+                        <option value="{{ $category->id }}"
+                            {{ in_array($category->id, $selectedCategories) ? 'selected' : '' }}>
+                            {{ $category->name }}
+                        </option>
+                    @endforeach
+                </select>
+
+                @if ($errors->has('pilgrimage_post.categories_array'))
+                    <p class="category__error" style="color:red">
+                        {{ $errors->first('pilgrimage_post.categories_array') }}</p>
+                @endif
+            </div>
             <div class="body">
                 <h2>内容</h2>
                 <textarea name="pilgrimage_post[body]" placeholder="内容を記入してください。">{{ $pilgrimage_post->body }}</textarea>
