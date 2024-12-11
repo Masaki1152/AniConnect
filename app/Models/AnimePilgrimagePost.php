@@ -27,16 +27,16 @@ class AnimePilgrimagePost extends Model
     protected $table = 'anime_pilgrimage_posts';
 
     protected $casts = [
-        'created_at' => 'datetime:Y/m/d H:i',
+        'created_at' => 'datetime',
     ];
 
     // 聖地投稿の検索処理
-    public function fetchAnimePilgrimagePosts($pilgrimage_id, $search)
+    public function fetchAnimePilgrimagePosts($pilgrimage_id, $search, $categoryIds)
     {
         // 指定したidの聖地の投稿のみを表示
-        $pilgrimage_posts = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->orderBy('id', 'DESC')
-            ->with(['user'])
-            ->where(function ($query) use ($search) {
+        $pilgrimage_posts = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)
+            ->with(['user', 'categories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -56,7 +56,18 @@ class AnimePilgrimagePost extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    foreach ($categoryIds as $categoryId) {
+                        $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
+                            $categoryQuery->where('pilgrimage_post_categories.id', $categoryId);
+                        });
+                    }
+                }
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
         return $pilgrimage_posts;
     }
 
