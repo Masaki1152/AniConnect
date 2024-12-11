@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\WorkStoryPostRequest;
 use App\Models\WorkStory;
 use App\Models\WorkStoryPost;
+use App\Models\WorkStoryPostCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -15,7 +16,7 @@ class WorkStoryPostController extends Controller
     use SoftDeletes;
 
     // あらすじ感想投稿一覧の表示
-    public function index(Request $request, WorkStoryPost $workStoryPost, $work_id, $work_story_id)
+    public function index(Request $request, WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id)
     {
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
@@ -25,26 +26,27 @@ class WorkStoryPostController extends Controller
         $work_story_post_first = WorkStoryPost::where('sub_title_id', $work_story_id)->first();
         // あらすじのオブジェクトを取得
         $work_story = WorkStory::find($work_story_id);
-        return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first, 'work_id' => $work_id, 'work_story_id' => $work_story_id, 'work_story' => $work_story]);
+        return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first, 'work_id' => $work_id, 'work_story_id' => $work_story_id, 'work_story' => $work_story, 'categories' => $category->get()]);
     }
 
     // あらすじ感想投稿詳細の表示
-    public function show(WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
+    public function show(WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id, $work_story_post_id)
     {
-        return view('work_story_posts.show')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id)]);
+        return view('work_story_posts.show')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
-    public function create(WorkStoryPost $workStoryPost, $work_id, $work_story_id)
+    public function create(WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id)
     {
         $work_story = WorkStory::find($work_story_id);
-        return view('work_story_posts.create')->with(['work_story_post' => $workStoryPost->getRestrictedPost('sub_title_id', $work_story_id), 'work_story' => $work_story]);
+        return view('work_story_posts.create')->with(['work_story_post' => $workStoryPost->getRestrictedPost('sub_title_id', $work_story_id), 'work_story' => $work_story, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
     public function store(WorkStoryPost $workStoryPost, WorkStoryPostRequest $request)
     {
         $input_post = $request['work_story_post'];
+        $input_categories = $request->work_story_post['categories_array'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
@@ -58,19 +60,22 @@ class WorkStoryPostController extends Controller
         // ログインしているユーザーidの登録
         $input_post['user_id'] = Auth::id();
         $workStoryPost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        $workStoryPost->categories()->attach($input_categories);
         return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
-    public function edit(WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
+    public function edit(WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id, $work_story_post_id)
     {
-        return view('work_story_posts.edit')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id)]);
+        return view('work_story_posts.edit')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する
     public function update(WorkStoryPostRequest $request, WorkStoryPost $workStoryPost, $work_id, $work_story_id, $work_story_post_id)
     {
         $input_post = $request['work_story_post'];
+        $input_categories = $request->work_story_post['categories_array'];
         // 保存する画像のPathの配列
         $image_paths = [];
         // 削除されていない既存画像がある場合のみ以下の処理を実行
@@ -115,6 +120,9 @@ class WorkStoryPostController extends Controller
         // 編集の対象となるデータを取得
         $targetWorkStoryPost = $workStoryPost->getDetailPost($work_story_id, $work_story_post_id);
         $targetWorkStoryPost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
+        $targetWorkStoryPost->categories()->sync($input_categories);
         return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id])->with('status', '投稿を編集しました');
     }
 

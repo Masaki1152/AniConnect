@@ -17,6 +17,7 @@ class WorkStoryPostRequest extends FormRequest
         return [
             'work_story_post.post_title' => 'required|string|max:100',
             'work_story_post.body' => 'required|string|max:4000',
+            'work_story_post.categories_array' => 'required|array|max:3',
             'images' => 'array|max:4'
         ];
     }

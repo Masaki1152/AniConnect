@@ -51,6 +51,16 @@
                             <div class='user'>
                                 <p>{{ $work_story_post->user->name }}</p>
                             </div>
+                            <div class='created_at'>
+                                <p>{{ $work_story_post->created_at->format('Y/m/d H:i') }}</p>
+                            </div>
+                            <h5 class='category flex gap-2'>
+                                @foreach ($work_story_post->categories as $category)
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            </h5>
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button" data-work-id="{{ $work_story_post->work_id }}"
