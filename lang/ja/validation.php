@@ -279,6 +279,7 @@ return [
         'pilgrimage_post.post_title' => 'タイトル',
         'pilgrimage_post.scene' => 'シーン',
         'pilgrimage_post.body' => '内容',
+        'pilgrimage_post.categories_array' => 'カテゴリー',
         // あらすじの感想投稿のバリデーション
         'work_story_post.post_title' => 'タイトル',
         'work_story_post.body' => '内容',

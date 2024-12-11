@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\PilgrimagePostRequest;
 use App\Models\AnimePilgrimage;
 use App\Models\AnimePilgrimagePost;
+use App\Models\AnimePilgrimagePostCategory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -15,7 +16,7 @@ class AnimePilgrimagePostController extends Controller
     use SoftDeletes;
 
     // 聖地感想投稿一覧の表示
-    public function index(Request $request, AnimePilgrimagePost $anime_pilgrimage_posts, $pilgrimage_id)
+    public function index(Request $request, AnimePilgrimagePost $anime_pilgrimage_posts, AnimePilgrimagePostCategory $category, $pilgrimage_id)
     {
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
@@ -25,27 +26,28 @@ class AnimePilgrimagePostController extends Controller
         $pilgrimage_first = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->first();
         // 聖地のオブジェクトを取得
         $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
-        return view('anime_pilgrimage_posts.index')->with(['pilgrimage_posts' => $pilgrimage_posts, 'pilgrimage_first' => $pilgrimage_first, 'pilgrimage' => $pilgrimage]);
+        return view('anime_pilgrimage_posts.index')->with(['pilgrimage_posts' => $pilgrimage_posts, 'pilgrimage_first' => $pilgrimage_first, 'pilgrimage' => $pilgrimage, 'categories' => $category->get()]);
     }
 
     // 聖地感想投稿詳細の表示
-    public function show(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id, $pilgrimage_post_id)
+    public function show(AnimePilgrimagePost $pilgrimagePost, AnimePilgrimagePostCategory $category, $pilgrimage_id, $pilgrimage_post_id)
     {
-        return view('anime_pilgrimage_posts.show')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id)]);
+        return view('anime_pilgrimage_posts.show')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
-    public function create(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id)
+    public function create(AnimePilgrimagePost $pilgrimagePost, AnimePilgrimagePostCategory $category, $pilgrimage_id)
     {
         // 聖地のオブジェクトを取得
         $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
-        return view('anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id), 'pilgrimage' => $pilgrimage]);
+        return view('anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id), 'pilgrimage' => $pilgrimage, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
     public function store(AnimePilgrimagePost $pilgrimagePost, PilgrimagePostRequest $request)
     {
         $input_post = $request['pilgrimage_post'];
+        $input_categories = $request->pilgrimage_post['categories_array'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
@@ -59,19 +61,22 @@ class AnimePilgrimagePostController extends Controller
         // ログインしているユーザーidの登録
         $input_post['user_id'] = Auth::id();
         $pilgrimagePost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        $pilgrimagePost->categories()->attach($input_categories);
         return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimagePost->id])->with('status', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
-    public function edit(AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id, $pilgrimage_post_id)
+    public function edit(AnimePilgrimagePost $pilgrimagePost, AnimePilgrimagePostCategory $category, $pilgrimage_id, $pilgrimage_post_id)
     {
-        return view('anime_pilgrimage_posts.edit')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id)]);
+        return view('anime_pilgrimage_posts.edit')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する
     public function update(PilgrimagePostRequest $request, AnimePilgrimagePost $pilgrimagePost, $pilgrimage_id, $pilgrimage_post_id)
     {
         $input_post = $request['pilgrimage_post'];
+        $input_categories = $request->pilgrimage_post['categories_array'];
         // 保存する画像のPathの配列
         $image_paths = [];
         // 削除されていない既存画像がある場合のみ以下の処理を実行
@@ -116,6 +121,9 @@ class AnimePilgrimagePostController extends Controller
         // 編集の対象となるデータを取得
         $targetPilgrimagePost = $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id);
         $targetPilgrimagePost->fill($input_post)->save();
+        // カテゴリーとの中間テーブルにデータを保存
+        // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
+        $targetPilgrimagePost->categories()->sync($input_categories);
         return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id])->with('status', '投稿を編集しました');
     }
 
