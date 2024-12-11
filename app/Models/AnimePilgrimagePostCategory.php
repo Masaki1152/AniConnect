@@ -9,7 +9,7 @@ class AnimePilgrimagePostCategory extends Model
 {
     use HasFactory;
 
-    // 参照させたいmusic_post_categoriesを指定
+    // 参照させたいpilgrimage_post_categoriesを指定
     protected $table = 'pilgrimage_post_categories';
 
     // AnimePilgrimagePostに対するリレーション 多対多の関係
