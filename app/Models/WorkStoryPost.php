@@ -27,16 +27,16 @@ class WorkStoryPost extends Model
     protected $table = 'work_story_posts';
 
     protected $casts = [
-        'created_at' => 'datetime:Y/m/d H:i',
+        'created_at' => 'datetime',
     ];
 
     // あらすじ投稿の検索処理
-    public function fetchWorkStoryPosts($work_story_id, $search)
+    public function fetchWorkStoryPosts($work_story_id, $search, $categoryIds)
     {
         // 指定したidのあらすじの投稿のみを表示
-        $work_story_posts = WorkStoryPost::where('sub_title_id', $work_story_id)->orderBy('id', 'DESC')
-            ->with(['user'])
-            ->where(function ($query) use ($search) {
+        $work_story_posts = WorkStoryPost::where('sub_title_id', $work_story_id)
+            ->with(['user', 'categories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -55,7 +55,18 @@ class WorkStoryPost extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    foreach ($categoryIds as $categoryId) {
+                        $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
+                            $categoryQuery->where('work_story_post_categories.id', $categoryId);
+                        });
+                    }
+                }
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(5);
         return $work_story_posts;
     }
 

@@ -18,10 +18,14 @@ class WorkStoryPostController extends Controller
     // あらすじ感想投稿一覧の表示
     public function index(Request $request, WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
-        $work_story_posts = $workStoryPost->fetchWorkStoryPosts($work_story_id, $search);
+        $work_story_posts = $workStoryPost->fetchWorkStoryPosts($work_story_id, $search, $categoryIds);
         // 単体のオブジェクトを取得
         $work_story_post_first = WorkStoryPost::where('sub_title_id', $work_story_id)->first();
         // あらすじのオブジェクトを取得
