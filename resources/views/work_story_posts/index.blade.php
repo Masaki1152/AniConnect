@@ -28,9 +28,30 @@
             <form
                 action="{{ route('work_story_posts.index', ['work_id' => $work_id, 'work_story_id' => $work_story_id]) }}"
                 method="GET">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索"
-                    aria-label="検索...">
-                <input type="submit" value="キーワード検索">
+                <!-- キーワード検索 -->
+                <input type="text" name="search" id="search", value="{{ request('search') }}"
+                    placeholder="キーワードを検索" aria-label="検索...">
+                <!-- カテゴリー検索機能 -->
+                <div>
+                    <button id='toggleCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: none;' : 'display: inline;' }}">カテゴリーで絞り込む</button>
+                    <button id='closeCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: inline;' : 'display: none;' }}">閉じる</button>
+                    <div id='categoryFilter' style="display: {{ request('checkedCategories') ? 'block' : 'none' }};">
+                        <h2>カテゴリー</h2>
+                        <ul id='categoryList'>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <input type="checkbox" class="categoryCheckbox" name="checkedCategories[]"
+                                        value="{{ $category->id }}"
+                                        {{ in_array($category->id, request('checkedCategories', [])) ? 'checked' : '' }}>
+                                    <label>{{ $category->name }}</label>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <input type="submit" value="検索">
             </form>
             <div class="cancel">
                 <a
@@ -105,5 +126,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script src="{{ asset('/js/like_posts/like_work_story_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
+        <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif
 </x-app-layout>
