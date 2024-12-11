@@ -21,9 +21,30 @@
         <div class=serch>
             <form action="{{ route('character_posts.index', ['character_id' => $character_first->character_id]) }}"
                 method="GET">
-                <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索"
-                    aria-label="検索...">
-                <input type="submit" value="キーワード検索">
+                <!-- キーワード検索 -->
+                <input type="text" name="search" id="search", value="{{ request('search') }}"
+                    placeholder="キーワードを検索" aria-label="検索...">
+                <!-- カテゴリー検索機能 -->
+                <div>
+                    <button id='toggleCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: none;' : 'display: inline;' }}">カテゴリーで絞り込む</button>
+                    <button id='closeCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: inline;' : 'display: none;' }}">閉じる</button>
+                    <div id='categoryFilter' style="display: {{ request('checkedCategories') ? 'block' : 'none' }};">
+                        <h2>カテゴリー</h2>
+                        <ul id='categoryList'>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <input type="checkbox" class="categoryCheckbox" name="checkedCategories[]"
+                                        value="{{ $category->id }}"
+                                        {{ in_array($category->id, request('checkedCategories', [])) ? 'checked' : '' }}>
+                                    <label>{{ $category->name }}</label>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
+                <input type="submit" value="検索">
             </form>
             <div class="cancel">
                 <a
@@ -42,6 +63,9 @@
                                     href="{{ route('character_posts.show', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">{{ $character_post->post_title }}</a>
                             </h2>
                             <p>{{ $character_post->user->name }}</p>
+                            <div class='created_at'>
+                                <p>{{ $character_post->created_at->format('Y/m/d H:i') }}</p>
+                            </div>
                             <p class='work'>
                                 {{-- 関連する登場作品の数だけ繰り返す --}}
                                 @foreach ($character->works as $character_work)
@@ -64,9 +88,11 @@
                                 </div>
                             </div>
 
-                            <h5 class='category'>
+                            <h5 class='category flex gap-2'>
                                 @foreach ($character_post->categories as $category)
-                                    {{ $category->name }}
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                        {{ $category->name }}
+                                    </span>
                                 @endforeach
                             </h5>
                             <p class='body'>{{ $character_post->body }}</p>
@@ -97,5 +123,6 @@
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script src="{{ asset('/js/like_posts/like_character_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
+        <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif
 </x-app-layout>
