@@ -17,6 +17,7 @@
         </div>
         <div>
             <p>あらすじ、制作会社、登場人物、声優、音楽名、歌手、聖地など何でも検索してみましょう！</p>
+            <p>各作品のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
         </div>
 
         <!-- 作品リスト -->
@@ -31,6 +32,18 @@
                                 {{ $work->name }}
                             </a>
                         </h2>
+                        <!-- 上位3カテゴリー -->
+                        <h5 class='category flex gap-2'>
+                            @if (!empty($work->topCategories))
+                                @foreach ($work->topCategories as $category)
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                        {{ $category['name'] }}
+                                    </span>
+                                @endforeach
+                            @else
+                                <p>カテゴリー情報がありません。</p>
+                            @endif
+                        </h5>
                         <p class="text-gray-600">{{ $work->term }}</p>
                     </div>
                 @endforeach

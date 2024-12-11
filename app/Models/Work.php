@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
 
 class Work extends Model
 {
@@ -15,8 +16,7 @@ class Work extends Model
     // 作品の検索処理
     public function fetchWorks($search)
     {
-        $works = Work::orderBy('id', 'ASC')
-            ->with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
+        $works = Work::with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
             ->where(function ($query) use ($search) {
                 // キーワード検索がなされた場合
                 if ($search) {
@@ -62,7 +62,36 @@ class Work extends Model
                         });
                     }
                 }
-            })->paginate(5);
+            })
+            ->orderBy('id', 'ASC')
+            ->paginate(5);
+
+        // 各作品ごとに上位3つのカテゴリーを計算して追加
+        $works->getCollection()->transform(function ($work) {
+            $topCategories = DB::table('work_review_work_review_category')
+                ->join('work_reviews', 'work_reviews.id', '=', 'work_review_work_review_category.work_review_id')
+                ->join('works', 'works.id', '=', 'work_reviews.work_id')
+                ->select('work_review_work_review_category.work_review_category_id', DB::raw('COUNT(*) as count'))
+                ->where('works.id', $work->id)
+                ->groupBy('work_review_work_review_category.work_review_category_id')
+                ->orderByDesc('count')
+                ->orderBy('work_review_work_review_category.work_review_category_id', 'asc')
+                ->limit(3)
+                ->get()
+                ->map(function ($row) {
+                    return [
+                        'id' => $row->work_review_category_id,
+                        'name' => DB::table('work_review_categories')->where('id', $row->work_review_category_id)->value('name'),
+                        'count' => $row->count,
+                    ];
+                });
+
+            // 取得した上位3カテゴリーを作品オブジェクトに追加
+            $work->topCategories = $topCategories;
+
+            return $work;
+        });
+
         return $works;
     }
 
