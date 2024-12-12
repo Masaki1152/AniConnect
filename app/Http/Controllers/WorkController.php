@@ -14,7 +14,6 @@ class WorkController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する作品を取得
         $works = $work->fetchWorks($search);
-        $work->updateTopCaregories();
 
         return view('works.index')->with(['works' => $works]);
     }
