@@ -66,33 +66,39 @@ class Work extends Model
             ->orderBy('id', 'ASC')
             ->paginate(5);
 
-        // 各作品ごとに上位3つのカテゴリーを計算して追加
-        $works->getCollection()->transform(function ($work) {
-            $topCategories = DB::table('work_review_work_review_category')
-                ->join('work_reviews', 'work_reviews.id', '=', 'work_review_work_review_category.work_review_id')
-                ->join('works', 'works.id', '=', 'work_reviews.work_id')
-                ->select('work_review_work_review_category.work_review_category_id', DB::raw('COUNT(*) as count'))
-                ->where('works.id', $work->id)
-                ->groupBy('work_review_work_review_category.work_review_category_id')
-                ->orderByDesc('count')
-                ->orderBy('work_review_work_review_category.work_review_category_id', 'asc')
-                ->limit(3)
-                ->get()
-                ->map(function ($row) {
-                    return [
-                        'id' => $row->work_review_category_id,
-                        'name' => DB::table('work_review_categories')->where('id', $row->work_review_category_id)->value('name'),
-                        'count' => $row->count,
-                    ];
-                });
-
-            // 取得した上位3カテゴリーを作品オブジェクトに追加
-            $work->topCategories = $topCategories;
-
-            return $work;
-        });
-
         return $works;
+    }
+
+    // カテゴリーIdの集計処理
+    public function updateTopCaregories()
+    {
+        // 作品ごとに各カテゴリーとその出現回数を取得
+        $topCategoriesData = DB::table('work_review_work_review_category')
+            ->join('work_reviews', 'work_reviews.id', '=', 'work_review_work_review_category.work_review_id')
+            ->join('works', 'works.id', '=', 'work_reviews.work_id')
+            ->select(
+                'works.id as work_id',
+                'work_review_work_review_category.work_review_category_id',
+                DB::raw('COUNT(*) as count')
+            )
+            ->groupBy('works.id', 'work_review_work_review_category.work_review_category_id')
+            ->orderBy('works.id')
+            ->orderByDesc('count')
+            ->orderBy('work_review_work_review_category.work_review_category_id', 'asc')
+            ->get()
+            ->groupBy('work_id');
+
+        // 作品ごとに上位3つのカテゴリを抽出して更新
+        foreach ($topCategoriesData as $workId => $categories) {
+            $topCategories = $categories->take(3)->pluck('work_review_category_id')->toArray();
+
+            // カテゴリを更新
+            Work::where('id', $workId)->update([
+                'category_top_1' => $topCategories[0] ?? null,
+                'category_top_2' => $topCategories[1] ?? null,
+                'category_top_3' => $topCategories[2] ?? null,
+            ]);
+        }
     }
 
     // WorkReviewに対するリレーション 1対1の関係
