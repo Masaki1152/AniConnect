@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Character extends Model
 {
@@ -12,12 +14,15 @@ class Character extends Model
     // 参照させたいcharactersを指定
     protected $table = 'characters';
 
+    protected $casts = [
+        'top_categories_updated_at' => 'datetime',
+    ];
+
     // 登場人物の検索処理
-    public function fetchCharacters($search)
+    public function fetchCharacters($search, $categoryIds)
     {
-        $characters = Character::orderBy('id', 'ASC')
-            ->with(['works', 'works.creator', 'voiceArtist'])
-            ->where(function ($query) use ($search) {
+        $characters = Character::with(['works', 'works.creator', 'voiceArtist'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -44,8 +49,73 @@ class Character extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    $query->where(function ($categoryQuery) use ($categoryIds) {
+                        foreach ($categoryIds as $categoryId) {
+                            $categoryQuery->where(function ($innerQuery) use ($categoryId) {
+                                $innerQuery->where('category_top_1', $categoryId)
+                                    ->orWhere('category_top_2', $categoryId)
+                                    ->orWhere('category_top_3', $categoryId);
+                            });
+                        }
+                    });
+                }
+            })
+            ->orderBy('id', 'ASC')
+            ->paginate(5);
         return $characters;
+    }
+
+    // カテゴリーIdの集計処理
+    public function updateTopCategories()
+    {
+        // 作品ごとに各カテゴリーとその出現回数を取得
+        $topCategoriesData = DB::table('character_post_category')
+            ->join('character_posts', 'character_posts.id', '=', 'character_post_category.character_post_id')
+            ->join('characters', 'characters.id', '=', 'character_posts.character_id')
+            ->select(
+                'characters.id as character_id',
+                'character_post_category.character_post_category_id',
+                DB::raw('COUNT(*) as count')
+            )
+            ->groupBy('character_id', 'character_post_category.character_post_category_id')
+            ->orderBy('character_id')
+            ->orderByDesc('count')
+            ->orderBy('character_post_category.character_post_category_id', 'asc')
+            ->get()
+            ->groupBy('character_id');
+
+        // 作品ごとに上位3つのカテゴリを抽出して更新
+        foreach ($topCategoriesData as $characterId => $categories) {
+
+            // キャッシュキーの作成
+            $cacheKey = "character_top_categories_{$characterId}";
+            // 上位3つのカテゴリを抽出
+            $topCategories = $categories->take(3)->pluck('character_post_category_id')->toArray();
+
+            // カテゴリを更新
+            Character::where('id', $characterId)->update([
+                'category_top_1' => $topCategories[0] ?? null,
+                'category_top_2' => $topCategories[1] ?? null,
+                'category_top_3' => $topCategories[2] ?? null,
+                'top_categories_updated_at' => now()
+            ]);
+
+            // キャッシュを更新
+            Cache::put($cacheKey, $topCategories, now()->addHours(3));
+        }
+
+        // カテゴリーが存在しない登場人物も `top_categories_updated_at` を更新
+        $updatedIds = $topCategoriesData->keys()->toArray();
+
+        Character::whereNotIn('id', $updatedIds)->update([
+            'category_top_1' => null,
+            'category_top_2' => null,
+            'category_top_3' => null,
+            'top_categories_updated_at' => now(),
+        ]);
     }
 
     // Workに対するリレーション 多対多の関係
