@@ -4,19 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\WorkStory;
+use App\Models\WorkStoryPostCategory;
 
 class WorkStoryController extends Controller
 {
     // あらすじ一覧画面の表示
-    public function index(Request $request, WorkStory $workStory, $work_id)
+    public function index(Request $request, WorkStory $workStory, WorkStoryPostCategory $category, $work_id)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
         // 検索キーワードがあれば取得
         $search = $request->input('search', '');
         // キーワードに部分一致するあらすじを取得
-        $work_stories = $workStory->fetchWorkStories($search, $work_id);
+        $work_stories = $workStory->fetchWorkStories($search, $work_id, $categoryIds);
         // あらすじのオブジェクトを1つ取得
         $work_story_model = WorkStory::where('work_id', '=', $work_id)->first();
-        return view('work_stories.index')->with(['work_stories' => $work_stories, 'work_story_model' => $work_story_model]);
+        return view('work_stories.index')->with(['work_stories' => $work_stories, 'work_story_model' => $work_story_model, 'categories' => $category->get()]);
     }
 
     // 詳細なあらすじ情報を表示する

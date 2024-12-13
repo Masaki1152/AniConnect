@@ -4,6 +4,7 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Work;
+use App\Models\WorkStory;
 
 class UpdateTopCategories extends Command
 {
@@ -26,8 +27,13 @@ class UpdateTopCategories extends Command
      */
     public function handle()
     {
+        // 作品一覧の上位3カテゴリーを更新
         Work::all()->each(function ($work) {
             $work->updateTopCategories();
+        });
+        // あらすじ一覧の上位3カテゴリーを更新
+        WorkStory::all()->each(function ($workStory) {
+            $workStory->updateTopCategories();
         });
 
         $this->info('Top categories updated for all works.');

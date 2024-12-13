@@ -11,10 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('works', function (Blueprint $table) {
+        Schema::table('work_stories', function (Blueprint $table) {
             $table->unsignedBigInteger('category_top_1')->nullable();
             $table->unsignedBigInteger('category_top_2')->nullable();
             $table->unsignedBigInteger('category_top_3')->nullable();
+            $table->timestamp('top_categories_updated_at')->nullable();
         });
     }
 
@@ -23,10 +24,11 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('works', function (Blueprint $table) {
+        Schema::table('work_stories', function (Blueprint $table) {
             $table->dropColumn('category_top_1');
             $table->dropColumn('category_top_2');
             $table->dropColumn('category_top_3');
+            $table->dropColumn('top_categories_updated_at');
         });
     }
 };
