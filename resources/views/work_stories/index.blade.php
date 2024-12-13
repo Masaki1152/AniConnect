@@ -57,13 +57,12 @@
                     </p>
                     <!-- 上位3カテゴリー -->
                     <h5 class='category flex gap-2'>
-                        @if (!empty($work_story->category_top_1))
-                            @foreach ([$work_story->category_top_1, $work_story->category_top_2, $work_story->category_top_3] as $categoryId)
-                                @if (!empty($categoryId))
-                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                        {{ \App\Models\WorkStoryPostCategory::find($categoryId)->name }}
-                                    </span>
-                                @endif
+                        @if ($work_story->top_categories->isNotEmpty())
+                            @foreach ($work_story->top_categories as $category)
+                                <span class="text-white px-2 py-1 rounded-full text-sm"
+                                    style="background-color: {{ $category['color'] }};">
+                                    {{ $category['name'] }}
+                                </span>
                             @endforeach
                         @else
                             <p>カテゴリー情報がありません。</p>
