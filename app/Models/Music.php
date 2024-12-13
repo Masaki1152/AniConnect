@@ -101,7 +101,7 @@ class Music extends Model
         foreach ($topCategoriesData as $musicId => $categories) {
 
             // キャッシュキーの作成
-            $cacheKey = "character_top_categories_{$musicId}";
+            $cacheKey = "music_top_categories_{$musicId}";
             // 上位3つのカテゴリを抽出
             $topCategories = $categories->take(3)->pluck('music_post_category_id')->toArray();
 

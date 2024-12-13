@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class AnimePilgrimage extends Model
 {
@@ -12,12 +14,15 @@ class AnimePilgrimage extends Model
     // 参照させたいanime_pilgrimagesを指定
     protected $table = 'anime_pilgrimages';
 
+    protected $casts = [
+        'top_categories_updated_at' => 'datetime',
+    ];
+
     // 聖地の検索処理
-    public function fetchAnimePilgrimages($search, $prefecture_search)
+    public function fetchAnimePilgrimages($search, $prefecture_search, $categoryIds)
     {
-        $pilgrimages = AnimePilgrimage::orderBy('id', 'ASC')
-            ->with(['works', 'works.characters', 'animePilgrimagePosts'])
-            ->where(function ($query) use ($search, $prefecture_search) {
+        $pilgrimages = AnimePilgrimage::with(['works', 'works.characters', 'animePilgrimagePosts'])
+            ->where(function ($query) use ($search, $prefecture_search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -50,8 +55,73 @@ class AnimePilgrimage extends Model
                 if ($prefecture_search) {
                     $query->where('prefecture_id', $prefecture_search);
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    $query->where(function ($categoryQuery) use ($categoryIds) {
+                        foreach ($categoryIds as $categoryId) {
+                            $categoryQuery->where(function ($innerQuery) use ($categoryId) {
+                                $innerQuery->where('category_top_1', $categoryId)
+                                    ->orWhere('category_top_2', $categoryId)
+                                    ->orWhere('category_top_3', $categoryId);
+                            });
+                        }
+                    });
+                }
+            })
+            ->orderBy('id', 'ASC')
+            ->paginate(5);
         return $pilgrimages;
+    }
+
+    // カテゴリーIdの集計処理
+    public function updateTopCategories()
+    {
+        // 作品ごとに各カテゴリーとその出現回数を取得
+        $topCategoriesData = DB::table('pilgrimage_post_category')
+            ->join('anime_pilgrimage_posts', 'anime_pilgrimage_posts.id', '=', 'pilgrimage_post_category.anime_pilgrimage_post_id')
+            ->join('anime_pilgrimages', 'anime_pilgrimages.id', '=', 'anime_pilgrimage_posts.anime_pilgrimage_id')
+            ->select(
+                'anime_pilgrimages.id as pilgrimage_id',
+                'pilgrimage_post_category.pilgrimage_post_category_id',
+                DB::raw('COUNT(*) as count')
+            )
+            ->groupBy('pilgrimage_id', 'pilgrimage_post_category.pilgrimage_post_category_id')
+            ->orderBy('pilgrimage_id')
+            ->orderByDesc('count')
+            ->orderBy('pilgrimage_post_category.pilgrimage_post_category_id', 'asc')
+            ->get()
+            ->groupBy('pilgrimage_id');
+
+        // 作品ごとに上位3つのカテゴリを抽出して更新
+        foreach ($topCategoriesData as $pilgrimageId => $categories) {
+
+            // キャッシュキーの作成
+            $cacheKey = "pilgrimage_top_categories_{$pilgrimageId}";
+            // 上位3つのカテゴリを抽出
+            $topCategories = $categories->take(3)->pluck('pilgrimage_post_category_id')->toArray();
+
+            // カテゴリを更新
+            AnimePilgrimage::where('id', $pilgrimageId)->update([
+                'category_top_1' => $topCategories[0] ?? null,
+                'category_top_2' => $topCategories[1] ?? null,
+                'category_top_3' => $topCategories[2] ?? null,
+                'top_categories_updated_at' => now()
+            ]);
+
+            // キャッシュを更新
+            Cache::put($cacheKey, $topCategories, now()->addHours(3));
+        }
+
+        // カテゴリーが存在しない登場人物も `top_categories_updated_at` を更新
+        $updatedIds = $topCategoriesData->keys()->toArray();
+
+        AnimePilgrimage::whereNotIn('id', $updatedIds)->update([
+            'category_top_1' => null,
+            'category_top_2' => null,
+            'category_top_3' => null,
+            'top_categories_updated_at' => now(),
+        ]);
     }
 
     // Workに対するリレーション 多対多の関係
