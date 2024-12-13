@@ -10,6 +10,20 @@
             <a href="{{ route('voice_artist.show', ['voice_artist_id' => $character->voiceArtist->id]) }}">
                 CV:{{ $character->voiceArtist->name }}
             </a>
+            <!-- 上位3カテゴリー -->
+            <h5 class='category flex gap-2'>
+                @if (!empty($character->category_top_1))
+                    @foreach ([$character->category_top_1, $character->category_top_2, $character->category_top_3] as $categoryId)
+                        @if (!empty($categoryId))
+                            <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                {{ \App\Models\CharacterPostCategory::find($categoryId)->name }}
+                            </span>
+                        @endif
+                    @endforeach
+                @else
+                    <p>カテゴリー情報がありません。</p>
+                @endif
+            </h5>
             <h3>登場作品</h3>
             <div class='work'>
                 {{-- 関連する登場作品の数だけ繰り返す --}}
