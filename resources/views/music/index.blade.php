@@ -3,8 +3,31 @@
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('music.index') }}" method="GET">
-            <input type="text" name="search" value="{{ request('search') }}" placeholder="キーワードを検索" aria-label="検索...">
-            <input type="submit" value="検索">
+            <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="キーワードを検索"
+                aria-label="検索..."
+                class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200">
+            <!-- カテゴリー検索機能 -->
+            <div>
+                <button id='toggleCategories' type='button'
+                    style="{{ count(request('checkedCategories', [])) > 0 ? 'display: none;' : 'display: inline;' }}">カテゴリーで絞り込む</button>
+                <button id='closeCategories' type='button'
+                    style="{{ count(request('checkedCategories', [])) > 0 ? 'display: inline;' : 'display: none;' }}">閉じる</button>
+                <div id='categoryFilter' style="display: {{ request('checkedCategories') ? 'block' : 'none' }};">
+                    <h2>カテゴリー</h2>
+                    <ul id='categoryList'>
+                        @foreach ($categories as $category)
+                            <li>
+                                <input type="checkbox" class="categoryCheckbox" name="checkedCategories[]"
+                                    value="{{ $category->id }}"
+                                    {{ in_array($category->id, request('checkedCategories', [])) ? 'checked' : '' }}>
+                                <label>{{ $category->name }}</label>
+                            </li>
+                        @endforeach
+                    </ul>
+                </div>
+            </div>
+            <input type="submit" value="検索"
+                class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
         </form>
         <div class="cancel">
             <a href="{{ route('music.index') }}">キャンセル</a>
@@ -12,27 +35,45 @@
     </div>
     <div>
         <p>楽曲名、歌手、作曲者、作詞者、作品名、制作会社など何でも検索してみましょう！</p>
+        <p>各作品のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
+        @if (!empty($music_object->top_categories_updated_at))
+            <p>{{ $music_object->top_categories_updated_at->format('Y/m/d H:i') }}更新</p>
+        @endif
     </div>
     <div class='music_collection'>
         @if ($music->isEmpty())
             <h2 class='no_result'>結果がありません。</h2>
         @else
-            @foreach ($music as $music_model)
+            @foreach ($music as $music_object)
                 <div class='music'>
                     <h2 class='name'>
-                        <a href="{{ route('music.show', ['music_id' => $music_model->id]) }}">
-                            {{ $music_model->name }}
+                        <a href="{{ route('music.show', ['music_id' => $music_object->id]) }}">
+                            {{ $music_object->name }}
                         </a>
                     </h2>
+                    <!-- 上位3カテゴリー -->
+                    <h5 class='category flex gap-2'>
+                        @if (!empty($music_object->category_top_1))
+                            @foreach ([$music_object->category_top_1, $music_object->category_top_2, $music_object->category_top_3] as $categoryId)
+                                @if (!empty($categoryId))
+                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                        {{ \App\Models\MusicPostCategory::find($categoryId)->name }}
+                                    </span>
+                                @endif
+                            @endforeach
+                        @else
+                            <p>カテゴリー情報がありません。</p>
+                        @endif
+                    </h5>
                     <p class='work'>
-                        <a href="{{ route('works.show', ['work' => $music_model->work_id]) }}">
-                            {{ $music_model->work->name }}
+                        <a href="{{ route('works.show', ['work' => $music_object->work_id]) }}">
+                            {{ $music_object->work->name }}
                         </a>
                     </p>
                     <p class='singer'>
                         歌手:
-                        <a href="{{ route('singer.show', ['singer_id' => $music_model->singer_id]) }}">
-                            {{ $music_model->singer->name }}
+                        <a href="{{ route('singer.show', ['singer_id' => $music_object->singer_id]) }}">
+                            {{ $music_object->singer->name }}
                         </a>
                     </p>
                 </div>
@@ -42,4 +83,5 @@
     <div class='paginate'>
         {{ $music->appends(request()->query())->links() }}
     </div>
+    <script src="{{ asset('/js/search_category.js') }}"></script>
 </x-app-layout>

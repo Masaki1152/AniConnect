@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Work;
 use App\Models\WorkStory;
 use App\Models\Character;
+use App\Models\Music;
 
 class UpdateTopCategories extends Command
 {
@@ -39,6 +40,10 @@ class UpdateTopCategories extends Command
         // 登場人物一覧の上位3カテゴリーを更新
         Character::all()->each(function ($character) {
             $character->updateTopCategories();
+        });
+        // 音楽一覧の上位3カテゴリーを更新
+        Music::all()->each(function ($music) {
+            $music->updateTopCategories();
         });
 
         $this->info('Top categories updated for all works.');
