@@ -7,6 +7,7 @@ use App\Models\Work;
 use App\Models\WorkStory;
 use App\Models\Character;
 use App\Models\Music;
+use App\Models\AnimePilgrimage;
 
 class UpdateTopCategories extends Command
 {
@@ -44,6 +45,10 @@ class UpdateTopCategories extends Command
         // 音楽一覧の上位3カテゴリーを更新
         Music::all()->each(function ($music) {
             $music->updateTopCategories();
+        });
+        // 聖地一覧の上位3カテゴリーを更新
+        AnimePilgrimage::all()->each(function ($pilgrimage) {
+            $pilgrimage->updateTopCategories();
         });
 
         $this->info('Top categories updated for all works.');

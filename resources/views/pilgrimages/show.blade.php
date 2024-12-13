@@ -6,6 +6,20 @@
         <div class="content__pilgrimage">
             <h3>名前</h3>
             <p>{{ $pilgrimage->name }}</p>
+            <!-- 上位3カテゴリー -->
+            <h5 class='category flex gap-2'>
+                @if (!empty($pilgrimage->category_top_1))
+                    @foreach ([$pilgrimage->category_top_1, $pilgrimage->category_top_2, $pilgrimage->category_top_3] as $categoryId)
+                        @if (!empty($categoryId))
+                            <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                {{ \App\Models\AnimePilgrimagePostCategory::find($categoryId)->name }}
+                            </span>
+                        @endif
+                    @endforeach
+                @else
+                    <p>カテゴリー情報がありません。</p>
+                @endif
+            </h5>
             <div class='work'>
                 <h3>登場作品</h3>
                 {{-- 関連する作品の数だけ繰り返す --}}
