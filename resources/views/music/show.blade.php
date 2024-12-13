@@ -12,6 +12,20 @@
                     {{ $music->singer->name }}
                 </a>
             </div>
+            <!-- 上位3カテゴリー -->
+            <h5 class='category flex gap-2'>
+                @if (!empty($music->category_top_1))
+                    @foreach ([$music->category_top_1, $music->category_top_2, $music->category_top_3] as $categoryId)
+                        @if (!empty($categoryId))
+                            <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                {{ \App\Models\MusicPostCategory::find($categoryId)->name }}
+                            </span>
+                        @endif
+                    @endforeach
+                @else
+                    <p>カテゴリー情報がありません。</p>
+                @endif
+            </h5>
             <div class='work'>
                 <h3>登場作品</h3>
                 <a href="{{ route('works.show', ['work' => $music->work_id]) }}">
@@ -25,8 +39,8 @@
                 </a>
             </div>
             <div class='composer'>
-            <h3>作曲者</h3>
-            <a href="{{ route('composer.show', ['composer_id' => $music->composer_id]) }}">
+                <h3>作曲者</h3>
+                <a href="{{ route('composer.show', ['composer_id' => $music->composer_id]) }}">
                     {{ $music->composer->name }}
                 </a>
             </div>
