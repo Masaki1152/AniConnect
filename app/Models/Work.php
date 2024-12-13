@@ -19,10 +19,10 @@ class Work extends Model
     ];
 
     // 作品の検索処理
-    public function fetchWorks($search)
+    public function fetchWorks($search, $categoryIds)
     {
         $works = Work::with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
-            ->where(function ($query) use ($search) {
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -66,6 +66,19 @@ class Work extends Model
                                 });
                         });
                     }
+                }
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    $query->where(function ($categoryQuery) use ($categoryIds) {
+                        foreach ($categoryIds as $categoryId) {
+                            $categoryQuery->where(function ($innerQuery) use ($categoryId) {
+                                $innerQuery->where('category_top_1', $categoryId)
+                                    ->orWhere('category_top_2', $categoryId)
+                                    ->orWhere('category_top_3', $categoryId);
+                            });
+                        }
+                    });
                 }
             })
             ->orderBy('id', 'ASC')

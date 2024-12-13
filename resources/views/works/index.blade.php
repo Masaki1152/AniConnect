@@ -5,9 +5,30 @@
         <!-- 検索機能 -->
         <div class="flex justify-center mb-6">
             <form action="{{ route('works.index') }}" method="GET" class="flex items-center space-x-2">
-                <input type="text" id="search" name="search" value="{{ request('search') }}" placeholder="キーワードを検索"
+                <!-- キーワード検索 -->
+                <input type="text" name="search" id="search", value="{{ request('search') }}" placeholder="キーワードを検索"
                     aria-label="検索..."
                     class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200">
+                <!-- カテゴリー検索機能 -->
+                <div>
+                    <button id='toggleCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: none;' : 'display: inline;' }}">カテゴリーで絞り込む</button>
+                    <button id='closeCategories' type='button'
+                        style="{{ count(request('checkedCategories', [])) > 0 ? 'display: inline;' : 'display: none;' }}">閉じる</button>
+                    <div id='categoryFilter' style="display: {{ request('checkedCategories') ? 'block' : 'none' }};">
+                        <h2>カテゴリー</h2>
+                        <ul id='categoryList'>
+                            @foreach ($categories as $category)
+                                <li>
+                                    <input type="checkbox" class="categoryCheckbox" name="checkedCategories[]"
+                                        value="{{ $category->id }}"
+                                        {{ in_array($category->id, request('checkedCategories', [])) ? 'checked' : '' }}>
+                                    <label>{{ $category->name }}</label>
+                                </li>
+                            @endforeach
+                        </ul>
+                    </div>
+                </div>
                 <input type="submit" value="検索"
                     class="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400">
             </form>
@@ -58,4 +79,5 @@
             {{ $works->appends(request()->query())->links() }}
         </div>
     </div>
+    <script src="{{ asset('/js/search_category.js') }}"></script>
 </x-app-layout>
