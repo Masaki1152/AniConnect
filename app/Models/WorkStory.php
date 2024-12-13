@@ -64,7 +64,6 @@ class WorkStory extends Model
         $topCategoriesData = DB::table('work_story_post_category')
             ->join('work_story_posts', 'work_story_posts.id', '=', 'work_story_post_category.work_story_post_id')
             ->join('work_stories', 'work_stories.id', '=', 'work_story_posts.sub_title_id')
-            ->join('work_story_post_categories', 'work_story_post_categories.id', '=', 'work_story_post_category.work_story_post_category_id')
             ->select(
                 'work_stories.id as work_story_id',
                 'work_story_post_category.work_story_post_category_id',

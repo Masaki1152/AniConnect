@@ -3,13 +3,13 @@
 namespace App\Http\Controllers;
 
 use App\Models\Work;
-use App\Models\WorkCategory;
+use App\Models\WorkReviewCategory;
 use Illuminate\Http\Request;
 
 class WorkController extends Controller
 {
     // 作品一覧画面の表示
-    public function index(Request $request, Work $work, WorkCategory $category)
+    public function index(Request $request, Work $work, WorkReviewCategory $category)
     {
         // クリックされたカテゴリーidを取得
         $categoryIds = $request->filled('checkedCategories')
