@@ -6,6 +6,20 @@
         <div class="content__post">
             <h3>作品名</h3>
             <p>{{ $work->name }}</p>
+            <!-- 上位3カテゴリー -->
+            <h5 class='category flex gap-2'>
+                @if (!empty($work->category_top_1))
+                    @foreach ([$work->category_top_1, $work->category_top_2, $work->category_top_3] as $categoryId)
+                        @if (!empty($categoryId))
+                            <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                {{ \App\Models\WorkReviewCategory::find($categoryId)->name }}
+                            </span>
+                        @endif
+                    @endforeach
+                @else
+                    <p>カテゴリー情報がありません。</p>
+                @endif
+            </h5>
             <h3>放映期間</h3>
             <p>{{ $work->term }}</p>
             <div class='creator'>
