@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Work extends Model
 {
@@ -12,12 +14,15 @@ class Work extends Model
     // 参照させたいworksを指定
     protected $table = 'works';
 
+    protected $casts = [
+        'top_categories_updated_at' => 'datetime',
+    ];
+
     // 作品の検索処理
-    public function fetchWorks($search)
+    public function fetchWorks($search, $categoryIds)
     {
-        $works = Work::orderBy('id', 'ASC')
-            ->with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
-            ->where(function ($query) use ($search) {
+        $works = Work::with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
+            ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
                 if ($search) {
                     // 検索語のスペースを半角に統一
@@ -62,8 +67,64 @@ class Work extends Model
                         });
                     }
                 }
-            })->paginate(5);
+
+                // クリックされたカテゴリーIdがある場合
+                if (!empty($categoryIds)) {
+                    $query->where(function ($categoryQuery) use ($categoryIds) {
+                        foreach ($categoryIds as $categoryId) {
+                            $categoryQuery->where(function ($innerQuery) use ($categoryId) {
+                                $innerQuery->where('category_top_1', $categoryId)
+                                    ->orWhere('category_top_2', $categoryId)
+                                    ->orWhere('category_top_3', $categoryId);
+                            });
+                        }
+                    });
+                }
+            })
+            ->orderBy('id', 'ASC')
+            ->paginate(5);
+
         return $works;
+    }
+
+    // カテゴリーIdの集計処理
+    public function updateTopCategories()
+    {
+        // 作品ごとに各カテゴリーとその出現回数を取得
+        $topCategoriesData = DB::table('work_review_work_review_category')
+            ->join('work_reviews', 'work_reviews.id', '=', 'work_review_work_review_category.work_review_id')
+            ->join('works', 'works.id', '=', 'work_reviews.work_id')
+            ->select(
+                'works.id as work_id',
+                'work_review_work_review_category.work_review_category_id',
+                DB::raw('COUNT(*) as count')
+            )
+            ->groupBy('works.id', 'work_review_work_review_category.work_review_category_id')
+            ->orderBy('works.id')
+            ->orderByDesc('count')
+            ->orderBy('work_review_work_review_category.work_review_category_id', 'asc')
+            ->get()
+            ->groupBy('work_id');
+
+        // 作品ごとに上位3つのカテゴリを抽出して更新
+        foreach ($topCategoriesData as $workId => $categories) {
+
+            // キャッシュキーの作成
+            $cacheKey = "work_top_categories_{$workId}";
+            // 上位3つのカテゴリを抽出
+            $topCategories = $categories->take(3)->pluck('work_review_category_id')->toArray();
+
+            // カテゴリを更新
+            Work::where('id', $workId)->update([
+                'category_top_1' => $topCategories[0] ?? null,
+                'category_top_2' => $topCategories[1] ?? null,
+                'category_top_3' => $topCategories[2] ?? null,
+                'top_categories_updated_at' => now()
+            ]);
+
+            // キャッシュを更新
+            Cache::put($cacheKey, $topCategories, now()->addHours(3));
+        }
     }
 
     // WorkReviewに対するリレーション 1対1の関係
