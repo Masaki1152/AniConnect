@@ -35,7 +35,7 @@
     </div>
     <div>
         <p>人物名、作品名、声優、制作会社など何でも検索してみましょう！</p>
-        <p>各作品のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
+        <p>各登場人物のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
         @if (!empty($character->top_categories_updated_at))
             <p>{{ $character->top_categories_updated_at->format('Y/m/d H:i') }}更新</p>
         @endif

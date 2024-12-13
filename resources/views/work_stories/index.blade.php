@@ -35,7 +35,7 @@
     </div>
     <div>
         <p>あらすじ、話数、内容など何でも検索してみましょう！</p>
-        <p>各作品のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
+        <p>各あらすじのカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
         @if (!empty($work_story_model->top_categories_updated_at))
             <p>{{ $work_story_model->top_categories_updated_at->format('Y/m/d H:i') }}更新</p>
         @endif
