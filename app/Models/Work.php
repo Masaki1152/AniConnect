@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Cache;
 
 class Work extends Model
 {
@@ -94,6 +95,10 @@ class Work extends Model
 
         // 作品ごとに上位3つのカテゴリを抽出して更新
         foreach ($topCategoriesData as $workId => $categories) {
+
+            // キャッシュキーの作成
+            $cacheKey = "work_top_categories_{$workId}";
+            // 上位3つのカテゴリを抽出
             $topCategories = $categories->take(3)->pluck('work_review_category_id')->toArray();
 
             // カテゴリを更新
@@ -103,6 +108,9 @@ class Work extends Model
                 'category_top_3' => $topCategories[2] ?? null,
                 'top_categories_updated_at' => now()
             ]);
+
+            // キャッシュを更新
+            Cache::put($cacheKey, $topCategories, now()->addHours(3));
         }
     }
 
