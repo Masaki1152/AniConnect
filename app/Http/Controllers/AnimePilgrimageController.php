@@ -7,8 +7,6 @@ use App\Models\AnimePilgrimage;
 use App\Models\Prefecture;
 use App\Models\AnimePilgrimagePostCategory;
 
-use function PHPUnit\Framework\isEmpty;
-
 class AnimePilgrimageController extends Controller
 {
     // 聖地一覧画面の表示

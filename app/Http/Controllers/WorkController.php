@@ -6,8 +6,6 @@ use App\Models\Work;
 use App\Models\WorkReviewCategory;
 use Illuminate\Http\Request;
 
-use function PHPUnit\Framework\isEmpty;
-
 class WorkController extends Controller
 {
     // 作品一覧画面の表示
