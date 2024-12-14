@@ -8,6 +8,7 @@ use App\Models\WorkStory;
 use App\Models\Character;
 use App\Models\Music;
 use App\Models\AnimePilgrimage;
+use Illuminate\Support\Facades\Log;
 
 class UpdateTopCategories extends Command
 {
@@ -51,6 +52,8 @@ class UpdateTopCategories extends Command
             $pilgrimage->updateTopCategories();
         });
 
+        // 明示的にログを記録
+        Log::info('Top categories updated for all works.');
         $this->info('Top categories updated for all works.');
     }
 }

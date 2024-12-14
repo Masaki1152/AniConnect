@@ -46,9 +46,36 @@
 
         <!-- 作品リスト -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 検索結果がない場合 -->
             @if ($works->isEmpty())
-                <h2 class="col-span-full text-center text-gray-500 text-xl">結果がありません。</h2>
+                <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード： 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー： 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    に一致する結果はありませんでした。</p>
+                </h2>
             @else
+                <!-- 検索結果がある場合 -->
+                @if (!empty($search) || !empty($selectedCategories))
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        @if (!empty($search))
+                            キーワード： 「{{ $search }}」
+                        @endif
+                        @if (!empty($search) && !empty($selectedCategories))
+                            、
+                        @endif
+                        @if (!empty($selectedCategories))
+                            カテゴリー： 「{{ implode('、', $selectedCategories) }}」
+                        @endif
+                        の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @endif
                 @foreach ($works as $work)
                     <div class="p-6 border border-gray-200 rounded-lg shadow-sm">
                         <h2 class="text-xl font-semibold mb-2 text-blue-600">

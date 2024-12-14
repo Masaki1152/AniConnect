@@ -19,6 +19,8 @@ class WorkController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する作品を取得
         $works = $work->fetchWorks($search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $works->total();
         // 更新時間表示のために単体の作品オブジェクトを取得
         $work = Work::find(1);
 
@@ -39,7 +41,22 @@ class WorkController extends Controller
                 });
         }
 
-        return view('works.index')->with(['works' => $works, 'work' => $work, 'categories' => $category->get()]);
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = WorkReviewCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('works.index')->with([
+            'works' => $works,
+            'work' => $work,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 詳細な作品情報を表示する
