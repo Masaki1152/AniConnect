@@ -25,11 +25,30 @@ class MusicPostController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $music_posts = $musicPost->fetchMusicPosts($music_id, $search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $music_posts->total();
         // 単体のオブジェクトを取得
         $music_first = MusicPost::where('music_id', $music_id)->first();
         // 音楽のオブジェクトを取得
         $music = Music::find($music_id);
-        return view('music_posts.index')->with(['music_posts' => $music_posts, 'music_first' => $music_first, 'music' => $music, 'categories' => $category->get()]);
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = MusicPostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('music_posts.index')->with([
+            'music_posts' => $music_posts,
+            'music_first' => $music_first,
+            'music' => $music,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 音楽感想投稿詳細の表示

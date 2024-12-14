@@ -125,6 +125,16 @@ class Work extends Model
             // キャッシュを更新
             Cache::put($cacheKey, $topCategories, now()->addHours(3));
         }
+
+        // カテゴリーが存在しない作品も `top_categories_updated_at` を更新
+        $updatedIds = $topCategoriesData->keys()->toArray();
+
+        Work::whereNotIn('id', $updatedIds)->update([
+            'category_top_1' => null,
+            'category_top_2' => null,
+            'category_top_3' => null,
+            'top_categories_updated_at' => now(),
+        ]);
     }
 
     // WorkReviewに対するリレーション 1対1の関係

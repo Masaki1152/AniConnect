@@ -56,8 +56,56 @@
     </div>
     <div class='pilgrimages'>
         @if ($pilgrimages->isEmpty())
-            <h2 class='no_result'>結果がありません。</h2>
+            <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                @if (!empty($search))
+                    キーワード 「{{ $search }}」
+                @endif
+                @if (!empty($search) && !empty($selectedCategories))
+                    、
+                @endif
+                @if (!empty($selectedCategories))
+                    カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                @endif
+                @if (!empty($selectedCategories) && !empty($selected_prefecture))
+                    、
+                @endif
+                @if (empty($selectedCategories) && !empty($selected_prefecture) && !empty($search))
+                    、
+                @endif
+                @if (!empty($selected_prefecture))
+                    県名 「{{ $selected_prefecture }}」
+                @endif
+                に一致する結果はありませんでした。</p>
+            </h2>
         @else
+            <!-- 検索結果がある場合 -->
+            @if (!empty($search) || !empty($selectedCategories) || !empty($selected_prefecture))
+                <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    @if (!empty($selectedCategories) && !empty($selected_prefecture))
+                        、
+                    @endif
+                    @if (empty($selectedCategories) && !empty($selected_prefecture) && !empty($search))
+                        、
+                    @endif
+                    @if (!empty($selected_prefecture))
+                        県名 「{{ $selected_prefecture }}」
+                    @endif
+                    の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                </p>
+            @else
+                <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                    全聖地：<span class="text-blue-500">{{ $totalResults }}</span>件
+                </p>
+            @endif
             @foreach ($pilgrimages as $pilgrimage)
                 <div class='pilgrimage'>
                     <h2 class='name'>
@@ -67,13 +115,12 @@
                     </h2>
                     <!-- 上位3カテゴリー -->
                     <h5 class='category flex gap-2'>
-                        @if (!empty($pilgrimage->category_top_1))
-                            @foreach ([$pilgrimage->category_top_1, $pilgrimage->category_top_2, $pilgrimage->category_top_3] as $categoryId)
-                                @if (!empty($categoryId))
-                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                        {{ \App\Models\AnimePilgrimagePostCategory::find($categoryId)->name }}
-                                    </span>
-                                @endif
+                        @if ($pilgrimage->top_categories->isNotEmpty())
+                            @foreach ($pilgrimage->top_categories as $category)
+                                <span class="text-white px-2 py-1 rounded-full text-sm"
+                                    style="background-color: {{ $category['color'] }};">
+                                    {{ $category['name'] }}
+                                </span>
                             @endforeach
                         @else
                             <p>カテゴリー情報がありません。</p>

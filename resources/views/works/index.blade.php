@@ -39,14 +39,47 @@
         <div>
             <p>あらすじ、制作会社、登場人物、声優、音楽名、歌手、聖地など何でも検索してみましょう！</p>
             <p>各作品のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
-            <p>{{ $work->top_categories_updated_at->format('Y/m/d H:i') }}更新</p>
+            @if (!empty($work->top_categories_updated_at))
+                <p>{{ $work->top_categories_updated_at->format('Y/m/d H:i') }}更新</p>
+            @endif
         </div>
 
         <!-- 作品リスト -->
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- 検索結果がない場合 -->
             @if ($works->isEmpty())
-                <h2 class="col-span-full text-center text-gray-500 text-xl">結果がありません。</h2>
+                <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    に一致する結果はありませんでした。</p>
+                </h2>
             @else
+                <!-- 検索結果がある場合 -->
+                @if (!empty($search) || !empty($selectedCategories))
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        @if (!empty($search))
+                            キーワード 「{{ $search }}」
+                        @endif
+                        @if (!empty($search) && !empty($selectedCategories))
+                            、
+                        @endif
+                        @if (!empty($selectedCategories))
+                            カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                        @endif
+                        の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @else
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        全作品：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @endif
                 @foreach ($works as $work)
                     <div class="p-6 border border-gray-200 rounded-lg shadow-sm">
                         <h2 class="text-xl font-semibold mb-2 text-blue-600">
@@ -56,13 +89,12 @@
                         </h2>
                         <!-- 上位3カテゴリー -->
                         <h5 class='category flex gap-2'>
-                            @if (!empty($work->category_top_1))
-                                @foreach ([$work->category_top_1, $work->category_top_2, $work->category_top_3] as $categoryId)
-                                    @if (!empty($categoryId))
-                                        <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                            {{ \App\Models\WorkReviewCategory::find($categoryId)->name }}
-                                        </span>
-                                    @endif
+                            @if ($work->top_categories->isNotEmpty())
+                                @foreach ($work->top_categories as $category)
+                                    <span class="text-white px-2 py-1 rounded-full text-sm"
+                                        style="background-color: {{ $category['color'] }};">
+                                        {{ $category['name'] }}
+                                    </span>
                                 @endforeach
                             @else
                                 <p>カテゴリー情報がありません。</p>

@@ -49,10 +49,41 @@
                 <a href="{{ route('music_posts.index', ['music_id' => $music_first->music_id]) }}">キャンセル</a>
             </div>
         </div>
+        <!-- 検索結果がない場合 -->
         <div class='music_posts'>
             @if ($music_posts->isEmpty())
-                <h2 class='no_result'>結果がありません。</h2>
+                <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    に一致する結果はありませんでした。</p>
+                </h2>
             @else
+                <!-- 検索結果がある場合 -->
+                @if (!empty($search) || !empty($selectedCategories))
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        @if (!empty($search))
+                            キーワード 「{{ $search }}」
+                        @endif
+                        @if (!empty($search) && !empty($selectedCategories))
+                            、
+                        @endif
+                        @if (!empty($selectedCategories))
+                            カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                        @endif
+                        の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @else
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        全投稿：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @endif
                 <div class='music_post'>
                     @foreach ($music_posts as $music_post)
                         <div class='music_post'>
@@ -79,7 +110,8 @@
                             </div>
                             <h5 class='category flex gap-2'>
                                 @foreach ($music_post->categories as $category)
-                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
+                                    <span class="text-white px-2 py-1 rounded-full text-sm"
+                                        style="background-color: {{ getCategoryColor($category->name) }};">
                                         {{ $category->name }}
                                     </span>
                                 @endforeach

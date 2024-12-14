@@ -26,11 +26,32 @@ class WorkStoryPostController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $work_story_posts = $workStoryPost->fetchWorkStoryPosts($work_story_id, $search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $work_story_posts->total();
         // 単体のオブジェクトを取得
         $work_story_post_first = WorkStoryPost::where('sub_title_id', $work_story_id)->first();
         // あらすじのオブジェクトを取得
         $work_story = WorkStory::find($work_story_id);
-        return view('work_story_posts.index')->with(['work_story_posts' => $work_story_posts, 'work_story_post_first' => $work_story_post_first, 'work_id' => $work_id, 'work_story_id' => $work_story_id, 'work_story' => $work_story, 'categories' => $category->get()]);
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = WorkStoryPostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('work_story_posts.index')->with([
+            'work_story_posts' => $work_story_posts,
+            'work_story_post_first' => $work_story_post_first,
+            'work_id' => $work_id,
+            'work_story_id' => $work_story_id,
+            'work_story' => $work_story,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // あらすじ感想投稿詳細の表示

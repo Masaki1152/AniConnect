@@ -35,15 +35,45 @@
     </div>
     <div>
         <p>あらすじ、話数、内容など何でも検索してみましょう！</p>
-        <p>各作品のカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
+        <p>各あらすじのカテゴリーは、登録メンバーの皆さんの投稿を元に随時更新されています！</p>
         @if (!empty($work_story_model->top_categories_updated_at))
             <p>{{ $work_story_model->top_categories_updated_at->format('Y/m/d H:i') }}更新</p>
         @endif
     </div>
     <div class='work_stories'>
         @if ($work_stories->isEmpty())
-            <h2 class='no_result'>結果がありません。</h2>
+            <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                @if (!empty($search))
+                    キーワード 「{{ $search }}」
+                @endif
+                @if (!empty($search) && !empty($selectedCategories))
+                    、
+                @endif
+                @if (!empty($selectedCategories))
+                    カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                @endif
+                に一致する結果はありませんでした。</p>
+            </h2>
         @else
+            <!-- 検索結果がある場合 -->
+            @if (!empty($search) || !empty($selectedCategories))
+                <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                </p>
+            @else
+                <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                    全あらすじ：<span class="text-blue-500">{{ $totalResults }}</span>件
+                </p>
+            @endif
             @foreach ($work_stories as $work_story)
                 <div class='work_story'>
                     <h2 class='episode'>
@@ -57,13 +87,12 @@
                     </p>
                     <!-- 上位3カテゴリー -->
                     <h5 class='category flex gap-2'>
-                        @if (!empty($work_story->category_top_1))
-                            @foreach ([$work_story->category_top_1, $work_story->category_top_2, $work_story->category_top_3] as $categoryId)
-                                @if (!empty($categoryId))
-                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                        {{ \App\Models\WorkStoryPostCategory::find($categoryId)->name }}
-                                    </span>
-                                @endif
+                        @if ($work_story->top_categories->isNotEmpty())
+                            @foreach ($work_story->top_categories as $category)
+                                <span class="text-white px-2 py-1 rounded-full text-sm"
+                                    style="background-color: {{ $category['color'] }};">
+                                    {{ $category['name'] }}
+                                </span>
                             @endforeach
                         @else
                             <p>カテゴリー情報がありません。</p>

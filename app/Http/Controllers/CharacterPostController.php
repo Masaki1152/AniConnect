@@ -26,11 +26,30 @@ class CharacterPostController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $character_posts = $characterPost->fetchCharacterPosts($character_id, $search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $character_posts->total();
         // 単体のオブジェクトを取得
         $character_first = CharacterPost::where('character_id', $character_id)->first();
         // 登場人物のオブジェクトを取得
         $character = Character::find($character_id);
-        return view('character_posts.index')->with(['character_posts' => $character_posts, 'character_first' => $character_first, 'character' => $character, 'categories' => $category->get()]);
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = CharacterPostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('character_posts.index')->with([
+            'character_posts' => $character_posts,
+            'character_first' => $character_first,
+            'character' => $character,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 登場人物感想投稿詳細の表示

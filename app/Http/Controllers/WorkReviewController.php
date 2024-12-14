@@ -26,12 +26,32 @@ class WorkReviewController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $work_reviews = $workReview->fetchWorkReviews($work_id, $search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $work_reviews->total();
 
         // 単体の作品投稿オブジェクトを取得
         $work_review_first = WorkReview::where('work_id', $work_id)->first();
         // 作品のオブジェクトを取得
         $work = Work::find($work_id);
-        return view('work_reviews.index')->with(['work_reviews' => $work_reviews, 'work_review_first' => $work_review_first, 'work' => $work, 'work_id' => $work_id, 'categories' => $category->get()]);
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = WorkReviewCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('work_reviews.index')->with([
+            'work_reviews' => $work_reviews,
+            'work_review_first' => $work_review_first,
+            'work' => $work,
+            'work_id' => $work_id,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 'work_review'はbladeファイルで使う変数。

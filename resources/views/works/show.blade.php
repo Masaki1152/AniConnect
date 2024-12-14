@@ -6,6 +6,19 @@
         <div class="content__post">
             <h3>作品名</h3>
             <p>{{ $work->name }}</p>
+            <!-- 上位3カテゴリー -->
+            <h5 class='category flex gap-2'>
+                @if (!empty($categories))
+                    @foreach ($categories as $category)
+                        <span class="text-white px-2 py-1 rounded-full text-sm"
+                            style="background-color: {{ getCategoryColor($category) }};">
+                            {{ $category }}
+                        </span>
+                    @endforeach
+                @else
+                    <p>カテゴリー情報がありません。</p>
+                @endif
+            </h5>
             <h3>放映期間</h3>
             <p>{{ $work->term }}</p>
             <div class='creator'>
