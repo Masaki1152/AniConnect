@@ -12,13 +12,12 @@
             </a>
             <!-- 上位3カテゴリー -->
             <h5 class='category flex gap-2'>
-                @if (!empty($character->category_top_1))
-                    @foreach ([$character->category_top_1, $character->category_top_2, $character->category_top_3] as $categoryId)
-                        @if (!empty($categoryId))
-                            <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                {{ \App\Models\CharacterPostCategory::find($categoryId)->name }}
-                            </span>
-                        @endif
+                @if (!empty($categories))
+                    @foreach ($categories as $category)
+                        <span class="text-white px-2 py-1 rounded-full text-sm"
+                            style="background-color: {{ getCategoryColor($category) }};">
+                            {{ $category }}
+                        </span>
                     @endforeach
                 @else
                     <p>カテゴリー情報がありません。</p>
