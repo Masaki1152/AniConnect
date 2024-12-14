@@ -68,7 +68,9 @@ class MusicController extends Controller
         // カテゴリーの情報を取得する
         foreach ([$music->category_top_1, $music->category_top_2, $music->category_top_3] as $categoryId) {
             $category = MusicPostCategory::find($categoryId);
-            array_push($categories, $category->name);
+            if (!empty($category)) {
+                array_push($categories, $category->name);
+            }
         }
 
         return view('music.show')->with(['music' => $music, 'categories' => $categories]);

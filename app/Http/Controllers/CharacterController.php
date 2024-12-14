@@ -68,7 +68,9 @@ class CharacterController extends Controller
         // カテゴリーの情報を取得する
         foreach ([$character->category_top_1, $character->category_top_2, $character->category_top_3] as $categoryId) {
             $category = CharacterPostCategory::find($categoryId);
-            array_push($categories, $category->name);
+            if (!empty($category)) {
+                array_push($categories, $category->name);
+            }
         }
         return view('characters.show')->with(['character' => $character, 'categories' => $categories]);
     }

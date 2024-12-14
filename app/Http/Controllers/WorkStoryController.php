@@ -66,7 +66,9 @@ class WorkStoryController extends Controller
         // カテゴリーの情報を取得する
         foreach ([$work_story->category_top_1, $work_story->category_top_2, $work_story->category_top_3] as $categoryId) {
             $category = WorkStoryPostCategory::find($categoryId);
-            array_push($categories, $category->name);
+            if (!empty($category)) {
+                array_push($categories, $category->name);
+            }
         }
         return view('work_stories.show')->with(['work_story' => $work_story, 'categories' => $categories]);
     }

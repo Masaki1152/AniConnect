@@ -85,7 +85,9 @@ class AnimePilgrimageController extends Controller
         // カテゴリーの情報を取得する
         foreach ([$pilgrimage->category_top_1, $pilgrimage->category_top_2, $pilgrimage->category_top_3] as $categoryId) {
             $category = AnimePilgrimagePostCategory::find($categoryId);
-            array_push($categories, $category->name);
+            if (!empty($category)) {
+                array_push($categories, $category->name);
+            }
         }
 
         return view('pilgrimages.show')->with(['pilgrimage' => $pilgrimage, 'categories' => $categories]);

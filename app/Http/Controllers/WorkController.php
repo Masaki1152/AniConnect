@@ -6,6 +6,8 @@ use App\Models\Work;
 use App\Models\WorkReviewCategory;
 use Illuminate\Http\Request;
 
+use function PHPUnit\Framework\isEmpty;
+
 class WorkController extends Controller
 {
     // 作品一覧画面の表示
@@ -66,7 +68,9 @@ class WorkController extends Controller
         // カテゴリーの情報を取得する
         foreach ([$work->category_top_1, $work->category_top_2, $work->category_top_3] as $categoryId) {
             $category = WorkReviewCategory::find($categoryId);
-            array_push($categories, $category->name);
+            if (!empty($category)) {
+                array_push($categories, $category->name);
+            }
         }
         return view('works.show')->with(['work' => $work, 'categories' => $categories]);
     }
