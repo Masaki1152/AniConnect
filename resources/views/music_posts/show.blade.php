@@ -38,9 +38,12 @@
             <h3>タイトル</h3>
             <p>{{ $music_post->post_title }}</p>
             <h3>カテゴリー</h3>
-            <h5 class='category'>
+            <h5 class='category flex gap-2'>
                 @foreach ($music_post->categories as $category)
-                    {{ $category->name }}
+                    <span class="text-white px-2 py-1 rounded-full text-sm"
+                        style="background-color: {{ getCategoryColor($category->name) }};">
+                        {{ $category->name }}
+                    </span>
                 @endforeach
             </h5>
             <h3>評価</h3>
