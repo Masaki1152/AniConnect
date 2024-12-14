@@ -58,42 +58,52 @@
         @if ($pilgrimages->isEmpty())
             <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
                 @if (!empty($search))
-                    キーワード： 「{{ $search }}」
+                    キーワード 「{{ $search }}」
                 @endif
                 @if (!empty($search) && !empty($selectedCategories))
                     、
                 @endif
                 @if (!empty($selectedCategories))
-                    カテゴリー： 「{{ implode('、', $selectedCategories) }}」
+                    カテゴリー 「{{ implode('、', $selectedCategories) }}」
                 @endif
                 @if (!empty($selectedCategories) && !empty($selected_prefecture))
                     、
                 @endif
+                @if (empty($selectedCategories) && !empty($selected_prefecture) && !empty($search))
+                    、
+                @endif
                 @if (!empty($selected_prefecture))
-                    県名： 「{{ $selected_prefecture }}」
+                    県名 「{{ $selected_prefecture }}」
                 @endif
                 に一致する結果はありませんでした。</p>
             </h2>
         @else
             <!-- 検索結果がある場合 -->
-            @if (!empty($search) || !empty($selectedCategories))
+            @if (!empty($search) || !empty($selectedCategories) || !empty($selected_prefecture))
                 <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
                     @if (!empty($search))
-                        キーワード： 「{{ $search }}」
+                        キーワード 「{{ $search }}」
                     @endif
                     @if (!empty($search) && !empty($selectedCategories))
                         、
                     @endif
                     @if (!empty($selectedCategories))
-                        カテゴリー： 「{{ implode('、', $selectedCategories) }}」
+                        カテゴリー 「{{ implode('、', $selectedCategories) }}」
                     @endif
                     @if (!empty($selectedCategories) && !empty($selected_prefecture))
                         、
                     @endif
+                    @if (empty($selectedCategories) && !empty($selected_prefecture) && !empty($search))
+                        、
+                    @endif
                     @if (!empty($selected_prefecture))
-                        県名： 「{{ $selected_prefecture }}」
+                        県名 「{{ $selected_prefecture }}」
                     @endif
                     の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                </p>
+            @else
+                <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                    全聖地：<span class="text-blue-500">{{ $totalResults }}</span>件
                 </p>
             @endif
             @foreach ($pilgrimages as $pilgrimage)

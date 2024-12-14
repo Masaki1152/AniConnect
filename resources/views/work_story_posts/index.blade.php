@@ -59,9 +59,40 @@
             </div>
         </div>
         <div class='work_story_posts'>
+            <!-- 検索結果がない場合 -->
             @if ($work_story_posts->isEmpty())
-                <h2 class='no_result'>結果がありません。</h2>
+                <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    に一致する結果はありませんでした。</p>
+                </h2>
             @else
+                <!-- 検索結果がある場合 -->
+                @if (!empty($search) || !empty($selectedCategories))
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        @if (!empty($search))
+                            キーワード 「{{ $search }}」
+                        @endif
+                        @if (!empty($search) && !empty($selectedCategories))
+                            、
+                        @endif
+                        @if (!empty($selectedCategories))
+                            カテゴリー 「{{ implode('、', $selectedCategories) }}」
+                        @endif
+                        の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @else
+                    <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                        全投稿：<span class="text-blue-500">{{ $totalResults }}</span>件
+                    </p>
+                @endif
                 <div class='work_story_post'>
                     @foreach ($work_story_posts as $work_story_post)
                         <div class='work_story_post'>

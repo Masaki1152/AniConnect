@@ -26,11 +26,30 @@ class AnimePilgrimagePostController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する投稿を取得
         $pilgrimage_posts = $anime_pilgrimage_posts->fetchAnimePilgrimagePosts($pilgrimage_id, $search, $categoryIds);
-        // 単体のオブジェクトを取得
+        // 検索結果の件数を取得
+        $totalResults = $pilgrimage_posts->total();
+        // 単体の聖地感想オブジェクトを取得
         $pilgrimage_first = AnimePilgrimagePost::where('anime_pilgrimage_id', $pilgrimage_id)->first();
         // 聖地のオブジェクトを取得
         $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
-        return view('anime_pilgrimage_posts.index')->with(['pilgrimage_posts' => $pilgrimage_posts, 'pilgrimage_first' => $pilgrimage_first, 'pilgrimage' => $pilgrimage, 'categories' => $category->get()]);
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = AnimePilgrimagePostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('anime_pilgrimage_posts.index')->with([
+            'pilgrimage_posts' => $pilgrimage_posts,
+            'pilgrimage_first' => $pilgrimage_first,
+            'pilgrimage' => $pilgrimage,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 聖地感想投稿詳細の表示
