@@ -42,8 +42,34 @@
     </div>
     <div class='work_stories'>
         @if ($work_stories->isEmpty())
-            <h2 class='no_result'>結果がありません。</h2>
+            <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
+                @if (!empty($search))
+                    キーワード： 「{{ $search }}」
+                @endif
+                @if (!empty($search) && !empty($selectedCategories))
+                    、
+                @endif
+                @if (!empty($selectedCategories))
+                    カテゴリー： 「{{ implode('、', $selectedCategories) }}」
+                @endif
+                に一致する結果はありませんでした。</p>
+            </h2>
         @else
+            <!-- 検索結果がある場合 -->
+            @if (!empty($search) || !empty($selectedCategories))
+                <p class="col-span-full text-center text-gray-700 text-lg font-semibold">
+                    @if (!empty($search))
+                        キーワード： 「{{ $search }}」
+                    @endif
+                    @if (!empty($search) && !empty($selectedCategories))
+                        、
+                    @endif
+                    @if (!empty($selectedCategories))
+                        カテゴリー： 「{{ implode('、', $selectedCategories) }}」
+                    @endif
+                    の検索結果：<span class="text-blue-500">{{ $totalResults }}</span>件
+                </p>
+            @endif
             @foreach ($work_stories as $work_story)
                 <div class='work_story'>
                     <h2 class='episode'>

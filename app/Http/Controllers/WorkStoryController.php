@@ -19,6 +19,8 @@ class WorkStoryController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致するあらすじを取得
         $work_stories = $workStory->fetchWorkStories($search, $work_id, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $work_stories->total();
         // あらすじのオブジェクトを1つ取得
         $work_story_model = WorkStory::where('work_id', '=', $work_id)->first();
         // カテゴリー情報をまとめる
@@ -38,7 +40,22 @@ class WorkStoryController extends Controller
                 });
         }
 
-        return view('work_stories.index')->with(['work_stories' => $work_stories, 'work_story_model' => $work_story_model, 'categories' => $category->get()]);
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = WorkStoryPostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('work_stories.index')->with([
+            'work_stories' => $work_stories,
+            'work_story_model' => $work_story_model,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 詳細なあらすじ情報を表示する

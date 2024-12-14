@@ -19,6 +19,8 @@ class MusicController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する音楽を取得
         $music = $music->fetchMusic($search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $music->total();
         // 更新時間表示のために単体の音楽オブジェクトを取得
         $music_object = Music::find(1);
 
@@ -39,7 +41,22 @@ class MusicController extends Controller
                 });
         }
 
-        return view('music.index')->with(['music' => $music, 'music_object' => $music_object, 'categories' => $category->get()]);
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = MusicPostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('music.index')->with([
+            'music' => $music,
+            'music_object' => $music_object,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 詳細な音楽情報を表示する

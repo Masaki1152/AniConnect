@@ -19,6 +19,8 @@ class CharacterController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する登場人物を取得
         $characters = $character->fetchCharacters($search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $characters->total();
         // 更新時間表示のために単体の登場人物オブジェクトを取得
         $character = Character::find(1);
 
@@ -39,7 +41,22 @@ class CharacterController extends Controller
                 });
         }
 
-        return view('characters.index')->with(['characters' => $characters, 'character' => $character, 'categories' => $category->get()]);
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = CharacterPostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        return view('characters.index')->with([
+            'characters' => $characters,
+            'character' => $character,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 詳細な登場人物情報を表示する

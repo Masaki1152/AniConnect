@@ -7,6 +7,8 @@ use App\Models\AnimePilgrimage;
 use App\Models\Prefecture;
 use App\Models\AnimePilgrimagePostCategory;
 
+use function PHPUnit\Framework\isEmpty;
+
 class AnimePilgrimageController extends Controller
 {
     // 聖地一覧画面の表示
@@ -25,6 +27,8 @@ class AnimePilgrimageController extends Controller
         $search = $request->input('search', '');
         // キーワードに部分一致する聖地を取得
         $pilgrimages = $animePilgrimage->fetchAnimePilgrimages($search, $prefecture_search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $pilgrimages->total();
         // 更新時間表示のために単体の聖地オブジェクトを取得
         $pilgrimage = AnimePilgrimage::find(1);
 
@@ -45,7 +49,31 @@ class AnimePilgrimageController extends Controller
                 });
         }
 
-        return view('pilgrimages.index')->with(['pilgrimages' => $pilgrimages, 'prefectures' => $prefectures, 'prefecture_search' => $prefecture_search, 'pilgrimage' => $pilgrimage, 'categories' => $category->get()]);
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = AnimePilgrimagePostCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
+        // 選択した検索の取得
+        $selected_prefecture = null;
+        if (!is_null($prefecture_search)) {
+            $selected_prefecture = Prefecture::find($prefecture_search)->name;
+        }
+
+        return view('pilgrimages.index')->with([
+            'pilgrimages' => $pilgrimages,
+            'prefectures' => $prefectures,
+            'prefecture_search' => $prefecture_search,
+            'pilgrimage' => $pilgrimage,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selected_prefecture' => $selected_prefecture,
+            'selectedCategories' => $selectedCategories
+        ]);
     }
 
     // 詳細な聖地情報を表示する
