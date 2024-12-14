@@ -67,13 +67,12 @@
                     </h2>
                     <!-- 上位3カテゴリー -->
                     <h5 class='category flex gap-2'>
-                        @if (!empty($pilgrimage->category_top_1))
-                            @foreach ([$pilgrimage->category_top_1, $pilgrimage->category_top_2, $pilgrimage->category_top_3] as $categoryId)
-                                @if (!empty($categoryId))
-                                    <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                        {{ \App\Models\AnimePilgrimagePostCategory::find($categoryId)->name }}
-                                    </span>
-                                @endif
+                        @if ($pilgrimage->top_categories->isNotEmpty())
+                            @foreach ($pilgrimage->top_categories as $category)
+                                <span class="text-white px-2 py-1 rounded-full text-sm"
+                                    style="background-color: {{ $category['color'] }};">
+                                    {{ $category['name'] }}
+                                </span>
                             @endforeach
                         @else
                             <p>カテゴリー情報がありません。</p>

@@ -8,13 +8,12 @@
             <p>{{ $pilgrimage->name }}</p>
             <!-- 上位3カテゴリー -->
             <h5 class='category flex gap-2'>
-                @if (!empty($pilgrimage->category_top_1))
-                    @foreach ([$pilgrimage->category_top_1, $pilgrimage->category_top_2, $pilgrimage->category_top_3] as $categoryId)
-                        @if (!empty($categoryId))
-                            <span class="bg-blue-500 text-white px-2 py-1 rounded-full text-sm">
-                                {{ \App\Models\AnimePilgrimagePostCategory::find($categoryId)->name }}
-                            </span>
-                        @endif
+                @if (!empty($categories))
+                    @foreach ($categories as $category)
+                        <span class="text-white px-2 py-1 rounded-full text-sm"
+                            style="background-color: {{ getCategoryColor($category) }};">
+                            {{ $category }}
+                        </span>
                     @endforeach
                 @else
                     <p>カテゴリー情報がありません。</p>
