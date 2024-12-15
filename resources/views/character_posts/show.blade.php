@@ -71,7 +71,11 @@
                 @endphp
                 @if ($character_post->$image)
                     <div>
-                        <img src="{{ $character_post->$image }}" alt="画像が読み込めません。">
+                        <a href="{{ $character_post->$image }}" data-lightbox="gallery"
+                            data-title="{{ '画像' . $number }}">
+                            <img src="{{ $character_post->$image }}" alt="画像が読み込めません。"
+                                class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
+                        </a>
                     </div>
                 @endif
             @endforeach
