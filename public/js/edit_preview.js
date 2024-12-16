@@ -12,7 +12,7 @@ const phpVariable = existingImagePaths.dataset.phpVariable;
 
 // 編集画面にて、以前画像が選択されていた場合、それらの画像を反映する
 // DOMツリー読み取り完了後にイベント発火
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 既存の画像を取得
     const ImagePaths = JSON.parse(phpVariable);
     ImagePaths.forEach((path, index) => {
@@ -41,21 +41,45 @@ function renderExistingImages() {
         figure.setAttribute('id', `existing-img-${image.id}`);
         figure.className = 'relative flex flex-col items-center mb-4';
 
+        // 画像部分の背景
+        const imageWrapper = document.createElement('div');
+        imageWrapper.className = 'image-wrapper';
+
         const img = document.createElement('img');
         // サーバー上の画像URLを使用
         img.src = image.url;
         img.alt = 'existing preview';
-        img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+        img.className = 'img-preview';
 
+        // 画像の比率を計算
+        img.onload = function () {
+            const imgRatio = img.naturalWidth / img.naturalHeight;
+            // 正方形 9rem x 9rem の比率
+            const wrapperRatio = 1;
+
+            if (imgRatio > wrapperRatio) {
+                // 横長の画像
+                img.style.width = '100%';
+                img.style.height = 'auto';
+            } else {
+                // 縦長の画像、または正方形
+                img.style.height = '100%';
+                img.style.width = 'auto';
+            }
+        };
+
+        imageWrapper.appendChild(img);
+        figure.appendChild(imageWrapper);
+
+        // 削除ボタン
         const rmBtn = document.createElement('button');
         rmBtn.type = 'button';
         rmBtn.textContent = '削除';
         rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
-        rmBtn.onclick = function() {
+        rmBtn.onclick = function () {
             removeExistingImage(image.id);
         };
 
-        figure.appendChild(img);
         figure.appendChild(rmBtn);
         preview.appendChild(figure);
     });
@@ -92,25 +116,49 @@ function renderPreviews() {
     selectedImages.forEach((image, index) => {
         const fileReader = new FileReader();
 
-        fileReader.onload = function(e) {
+        fileReader.onload = function (e) {
             const figure = document.createElement('figure');
             figure.setAttribute('id', `img-${index}`);
             figure.className = 'relative flex flex-col items-center mb-4';
 
+            // 画像部分の背景
+            const imageWrapper = document.createElement('div');
+            imageWrapper.className = 'image-wrapper';
+
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'preview';
-            img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+            img.className = 'img-preview';
 
+            // 画像の比率を計算
+            img.onload = function () {
+                const imgRatio = img.naturalWidth / img.naturalHeight;
+                // 正方形 9rem x 9rem の比率
+                const wrapperRatio = 1;
+
+                if (imgRatio > wrapperRatio) {
+                    // 横長の画像
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
+                } else {
+                    // 縦長の画像、または正方形
+                    img.style.height = '100%';
+                    img.style.width = 'auto';
+                }
+            };
+
+            imageWrapper.appendChild(img);
+            figure.appendChild(imageWrapper);
+
+            // 削除ボタン
             const rmBtn = document.createElement('button');
             rmBtn.type = 'button';
             rmBtn.textContent = '削除';
             rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
-            rmBtn.onclick = function() {
+            rmBtn.onclick = function () {
                 removeImage(index);
             };
 
-            figure.appendChild(img);
             figure.appendChild(rmBtn);
             preview.appendChild(figure);
         };
@@ -130,9 +178,9 @@ function removeExistingImage(id) {
         existingImages.splice(index, 1);
     }
     // 削除されていない画像のURLをフォームに反映
-    document.getElementById('remainedImages').value = JSON.stringify(existingImages); 
+    document.getElementById('remainedImages').value = JSON.stringify(existingImages);
     // 削除された画像のURLをフォームに反映
-    document.getElementById('removedImages').value = JSON.stringify(removedImages); 
+    document.getElementById('removedImages').value = JSON.stringify(removedImages);
     // プレビューを再描画
     renderPreviews();
 }
