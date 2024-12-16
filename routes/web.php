@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\MainController;
+use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
@@ -40,9 +42,25 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
+// 管理者用ルートグループ
+Route::prefix('admin')
+    ->middleware(['auth', 'is_admin']) // 認証済みかつ管理者のみ
+    ->name('admin.')
+    ->group(function () {
+        // 管理画面トップ
+        Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+    });
+
+// Route::get('/dashboard', function () {
+//     return view('dashboard');
+// })->middleware(['auth', 'verified'])->name('dashboard');
+
+// 誰でも閲覧できるメイン画面の表示
+// MainControllerに関するルーティング
+Route::controller(MainController::class)->middleware(['auth'])->group(function () {
+    // 一覧の表示
+    Route::get('/main', 'index')->name('main.index');
+});
 
 Route::middleware('auth')->group(function () {
     // ユーザー情報の表示
