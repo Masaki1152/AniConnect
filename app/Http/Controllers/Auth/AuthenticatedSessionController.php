@@ -29,7 +29,8 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(RouteServiceProvider::HOME);
+        // リダイレクト処理を分岐
+        return redirect()->intended(auth()->user()->is_admin ? route('admin.dashboard') : route('main.index'));
     }
 
     /**
