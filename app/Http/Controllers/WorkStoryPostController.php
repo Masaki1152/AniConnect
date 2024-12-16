@@ -77,7 +77,14 @@ class WorkStoryPostController extends Controller
         if ($request->file('images')) {
             $counter = 1;
             foreach ($request->file('images') as $image) {
-                $image_url = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $image_url = Cloudinary::upload($image->getRealPath(), [
+                    'transformation' => [
+                        'width' => 800,
+                        'height' => 600,
+                        'crop' => 'pad',
+                        'background' => 'white',
+                    ]
+                ])->getSecurePath();
                 $input_post += ["image$counter" => $image_url];
                 $counter++;
             }
@@ -127,7 +134,14 @@ class WorkStoryPostController extends Controller
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
             foreach ($request->file('images') as $image) {
-                $image_path = Cloudinary::upload($image->getRealPath())->getSecurePath();
+                $image_path = Cloudinary::upload($image->getRealPath(), [
+                    'transformation' => [
+                        'width' => 800,
+                        'height' => 600,
+                        'crop' => 'pad',
+                        'background' => 'white',
+                    ]
+                ])->getSecurePath();
                 array_push($image_paths, $image_path);
             }
         }

@@ -130,7 +130,11 @@
                             <p class='body'>{{ $character_post->body }}</p>
                             @if ($character_post->image1)
                                 <div>
-                                    <img src="{{ $character_post->image1 }}" alt="画像が読み込めません。">
+                                    <a href="{{ $character_post->image1 }}"
+                                        data-lightbox="{{ $character_post->post_title }}" data-title="画像">
+                                        <img src="{{ $character_post->image1 }}" alt="画像が読み込めません。"
+                                            class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
+                                    </a>
                                 </div>
                             @endif
                             <form

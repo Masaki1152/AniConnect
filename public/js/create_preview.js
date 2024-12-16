@@ -32,25 +32,49 @@ function renderPreviews() {
     selectedImages.forEach((image, index) => {
         const fileReader = new FileReader();
 
-        fileReader.onload = function(e) {
+        fileReader.onload = function (e) {
             const figure = document.createElement('figure');
             figure.setAttribute('id', `img-${index}`);
             figure.className = 'relative flex flex-col items-center mb-4';
 
+            // 画像部分の背景
+            const imageWrapper = document.createElement('div');
+            imageWrapper.className = 'image-wrapper';
+
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'preview';
-            img.className = 'w-36 h-36 object-cover rounded-md border border-gray-300 mb-2';
+            img.className = 'img-preview';
 
+            // 画像の比率を計算
+            img.onload = function () {
+                const imgRatio = img.naturalWidth / img.naturalHeight;
+                // 正方形 9rem x 9rem の比率
+                const wrapperRatio = 1;
+
+                if (imgRatio > wrapperRatio) {
+                    // 横長の画像
+                    img.style.width = '100%';
+                    img.style.height = 'auto';
+                } else {
+                    // 縦長の画像、または正方形
+                    img.style.height = '100%';
+                    img.style.width = 'auto';
+                }
+            };
+
+            imageWrapper.appendChild(img);
+            figure.appendChild(imageWrapper);
+
+            // 削除ボタン
             const rmBtn = document.createElement('button');
             rmBtn.type = 'button';
             rmBtn.textContent = '削除';
-            rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
-            rmBtn.onclick = function() {
+            rmBtn.className = 'rm-btn';
+            rmBtn.onclick = function () {
                 removeImage(index);
             };
 
-            figure.appendChild(img);
             figure.appendChild(rmBtn);
             preview.appendChild(figure);
         };

@@ -11,7 +11,7 @@ const currentImage = existingImage != '' ? existingImage : noImagePath;
 
 // 編集画面にて、以前画像が選択されていた場合、それらの画像を反映する
 // DOMツリー読み取り完了後にイベント発火
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 現在の画像のURLをフォームに反映
     document.getElementById('existingImage').value = existingImage != '' ? existingImage : null;
 
@@ -43,7 +43,7 @@ function renderExistingImages(currentImage) {
     rmBtn.setAttribute('id', 'delete_button');
     rmBtn.textContent = '削除';
     rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 mt-2';
-    rmBtn.onclick = function() {
+    rmBtn.onclick = function () {
         removeExistingImage();
     };
 
@@ -53,7 +53,7 @@ function renderExistingImages(currentImage) {
 };
 
 // 新しく画像を変えた場合の処理
-document.getElementById('image').addEventListener('change', function(event) {
+document.getElementById('image').addEventListener('change', function (event) {
 
     const file = event.target.files[0];
 
@@ -61,7 +61,7 @@ document.getElementById('image').addEventListener('change', function(event) {
         preview.innerHTML = '';
         const reader = new FileReader();
 
-        reader.onload = function(e) {
+        reader.onload = function (e) {
             const figure = document.createElement('figure');
             figure.setAttribute('id', 'preview_image');
             figure.className = 'relative flex flex-col items-center mb-4';
@@ -69,14 +69,14 @@ document.getElementById('image').addEventListener('change', function(event) {
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'preview';
-            img.className = 'w-40 h-40 rounded-full object-cover mr-1';
+            img.className = 'w-40 h-40 rounded-full object-contain mr-1';
             // 画像をリセットボタンの作成
             const rmBtn = document.createElement('button');
             rmBtn.type = 'button';
             rmBtn.textContent = '画像変更のリセット';
             rmBtn.className =
                 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600 mt-2';
-            rmBtn.onclick = function() {
+            rmBtn.onclick = function () {
                 resetImage();
             };
 
