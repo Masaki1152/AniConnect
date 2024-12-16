@@ -1,6 +1,6 @@
 /* 画像のラッパー（画像部分のみ白背景） */
 .image-wrapper {
-    width: 9rem;
+    width: 12rem;
     height: 9rem;
     background-color: #F3F4F6; /* 白背景を画像部分に限定 */
     display: flex;
