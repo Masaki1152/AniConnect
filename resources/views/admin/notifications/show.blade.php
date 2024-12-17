@@ -32,7 +32,18 @@
             @endforeach
         </div>
     </div>
+    <div class="edit">
+        <a href="{{ route('admin.notifications.edit', ['notification_id' => $notification->id]) }}">編集する</a>
+    </div>
+    <form action="{{ route('admin.notifications.delete', ['notification_id' => $notification->id]) }}"
+        id="form_{{ $notification->id }}" method="post">
+        @csrf
+        @method('DELETE')
+        <button type="button" data-post-id="{{ $notification->id }}" class="delete-button">お知らせを削除する</button>
+    </form>
     <div class="footer">
         <a href="{{ route('admin.notifications.index') }}">戻る</a>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/delete_post.js') }}"></script>
 </x-app-layout>

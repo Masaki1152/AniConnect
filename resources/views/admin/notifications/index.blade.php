@@ -9,6 +9,7 @@
     @endif
 
     <h1>お知らせ一覧（管理者用）</h1>
+    <a href="{{ route('admin.notifications.create') }}">お知らせ作成</a>
     <!-- 検索機能 -->
     <div class='notifications'>
         <!-- 検索結果がない場合 -->
@@ -23,6 +24,13 @@
                     <div class='created_at'>
                         <p>{{ $notification->created_at->format('Y/m/d H:i') }}</p>
                     </div>
+                    <form action="{{ route('admin.notifications.delete', ['notification_id' => $notification->id]) }}"
+                        id="form_{{ $notification->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" data-post-id="{{ $notification->id }}"
+                            class="delete-button">お知らせを削除する</button>
+                    </form>
                 </div>
             @endforeach
         </div>
@@ -30,4 +38,6 @@
     <div class='paginate'>
 
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/delete_post.js') }}"></script>
 </x-app-layout>
