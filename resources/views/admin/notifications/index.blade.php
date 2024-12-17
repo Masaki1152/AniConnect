@@ -38,6 +38,14 @@
                             </a>
                         </div>
                     </div>
+                    <h5 class='category flex gap-2'>
+                        @foreach ($notification->categories as $category)
+                            <span class="text-white px-2 py-1 rounded-full text-sm"
+                                style="background-color: {{ getCategoryColor($category->name) }};">
+                                {{ $category->name }}
+                            </span>
+                        @endforeach
+                    </h5>
                     <form action="{{ route('admin.notifications.delete', ['notification_id' => $notification->id]) }}"
                         id="form_{{ $notification->id }}" method="post">
                         @csrf

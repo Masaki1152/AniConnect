@@ -27,6 +27,15 @@
                     </a>
                 </div>
             </div>
+            <h3>カテゴリー</h3>
+            <h5 class='category'>
+                @foreach ($notification->categories as $category)
+                    <span class="text-white px-2 py-1 rounded-full text-sm"
+                        style="background-color: {{ getCategoryColor($category->name) }};">
+                        {{ $category->name }}
+                    </span>
+                @endforeach
+            </h5>
             <h3>本文</h3>
             <p>{{ $notification->body }}</p>
             <h3>作成日</h3>
@@ -37,7 +46,8 @@
                 @endphp
                 @if ($notification->$image)
                     <div>
-                        <a href="{{ $notification->$image }}" data-lightbox="gallery" data-title="{{ '画像' . $number }}">
+                        <a href="{{ $notification->$image }}" data-lightbox="gallery"
+                            data-title="{{ '画像' . $number }}">
                             <img src="{{ $notification->$image }}" alt="画像が読み込めません。"
                                 class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
                         </a>

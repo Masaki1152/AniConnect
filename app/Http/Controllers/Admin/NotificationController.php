@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\NotificationCategory;
 use App\Http\Requests\NotificationRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
@@ -15,33 +16,37 @@ class NotificationController extends Controller
     use SoftDeletes;
 
     // お知らせ一覧の表示
-    public function index(Request $request, Notification $notification)
+    public function index(Request $request, Notification $notification, NotificationCategory $category)
     {
         return view('admin.notifications.index')->with([
             'notifications' => $notification->get(),
+            'categories' => $category->get()
         ]);
     }
 
     // お知らせ詳細の表示
-    public function show($notification_id)
+    public function show(NotificationCategory $category, $notification_id)
     {
         $notification = Notification::find($notification_id);
         return view('admin.notifications.show')->with([
-            'notification' => $notification
+            'notification' => $notification,
+            'categories' => $category->get()
         ]);
     }
 
     //お知らせ新規投稿作成画面を表示する
-    public function create()
+    public function create(NotificationCategory $category)
     {
-        return view('admin.notifications.create');
+        return view('admin.notifications.create')->with([
+            'categories' => $category->get()
+        ]);
     }
 
     // 新しく記述したお知らせを保存する
     public function store(Notification $notification, NotificationRequest $request)
     {
         $input_notification = $request['notification'];
-        //$input_categories = $request->work_review['categories_array'];
+        $input_categories = $request->notification['categories_array'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
@@ -61,22 +66,25 @@ class NotificationController extends Controller
         }
         $notification->fill($input_notification)->save();
         // カテゴリーとの中間テーブルにデータを保存
-        //$notification->categories()->attach($input_categories);
+        $notification->categories()->attach($input_categories);
         return redirect()->route('admin.notifications.show', ['notification_id' => $notification->id])->with('status', '新しいお知らせを作成しました');
     }
 
     // お知らせ編集画面を表示する
-    public function edit($notification_id)
+    public function edit(NotificationCategory $category, $notification_id)
     {
         $notification = Notification::find($notification_id);
-        return view('admin.notifications.edit')->with(['notification' => $notification]);
+        return view('admin.notifications.edit')->with([
+            'notification' => $notification,
+            'categories' => $category->get()
+        ]);
     }
 
     // お知らせの編集を保存する
     public function update(Notification $notification, NotificationRequest $request, $notification_id)
     {
         $input_notification = $request['notification'];
-        //$input_categories = $request->work_review['categories_array'];
+        $input_categories = $request->notification['categories_array'];
 
         // 保存する画像のPathの配列
         $image_paths = [];
@@ -131,7 +139,7 @@ class NotificationController extends Controller
         $target_notification->fill($input_notification)->save();
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
-        //$target_notification->categories()->sync($input_categories);
+        $target_notification->categories()->sync($input_categories);
         return redirect()->route('admin.notifications.show', ['notification_id' => $target_notification->id])->with('status', 'お知らせを編集しました');
     }
 

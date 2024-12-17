@@ -287,6 +287,7 @@ return [
         // お知らせ投稿のバリデーション
         'notification.title' => 'タイトル',
         'notification.body' => '内容',
+        'notification.categories_array' => 'カテゴリー',
     ],
 
 ];

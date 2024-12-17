@@ -8,6 +8,20 @@
             <p class="title__error" style="color:red">{{ $errors->first('notification.title') }}</p>
         </div>
         <!-- カテゴリー -->
+        <div class="category">
+            <h2>カテゴリー（3個まで）</h2>
+            <select name="notification[categories_array][]" multiple>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" @if (in_array($category->id, old('notification.categories_array', []))) selected @endif>
+                        {{ $category->name }}
+                    </option>
+                @endforeach
+            </select>
+            @if ($errors->has('notification.categories_array'))
+                <p class="category__error" style="color:red">{{ $errors->first('notification.categories_array') }}
+                </p>
+            @endif
+        </div>
         <div class="body">
             <h2>内容</h2>
             <textarea name="notification[body]" placeholder="内容を記入してください。">{{ old('notification.body') }}</textarea>

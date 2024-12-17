@@ -31,4 +31,10 @@ class Notification extends Model
     {
         return $this->belongsToMany(User::class, 'notification_user', 'notification_id', 'user_id');
     }
+
+    // カテゴリーに対するリレーション 多対多の関係
+    public function categories()
+    {
+        return $this->belongsToMany(NotificationCategory::class, 'notification_category', 'notification_id', 'notification_category_id');
+    }
 }
