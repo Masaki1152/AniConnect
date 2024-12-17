@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
@@ -49,6 +50,10 @@ Route::prefix('admin')
     ->group(function () {
         // 管理画面トップ
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+        // お知らせ一覧
+        Route::get('notification', [NotificationController::class, 'index'])->name('notifications.index');
+        // お知らせ詳細
+        Route::get('notification/{notification_id}', [NotificationController::class, 'show'])->name('notifications.show');
     });
 
 // Route::get('/dashboard', function () {

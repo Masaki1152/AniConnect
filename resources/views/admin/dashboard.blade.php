@@ -11,6 +11,9 @@
                 <div class="p-6 text-gray-900">
                     {{ __('こちらは管理画面です') }}
                 </div>
+                <div class="notification p-6 text-gray-900">
+                    <a href="{{ route('admin.notifications.index') }}">お知らせ一覧（管理者用）へ</a>
+                </div>
             </div>
         </div>
     </div>
