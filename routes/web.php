@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\NotificationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
@@ -49,6 +50,20 @@ Route::prefix('admin')
     ->group(function () {
         // 管理画面トップ
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+        // お知らせ一覧
+        Route::get('notification', [NotificationController::class, 'index'])->name('notifications.index');
+        // お知らせ作成画面表示
+        Route::get('notification/create', [NotificationController::class, 'create'])->name('notifications.create');
+        // お知らせ作成
+        Route::post('notification/store', [NotificationController::class, 'store'])->name('notifications.store');
+        // お知らせ詳細表示
+        Route::get('notification/{notification_id}', [NotificationController::class, 'show'])->name('notifications.show');
+        // お知らせ編集表示
+        Route::get('notification/edit/{notification_id}', [NotificationController::class, 'edit'])->name('notifications.edit');
+        // お知らせ編集
+        Route::put('notification/update/{notification_id}', [NotificationController::class, 'update'])->name('notifications.update');
+        // お知らせ削除
+        Route::delete('notification/delete/{notification_id}', [NotificationController::class, 'delete'])->name('notifications.delete');
     });
 
 // Route::get('/dashboard', function () {

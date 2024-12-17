@@ -284,6 +284,9 @@ return [
         'work_story_post.post_title' => 'タイトル',
         'work_story_post.body' => '内容',
         'work_story_post.categories_array' => 'カテゴリー',
+        // お知らせ投稿のバリデーション
+        'notification.title' => 'タイトル',
+        'notification.body' => '内容',
     ],
 
 ];
