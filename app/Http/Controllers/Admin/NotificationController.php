@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Notification;
 use App\Http\Requests\NotificationRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class NotificationController extends Controller
@@ -152,6 +153,32 @@ class NotificationController extends Controller
         // データの削除
         $target_notification->delete();
         return redirect()->route('admin.notifications.index')->with('status', 'お知らせを削除しました');
+    }
+
+    // お知らせにいいねを行う
+    public function like($notification_id)
+    {
+        // お知らせが見つからない場合の処理
+        $notification = Notification::find($notification_id);
+        if (!$notification) {
+            return response()->json(['message' => 'Notification not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $notification->users()->where('user_id', Auth::id())->exists();
+        if ($isLiked) {
+            // 既にいいねしている場合
+            $notification->users()->detach(Auth::id());
+            $status = 'unliked';
+            $message = 'いいねを解除しました';
+        } else {
+            // 初めてのいいねの場合
+            $notification->users()->attach(Auth::id());
+            $status = 'liked';
+            $message = 'いいねしました';
+        }
+        // いいねしたユーザー数の取得
+        $count = count($notification->users()->pluck('notification_id')->toArray());
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

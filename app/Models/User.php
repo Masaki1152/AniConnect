@@ -308,6 +308,12 @@ class User extends Authenticatable
         return $this->belongsToMany(WorkStoryPost::class, 'work_story_posts_users', 'user_id', 'work_story_post_id');
     }
 
+    // いいねをしたNotificationに対するリレーション 多対多の関係
+    public function notifications()
+    {
+        return $this->belongsToMany(Notification::class, 'notification_user', 'user_id', 'notification_id');
+    }
+
     // 自己結合
     // 自分がフォローしているユーザーに対するリレーション　多対多の関係
     public function followings()

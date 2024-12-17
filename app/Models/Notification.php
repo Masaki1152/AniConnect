@@ -25,4 +25,10 @@ class Notification extends Model
     protected $casts = [
         'created_at' => 'datetime',
     ];
+
+    // いいねをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'notification_user', 'notification_id', 'user_id');
+    }
 }

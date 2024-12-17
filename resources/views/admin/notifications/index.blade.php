@@ -7,6 +7,9 @@
             </div>
         </div>
     @endif
+    <div id="like-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
 
     <h1>お知らせ一覧（管理者用）</h1>
     <a href="{{ route('admin.notifications.create') }}">お知らせ作成</a>
@@ -24,6 +27,17 @@
                     <div class='created_at'>
                         <p>{{ $notification->created_at->format('Y/m/d H:i') }}</p>
                     </div>
+                    <div class="like">
+                        <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+                        <button id="like_button" data-notification-id="{{ $notification->id }}" type="submit">
+                            {{ $notification->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                        </button>
+                        <div class="like_user">
+                            <a href="{{ route('notification_like.index', ['notification_id' => $notification->id]) }}">
+                                <p id="like_count">{{ $notification->users->count() }}</p>
+                            </a>
+                        </div>
+                    </div>
                     <form action="{{ route('admin.notifications.delete', ['notification_id' => $notification->id]) }}"
                         id="form_{{ $notification->id }}" method="post">
                         @csrf
@@ -40,4 +54,5 @@
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/delete_post.js') }}"></script>
+    <script src="{{ asset('/js/like_notification.js') }}"></script>
 </x-app-layout>
