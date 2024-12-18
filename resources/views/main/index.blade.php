@@ -12,6 +12,15 @@
                     {{ __("You're logged in!") }}
                     <p>メイン画面</p>
                 </div>
+                <div class="notifications">
+                    <h2>お知らせ</h2>
+                    <ul>
+                        @foreach ($notifications as $notification)
+                            <li>{{ $notification->title }}</li>
+                            <li>{{ $notification->created_at->format('Y/m/d H:i') }}</li>
+                        @endforeach
+                    </ul>
+                </div>
             </div>
         </div>
     </div>
