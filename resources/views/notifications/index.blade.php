@@ -1,21 +1,12 @@
 <x-app-layout>
-    @if (session('status'))
-        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
-            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-red-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
-            <div class="text-white">
-                {{ session('status') }}
-            </div>
-        </div>
-    @endif
     <div id="like-message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
 
-    <h1>お知らせ一覧（管理者用）</h1>
-    <a href="{{ route('admin.notifications.create') }}">お知らせ作成</a>
+    <h1>お知らせ一覧</h1>
     <!-- 検索機能 -->
     <div class=serch>
-        <form action="{{ route('admin.notifications.index') }}" method="GET">
+        <form action="{{ route('notifications.index') }}" method="GET">
             <!-- キーワード検索 -->
             <input type="text" name="search" id="search", value="{{ request('search') }}" placeholder="キーワードを検索"
                 aria-label="検索...">
@@ -42,7 +33,7 @@
             <input type="submit" value="検索">
         </form>
         <div class="cancel">
-            <a href="{{ route('admin.notifications.index') }}">キャンセル</a>
+            <a href="{{ route('notifications.index') }}">キャンセル</a>
         </div>
     </div>
     <div class='notifications'>
@@ -85,7 +76,7 @@
                     <div class='notification_post'>
                         <h2 class='title'>
                             <a
-                                href="{{ route('admin.notifications.show', ['notification_id' => $notification->id]) }}">{{ $notification->title }}</a>
+                                href="{{ route('notifications.show', ['notification_id' => $notification->id]) }}">{{ $notification->title }}</a>
                         </h2>
                         <h5 class='category flex gap-2'>
                             @foreach ($notification->categories as $category)
@@ -110,14 +101,6 @@
                                 </a>
                             </div>
                         </div>
-                        <form
-                            action="{{ route('admin.notifications.delete', ['notification_id' => $notification->id]) }}"
-                            id="form_{{ $notification->id }}" method="post">
-                            @csrf
-                            @method('DELETE')
-                            <button type="button" data-post-id="{{ $notification->id }}"
-                                class="delete-button">お知らせを削除する</button>
-                        </form>
                     </div>
                 @endforeach
             </div>
@@ -126,8 +109,6 @@
     <div class='paginate'>
         {{ $notifications->appends(request()->query())->links() }}
     </div>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="{{ asset('/js/delete_post.js') }}"></script>
-    <script src="{{ asset('/js/admin/like_notification.js') }}"></script>
+    <script src="{{ asset('/js/like_notification.js') }}"></script>
     <script src="{{ asset('/js/search_category.js') }}"></script>
 </x-app-layout>

@@ -47,12 +47,11 @@ class NotificationController extends Controller
     }
 
     // お知らせ詳細の表示
-    public function show(NotificationCategory $category, $notification_id)
+    public function show($notification_id)
     {
         $notification = Notification::find($notification_id);
         return view('admin.notifications.show')->with([
-            'notification' => $notification,
-            'categories' => $category->get()
+            'notification' => $notification
         ]);
     }
 

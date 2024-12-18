@@ -62,6 +62,16 @@ class Notification extends Model
         return $notifications;
     }
 
+    // メイン画面の新着のお知らせ5件を取得する
+    public function getRecentNotifications()
+    {
+        $recentNotifications = Notification::orderBy('created_at', 'desc')
+            ->orderBy('id', 'DESC')
+            ->take(5)
+            ->get();
+        return $recentNotifications;
+    }
+
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {

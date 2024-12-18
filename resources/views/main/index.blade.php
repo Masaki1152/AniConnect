@@ -12,6 +12,18 @@
                     {{ __("You're logged in!") }}
                     <p>メイン画面</p>
                 </div>
+                <div class="notifications">
+                    <h2>お知らせ</h2>
+                    <ul>
+                        @foreach ($notifications as $notification)
+                            <li><a
+                                    href="{{ route('notifications.show', ['notification_id' => $notification->id]) }}">{{ $notification->title }}</a>
+                            </li>
+                            <li>{{ $notification->created_at->format('Y/m/d H:i') }}</li>
+                        @endforeach
+                    </ul>
+                    <a href="{{ route('notifications.index') }}">お知らせ一覧へ</a>
+                </div>
             </div>
         </div>
     </div>

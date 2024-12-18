@@ -131,7 +131,7 @@
                             @if ($character_post->image1)
                                 <div>
                                     <a href="{{ $character_post->image1 }}"
-                                        data-lightbox="{{ $character_post->post_title }}" data-title="画像">
+                                        data-lightbox="{{ $character_post->image1 }}" data-title="画像">
                                         <img src="{{ $character_post->image1 }}" alt="画像が読み込めません。"
                                             class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
                                     </a>

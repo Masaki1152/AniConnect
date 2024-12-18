@@ -50,10 +50,7 @@
             <p>{{ $pilgrimage_post->body }}</p>
             <h3>作成日</h3>
             <p>{{ $pilgrimage_post->created_at }}</p>
-            @php
-                $numbers = [1, 2, 3, 4];
-            @endphp
-            @foreach ($numbers as $number)
+            @foreach ([1, 2, 3, 4] as $number)
                 @php
                     $image = 'image' . $number;
                 @endphp

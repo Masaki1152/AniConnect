@@ -125,8 +125,8 @@
                             <p class='body'>{{ $work_review->body }}</p>
                             @if ($work_review->image1)
                                 <div>
-                                    <a href="{{ $work_review->image1 }}"
-                                        data-lightbox="{{ $work_review->post_title }}" data-title="画像">
+                                    <a href="{{ $work_review->image1 }}" data-lightbox="{{ $work_review->image1 }}"
+                                        data-title="画像">
                                         <img src="{{ $work_review->image1 }}" alt="画像が読み込めません。"
                                             class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
                                     </a>
