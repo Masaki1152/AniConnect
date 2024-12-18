@@ -46,16 +46,14 @@
             <p>{{ $work_review->body }}</p>
             <h3>作成日</h3>
             <p>{{ $work_review->created_at }}</p>
-            @php
-                $numbers = [1, 2, 3, 4];
-            @endphp
-            @foreach ($numbers as $number)
+            @foreach ([1, 2, 3, 4] as $number)
                 @php
                     $image = 'image' . $number;
                 @endphp
                 @if ($work_review->$image)
                     <div>
-                        <a href="{{ $work_review->$image }}" data-lightbox="gallery" data-title="{{ '画像' . $number }}">
+                        <a href="{{ $work_review->$image }}" data-lightbox="gallery"
+                            data-title="{{ '画像' . $number }}">
                             <img src="{{ $work_review->$image }}" alt="画像が読み込めません。"
                                 class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
                         </a>
