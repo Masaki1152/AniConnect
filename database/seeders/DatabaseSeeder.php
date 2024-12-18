@@ -48,7 +48,8 @@ class DatabaseSeeder extends Seeder
             Pilgrimage_Post_Category_Seeder::class,
             Work_Story_Post_Categories_Seeder::class,
             Work_Story_Post_Category_Seeder::class,
-            NotificationSeeder::class
+            NotificationSeeder::class,
+            Notification_Categories_Seeder::class
         ]);
     }
 }

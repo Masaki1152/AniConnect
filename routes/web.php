@@ -27,6 +27,7 @@ use App\Http\Controllers\WorkStoryPostController;
 use App\Http\Controllers\WorkStoryPostLikeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
+use App\Http\Controllers\NotificationLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -64,7 +65,15 @@ Route::prefix('admin')
         Route::put('notification/update/{notification_id}', [NotificationController::class, 'update'])->name('notifications.update');
         // お知らせ削除
         Route::delete('notification/delete/{notification_id}', [NotificationController::class, 'delete'])->name('notifications.delete');
+        // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('notification/like/{notification_id}', [NotificationController::class, 'like'])->name('notifications.like');
     });
+
+// NotificationLikeControllerに関するルーティング
+Route::controller(NotificationLikeController::class)->middleware(['auth'])->group(function () {
+    // お知らせのいいね一覧の表示
+    Route::get('notification/like/{notification_id}/index', 'index')->name('notification_like.index');
+});
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

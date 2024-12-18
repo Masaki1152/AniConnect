@@ -5,8 +5,10 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\NotificationCategory;
 use App\Http\Requests\NotificationRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class NotificationController extends Controller
@@ -14,33 +16,59 @@ class NotificationController extends Controller
     use SoftDeletes;
 
     // お知らせ一覧の表示
-    public function index(Request $request, Notification $notification)
+    public function index(Request $request, Notification $notifications, NotificationCategory $category)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
+        // 検索キーワードがあれば取得
+        $search = $request->input('search', '');
+        // キーワードに部分一致するお知らせを取得
+        $notifications = $notifications->fetchNotifications($search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $notifications->total();
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = NotificationCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
         return view('admin.notifications.index')->with([
-            'notifications' => $notification->get(),
+            'notifications' => $notifications,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
         ]);
     }
 
     // お知らせ詳細の表示
-    public function show($notification_id)
+    public function show(NotificationCategory $category, $notification_id)
     {
         $notification = Notification::find($notification_id);
         return view('admin.notifications.show')->with([
-            'notification' => $notification
+            'notification' => $notification,
+            'categories' => $category->get()
         ]);
     }
 
     //お知らせ新規投稿作成画面を表示する
-    public function create()
+    public function create(NotificationCategory $category)
     {
-        return view('admin.notifications.create');
+        return view('admin.notifications.create')->with([
+            'categories' => $category->get()
+        ]);
     }
 
     // 新しく記述したお知らせを保存する
     public function store(Notification $notification, NotificationRequest $request)
     {
         $input_notification = $request['notification'];
-        //$input_categories = $request->work_review['categories_array'];
+        $input_categories = $request->notification['categories_array'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
@@ -60,22 +88,25 @@ class NotificationController extends Controller
         }
         $notification->fill($input_notification)->save();
         // カテゴリーとの中間テーブルにデータを保存
-        //$notification->categories()->attach($input_categories);
+        $notification->categories()->attach($input_categories);
         return redirect()->route('admin.notifications.show', ['notification_id' => $notification->id])->with('status', '新しいお知らせを作成しました');
     }
 
     // お知らせ編集画面を表示する
-    public function edit($notification_id)
+    public function edit(NotificationCategory $category, $notification_id)
     {
         $notification = Notification::find($notification_id);
-        return view('admin.notifications.edit')->with(['notification' => $notification]);
+        return view('admin.notifications.edit')->with([
+            'notification' => $notification,
+            'categories' => $category->get()
+        ]);
     }
 
     // お知らせの編集を保存する
     public function update(Notification $notification, NotificationRequest $request, $notification_id)
     {
         $input_notification = $request['notification'];
-        //$input_categories = $request->work_review['categories_array'];
+        $input_categories = $request->notification['categories_array'];
 
         // 保存する画像のPathの配列
         $image_paths = [];
@@ -130,7 +161,7 @@ class NotificationController extends Controller
         $target_notification->fill($input_notification)->save();
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
-        //$target_notification->categories()->sync($input_categories);
+        $target_notification->categories()->sync($input_categories);
         return redirect()->route('admin.notifications.show', ['notification_id' => $target_notification->id])->with('status', 'お知らせを編集しました');
     }
 
@@ -152,6 +183,32 @@ class NotificationController extends Controller
         // データの削除
         $target_notification->delete();
         return redirect()->route('admin.notifications.index')->with('status', 'お知らせを削除しました');
+    }
+
+    // お知らせにいいねを行う
+    public function like($notification_id)
+    {
+        // お知らせが見つからない場合の処理
+        $notification = Notification::find($notification_id);
+        if (!$notification) {
+            return response()->json(['message' => 'Notification not found'], 404);
+        }
+        // 現在ログインしているユーザーが既にいいねしていればtrueを返す
+        $isLiked = $notification->users()->where('user_id', Auth::id())->exists();
+        if ($isLiked) {
+            // 既にいいねしている場合
+            $notification->users()->detach(Auth::id());
+            $status = 'unliked';
+            $message = 'いいねを解除しました';
+        } else {
+            // 初めてのいいねの場合
+            $notification->users()->attach(Auth::id());
+            $status = 'liked';
+            $message = 'いいねしました';
+        }
+        // いいねしたユーザー数の取得
+        $count = count($notification->users()->pluck('notification_id')->toArray());
+        return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する
