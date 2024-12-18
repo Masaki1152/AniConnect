@@ -16,11 +16,33 @@ class NotificationController extends Controller
     use SoftDeletes;
 
     // お知らせ一覧の表示
-    public function index(Request $request, Notification $notification, NotificationCategory $category)
+    public function index(Request $request, Notification $notifications, NotificationCategory $category)
     {
+        // クリックされたカテゴリーidを取得
+        $categoryIds = $request->filled('checkedCategories')
+            ? ($request->input('checkedCategories'))
+            : [];
+        // 検索キーワードがあれば取得
+        $search = $request->input('search', '');
+        // キーワードに部分一致するお知らせを取得
+        $notifications = $notifications->fetchNotifications($search, $categoryIds);
+        // 検索結果の件数を取得
+        $totalResults = $notifications->total();
+
+        // カテゴリー検索で選択されたカテゴリーをまとめる
+        $selectedCategories = [];
+        // カテゴリーの情報を取得する
+        foreach ($categoryIds as $categoryId) {
+            $category = NotificationCategory::find($categoryId);
+            array_push($selectedCategories, $category->name);
+        }
+
         return view('admin.notifications.index')->with([
-            'notifications' => $notification->get(),
-            'categories' => $category->get()
+            'notifications' => $notifications,
+            'categories' => $category->get(),
+            'totalResults' => $totalResults,
+            'search' => $search,
+            'selectedCategories' => $selectedCategories
         ]);
     }
 
