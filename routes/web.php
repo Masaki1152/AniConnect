@@ -4,7 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\NotificationController;
+use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\WorkController;
 use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
@@ -27,6 +27,7 @@ use App\Http\Controllers\WorkStoryPostController;
 use App\Http\Controllers\WorkStoryPostLikeController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\UserFollowController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationLikeController;
 
 /*
@@ -52,27 +53,37 @@ Route::prefix('admin')
         // 管理画面トップ
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
         // お知らせ一覧
-        Route::get('notification', [NotificationController::class, 'index'])->name('notifications.index');
+        Route::get('notification', [AdminNotificationController::class, 'index'])->name('notifications.index');
         // お知らせ作成画面表示
-        Route::get('notification/create', [NotificationController::class, 'create'])->name('notifications.create');
+        Route::get('notification/create', [AdminNotificationController::class, 'create'])->name('notifications.create');
         // お知らせ作成
-        Route::post('notification/store', [NotificationController::class, 'store'])->name('notifications.store');
+        Route::post('notification/store', [AdminNotificationController::class, 'store'])->name('notifications.store');
         // お知らせ詳細表示
-        Route::get('notification/{notification_id}', [NotificationController::class, 'show'])->name('notifications.show');
+        Route::get('notification/{notification_id}', [AdminNotificationController::class, 'show'])->name('notifications.show');
         // お知らせ編集表示
-        Route::get('notification/edit/{notification_id}', [NotificationController::class, 'edit'])->name('notifications.edit');
+        Route::get('notification/edit/{notification_id}', [AdminNotificationController::class, 'edit'])->name('notifications.edit');
         // お知らせ編集
-        Route::put('notification/update/{notification_id}', [NotificationController::class, 'update'])->name('notifications.update');
+        Route::put('notification/update/{notification_id}', [AdminNotificationController::class, 'update'])->name('notifications.update');
         // お知らせ削除
-        Route::delete('notification/delete/{notification_id}', [NotificationController::class, 'delete'])->name('notifications.delete');
+        Route::delete('notification/delete/{notification_id}', [AdminNotificationController::class, 'delete'])->name('notifications.delete');
         // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-        Route::post('notification/like/{notification_id}', [NotificationController::class, 'like'])->name('notifications.like');
+        Route::post('notification/like/{notification_id}', [AdminNotificationController::class, 'like'])->name('notifications.like');
     });
+
+// NotificationControllerに関するルーティング
+Route::controller(NotificationController::class)->middleware(['auth'])->group(function () {
+    // お知らせ一覧の表示
+    Route::get('/notification', 'index')->name('notifications.index');
+    // お知らせの詳細表示
+    Route::get('/notification/{notification_id}', 'show')->name('notifications.show');
+    // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/notification/like/{notification_id}', 'like')->name('notifications.like');
+});
 
 // NotificationLikeControllerに関するルーティング
 Route::controller(NotificationLikeController::class)->middleware(['auth'])->group(function () {
     // お知らせのいいね一覧の表示
-    Route::get('notification/like/{notification_id}/index', 'index')->name('notification_like.index');
+    Route::get('/notification/like/{notification_id}/index', 'index')->name('notification_like.index');
 });
 
 // Route::get('/dashboard', function () {

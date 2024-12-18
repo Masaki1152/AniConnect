@@ -1,12 +1,4 @@
 <x-app-layout>
-    @if (session('status'))
-        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
-            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
-            <div class="text-white">
-                {{ session('status') }}
-            </div>
-        </div>
-    @endif
     <div id="like-message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
@@ -56,19 +48,8 @@
             @endforeach
         </div>
     </div>
-    <div class="edit">
-        <a href="{{ route('admin.notifications.edit', ['notification_id' => $notification->id]) }}">編集する</a>
-    </div>
-    <form action="{{ route('admin.notifications.delete', ['notification_id' => $notification->id]) }}"
-        id="form_{{ $notification->id }}" method="post">
-        @csrf
-        @method('DELETE')
-        <button type="button" data-post-id="{{ $notification->id }}" class="delete-button">お知らせを削除する</button>
-    </form>
     <div class="footer">
-        <a href="{{ route('admin.notifications.index') }}">戻る</a>
+        <a href="{{ route('notifications.index') }}">戻る</a>
     </div>
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="{{ asset('/js/delete_post.js') }}"></script>
-    <script src="{{ asset('/js/admin/like_notification.js') }}"></script>
+    <script src="{{ asset('/js/like_notification.js') }}"></script>
 </x-app-layout>

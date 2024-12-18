@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
             const notificationId = button.getAttribute('data-notification-id');
             try {
                 const response = await fetch(
-                    `/notification/like/${notificationId}`, {
+                    `/admin/notification/like/${notificationId}`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

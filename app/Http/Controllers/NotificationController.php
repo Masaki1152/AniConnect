@@ -31,7 +31,7 @@ class NotificationController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('admin.notifications.index')->with([
+        return view('notifications.index')->with([
             'notifications' => $notifications,
             'categories' => $category->get(),
             'totalResults' => $totalResults,
@@ -44,7 +44,7 @@ class NotificationController extends Controller
     public function show($notification_id)
     {
         $notification = Notification::find($notification_id);
-        return view('admin.notifications.show')->with([
+        return view('notifications.show')->with([
             'notification' => $notification
         ]);
     }
