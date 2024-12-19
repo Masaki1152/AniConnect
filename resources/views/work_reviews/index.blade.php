@@ -132,6 +132,13 @@
                                     </a>
                                 </div>
                             @endif
+                            <div class='comment_num'>
+                                @if ($work_review->workReviewComments)
+                                    <p>コメント:{{ count($work_review->workReviewComments) }}件</p>
+                                @else
+                                    <p>コメント:0件</p>
+                                @endif
+                            </div>
                             <form
                                 action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}"
                                 id="form_{{ $work_review->id }}" method="post">

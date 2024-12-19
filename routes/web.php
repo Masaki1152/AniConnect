@@ -164,7 +164,7 @@ Route::controller(WorkReviewController::class)->middleware(['auth'])->group(func
 
 // WorkReviewLikeControllerに関するルーティング
 Route::controller(WorkReviewLikeController::class)->middleware(['auth'])->group(function () {
-    // 作品一覧の表示
+    // いいね一覧の表示
     Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/like/index', 'index')->name('work_review_like.index');
 });
 
