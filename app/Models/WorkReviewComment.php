@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Model;
+
+class WorkReviewComment extends Model
+{
+    use HasFactory;
+
+    // 参照させたいwork_review_commentsを指定
+    protected $table = 'work_review_comments';
+
+    // 作品投稿とのリレーション 多対一の関係
+    public function workReview()
+    {
+        return $this->belongsTo(WorkReview::class, 'work_review_id', 'id');
+    }
+
+    // Userに対するリレーション 1対1の関係
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id');
+    }
+
+    // 親コメントとのリレーション 多対一の関係
+    public function parent()
+    {
+        return $this->belongsTo(WorkReviewComment::class, 'parent_id', 'id');
+    }
+
+    // 子コメントとのリレーション 一対多の関係
+    public function replies()
+    {
+        return $this->hasMany(WorkReviewComment::class, 'parent_id', 'id');
+    }
+
+    // いいねをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_wr_comment', 'wr_comment_id', 'user_id');
+    }
+}

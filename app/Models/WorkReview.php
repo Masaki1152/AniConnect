@@ -113,4 +113,10 @@ class WorkReview extends Model
     {
         return $this->belongsToMany(User::class);
     }
+
+    // コメントに対するリレーション 一対多の関係
+    public function workReviewComments()
+    {
+        return $this->hasMany(workReviewComments::class, 'work_review_id', 'id');
+    }
 }
