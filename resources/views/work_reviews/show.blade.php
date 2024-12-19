@@ -76,7 +76,76 @@
     <div class="footer">
         <a href="{{ route('work_reviews.index', ['work_id' => $work_review->work_id]) }}">戻る</a>
     </div>
+    @if (!empty($work_review->comments))
+        <div class="comment">
+            <p>コメント:{{ count($work_review->comments) }}件</p>
+            @foreach ($work_review->comments->where('parent_id', null) as $comment)
+                <div>
+                    <p>{{ $comment->user->name }}</p>
+                    <p>{{ $comment->body }}</p>
+                    <div class="comment-image">
+                        @foreach ([1, 2, 3, 4] as $number)
+                            @php
+                                $image = 'image' . $number;
+                            @endphp
+                            @if ($comment->$image)
+                                <div>
+                                    <a href="{{ $comment->$image }}" data-lightbox="comment_gallery"
+                                        data-title="{{ '画像' . $number }}">
+                                        <img src="{{ $comment->$image }}" alt="画像が読み込めません。"
+                                            class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
+                                    </a>
+                                </div>
+                            @endif
+                        @endforeach
+                    </div>
+                    <div class="comment-like">
+                        <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+                        <button id="comment-like_button" data-comment-id="{{ $comment->id }}" type="submit">
+                            {{ $comment->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                        </button>
+                        <div class="comment-like_user">
+                            <a href="{{ route('work_review_comment.like.index', ['comment_id' => $comment->id]) }}">
+                                <p id="comment-like_count">{{ $comment->users->count() }}</p>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- 子コメント表示 -->
+                    @foreach ($comment->replies as $reply)
+                        <div style="margin-left: 20px;">
+                            <p>{{ $reply->content }}</p>
+                        </div>
+                    @endforeach
+                </div>
+            @endforeach
+        </div>
+    @else
+        <p>コメント:0件</p>
+    @endif
+    <p>コメントの作成</p>
+    <form action="{{ route('work_review.comments.store') }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        <input type="hidden" name="work_review_comment[work_review_id]" value="{{ $work_review->id }}">
+        <input type="hidden" name="work_review_comment[parent_id]" value="">
+        <textarea name="work_review_comment[body]" required placeholder="コメントを入力してください">{{ old('work_review_comment.body') }}</textarea>
+        <p class="body__error" style="color:red">{{ $errors->first('work_review_comment.body') }}</p>
+        <div class="image">
+            <h2>画像（4枚まで）</h2>
+            <label>
+                <input id="inputElm" type="file" style="display:none" name="images[]" multiple
+                    onchange="loadImage(this);">画像の追加
+                <div id="count">現在、0枚の画像を選択しています。</div>
+            </label>
+            <p class="image__error" style="color:red">{{ $errors->first('images') }}</p>
+        </div>
+        <!-- プレビュー画像の表示 -->
+        <div id="preview" style="width: 300px;"></div>
+        <button type="submit">コメントする</button>
+    </form>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
+    <script src="{{ asset('/js/like_comments/like_wr_comment.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
+    <script src="{{ asset('/js/create_preview.js') }}"></script>
 </x-app-layout>

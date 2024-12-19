@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('work_review_comments')->nullOnDelete(); // 自己参照の外部キー
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->text('body');
-            $table->string('image')->nullable();
+            $table->string('image1')->nullable();
             $table->timestamps();
         });
     }

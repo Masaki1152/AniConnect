@@ -7,7 +7,7 @@ use App\Models\WorkReview;
 
 class WorkReviewLikeController extends Controller
 {
-    // 作品一覧画面の表示
+    // いいね一覧画面の表示
     public function index(WorkReview $workreview, $work_id, $work_review_id)
     {
         // 作品感想テーブルから、今回開いている作品感想にいいねしたユーザーidを取得

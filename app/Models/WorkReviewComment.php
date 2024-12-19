@@ -8,9 +8,26 @@ use Illuminate\Database\Eloquent\Model;
 class WorkReviewComment extends Model
 {
     use HasFactory;
+    use SerializeDate;
+
+    // fillを実行するための記述
+    protected $fillable = [
+        'work_review_id',
+        'parent_id',
+        'user_id',
+        'body',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
+    ];
 
     // 参照させたいwork_review_commentsを指定
     protected $table = 'work_review_comments';
+
+    protected $casts = [
+        'created_at' => 'datetime',
+    ];
 
     // 作品投稿とのリレーション 多対一の関係
     public function workReview()
