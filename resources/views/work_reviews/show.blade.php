@@ -110,6 +110,13 @@
                             </a>
                         </div>
                     </div>
+                    <form action="{{ route('work_review.comments.delete', ['comment_id' => $comment->id]) }}"
+                        id="comment_{{ $comment->id }}" method="post">
+                        @csrf
+                        @method('DELETE')
+                        <button type="button" data-comment-id="{{ $comment->id }}"
+                            class="delete-comment-button">コメントを削除する</button>
+                    </form>
 
                     <!-- 子コメント表示 -->
                     @foreach ($comment->replies as $reply)
@@ -147,5 +154,6 @@
     <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
     <script src="{{ asset('/js/like_comments/like_wr_comment.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
+    <script src="{{ asset('/js/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/create_preview.js') }}"></script>
 </x-app-layout>

@@ -58,7 +58,7 @@ class WrCommentController extends Controller
         // データの削除
         $targetComment->delete();
 
-        return view()->with('status', '投稿を削除しました');
+        return back()->with('status', '投稿を削除しました');
     }
 
     // コメントにいいねを行う
