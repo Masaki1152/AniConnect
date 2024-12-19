@@ -16,7 +16,6 @@ class WrCommentController extends Controller
     // 新しく記述した内容を保存する
     public function store(WorkReviewComment $wr_comment, WrCommentRequest $request)
     {
-        dd("呼ばれた");
         $input_comment = $request['work_review_comment'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
@@ -38,7 +37,7 @@ class WrCommentController extends Controller
         // ログインしているユーザーidの登録
         $input_comment['user_id'] = Auth::id();
         $wr_comment->fill($input_comment)->save();
-        return back()->with('success', 'コメントを投稿しました。');
+        return back()->with('status', 'コメントを投稿しました。');
     }
 
     // コメントを削除する

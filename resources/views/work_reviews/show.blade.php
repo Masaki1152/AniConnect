@@ -76,10 +76,10 @@
     <div class="footer">
         <a href="{{ route('work_reviews.index', ['work_id' => $work_review->work_id]) }}">戻る</a>
     </div>
-    @if (!empty($work_review->comments))
+    @if (!empty($work_review->workReviewComments))
         <div class="comment">
-            <p>コメント:{{ count($work_review->comments) }}件</p>
-            @foreach ($work_review->comments->where('parent_id', null) as $comment)
+            <p>コメント:{{ count($work_review->workReviewComments) }}件</p>
+            @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
                 <div>
                     <p>{{ $comment->user->name }}</p>
                     <p>{{ $comment->body }}</p>
@@ -114,7 +114,7 @@
                     <!-- 子コメント表示 -->
                     @foreach ($comment->replies as $reply)
                         <div style="margin-left: 20px;">
-                            <p>{{ $reply->content }}</p>
+                            <p>{{ $reply->body }}</p>
                         </div>
                     @endforeach
                 </div>

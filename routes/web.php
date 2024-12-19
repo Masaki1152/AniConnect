@@ -126,6 +126,22 @@ Route::controller(WorkController::class)->middleware(['auth'])->group(function (
     Route::get('/works/{work}', 'show')->name('works.show');
 });
 
+// WrCommentControllerに関するルーティング
+Route::controller(WrCommentController::class)->middleware(['auth'])->group(function () {
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/work_reviews/comments/store', 'store')->name('work_review.comments.store');
+    // コメントの削除を行うdeleteメソッドを実行
+    Route::delete('/work_reviews/comments/{comment_id}/delete', 'delete')->name('work_review.comments.delete');
+    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/work_reviews/comments/{comment_id}/like', 'like')->name('work_review.comments.like');
+});
+
+// WorkReviewCommentLikeControllerに関するルーティング
+Route::controller(WrCommentLikeController::class)->middleware(['auth'])->group(function () {
+    // 作品一覧の表示
+    Route::get('/work_reviews/comments/{comment_id}/like/index', 'index')->name('work_review_comment.like.index');
+});
+
 // WorkReviewControllerに関するルーティング
 Route::controller(WorkReviewController::class)->middleware(['auth'])->group(function () {
     // 各作品ごとの感想投稿一覧の表示
@@ -144,22 +160,6 @@ Route::controller(WorkReviewController::class)->middleware(['auth'])->group(func
     Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
     // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
-});
-
-// WrCommentControllerに関するルーティング
-Route::controller(WrCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/work_reviews/comments/store', 'store')->name('work_review.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/work_reviews/comments/{comment_id}/delete', 'delete')->name('work_review.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/work_reviews/comments/{comment_id}/like', 'like')->name('work_review.comments.like');
-});
-
-// WorkReviewCommentLikeControllerに関するルーティング
-Route::controller(WrCommentLikeController::class)->middleware(['auth'])->group(function () {
-    // 作品一覧の表示
-    Route::get('/work_reviews/comments/{comment_id}/like/index', 'index')->name('work_review_comment.like.index');
 });
 
 // WorkReviewLikeControllerに関するルーティング
