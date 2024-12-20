@@ -101,4 +101,12 @@ class WrCommentController extends Controller
         // 該当しない場合はnull
         return null;
     }
+
+    // ネスト化したコメントの表示
+    public function replies(WorkReviewComment $wr_comment, $comment_id)
+    {
+        $replies = WorkReviewComment::find($comment_id)->replies()->with('user', 'users')->get();
+
+        return response()->json($replies);
+    }
 }

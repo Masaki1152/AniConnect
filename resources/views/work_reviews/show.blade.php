@@ -80,7 +80,7 @@
         <div class="comment">
             <p>コメント:{{ count($work_review->workReviewComments) }}件</p>
             @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
-                <div>
+                <div id="comment-{{ $comment->id }}">
                     <p>{{ $comment->user->name }}</p>
                     <p>{{ $comment->body }}</p>
                     <div class="comment-image">
@@ -118,12 +118,13 @@
                             class="delete-comment-button">コメントを削除する</button>
                     </form>
 
-                    <!-- 子コメント表示 -->
-                    @foreach ($comment->replies as $reply)
-                        <div style="margin-left: 20px;">
-                            <p>{{ $reply->body }}</p>
-                        </div>
-                    @endforeach
+                    <!-- 子コメントがあれば表示 -->
+                    @if ($work_review->workReviewComments->where('parent_id', $comment->id)->count() > 0)
+                        <button onclick="loadReplies({{ $comment->id }})" id="replies-button-{{ $comment->id }}">
+                            続きの返信を見る
+                        </button>
+                        <div id="replies-{{ $comment->id }}" style="margin-left: 20px;"></div>
+                    @endif
                 </div>
             @endforeach
         </div>
@@ -156,4 +157,5 @@
     <script src="{{ asset('/js/delete_post.js') }}"></script>
     <script src="{{ asset('/js/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/create_preview.js') }}"></script>
+    <script src="{{ asset('/js/load_reply.js') }}"></script>
 </x-app-layout>

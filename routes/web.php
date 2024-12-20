@@ -134,6 +134,8 @@ Route::controller(WrCommentController::class)->middleware(['auth'])->group(funct
     Route::delete('/work_reviews/comments/{comment_id}/delete', 'delete')->name('work_review.comments.delete');
     // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
     Route::post('/work_reviews/comments/{comment_id}/like', 'like')->name('work_review.comments.like');
+    // ネスト化したコメントを表示するreplyメソッドを実行
+    Route::get('/work_reviews/comments/{comment_id}/replies', 'replies')->name('work_review.comments.replies');
 });
 
 // WorkReviewCommentLikeControllerに関するルーティング
