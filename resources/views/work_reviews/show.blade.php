@@ -251,15 +251,17 @@
                                 </div>
                                 <div class='comment-like flex items-center gap-2'>
                                     <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                    <button id="comment-like_button" data-comment-id="{{ $comment->id }}"
-                                        type="submit"
-                                        class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+                                    <button id="comment-like_button-{{ $comment->id }}"
+                                        data-comment-id="{{ $comment->id }}"
+                                        onclick="toggleLike({{ $comment->id }}, 'comment-like_button-{{ $comment->id }}', 'comment-like_count-{{ $comment->id }}')"
+                                        class="comment-like_button px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
                                         {{ $comment->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                                     </button>
                                     <div class="comment-like_user">
                                         <a href="{{ route('work_review_comment.like.index', ['comment_id' => $comment->id]) }}"
                                             class="text-lg font-medium text-gray-700">
-                                            <p id="comment-like_count">{{ $comment->users->count() }}件
+                                            <p id="comment-like_count-{{ $comment->id }}">
+                                                {{ $comment->users->count() }}件
                                             </p>
                                         </a>
                                     </div>

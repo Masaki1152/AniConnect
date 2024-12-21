@@ -15,10 +15,10 @@ function loadReplies(commentId) {
         .then(response => response.json())
         .then(replies => {
             const repliesContainer = document.getElementById(`replies-${commentId}`);
-            console.log(replies);
 
             // 子コメントを表示
             replies.forEach(reply => {
+                console.log(reply);
                 const replyDiv = document.createElement('div');
                 replyDiv.classList.add('border-b', 'border-gray-200', 'pb-4', 'mb-4');
                 replyDiv.innerHTML = `
@@ -73,14 +73,15 @@ function loadReplies(commentId) {
                             class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden">閉じる</button>
                     </div>
                     <div class='comment-like flex items-center gap-2'>
-                        <button id="comment-like_button-${reply.id}" data-comment-id="${reply.id}"
-                            type="button"
-                            class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
+                        <button id="comment-like_button-${reply.id}"
+                        data-comment-id="${reply.id}"
+                        onclick="toggleLike(${reply.id}, 'comment-like_button-${reply.id}', 'comment-like_count-${reply.id}')"
+                            class="comment-like_button px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
                             ${reply.is_liked_by_user ? 'いいね取り消し' : 'いいね'}
                         </button>
                         <div class="comment-like_user">
-                            <a href="/work_review_comment/like/index/${reply.id}" class="text-lg font-medium text-gray-700">
-                                <p id="comment-like_count-${reply.id}">${reply.like_count}件</p>
+                            <a href="/work_reviews/comments/${reply.id}/like/index" class="text-lg font-medium text-gray-700">
+                                <p id="comment-like_count-${reply.id}">${reply.like_user_count}件</p>
                             </a>
                         </div>
                     </div>

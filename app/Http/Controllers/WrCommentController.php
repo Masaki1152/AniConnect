@@ -105,7 +105,13 @@ class WrCommentController extends Controller
     // ネスト化したコメントの表示
     public function replies(WorkReviewComment $wr_comment, $comment_id)
     {
-        $replies = WorkReviewComment::find($comment_id)->replies()->with('user', 'users')->get();
+        $wr_comment = WorkReviewComment::find($comment_id);
+        $replies = $wr_comment->replies()->with('user', 'users')->get();
+        $replies = $replies->map(function ($reply) {
+            $reply->is_liked_by_user = $reply->users->contains(auth()->user());
+            $reply->like_user_count = $reply->users->count();
+            return $reply;
+        });
 
         return response()->json($replies);
     }
