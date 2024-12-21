@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (data.status === 'liked') {
                     button.innerText = 'いいね取り消し';
-                    users.innerText = data.like_user;
+                    users.innerText = `${data.like_user}件`;
                 } else if (data.status === 'unliked') {
                     button.innerText = 'いいね';
-                    users.innerText = data.like_user;
+                    users.innerText = `${data.like_user}件`;
                 }
                 // メッセージを表示
                 likeMessage.textContent = data.message;

@@ -22,6 +22,9 @@ function loadReplies(commentId) {
                 const replyDiv = document.createElement('div');
                 replyDiv.innerHTML = `
                 <p><strong>${reply.user.name}</strong>: ${reply.body}</p>
+                ${reply.user.image ? `<img src='${reply.user.image}' alt='画像が読み込めません。' class='w-40 h-40 rounded-full object-cover mr-1'>` : `<img src='https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png'
+                                    alt='画像が読み込めません。' class='w-40 h-40 rounded-full object-cover mr-1'>`}</a>
+                <div>
                 <a href="${reply.image1}" data-lightbox="${reply.body}"
                                         data-title="画像1">
                 ${reply.image1 ? `<img src='${reply.image1}' alt='画像が読み込めません。' class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>` : ''}</a>
@@ -34,6 +37,8 @@ function loadReplies(commentId) {
                 <a href="${reply.image4}" data-lightbox="${reply.body}"
                                         data-title="画像4">
                 ${reply.image4 ? `<img src='${reply.image4}' alt='画像が読み込めません。' class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>` : ''}</a>
+                </div>
+                <p>${reply.created_at}</p>
             `;
                 repliesContainer.appendChild(replyDiv);
             });

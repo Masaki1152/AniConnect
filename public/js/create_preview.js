@@ -38,43 +38,44 @@ function renderPreviews() {
             figure.className = 'relative flex flex-col items-center mb-4';
 
             // 画像部分の背景
-            const imageWrapper = document.createElement('div');
-            imageWrapper.className = 'image-wrapper';
+            //const imageWrapper = document.createElement('div');
+            //imageWrapper.className = 'image-wrapper';
 
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'preview';
-            img.className = 'img-preview';
+            img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-square';
 
             // 画像の比率を計算
-            img.onload = function () {
-                const imgRatio = img.naturalWidth / img.naturalHeight;
-                // 正方形 9rem x 9rem の比率
-                const wrapperRatio = 1;
+            // img.onload = function () {
+            //     const imgRatio = img.naturalWidth / img.naturalHeight;
+            //     // 正方形 9rem x 9rem の比率
+            //     const wrapperRatio = 1;
 
-                if (imgRatio > wrapperRatio) {
-                    // 横長の画像
-                    img.style.width = '100%';
-                    img.style.height = 'auto';
-                } else {
-                    // 縦長の画像、または正方形
-                    img.style.height = '100%';
-                    img.style.width = 'auto';
-                }
-            };
+            //     if (imgRatio > wrapperRatio) {
+            //         // 横長の画像
+            //         img.style.width = '100%';
+            //         img.style.height = 'auto';
+            //     } else {
+            //         // 縦長の画像、または正方形
+            //         img.style.height = '100%';
+            //         img.style.width = 'auto';
+            //     }
+            // };
 
-            imageWrapper.appendChild(img);
-            figure.appendChild(imageWrapper);
+            //imageWrapper.appendChild(img);
+            //figure.appendChild(imageWrapper);
 
             // 削除ボタン
             const rmBtn = document.createElement('button');
             rmBtn.type = 'button';
             rmBtn.textContent = '削除';
-            rmBtn.className = 'rm-btn';
+            rmBtn.className = 'bg-red-500 text-white text-xs mt-2 px-2 py-1 rounded hover:bg-red-600';
             rmBtn.onclick = function () {
                 removeImage(index);
             };
 
+            figure.appendChild(img);
             figure.appendChild(rmBtn);
             preview.appendChild(figure);
         };
