@@ -37,34 +37,10 @@ function renderPreviews() {
             figure.setAttribute('id', `img-${index}`);
             figure.className = 'relative flex flex-col items-center mb-4';
 
-            // 画像部分の背景
-            //const imageWrapper = document.createElement('div');
-            //imageWrapper.className = 'image-wrapper';
-
             const img = document.createElement('img');
             img.src = e.target.result;
             img.alt = 'preview';
             img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-square';
-
-            // 画像の比率を計算
-            // img.onload = function () {
-            //     const imgRatio = img.naturalWidth / img.naturalHeight;
-            //     // 正方形 9rem x 9rem の比率
-            //     const wrapperRatio = 1;
-
-            //     if (imgRatio > wrapperRatio) {
-            //         // 横長の画像
-            //         img.style.width = '100%';
-            //         img.style.height = 'auto';
-            //     } else {
-            //         // 縦長の画像、または正方形
-            //         img.style.height = '100%';
-            //         img.style.width = 'auto';
-            //     }
-            // };
-
-            //imageWrapper.appendChild(img);
-            //figure.appendChild(imageWrapper);
 
             // 削除ボタン
             const rmBtn = document.createElement('button');

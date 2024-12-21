@@ -1,6 +1,3 @@
-// csrfTokenの取得
-//const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
 // いいね処理を非同期で行う
 document.addEventListener('DOMContentLoaded', function () {
     const likeClasses = document.querySelectorAll('.comment-like');
@@ -27,10 +24,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (data.status === 'liked') {
                     button.innerText = 'いいね取り消し';
-                    users.innerText = data.like_user;
+                    users.innerText = `${data.like_user}件`;
                 } else if (data.status === 'unliked') {
                     button.innerText = 'いいね';
-                    users.innerText = data.like_user;
+                    users.innerText = `${data.like_user}件`;
                 }
                 // メッセージを表示
                 likeMessage.textContent = data.message;
