@@ -106,7 +106,7 @@ class WrCommentController extends Controller
     public function replies(WorkReviewComment $wr_comment, $comment_id)
     {
         $wr_comment = WorkReviewComment::find($comment_id);
-        $replies = $wr_comment->replies()->with('user', 'users')->get();
+        $replies = $wr_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             $reply->is_liked_by_user = $reply->users->contains(auth()->user());
             $reply->like_user_count = $reply->users->count();

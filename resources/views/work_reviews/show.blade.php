@@ -170,7 +170,7 @@
             </div>
             @if (!empty($work_review->workReviewComments) && $work_review->workReviewComments->isNotEmpty())
                 <!-- コメント表示 -->
-                <div class='bg-white rounded-lg shadow-md p-6'>
+                <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
                     @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
                         <div class='border-b border-gray-200 pb-4 mb-4'>
                             <div class='flex items-center justify-between'>
@@ -244,10 +244,12 @@
                             <div class='flex gap-4 items-center justify-end mt-4'>
                                 <div class='content_fotter_comment'>
                                     <!-- コメントを追加したい場合 -->
-                                    <button id='toggleChildComments' type='button'
-                                        class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">コメントする</button>
-                                    <button id='closeChildComments' type='button'
-                                        class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden">閉じる</button>
+                                    <button id='toggleChildComments-{{ $comment->id }}' type='button'
+                                        class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+                                        onclick="toggleChildCommentForm({{ $comment->id }})">コメントする</button>
+                                    <button id='closeChildComments-{{ $comment->id }}' type='button'
+                                        class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden"
+                                        onclick="toggleChildCommentForm({{ $comment->id }})">閉じる</button>
                                 </div>
                                 <div class='comment-like flex items-center gap-2'>
                                     <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
@@ -267,8 +269,8 @@
                                     </div>
                                 </div>
                             </div>
-                            <div id='addChildCommentBlock' class="w-full p-4 mt-4 border rounded-lg bg-gray-50"
-                                style="display: none;">
+                            <div id='addChildCommentBlock-{{ $comment->id }}'
+                                class="w-full p-4 mt-4 border rounded-lg bg-gray-50" style="display: none;">
                                 <p class="text-lg font-semibold mb-2">コメントの作成</p>
                                 <form action="{{ route('work_review.comments.store') }}" method="POST"
                                     enctype="multipart/form-data">
@@ -284,32 +286,41 @@
                                     <div class="image mb-4">
                                         <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
                                         <label>
-                                            <input id="inputElm" type="file" style="display:none"
-                                                name="images[]" multiple onchange="loadImage(this);">
+                                            <input id="inputElm-{{ $comment->id }}" type="file"
+                                                style="display:none" name="images[]" multiple
+                                                onchange="loadImage(this, {{ $comment->id }});">
                                             <span class="text-blue-500 cursor-pointer">画像の追加</span>
-                                            <div id="count" class="text-sm text-gray-600">現在、0枚の画像を選択しています。</div>
+                                            <div id="count-{{ $comment->id }}" class="text-sm text-gray-600">
+                                                現在、0枚の画像を選択しています。</div>
                                         </label>
                                         <p class="image__error text-red-500 text-sm">{{ $errors->first('images') }}
                                         </p>
                                     </div>
                                     <!-- プレビュー画像の表示 -->
-                                    <div id="preview" class="grid grid-cols-2 lg:grid-cols-4 gap-2"></div>
+                                    <div id="preview-{{ $comment->id }}"
+                                        class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
                                     <div class="flex justify-center mt-4">
                                         <button type="submit"
                                             class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">コメントする</button>
                                     </div>
                                 </form>
                             </div>
-                        </div>
-                        <div class="childComment">
-                            <!-- 子コメントがあれば表示 -->
-                            @if ($work_review->workReviewComments->where('parent_id', $comment->id)->count() > 0)
-                                <button onclick="loadReplies({{ $comment->id }})"
-                                    id="replies-button-{{ $comment->id }}">
-                                    続きの返信を見る
-                                </button>
-                                <div id="replies-{{ $comment->id }}" style="margin-left: 30px;"></div>
-                            @endif
+                            <div class="childComment">
+                                <!-- 子コメントがあれば表示 -->
+                                @if ($work_review->workReviewComments->where('parent_id', $comment->id)->count() > 0)
+                                    <button onclick="loadReplies({{ $comment->id }})"
+                                        id="replies-button-{{ $comment->id }}"
+                                        class='text-sm text-blue-500 hover:text-blue-600'>
+                                        続きの返信を見る
+                                    </button>
+                                    <button onclick="loadReplies({{ $comment->id }})"
+                                        id="close-button-{{ $comment->id }}"
+                                        class='text-sm text-gray-400 hover:text-gray-500 hidden'>
+                                        続きの返信を閉じる
+                                    </button>
+                                    <div id="replies-{{ $comment->id }}" style="margin-left: 40px;"></div>
+                                @endif
+                            </div>
                         </div>
                     @endforeach
                 </div>
@@ -330,7 +341,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
-    <script src="{{ asset('/js/create_preview.js') }}"></script>
     <script src="{{ asset('/js/comments/like_comments/like_wr_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/load_reply.js') }}"></script>
