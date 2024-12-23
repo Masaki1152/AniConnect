@@ -306,3 +306,115 @@ function countImages(commentId) {
     count.innerHTML = '';
     count.innerHTML = `現在、${selectedImages.length}枚の画像を選択しています。`;
 }
+
+// コメント保存処理を関数として定義
+// async function storeComment() {
+//     //const button = document.getElementById(buttonId);
+//     //const userCount = document.getElementById(userCountId);
+//     try {
+//         const response = await fetch(
+//             `/work_reviews/comments/store`, {
+//             method: 'POST',
+//             headers: {
+//                 'Content-Type': 'application/json',
+//                 'X-CSRF-TOKEN': `${csrfToken}`
+//             },
+//         });
+//         const data = await response.json();
+//         // メッセージを表示
+//         const storeMessage = document.getElementById('store-message');
+//         storeMessage.textContent = data.message;
+//         storeMessage.classList.remove('hidden');
+//         storeMessage.classList.add('block');
+
+//         // 3秒後にメッセージを非表示
+//         setTimeout(() => {
+//             storeMessage.classList.add('hidden');
+//             storeMessage.classList.remove('block');
+//         }, 3000);
+//     } catch (error) {
+//         console.error('Error:', error);
+//     }
+// }
+
+document.addEventListener('DOMContentLoaded', function () {
+    //const submitButton = document.getElementById('submit_comment');
+    const csrfToken = document.querySelector('meta[name="csrf-token"]').content;
+
+    //console.log(submitButton);
+    document.querySelectorAll('#submit_comment').forEach(function (button) {
+        button.addEventListener('click', async function (event) {
+            event.preventDefault();
+
+            const dataCommentId = button.getAttribute('data-comment-id');
+            const workReviewId = document.getElementById(`work_review_id-${dataCommentId}`).value;
+            const parentId = document.getElementById(`parent_id-${dataCommentId}`).value;
+            const commentBody = document.getElementById(`comment_body-${dataCommentId}`).value;
+            const images = document.getElementById(`inputElm-${dataCommentId}`).files;
+            const storeMessage = document.getElementById('store-message');
+            const bodyError = document.getElementById('body_error');
+
+            // フォームデータ作成
+            const formData = new FormData();
+            formData.append('work_review_comment[work_review_id]', workReviewId);
+            formData.append('work_review_comment[parent_id]', parentId);
+            formData.append('work_review_comment[body]', commentBody);
+
+            // 画像を追加
+            Array.from(images).forEach((image, index) => {
+                formData.append(`images[]`, image);
+            });
+            // フィールドのバリデーションチェック
+            if (!commentBody.trim()) {
+                bodyError.classList.remove('hidden');
+                return;
+            } else {
+                bodyError.classList.add('hidden');
+            }
+
+            // 非同期リクエスト
+            try {
+                const response = await fetch('/work_reviews/comments/store', {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken,
+                    },
+                    body: formData,
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log(data);
+
+                // 新しいコメントを挿入
+                const commentBlock = parentId
+                    ? document.querySelector(`#comment-${parentId} .replies`)
+                    : document.querySelector('#comments-section #comment_block');
+
+                if (commentBlock) {
+                    commentBlock.insertAdjacentHTML('beforeend', data.commentHtml);
+                    // 新しいコメントの要素を取得
+                    const newComment = commentBlock.lastElementChild;
+                    // 新しいコメントまでスクロール
+                    newComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+
+                // メッセージの表示
+                storeMessage.textContent = data.message;
+                storeMessage.classList.remove('hidden');
+                setTimeout(() => storeMessage.classList.add('hidden'), 3000);
+
+                // フォームのリセット
+                document.getElementById(`comment_body-${dataCommentId}`).value = '';
+                document.getElementById(`inputElm-${dataCommentId}`).value = '';
+                document.getElementById(`preview-${dataCommentId}`).innerHTML = '';
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        });
+    });
+});

@@ -132,210 +132,90 @@
                     </div>
                     <div id='addCommentBlock' class="w-full p-4 border rounded-lg bg-gray-50" style="display: none;">
                         <p class="text-lg font-semibold mb-2">コメントの作成</p>
-                        <form action="{{ route('work_review.comments.store') }}" method="POST"
-                            enctype="multipart/form-data">
-                            @csrf
-                            <input type="hidden" name="work_review_comment[work_review_id]"
+                        <div>
+                            <input type="hidden" id="work_review_id-{{ $work_review->id }}"
                                 value="{{ $work_review->id }}">
-                            <input type="hidden" name="work_review_comment[parent_id]" value="">
-                            <textarea name="work_review_comment[body]" required class="w-full p-2 mb-2 border rounded-lg"
-                                placeholder="コメントを入力してください">{{ old('work_review_comment.body') }}</textarea>
-                            <p class="body__error text-red-500 text-sm">
-                                {{ $errors->first('work_review_comment.body') }}</p>
+                            <input type="hidden" id="parent_id-{{ $work_review->id }}" value="">
+                            <textarea id="comment_body-{{ $work_review->id }}" required class="w-full p-2 mb-2 border rounded-lg"
+                                placeholder="コメントを入力してください"></textarea>
+                            <p id="body_error" class="text-red-500 text-sm hidden">コメントを入力してください。</p>
                             <div class="image mb-4">
                                 <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
                                 <label>
-                                    <input id="inputElm" type="file" style="display:none" name="images[]" multiple
-                                        onchange="loadImage(this);">
+                                    <input id="inputElm-{{ $work_review->id }}" type="file" style="display:none"
+                                        multiple onchange="loadImage(this, {{ $work_review->id }});">
                                     <span class="text-blue-500 cursor-pointer">画像の追加</span>
-                                    <div id="count" class="text-sm text-gray-600">現在、0枚の画像を選択しています。</div>
+                                    <div id="count-{{ $work_review->id }}" class="text-sm text-gray-600">
+                                        現在、0枚の画像を選択しています。
+                                    </div>
                                 </label>
-                                <p class="image__error text-red-500 text-sm">{{ $errors->first('images') }}</p>
+                                <p id="image_error" class="text-red-500 text-sm hidden">画像が正しくありません。</p>
                             </div>
                             <!-- プレビュー画像の表示 -->
-                            <div id="preview" class="grid grid-cols-2 lg:grid-cols-4 gap-2"></div>
-                            <div class="flex justify-center mt-4">
-                                <button type="submit"
-                                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">コメントする</button>
+                            <div id="preview-{{ $work_review->id }}" class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             </div>
-                        </form>
+                            <div class="flex justify-center mt-4">
+                                <button id="submit_comment" data-comment-id='{{ $work_review->id }}'
+                                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">
+                                    コメントする
+                                </button>
+                            </div>
+                        </div>
                     </div>
+                    <div id="store-message" class="hidden text-green-500 mt-2"></div>
                 </div>
             </div>
-
             <div class="text-lg font-semibold">
                 「<span
                     class="text-blue-500">{{ $work_review->post_title }}</span>」へのコメント：{{ count($work_review->workReviewComments) }}件
                 </p>
             </div>
-            @if (!empty($work_review->workReviewComments) && $work_review->workReviewComments->isNotEmpty())
-                <!-- コメント表示 -->
-                <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
-                    @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
-                        <div class='border-b border-gray-200 pb-4 mb-4'>
-                            <div class='flex items-center justify-between'>
-                                <div class="flex items-center space-x-4">
-                                    <img src="{{ $comment->user->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
-                                        alt="画像が読み込めません。" class="w-16 h-16 rounded-full object-cover">
-                                    <div>
-                                        <!-- 自分のアカウントを選択した場合 -->
-                                        @if (Auth::id() === $comment->user->id)
-                                            <a href="{{ route('profile.index') }}" class="font-medium">
-                                                {{ $comment->user->name }}
-                                            </a>
-                                        @else
-                                            <a href="{{ route('users.show', ['user_id' => $comment->user->id]) }}"
-                                                class="font-medium">
-                                                {{ $comment->user->name }}
-                                            </a>
-                                        @endif
-                                        <p class="text-gray-500 text-sm">
-                                            {{ $comment->created_at->format('Y/m/d H:i') }}</p>
-                                    </div>
-                                </div>
-                                <!-- ドロップダウンメニュー -->
-                                <x-dropdown align="right" class='ml-auto'>
-                                    <x-slot name="trigger">
-                                        <button class="p-1 bg-slate-400 text-white rounded hover:bg-slate-500">
-                                            コメントを管理する
+            <div id="comments-section">
+                @if (!empty($work_review->workReviewComments) && $work_review->workReviewComments->isNotEmpty())
+                    <!-- コメント表示 -->
+                    <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
+                        @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
+                            <div class="commentContainer">
+                                @include('comments.input_comment', ['comment' => $comment])
+
+                                <div class="childComment">
+                                    <!-- 子コメントがあれば表示 -->
+                                    @if ($work_review->workReviewComments->where('parent_id', $comment->id)->count() > 0)
+                                        <button onclick="loadReplies({{ $comment->id }})"
+                                            id="replies-button-{{ $comment->id }}"
+                                            class='text-sm text-blue-500 hover:text-blue-600'>
+                                            続きの返信を見る
                                         </button>
-                                    </x-slot>
-                                    <x-slot name="content">
-                                        <form
-                                            action="{{ route('work_review.comments.delete', ['comment_id' => $comment->id]) }}"
-                                            id="comment_{{ $comment->id }}" method="post">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="button" data-comment-id="{{ $comment->id }}"
-                                                class="delete-comment-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                                                コメントを削除する
-                                            </button>
-                                        </form>
-                                    </x-slot>
-                                </x-dropdown>
-                            </div>
-                            <div class="flex flex-col md:flex-row gap-4">
-                                <div class="left_block flex-1">
-                                    <p class="mt-4 text-gray-800">{!! nl2br(e($comment->body)) !!}</p>
+                                        <button onclick="loadReplies({{ $comment->id }})"
+                                            id="close-button-{{ $comment->id }}"
+                                            class='text-sm text-gray-400 hover:text-gray-500 hidden'>
+                                            続きの返信を閉じる
+                                        </button>
+                                        <div id="replies-{{ $comment->id }}" style="margin-left: 40px;"></div>
+                                    @endif
                                 </div>
-                                <div class="right_block flex-1">
-                                    @php
-                                        $images = [];
-                                        foreach ([1, 2, 3, 4] as $number) {
-                                            $image = 'image' . $number;
-                                            if ($comment->$image) {
-                                                $images[] = $comment->$image;
-                                            }
-                                        }
-                                    @endphp
-                                    <div class="grid gap-4 {{ count($images) === 1 ? 'justify-items-center' : '' }}"
-                                        style="grid-template-columns: repeat({{ count($images) > 1 ? 2 : 1 }}, 1fr);">
-                                        @foreach ($images as $index => $image)
-                                            <a href="{{ $image }}" data-lightbox="{{ $comment->id }}"
-                                                data-title="{{ '画像' . ($index + 1) }}">
-                                                <img src="{{ $image }}" alt="画像が読み込めません。"
-                                                    class="w-full object-cover rounded-md border border-gray-300"
-                                                    style="aspect-ratio: 1/1;">
-                                            </a>
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            <div class='flex gap-4 items-center justify-end mt-4'>
-                                <div class='content_fotter_comment'>
-                                    <!-- コメントを追加したい場合 -->
-                                    <button id='toggleChildComments-{{ $comment->id }}' type='button'
-                                        class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
-                                        onclick="toggleChildCommentForm({{ $comment->id }})">コメントする</button>
-                                    <button id='closeChildComments-{{ $comment->id }}' type='button'
-                                        class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden"
-                                        onclick="toggleChildCommentForm({{ $comment->id }})">閉じる</button>
-                                </div>
-                                <div class='comment-like flex items-center gap-2'>
-                                    <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                    <button id="comment-like_button-{{ $comment->id }}"
-                                        data-comment-id="{{ $comment->id }}"
-                                        onclick="toggleLike({{ $comment->id }}, 'comment-like_button-{{ $comment->id }}', 'comment-like_count-{{ $comment->id }}')"
-                                        class="comment-like_button px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
-                                        {{ $comment->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                                    </button>
-                                    <div class="comment-like_user">
-                                        <a href="{{ route('work_review_comment.like.index', ['comment_id' => $comment->id]) }}"
-                                            class="text-lg font-medium text-gray-700">
-                                            <p id="comment-like_count-{{ $comment->id }}">
-                                                {{ $comment->users->count() }}件
-                                            </p>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id='addChildCommentBlock-{{ $comment->id }}'
-                                class="w-full p-4 mt-4 border rounded-lg bg-gray-50" style="display: none;">
-                                <p class="text-lg font-semibold mb-2">コメントの作成</p>
-                                <form action="{{ route('work_review.comments.store') }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <input type="hidden" name="work_review_comment[work_review_id]"
-                                        value="{{ $work_review->id }}">
-                                    <input type="hidden" name="work_review_comment[parent_id]"
-                                        value="{{ $comment->id }}">
-                                    <textarea name="work_review_comment[body]" required class="w-full p-2 mb-2 border rounded-lg"
-                                        placeholder="コメントを入力してください">{{ old('work_review_comment.body') }}</textarea>
-                                    <p class="body__error text-red-500 text-sm">
-                                        {{ $errors->first('work_review_comment.body') }}</p>
-                                    <div class="image mb-4">
-                                        <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
-                                        <label>
-                                            <input id="inputElm-{{ $comment->id }}" type="file"
-                                                style="display:none" name="images[]" multiple
-                                                onchange="loadImage(this, {{ $comment->id }});">
-                                            <span class="text-blue-500 cursor-pointer">画像の追加</span>
-                                            <div id="count-{{ $comment->id }}" class="text-sm text-gray-600">
-                                                現在、0枚の画像を選択しています。</div>
-                                        </label>
-                                        <p class="image__error text-red-500 text-sm">{{ $errors->first('images') }}
-                                        </p>
-                                    </div>
-                                    <!-- プレビュー画像の表示 -->
-                                    <div id="preview-{{ $comment->id }}"
-                                        class="grid grid-cols-2 md:grid-cols-4 gap-2"></div>
-                                    <div class="flex justify-center mt-4">
-                                        <button type="submit"
-                                            class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">コメントする</button>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="childComment">
-                                <!-- 子コメントがあれば表示 -->
-                                @if ($work_review->workReviewComments->where('parent_id', $comment->id)->count() > 0)
-                                    <button onclick="loadReplies({{ $comment->id }})"
-                                        id="replies-button-{{ $comment->id }}"
-                                        class='text-sm text-blue-500 hover:text-blue-600'>
-                                        続きの返信を見る
-                                    </button>
-                                    <button onclick="loadReplies({{ $comment->id }})"
-                                        id="close-button-{{ $comment->id }}"
-                                        class='text-sm text-gray-400 hover:text-gray-500 hidden'>
-                                        続きの返信を閉じる
-                                    </button>
-                                    <div id="replies-{{ $comment->id }}" style="margin-left: 40px;"></div>
+
+                                <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
+                                @if (!$loop->last)
+                                    <hr class="border-t my-4">
                                 @endif
                             </div>
-                        </div>
-                    @endforeach
-                </div>
-            @endif
+                        @endforeach
+                    </div>
+                @endif
+            </div>
         </div>
+    </div>
 
-        <!-- 右側サイドバーブロック -->
-        <div class="bg-gray-100 rounded-lg shadow-md p-6">
-            <h2 class="text-lg font-bold">サイドバーコンテンツ</h2>
-            <ul class="space-y-2">
-                <li><a href="#" class="text-blue-500 hover:underline">リンク1</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">リンク2</a></li>
-                <li><a href="#" class="text-blue-500 hover:underline">リンク3</a></li>
-            </ul>
-        </div>
+    <!-- 右側サイドバーブロック -->
+    <div class="bg-gray-100 rounded-lg shadow-md p-6">
+        <h2 class="text-lg font-bold">サイドバーコンテンツ</h2>
+        <ul class="space-y-2">
+            <li><a href="#" class="text-blue-500 hover:underline">リンク1</a></li>
+            <li><a href="#" class="text-blue-500 hover:underline">リンク2</a></li>
+            <li><a href="#" class="text-blue-500 hover:underline">リンク3</a></li>
+        </ul>
+    </div>
     </div>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">

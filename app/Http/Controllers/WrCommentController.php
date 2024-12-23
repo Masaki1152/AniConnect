@@ -37,7 +37,12 @@ class WrCommentController extends Controller
         // ログインしているユーザーidの登録
         $input_comment['user_id'] = Auth::id();
         $wr_comment->fill($input_comment)->save();
-        return back()->with('status', 'コメントを投稿しました。');
+
+        // Bladeテンプレートをレンダリング
+        $commentHtml = view('comments.input_comment', ['comment' => $wr_comment])->render();
+        //return back()->with('status' => 'コメントを投稿しました。', 'commentHtml' => $commentHtml);
+        return response()->json(['message' => 'コメントを投稿しました。', 'commentHtml' => $commentHtml], 200);
+        //return response()->json(['message' => 'コメントを投稿しました。']);
     }
 
     // コメントを削除する
