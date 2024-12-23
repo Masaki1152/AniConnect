@@ -47,12 +47,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
                 const data = await response.json();
                 console.log(data);
+                console.log(parentId);
 
                 // 新しいコメントを挿入
                 const commentBlock = parentId
-                    ? document.querySelector(`#comment-${parentId} .replies`)
+                    ? document.querySelector(`#replies-${parentId} .reply_block`)
                     : document.querySelector('#comments-section #comment_block');
 
+                console.log(document.querySelector(`#replies-${parentId}`));
                 if (commentBlock) {
                     commentBlock.insertAdjacentHTML('beforeend', data.commentHtml);
                     // 新しいコメントの要素を取得

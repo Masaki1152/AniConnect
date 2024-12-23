@@ -6,6 +6,8 @@ function loadReplies(commentId) {
     if (repliesContainer.style.display === 'none' || repliesContainer.style.display === '') {
         openRepliesButton.textContent = "読み込み中...";
         repliesContainer.style.display = 'block';
+        const replyBlock = document.createElement('div');
+        replyBlock.className = 'reply_block'
         // Ajax リクエスト
         fetch(`/work_reviews/comments/${commentId}/replies`, {
             method: 'GET',
@@ -137,7 +139,7 @@ function loadReplies(commentId) {
                     ` : ''}
                 </div>
             `;
-                    repliesContainer.appendChild(replyDiv);
+                    replyBlock.appendChild(replyDiv);
                 });
 
                 // ボタンを切り替え
@@ -145,6 +147,8 @@ function loadReplies(commentId) {
                 openRepliesButton.textContent = "続きの返信を見る";
                 openRepliesButton.style.display = 'none';
                 closeRepliesButton.style.display = 'inline';
+
+                repliesContainer.appendChild(replyBlock);
             })
             .catch(error => {
                 console.error('エラーが発生しました:', error);

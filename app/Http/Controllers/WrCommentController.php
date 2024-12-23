@@ -39,10 +39,8 @@ class WrCommentController extends Controller
         $wr_comment->fill($input_comment)->save();
 
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', ['comment' => $wr_comment])->render();
-        //return back()->with('status' => 'コメントを投稿しました。', 'commentHtml' => $commentHtml);
-        return response()->json(['message' => 'コメントを投稿しました。', 'commentHtml' => $commentHtml], 200);
-        //return response()->json(['message' => 'コメントを投稿しました。']);
+        $commentHtml = view('comments.input_comment', ['comment' => $wr_comment, 'status' => 'stored'])->render();
+        return response()->json(['message' => 'コメントを投稿しました。', 'commentHtml' => $commentHtml]);
     }
 
     // コメントを削除する
