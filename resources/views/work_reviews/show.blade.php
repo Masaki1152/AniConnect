@@ -7,6 +7,9 @@
             </div>
         </div>
     @endif
+    <div id="store-message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <div id="like-message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
@@ -110,9 +113,11 @@
                         <div class='content_fotter_comment'>
                             <!-- コメントを追加したい場合 -->
                             <button id='toggleComments' type='button'
-                                class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">コメントする</button>
+                                class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
+                                onclick="toggleCommentForm()">コメントする</button>
                             <button id='closeComments' type='button'
-                                class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden">閉じる</button>
+                                class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden"
+                                onclick="toggleCommentForm()">閉じる</button>
                         </div>
                         <div class='like flex items-center gap-2'>
                             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
@@ -162,7 +167,6 @@
                             </div>
                         </div>
                     </div>
-                    <div id="store-message" class="hidden text-green-500 mt-2"></div>
                 </div>
             </div>
             <div class="text-lg font-semibold">
@@ -177,7 +181,6 @@
                         @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
                             <div class="commentContainer">
                                 @include('comments.input_comment', ['comment' => $comment])
-
                                 <div class='childComment flex items-center gap-4 mt-4'>
                                     <!-- 子コメントがあれば表示 -->
                                     @if ($work_review->workReviewComments->where('parent_id', $comment->id)->count() > 0)
@@ -289,4 +292,6 @@
     <script src="{{ asset('/js/comments/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/load_reply.js') }}"></script>
     <script src="{{ asset('/js/comments/add_comment.js') }}"></script>
+    <script src="{{ asset('/js/comments/create_comment_preview.js') }}"></script>
+    <script src="{{ asset('/js/comments/store_comment.js') }}"></script>
 </x-app-layout>
