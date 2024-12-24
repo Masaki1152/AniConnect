@@ -1,20 +1,3 @@
-// document.addEventListener('DOMContentLoaded', function () {
-
-//     // 投稿に対するコメントブロックの表示
-//     toggleCommentsButton.addEventListener('click', () => {
-//         addCommentBlock.style.display = 'block';
-//         toggleCommentsButton.style.display = 'none';
-//         closeCommentsButton.style.display = 'inline';
-//     });
-
-//     // 投稿に対するコメントブロックの非表示
-//     closeCommentsButton.addEventListener('click', () => {
-//         addCommentBlock.style.display = 'none';
-//         toggleCommentsButton.style.display = 'inline';
-//         closeCommentsButton.style.display = 'none';
-//     });
-// });
-
 // 投稿のコメントフォームの表示/非表示を切り替える関数
 function toggleCommentForm() {
     const toggleCommentButton = document.getElementById('toggleComments');

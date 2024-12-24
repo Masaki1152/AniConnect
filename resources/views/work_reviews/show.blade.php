@@ -143,7 +143,8 @@
                             <input type="hidden" id="parent_id-{{ $work_review->id }}" value="">
                             <textarea id="comment_body-{{ $work_review->id }}" required class="w-full p-2 mb-2 border rounded-lg"
                                 placeholder="コメントを入力してください"></textarea>
-                            <p id="body_error" class="text-red-500 text-sm hidden">コメントを入力してください。</p>
+                            <p id="body_error-{{ $work_review->id }}" class="text-red-500 text-sm hidden">
+                                コメントを入力してください。</p>
                             <div class="image mb-4">
                                 <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
                                 <label>

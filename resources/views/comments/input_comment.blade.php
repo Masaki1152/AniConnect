@@ -114,7 +114,7 @@
             <input type="hidden" id="parent_id-{{ $comment->id }}" value="{{ $comment->id }}">
             <textarea id="comment_body-{{ $comment->id }}" required class="w-full p-2 mb-2 border rounded-lg"
                 placeholder="コメントを入力してください"></textarea>
-            <p id="body_error" class="text-red-500 text-sm hidden">コメントを入力してください。</p>
+            <p id="body_error-{{ $comment->id }}" class="text-red-500 text-sm hidden">コメントを入力してください。</p>
             <div class="image mb-4">
                 <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
                 <label>
@@ -132,8 +132,9 @@
             </div>
             <div class="flex justify-center mt-4">
                 <button id="submit_comment" data-comment-id='{{ $comment->id }}'
-                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">
-                    コメントする
+                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
+                    onclick="storeComment({{ $comment->id }})">
+                    コメントするよ～～～
                 </button>
             </div>
         </div>
