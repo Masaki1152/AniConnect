@@ -110,12 +110,21 @@ class WrCommentController extends Controller
     {
         $wr_comment = WorkReviewComment::find($comment_id);
         $replies = $wr_comment->replies()->with('user', 'users', 'replies')->get();
+        // $replies = $replies->map(function ($reply) {
+        //     $reply->is_liked_by_user = $reply->users->contains(auth()->user());
+        //     $reply->like_user_count = $reply->users->count();
+        //     return $reply;
+        // });
+
+        //dd($replies);
         $replies = $replies->map(function ($reply) {
-            $reply->is_liked_by_user = $reply->users->contains(auth()->user());
-            $reply->like_user_count = $reply->users->count();
+            // Bladeテンプレートをレンダリング
+            $reply->html = view('comments.input_comment', ['comment' => $reply, 'status' => 'show'])->render();
             return $reply;
         });
+        //dd($repliesHtml);
 
-        return response()->json($replies);
+        //return view('work_story_posts.edit');
+        return response()->json(['replies' => $replies]);
     }
 }
