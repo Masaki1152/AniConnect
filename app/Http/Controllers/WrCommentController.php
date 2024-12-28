@@ -38,8 +38,11 @@ class WrCommentController extends Controller
         $input_comment['user_id'] = Auth::id();
         $wr_comment->fill($input_comment)->save();
 
+        // statusの確認
+        $status = is_null($wr_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
+
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', ['comment' => $wr_comment, 'status' => 'stored'])->render();
+        $commentHtml = view('comments.input_comment', ['comment' => $wr_comment, 'status' => $status])->render();
         return response()->json(['message' => 'コメントを投稿しました。', 'new_comment_id' => $wr_comment->id, 'commentHtml' => $commentHtml]);
     }
 
@@ -110,21 +113,12 @@ class WrCommentController extends Controller
     {
         $wr_comment = WorkReviewComment::find($comment_id);
         $replies = $wr_comment->replies()->with('user', 'users', 'replies')->get();
-        // $replies = $replies->map(function ($reply) {
-        //     $reply->is_liked_by_user = $reply->users->contains(auth()->user());
-        //     $reply->like_user_count = $reply->users->count();
-        //     return $reply;
-        // });
-
-        //dd($replies);
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
             $reply->html = view('comments.input_comment', ['comment' => $reply, 'status' => 'show'])->render();
             return $reply;
         });
-        //dd($repliesHtml);
 
-        //return view('work_story_posts.edit');
         return response()->json(['replies' => $replies]);
     }
 }

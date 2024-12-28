@@ -181,12 +181,11 @@
                     <!-- コメント表示 -->
                     <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
                         @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
-                            <div class="commentContainer">
+                            <div id='replies-{{ $work_review->id }}'>
                                 @include('comments.input_comment', [
                                     'comment' => $comment,
                                     'status' => 'show',
                                 ])
-
                                 <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
                                 @if (!$loop->last)
                                     <hr class="border-t my-4">

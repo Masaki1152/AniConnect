@@ -46,6 +46,43 @@ async function storeComment(dataCommentId) {
         // 新しいコメントのidを取得
         const newCommentId = data.new_comment_id;
 
+        // parentIdがnull、つまり親コメントの場合
+        if (!parentId) {
+            const parentCommentSection = document.getElementById('comments-section');
+
+            let parentCommentBlock = document.getElementById('comment_block');
+            // 他のコメントが存在する場合
+            if (parentCommentBlock) {
+                // 枠線のHTMLを定義
+                const borderLineHtml = '<hr class="border-t my-4">';
+                parentCommentBlock.insertAdjacentHTML('beforeend', borderLineHtml + data.commentHtml);
+                const newParentComment = parentCommentBlock.lastElementChild;
+                newParentComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                // 他のコメントがない場合、comment_blockを新規作成
+                parentCommentBlock = document.createElement('div');
+                parentCommentBlock.id = 'comment_block';
+                parentCommentBlock.classList.add('bg-white', 'rounded-lg', 'shadow-md', 'p-6');
+
+                // 子コメントのコンテナを先に生成
+                const repliesContainer = document.createElement('div');
+                repliesContainer.id = `replies-${newCommentId}`;
+                repliesContainer.style.marginLeft = '40px';
+
+                parentCommentBlock.appendChild(repliesContainer);
+                parentCommentBlock.insertAdjacentHTML('afterbegin', data.commentHtml);
+                parentCommentSection.appendChild(parentCommentBlock);
+
+                repliesContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            // フォームのリセット
+            document.getElementById(`comment_body-${dataCommentId}`).value = '';
+            document.getElementById(`inputElm-${dataCommentId}`).value = '';
+            document.getElementById(`preview-${dataCommentId}`).innerHTML = '';
+            return;
+        }
+
         const commentBlock = document.querySelector(`#replies-${parentId}`);
         const repliesButton = document.querySelector(`#replies-button-${parentId}`);
 
@@ -82,17 +119,23 @@ async function storeComment(dataCommentId) {
             }
         } else {
             // 子コメントセクションがない場合、まず開く
-            console.log("タイプC");
             const childCommentContainer = document.createElement('div');
             childCommentContainer.id = `replies-${newCommentId}`;
             childCommentContainer.style.marginLeft = '40px';
-            const parentCommentBlock = document.querySelector(`#replies-${parentId}`);
-            console.log(`#replies-${parentId}`);
-            console.log(parentCommentBlock);
-            parentCommentBlock.appendChild(childCommentContainer);
 
-            childCommentContainer.insertAdjacentHTML('beforeend', data.commentHtml);
-            childCommentContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const parentCommentBlock = document.querySelector(`#replies-${parentId}`);
+            if (!parentCommentBlock) {
+                const newParentBlock = document.createElement('div');
+                newParentBlock.id = `replies-${parentId}`;
+                newParentBlock.style.marginLeft = '40px';
+                newParentBlock.insertAdjacentHTML('beforeend', data.commentHtml);
+                document.getElementById('comments-section').appendChild(newParentBlock);
+                newParentBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            } else {
+                parentCommentBlock.appendChild(childCommentContainer);
+                childCommentContainer.insertAdjacentHTML('beforeend', data.commentHtml);
+                childCommentContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
         }
 
         // メッセージの表示

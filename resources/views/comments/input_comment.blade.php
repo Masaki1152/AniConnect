@@ -1,5 +1,5 @@
 <div id="comment-{{ $comment->id }}">
-    @if ($status == 'stored')
+    @if ($status == 'child_comment_stored')
         <hr class="border-t my-4">
     @endif
     <div class='flex items-center justify-between'>

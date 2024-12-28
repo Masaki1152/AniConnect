@@ -6,8 +6,6 @@ function loadReplies(commentId) {
     if (repliesContainer.style.display === 'none' || repliesContainer.style.display === '') {
         openRepliesButton.textContent = "読み込み中...";
         repliesContainer.style.display = 'block';
-        //const replyBlock = document.createElement('div');
-        //replyBlock.className = 'reply_block'
         // Ajax リクエスト
         fetch(`/work_reviews/comments/${commentId}/replies`, {
             method: 'GET',
