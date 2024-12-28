@@ -21,6 +21,7 @@ function loadReplies(commentId) {
 
                 // 子コメントを表示
                 replies.forEach(reply => {
+                    console.log(reply);
                     const replyDiv = document.createElement('div');
                     replyDiv.classList.add('border-t', 'border-gray-200', 'pt-4', 'mt-4');
 
@@ -130,24 +131,48 @@ function loadReplies(commentId) {
 
                     // コメントのフッター
                     const footerDiv = document.createElement('div');
-                    footerDiv.classList.add('flex', 'gap-4', 'items-center', 'justify-end', 'mt-4');
-                    const commentFooterDiv = document.createElement('div');
-                    commentFooterDiv.classList.add('content_footer_comment');
+                    footerDiv.classList.add('flex', 'items-center', 'justify-between', 'gap-4', 'mt-4');
+
+                    // コメントフッター左側
+                    const childCommentDiv = document.createElement('div');
+                    childCommentDiv.classList.add('childComment', 'flex', 'items-center', 'gap-4');
+                    if (reply.replies && reply.replies.length > 0) {
+                        const viewRepliesButton = document.createElement('button');
+                        viewRepliesButton.onclick = () => loadReplies(reply.id);
+                        viewRepliesButton.id = `replies-button-${reply.id}`;
+                        viewRepliesButton.className = 'text-sm text-blue-500 hover:text-blue-600';
+                        viewRepliesButton.textContent = '続きの返信を見る';
+                        childCommentDiv.appendChild(viewRepliesButton);
+
+                        const closeRepliesButton = document.createElement('button');
+                        closeRepliesButton.onclick = () => loadReplies(reply.id);
+                        closeRepliesButton.id = `close-button-${reply.id}`;
+                        closeRepliesButton.className = 'text-sm text-gray-400 hover:text-gray-500 hidden';
+                        closeRepliesButton.textContent = '続きの返信を閉じる';
+                        childCommentDiv.appendChild(closeRepliesButton);
+                    }
+
+                    footerDiv.appendChild(childCommentDiv);
+
+                    // コメントフッター右側
+                    const rightFooterDiv = document.createElement('div');
+                    rightFooterDiv.classList.add('content_footer_comment', 'flex', 'items-center', 'gap-4');
+
                     const toggleButton = document.createElement('button');
                     toggleButton.id = `toggleChildComments-${reply.id}`;
                     toggleButton.textContent = 'コメントする';
                     toggleButton.classList.add('px-2', 'py-1', 'bg-blue-500', 'text-white', 'rounded-lg', 'shadow-md', 'hover:bg-blue-600');
                     toggleButton.addEventListener('click', () => toggleChildCommentForm(reply.id));
+                    rightFooterDiv.appendChild(toggleButton);
 
                     const closeButton = document.createElement('button');
                     closeButton.id = `closeChildComments-${reply.id}`;
                     closeButton.textContent = '閉じる';
                     closeButton.classList.add('px-2', 'py-1', 'bg-gray-300', 'text-gray-700', 'rounded-lg', 'shadow-md', 'hover:bg-gray-400', 'hidden');
                     closeButton.addEventListener('click', () => toggleChildCommentForm(reply.id));
+                    rightFooterDiv.appendChild(closeButton);
 
-                    commentFooterDiv.appendChild(toggleButton);
-                    commentFooterDiv.appendChild(closeButton);
-                    footerDiv.appendChild(commentFooterDiv);
+                    //footerDiv.appendChild(commentFooterDiv);
 
                     // コメントのいいねボタンセクション
                     const commentLikeSection = document.createElement('div');
@@ -156,23 +181,26 @@ function loadReplies(commentId) {
                     const likeButton = document.createElement('button');
                     likeButton.id = `comment-like_button-${reply.id}`;
                     likeButton.dataset.commentId = reply.id;
-                    likeButton.className = 'comment-like_button px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600';
+                    likeButton.classList.add('px-2', 'py-1', 'bg-blue-500', 'text-white', 'rounded-lg', 'shadow-md', 'hover:bg-blue-600');
                     likeButton.textContent = reply.is_liked_by_user ? 'いいね取り消し' : 'いいね';
                     likeButton.onclick = () => toggleLike(reply.id, `comment-like_button-${reply.id}`, `comment-like_count-${reply.id}`);
                     commentLikeSection.appendChild(likeButton);
 
                     const likeUserDiv = document.createElement('div');
-                    likeUserDiv.className = 'comment-like_user';
+                    likeUserDiv.classList.add('comment-like_user', 'text-gray-700', 'text-lg', 'font-medium');
                     const likeUserLink = document.createElement('a');
                     likeUserLink.href = `/work_reviews/comments/${reply.id}/like/index`;
-                    likeUserLink.className = 'text-lg font-medium text-gray-700';
                     const likeUserCount = document.createElement('p');
                     likeUserCount.id = `comment-like_count-${reply.id}`;
                     likeUserCount.textContent = `${reply.like_user_count}件`;
                     likeUserLink.appendChild(likeUserCount);
                     likeUserDiv.appendChild(likeUserLink);
                     commentLikeSection.appendChild(likeUserDiv);
-                    footerDiv.appendChild(commentLikeSection);
+
+                    // 右側コンテナに追加
+                    rightFooterDiv.appendChild(commentLikeSection);
+
+                    footerDiv.appendChild(rightFooterDiv);
                     replyDiv.appendChild(footerDiv);
 
                     // 子コメント作成フォーム
@@ -244,7 +272,7 @@ function loadReplies(commentId) {
                     submitDiv.className = 'flex justify-center mt-4';
                     const submitButton = document.createElement('button');
                     submitButton.classList.add('submit_comment', 'px-2', 'py-1', 'bg-green-500', 'text-white', 'rounded-lg', 'shadow-md', 'hover:bg-green-600');
-                    submitButton.textContent = 'コメントしろや';
+                    submitButton.textContent = 'コメントする';
                     submitButton.setAttribute('data-comment-id', reply.id);
 
                     submitButton.addEventListener('click', () => storeComment(reply.id));
@@ -257,29 +285,10 @@ function loadReplies(commentId) {
 
                     // 子コメントセクション
                     if (reply.replies && reply.replies.length > 0) {
-                        const childCommentDiv = document.createElement('div');
-                        childCommentDiv.className = 'childComment';
-
-                        const viewRepliesButton = document.createElement('button');
-                        viewRepliesButton.onclick = () => loadReplies(reply.id);
-                        viewRepliesButton.id = `replies-button-${reply.id}`;
-                        viewRepliesButton.className = 'text-sm text-blue-500 hover:text-blue-600';
-                        viewRepliesButton.textContent = '続きの返信を見る';
-                        childCommentDiv.appendChild(viewRepliesButton);
-
-                        const closeRepliesButton = document.createElement('button');
-                        closeRepliesButton.onclick = () => loadReplies(reply.id);
-                        closeRepliesButton.id = `close-button-${reply.id}`;
-                        closeRepliesButton.className = 'text-sm text-gray-400 hover:text-gray-500 hidden';
-                        closeRepliesButton.textContent = '続きの返信を閉じる';
-                        childCommentDiv.appendChild(closeRepliesButton);
-
                         const repliesContainer = document.createElement('div');
                         repliesContainer.id = `replies-${reply.id}`;
                         repliesContainer.style.marginLeft = '40px';
-                        childCommentDiv.appendChild(repliesContainer);
-
-                        replyDiv.appendChild(childCommentDiv);
+                        replyDiv.appendChild(repliesContainer);
                     }
 
                     replyBlock.appendChild(replyDiv);

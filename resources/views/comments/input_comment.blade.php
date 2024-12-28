@@ -67,19 +67,21 @@
             </div>
         </div>
     </div>
-    <div class='childComment flex items-center gap-4 mt-4'>
+    <div class='childComment flex items-center justify-between gap-4 mt-4'>
         <!-- 子コメントがあれば表示 -->
-        @if ($comment->replies->where('parent_id', $comment->id)->count() > 0)
-            <button onclick="loadReplies({{ $comment->id }})" id="replies-button-{{ $comment->id }}"
-                class='text-sm text-blue-500 hover:text-blue-600'>
-                続きの返信を見る
-            </button>
-            <button onclick="loadReplies({{ $comment->id }})" id="close-button-{{ $comment->id }}"
-                class='text-sm text-gray-400 hover:text-gray-500 hidden'>
-                続きの返信を閉じる
-            </button>
-        @endif
-        <div class='flex justify-end items-center ml-auto gap-4'>
+        <div class="flex items-center gap-4">
+            @if ($comment->replies->where('parent_id', $comment->id)->count() > 0)
+                <button onclick="loadReplies({{ $comment->id }})" id="replies-button-{{ $comment->id }}"
+                    class='text-sm text-blue-500 hover:text-blue-600'>
+                    続きの返信を見る
+                </button>
+                <button onclick="loadReplies({{ $comment->id }})" id="close-button-{{ $comment->id }}"
+                    class='text-sm text-gray-400 hover:text-gray-500 hidden'>
+                    続きの返信を閉じる
+                </button>
+            @endif
+        </div>
+        <div class='flex items-center gap-4'>
             <!-- コメントを追加したい場合 -->
             <button id='toggleChildComments-{{ $comment->id }}' type='button'
                 class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
@@ -134,7 +136,7 @@
                 <button id="submit_comment" data-comment-id='{{ $comment->id }}'
                     class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
                     onclick="storeComment({{ $comment->id }})">
-                    コメントするよ～～～
+                    コメントする
                 </button>
             </div>
         </div>

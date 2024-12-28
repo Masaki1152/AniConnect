@@ -161,8 +161,9 @@
                             <div id="preview-{{ $work_review->id }}" class="grid grid-cols-2 md:grid-cols-4 gap-2">
                             </div>
                             <div class="flex justify-center mt-4">
-                                <button id="submit_comment" data-comment-id='{{ $work_review->id }}'
-                                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600">
+                                <button id="submit_comment" data-comment-id='{{ $work_review->id }}' type='button'
+                                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
+                                    onclick="storeComment({{ $work_review->id }})">
                                     コメントする
                                 </button>
                             </div>
