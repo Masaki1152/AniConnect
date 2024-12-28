@@ -42,34 +42,39 @@ async function storeComment(dataCommentId) {
         }
 
         const data = await response.json();
-        console.log(data);
 
         // 新しいコメントのidを取得
         const newCommentId = data.new_comment_id;
 
-        const commentBlock = document.querySelector(`#replies-${parentId} .reply_block`);
+        const commentBlock = document.querySelector(`#replies-${parentId}`);
         const repliesButton = document.querySelector(`#replies-button-${parentId}`);
 
-        console.log(document.querySelector(`#replies-${parentId}`));
-        console.log(document.querySelector(`#replies-button-${parentId}`));
         // 子コメントである場合
         if (commentBlock) {
-            console.log("タイプはAかB");
             // 子コメントがすでに存在し、「続きの返信を見る」が未クリックの場合
             if (!commentBlock.innerHTML.trim() && repliesButton) {
-                console.log("タイプA");
                 // 「続きの返信を見る」をクリックして開く
+                // 「続きの返信を見る」をクリックした時点で新しいコメントが追加される
                 repliesButton.click();
-                setTimeout(() => {
-                    commentBlock.insertAdjacentHTML('beforeend', data.commentHtml);
-                    // 新しいコメントの要素を取得
-                    const newComment = commentBlock.lastElementChild;
-                    // 新しいコメントまでスクロール
-                    // ボタン処理の実行後を待つ
-                    newComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 500);
+
+                // MutationObserverでDOM の変化を監視
+                const targetNode = document.querySelector(`#replies-${parentId}`);
+                if (targetNode) {
+                    const observer = new MutationObserver((mutationsList, observer) => {
+                        const reply_block = targetNode.lastElementChild;
+                        if (reply_block) {
+                            // 新しいコメントが追加されたらスクロール
+                            reply_block.lastElementChild.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            // 監視を停止
+                            observer.disconnect();
+                        }
+                    });
+
+                    observer.observe(targetNode, { childList: true, subtree: true });
+                } else {
+                    console.error(`#replies-${parentId} が見つかりませんでした。`);
+                }
             } else {
-                console.log("タイプB");
                 // 子コメントが存在し、表示済みの場合
                 commentBlock.insertAdjacentHTML('beforeend', data.commentHtml);
                 const newComment = commentBlock.lastElementChild;
@@ -77,28 +82,18 @@ async function storeComment(dataCommentId) {
             }
         } else {
             // 子コメントセクションがない場合、まず開く
+            console.log("タイプC");
             const childCommentContainer = document.createElement('div');
             childCommentContainer.id = `replies-${newCommentId}`;
             childCommentContainer.style.marginLeft = '40px';
-            console.log("タイプC");
             const parentCommentBlock = document.querySelector(`#replies-${parentId}`);
+            console.log(`#replies-${parentId}`);
+            console.log(parentCommentBlock);
             parentCommentBlock.appendChild(childCommentContainer);
 
             childCommentContainer.insertAdjacentHTML('beforeend', data.commentHtml);
             childCommentContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
         }
-
-        // 新しいコメントを挿入
-        // const commentBlock = parentId
-        //     ? document.querySelector(`#replies-${parentId} .reply_block`)
-        //     : document.querySelector('#comments-section #comment_block');
-        // if (commentBlock) {
-        //     commentBlock.insertAdjacentHTML('beforeend', data.commentHtml);
-        //     // 新しいコメントの要素を取得
-        //     const newComment = commentBlock.lastElementChild;
-        //     // 新しいコメントまでスクロール
-        //     newComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        // }
 
         // メッセージの表示
         const storeMessage = document.getElementById('store-message');

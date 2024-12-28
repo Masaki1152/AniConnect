@@ -136,7 +136,7 @@
                 <button id="submit_comment" data-comment-id='{{ $comment->id }}'
                     class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
                     onclick="storeComment({{ $comment->id }})">
-                    コメントする
+                    コメントするinput
                 </button>
             </div>
         </div>

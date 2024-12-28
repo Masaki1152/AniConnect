@@ -21,7 +21,7 @@ function loadReplies(commentId) {
 
                 // 子コメントを表示
                 replies.forEach(reply => {
-                    console.log(reply);
+                    //console.log(reply);
                     const replyDiv = document.createElement('div');
                     replyDiv.classList.add('border-t', 'border-gray-200', 'pt-4', 'mt-4');
 
@@ -172,8 +172,6 @@ function loadReplies(commentId) {
                     closeButton.addEventListener('click', () => toggleChildCommentForm(reply.id));
                     rightFooterDiv.appendChild(closeButton);
 
-                    //footerDiv.appendChild(commentFooterDiv);
-
                     // コメントのいいねボタンセクション
                     const commentLikeSection = document.createElement('div');
                     commentLikeSection.classList.add('comment-like', 'flex', 'items-center', 'gap-2');
@@ -272,7 +270,7 @@ function loadReplies(commentId) {
                     submitDiv.className = 'flex justify-center mt-4';
                     const submitButton = document.createElement('button');
                     submitButton.classList.add('submit_comment', 'px-2', 'py-1', 'bg-green-500', 'text-white', 'rounded-lg', 'shadow-md', 'hover:bg-green-600');
-                    submitButton.textContent = 'コメントする';
+                    submitButton.textContent = 'コメントするlord';
                     submitButton.setAttribute('data-comment-id', reply.id);
 
                     submitButton.addEventListener('click', () => storeComment(reply.id));
