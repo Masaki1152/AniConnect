@@ -8,7 +8,7 @@ async function toggleLike(commentId, buttonId, userCountId) {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
-                'X-CSRF-TOKEN': `${csrfToken}`
+                'X-CSRF-TOKEN': csrfToken
             },
         });
         const data = await response.json();
@@ -20,10 +20,11 @@ async function toggleLike(commentId, buttonId, userCountId) {
             userCount.innerText = `${data.like_user}件`;
         }
         // メッセージを表示
-        const likeMessage = document.getElementById('like-message');
+        const likeMessage = document.getElementById('message');
         likeMessage.textContent = data.message;
         likeMessage.classList.remove('hidden');
         likeMessage.classList.add('block');
+        likeMessage.style.backgroundColor = categoryColors[data.message] || '#d1d5db';
 
         // 3秒後にメッセージを非表示
         setTimeout(() => {

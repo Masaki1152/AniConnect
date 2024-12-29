@@ -34,7 +34,8 @@
                     @csrf
                     @method('DELETE')
                     <button type="button" data-comment-id="{{ $comment->id }}"
-                        class="delete-comment-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                        class="delete-comment-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                        onclick="deleteComment({{ $comment->id }})">
                         コメントを削除する
                     </button>
                 </form>
@@ -136,7 +137,7 @@
                 <button id="submit_comment" data-comment-id='{{ $comment->id }}'
                     class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
                     onclick="storeComment({{ $comment->id }})">
-                    コメントするinput
+                    コメントする
                 </button>
             </div>
         </div>

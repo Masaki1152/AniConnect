@@ -24,9 +24,6 @@ async function storeComment(dataCommentId) {
         bodyError.classList.add('hidden');
     }
 
-    console.log("formDataは、");
-    formData.forEach((form) => { console.log(form) });
-
     // 非同期リクエスト
     try {
         const response = await fetch('/work_reviews/comments/store', {
@@ -54,11 +51,13 @@ async function storeComment(dataCommentId) {
             // 他のコメントが存在する場合
             if (parentCommentBlock) {
                 // 枠線のHTMLを定義
+                console.log("a");
                 const borderLineHtml = '<hr class="border-t my-4">';
                 parentCommentBlock.insertAdjacentHTML('beforeend', borderLineHtml + data.commentHtml);
                 const newParentComment = parentCommentBlock.lastElementChild;
                 newParentComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
+                console.log("b");
                 // 他のコメントがない場合、comment_blockを新規作成
                 parentCommentBlock = document.createElement('div');
                 parentCommentBlock.id = 'comment_block';
@@ -80,6 +79,17 @@ async function storeComment(dataCommentId) {
             document.getElementById(`comment_body-${dataCommentId}`).value = '';
             document.getElementById(`inputElm-${dataCommentId}`).value = '';
             document.getElementById(`preview-${dataCommentId}`).innerHTML = '';
+            // メッセージの表示
+            const storeMessage = document.getElementById('message');
+            storeMessage.textContent = data.message;
+            storeMessage.classList.remove('hidden');
+            storeMessage.classList.add('block');
+            storeMessage.style.backgroundColor = categoryColors[data.message] || '#d1d5db';
+            // コメント数の表示変更
+            const commentCount = document.getElementById('comment_count');
+            commentCount.innerHTML = Number(commentCount.innerHTML) + 1;
+            // フォームを閉じる
+            toggleCommentForm();
             return;
         }
 
@@ -139,10 +149,14 @@ async function storeComment(dataCommentId) {
         }
 
         // メッセージの表示
-        const storeMessage = document.getElementById('store-message');
+        const storeMessage = document.getElementById('message');
         storeMessage.textContent = data.message;
         storeMessage.classList.remove('hidden');
         storeMessage.classList.add('block');
+        storeMessage.style.backgroundColor = categoryColors[data.message] || '#d1d5db';
+        // コメント数の表示変更
+        const commentCount = document.getElementById('comment_count');
+        commentCount.innerHTML = Number(commentCount.innerHTML) + 1;
 
         // 3秒後にメッセージを非表示
         setTimeout(() => {

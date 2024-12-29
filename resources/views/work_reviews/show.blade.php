@@ -1,17 +1,15 @@
 <x-app-layout>
     @if (session('status'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
-            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50"
+            style="background-color: {{ getCategoryColor(session('status')) }};">
             <div class="text-white">
                 {{ session('status') }}
             </div>
         </div>
     @endif
-    <div id="store-message"
-        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
-    </div>
-    <div id="like-message"
-        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
 
     <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -172,8 +170,8 @@
                 </div>
             </div>
             <div class="text-lg font-semibold">
-                「<span
-                    class="text-blue-500">{{ $work_review->post_title }}</span>」へのコメント：{{ count($work_review->workReviewComments) }}件
+                「<span class="text-blue-500">{{ $work_review->post_title }}</span>」へのコメント：<span
+                    id='comment_count'>{{ count($work_review->workReviewComments) }}</span>件
                 </p>
             </div>
             <div id="comments-section">
@@ -217,4 +215,14 @@
     <script src="{{ asset('/js/comments/add_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/create_comment_preview.js') }}"></script>
     <script src="{{ asset('/js/comments/store_comment.js') }}"></script>
+    <script>
+        // PHP の Helper 関数で定義した色データを JavaScript に渡す
+        const categoryColors = {!! json_encode([
+            'コメントと関連するすべての返信を削除しました' => getCategoryColor('コメントと関連するすべての返信を削除しました'),
+            'コメントの削除に失敗しました' => getCategoryColor('コメントの削除に失敗しました'),
+            'コメントを投稿しました。' => getCategoryColor('コメントを投稿しました。'),
+            'いいねしました' => getCategoryColor('いいねしました'),
+            'いいねを解除しました' => getCategoryColor('いいねを解除しました'),
+        ]) !!};
+    </script>
 </x-app-layout>

@@ -58,4 +58,22 @@ class WorkReviewComment extends Model
     {
         return $this->belongsToMany(User::class, 'user_wr_comment', 'wr_comment_id', 'user_id');
     }
+
+    // 該当の親コメントを持つコメントを取得
+    public function getParentCommentArray($comment_id)
+    {
+        $parentCommentArray = collect([$comment_id]);
+        // 再起処理用のキュー
+        $queue = [$comment_id];
+
+        while (!empty($queue)) {
+            $currentId = array_shift($queue);
+            $childComments = $this->where('parent_id', $currentId)->pluck('id');
+            $parentCommentArray = $parentCommentArray->merge($childComments);
+            // キューの更新
+            $queue = array_merge($queue, $childComments->toArray());
+        }
+
+        return $parentCommentArray;
+    }
 }

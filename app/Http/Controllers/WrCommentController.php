@@ -47,24 +47,21 @@ class WrCommentController extends Controller
     }
 
     // コメントを削除する
-    public function delete($comment_id)
+    public function delete(WorkReviewComment $wr_comment, $comment_id)
     {
-        // 編集の対象となるデータを取得
-        $targetComment = WorkReviewComment::find($comment_id);
-        // 削除する投稿の画像も削除する処理
-        for ($counter = 1; $counter < 5; $counter++) {
-            $removed_image_path = $targetComment->{'image' . $counter};
-            // DBのimageの中身がnullであれば処理をスキップする
-            if (is_null($removed_image_path)) {
-                break;
+        try {
+            $parentCommentArray = $wr_comment->getParentCommentArray($comment_id);
+            // 子コメントがあれば全て削除
+            foreach ($parentCommentArray as $target_comment_id) {
+                $this->deleteComment($target_comment_id);
             }
-            $public_id = $this->extractPublicIdFromUrl($removed_image_path);
-            Cloudinary::destroy($public_id);
-        }
-        // データの削除
-        $targetComment->delete();
+            // コメントの数を取得
+            $cpmment_count = count($parentCommentArray);
 
-        return back()->with('status', '投稿を削除しました');
+            return response()->json(['message' => 'コメントと関連するすべての返信を削除しました', 'commentCount' => $cpmment_count], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'コメントの削除に失敗しました'], 500);
+        }
     }
 
     // コメントにいいねを行う
@@ -120,5 +117,24 @@ class WrCommentController extends Controller
         });
 
         return response()->json(['replies' => $replies]);
+    }
+
+    // 該当するコメントを削除する
+    public function deleteComment($comment_id)
+    {
+        // 編集の対象となるデータを取得
+        $targetComment = WorkReviewComment::find($comment_id);
+        // 削除する投稿の画像も削除する処理
+        for ($counter = 1; $counter < 5; $counter++) {
+            $removed_image_path = $targetComment->{'image' . $counter};
+            // DBのimageの中身がnullであれば処理をスキップする
+            if (is_null($removed_image_path)) {
+                break;
+            }
+            $public_id = $this->extractPublicIdFromUrl($removed_image_path);
+            Cloudinary::destroy($public_id);
+        }
+        // データの削除
+        $targetComment->delete();
     }
 }
