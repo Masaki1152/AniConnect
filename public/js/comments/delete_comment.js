@@ -20,6 +20,11 @@ function deleteComment(commentId) {
                 return response.json();
             })
             .then((data) => {
+                // 削除するコメントが一番上かどうかを確認
+                const commentBlock = document.getElementById('comment_block');
+                // ブロック内の最初の子要素を取得
+                const firstComment = commentBlock.querySelector('[id^="comment-"]');
+
                 // 削除成功時の処理
                 // DOM から削除
                 document.getElementById(`comment-${commentId}`).remove();
@@ -37,8 +42,21 @@ function deleteComment(commentId) {
                 commentCountSpan.innerHTML = commentCount;
                 // コメント数が0の場合はcomment_blockを非表示にする
                 if (commentCount == 0) {
-                    const commentSection = document.getElementById('comment_block');
-                    commentSection.remove();
+                    const commentBlock = document.getElementById('comment_block');
+                    commentBlock.remove();
+                }
+                // コメントの上ボーダーの削除
+                const border = document.getElementById(`border-${commentId}`);
+                if (border) {
+                    border.remove();
+                }
+                // 一番上のコメントであれば、下のボーダーを削除
+                if (firstComment && firstComment.id === `comment-${commentId}`) {
+                    // ブロック内の最初のボーダー要素を取得
+                    const firstBorder = commentBlock.querySelector('[id^="border-"]');
+                    if (firstBorder) {
+                        firstBorder.remove();
+                    }
                 }
 
                 // 3秒後にメッセージを非表示

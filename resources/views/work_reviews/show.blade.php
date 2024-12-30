@@ -186,7 +186,7 @@
                                 ])
                                 <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
                                 @if (!$loop->last)
-                                    <hr class="border-t my-4">
+                                    <hr class="border-t my-4" id="border-{{ $comment->id + 1 }}">
                                 @endif
                             </div>
                         @endforeach

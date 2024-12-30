@@ -51,13 +51,11 @@ async function storeComment(dataCommentId) {
             // 他のコメントが存在する場合
             if (parentCommentBlock) {
                 // 枠線のHTMLを定義
-                console.log("a");
-                const borderLineHtml = '<hr class="border-t my-4">';
+                const borderLineHtml = `<hr class="border-t my-4" id="border-${newCommentId}">`;
                 parentCommentBlock.insertAdjacentHTML('beforeend', borderLineHtml + data.commentHtml);
                 const newParentComment = parentCommentBlock.lastElementChild;
                 newParentComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                console.log("b");
                 // 他のコメントがない場合、comment_blockを新規作成
                 parentCommentBlock = document.createElement('div');
                 parentCommentBlock.id = 'comment_block';
@@ -79,12 +77,19 @@ async function storeComment(dataCommentId) {
             document.getElementById(`comment_body-${dataCommentId}`).value = '';
             document.getElementById(`inputElm-${dataCommentId}`).value = '';
             document.getElementById(`preview-${dataCommentId}`).innerHTML = '';
+
             // メッセージの表示
             const storeMessage = document.getElementById('message');
             storeMessage.textContent = data.message;
             storeMessage.classList.remove('hidden');
             storeMessage.classList.add('block');
             storeMessage.style.backgroundColor = categoryColors[data.message] || '#d1d5db';
+            // 3秒後にメッセージを非表示
+            setTimeout(() => {
+                storeMessage.classList.add('hidden');
+                storeMessage.classList.remove('block');
+            }, 3000);
+
             // コメント数の表示変更
             const commentCount = document.getElementById('comment_count');
             commentCount.innerHTML = Number(commentCount.innerHTML) + 1;
