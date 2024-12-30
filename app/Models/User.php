@@ -336,4 +336,16 @@ class User extends Authenticatable
             'following_id' // フォローしている相手のカラム
         );
     }
+
+    // WorkReviewCommentに対するリレーション 1対1の関係
+    public function workReviewComment()
+    {
+        return $this->hasOne(WorkReviewComment::class, 'id', 'work_review_id');
+    }
+
+    // いいねをしたWorkReviewCommentに対するリレーション 多対多の関係
+    public function workReviewComments()
+    {
+        return $this->belongsToMany(WorkReviewComment::class, 'user_wr_comment', 'user_id', 'wr_comment_id');
+    }
 }

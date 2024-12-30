@@ -288,6 +288,8 @@ return [
         'notification.title' => 'タイトル',
         'notification.body' => '内容',
         'notification.categories_array' => 'カテゴリー',
+        // コメントのバリデーション
+        'work_review_comment.body' => 'コメント'
     ],
 
 ];

@@ -4,7 +4,7 @@ const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute
 // いいね処理を非同期で行う
 document.addEventListener('DOMContentLoaded', function () {
     const likeClasses = document.querySelectorAll('.like');
-    const likeMessage = document.getElementById('like-message');
+    const likeMessage = document.getElementById('message');
     likeClasses.forEach(element => {
         // いいねボタンのクラスの取得
         let button = element.querySelector('#like_button');
@@ -28,15 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (data.status === 'liked') {
                     button.innerText = 'いいね取り消し';
-                    users.innerText = data.like_user;
+                    users.innerText = `${data.like_user}件`;
                 } else if (data.status === 'unliked') {
                     button.innerText = 'いいね';
-                    users.innerText = data.like_user;
+                    users.innerText = `${data.like_user}件`;
                 }
                 // メッセージを表示
                 likeMessage.textContent = data.message;
                 likeMessage.classList.remove('hidden');
                 likeMessage.classList.add('block');
+                likeMessage.style.backgroundColor = categoryColors[data.message] || '#d1d5db';
 
                 // 3秒後にメッセージを非表示
                 setTimeout(() => {
