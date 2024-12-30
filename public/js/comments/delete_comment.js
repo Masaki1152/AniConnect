@@ -3,7 +3,6 @@ function deleteComment(commentId) {
     'use strict'
 
     if (confirm('削除すると復元できません。\n同時にこのコメントへの返信も削除されます。\n本当に削除しますか？')) {
-        //document.getElementById(`comment_${commentId}`).submit();
         // コメント削除のリクエストを送信
         fetch(`/work_reviews/comments/${commentId}/delete`, {
             method: 'DELETE',
