@@ -114,4 +114,10 @@ class WorkStoryPost extends Model
     {
         return $this->belongsToMany(User::class, 'work_story_posts_users', 'work_story_post_id', 'user_id');
     }
+
+    // コメントに対するリレーション 一対多の関係
+    public function workStoryPostComments()
+    {
+        return $this->hasMany(WorkStoryPostComment::class, 'work_story_post_id', 'id');
+    }
 }

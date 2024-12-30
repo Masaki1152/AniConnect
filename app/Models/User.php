@@ -348,4 +348,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(WorkReviewComment::class, 'user_wr_comment', 'user_id', 'wr_comment_id');
     }
+
+    // WorkStoryPostCommentに対するリレーション 1対1の関係
+    public function workStoryPostComment()
+    {
+        return $this->hasOne(WorkStoryPostComment::class, 'id', 'work_story_post_id');
+    }
+
+    // いいねをしたWorkStoryPostCommentに対するリレーション 多対多の関係
+    public function workStoryPostComments()
+    {
+        return $this->belongsToMany(WorkStoryPostComment::class, 'user_wsp_comment', 'user_id', 'wsp_comment_id');
+    }
 }

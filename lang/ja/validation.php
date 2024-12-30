@@ -289,7 +289,8 @@ return [
         'notification.body' => '内容',
         'notification.categories_array' => 'カテゴリー',
         // コメントのバリデーション
-        'work_review_comment.body' => 'コメント'
+        'work_review_comment.body' => 'コメント',
+        'work_story_post_comment.body' => 'コメント'
     ],
 
 ];
