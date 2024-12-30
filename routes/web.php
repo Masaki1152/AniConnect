@@ -31,6 +31,8 @@ use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationLikeController;
 use App\Http\Controllers\WrCommentController;
 use App\Http\Controllers\WrCommentLikeController;
+use App\Http\Controllers\WspCommentController;
+use App\Http\Controllers\WspCommentLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -308,6 +310,24 @@ Route::controller(WorkStoryController::class)->middleware(['auth'])->group(funct
     Route::get('/works/{work_id}/stories', 'index')->name('work_stories.index');
     // あらすじの詳細表示
     Route::get('/works/{work_id}/stories/{work_story_id}', 'show')->name('work_stories.show');
+});
+
+// WspCommentControllerに関するルーティング
+Route::controller(WspCommentController::class)->middleware(['auth'])->group(function () {
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/work_story_posts/comments/store', 'store')->name('work_story_post.comments.store');
+    // コメントの削除を行うdeleteメソッドを実行
+    Route::delete('/work_story_posts/comments/{comment_id}/delete', 'delete')->name('work_story_post.comments.delete');
+    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/work_story_posts/comments/{comment_id}/like', 'like')->name('work_story_post.comments.like');
+    // ネスト化したコメントを表示するreplyメソッドを実行
+    Route::get('/work_story_posts/comments/{comment_id}/replies', 'replies')->name('work_story_post.comments.replies');
+});
+
+// WspCommentLikeControllerに関するルーティング
+Route::controller(WspCommentLikeController::class)->middleware(['auth'])->group(function () {
+    // いいねしたユーザーの表示
+    Route::get('/work_story_posts/comments/{comment_id}/like/index', 'index')->name('work_story_post_comment.like.index');
 });
 
 // WorkStoryPostControllerに関するルーティング
