@@ -1,10 +1,10 @@
 // コメントの削除処理を行う
-function deleteComment(commentId) {
+function deleteComment(commentId, baseRoute) {
     'use strict'
 
     if (confirm('削除すると復元できません。\n同時にこのコメントへの返信も削除されます。\n本当に削除しますか？')) {
         // コメント削除のリクエストを送信
-        fetch(`/work_reviews/comments/${commentId}/delete`, {
+        fetch(`/${baseRoute}/comments/${commentId}/delete`, {
             method: 'DELETE',
             headers: {
                 'X-CSRF-TOKEN': csrfToken,

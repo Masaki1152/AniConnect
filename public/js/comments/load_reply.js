@@ -1,4 +1,4 @@
-function loadReplies(commentId) {
+function loadReplies(commentId, baseRoute) {
     const openRepliesButton = document.getElementById(`replies-button-${commentId}`);
     const closeRepliesButton = document.getElementById(`close-button-${commentId}`);
     const repliesContainer = document.getElementById(`replies-${commentId}`);
@@ -7,7 +7,7 @@ function loadReplies(commentId) {
         openRepliesButton.textContent = "読み込み中...";
         repliesContainer.style.display = 'block';
         // Ajax リクエスト
-        fetch(`/work_reviews/comments/${commentId}/replies`, {
+        fetch(`/${baseRoute}/comments/${commentId}/replies`, {
             method: 'GET',
             headers: {
                 'X-CSRF-TOKEN': `${csrfToken}`,

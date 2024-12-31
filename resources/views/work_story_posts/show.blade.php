@@ -16,7 +16,12 @@
         <!-- Left Column -->
         <div class="lg:col-span-2 space-y-6">
             <div class="text-lg font-semibold">
-                {{ $work_story_post->workStory->work->name }}
+                「
+                <a href="{{ route('works.show', ['work' => $work_story_post->work_id]) }}"
+                    class="text-blue-500 hover:text-blue-700 underline">
+                    {{ $work_story_post->workStory->work->name }}
+                </a>
+                」<br>
                 {{ $work_story_post->workStory->episode }}
                 「
                 <a href="{{ route('work_stories.show', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id]) }}"
@@ -137,7 +142,12 @@
                         </div>
                     </div>
                     <!-- コメント作成フォーム -->
-                    @include('comments.input_create_comment', ['comment' => $work_story_post])
+                    @include('comments.input_create_comment', [
+                        'comment' => $work_story_post,
+                        'inputName' => 'work_story_post_comment',
+                        'inputPostIdName' => 'work_story_post_id',
+                        'baseRoute' => 'work_story_post',
+                    ])
                 </div>
             </div>
             <div class="text-lg font-semibold">
@@ -154,6 +164,9 @@
                                 @include('comments.input_wsp_comment', [
                                     'comment' => $comment,
                                     'status' => 'show',
+                                    'inputName' => 'work_story_post_comment',
+                                    'baseRoute' => 'work_story_post',
+                                    'inputPostIdName' => 'work_story_post_id',
                                 ])
                                 <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
                                 @if (!$loop->last)
@@ -178,9 +191,9 @@
     </div>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
+    <script src="{{ asset('/js/like_posts/like_work_story_post.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
-    <script src="{{ asset('/js/comments/like_comments/like_wr_comment.js') }}"></script>
+    <script src="{{ asset('/js/comments/like_comments/like_wsp_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/load_reply.js') }}"></script>
     <script src="{{ asset('/js/comments/add_comment.js') }}"></script>
