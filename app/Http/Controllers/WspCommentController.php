@@ -42,7 +42,7 @@ class WspCommentController extends Controller
         $status = is_null($wsp_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
 
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', ['comment' => $wsp_comment, 'status' => $status])->render();
+        $commentHtml = view('comments.input_wsp_comment', ['comment' => $wsp_comment, 'status' => $status])->render();
         return response()->json(['message' => 'コメントを投稿しました。', 'new_comment_id' => $wsp_comment->id, 'commentHtml' => $commentHtml]);
     }
 
@@ -112,7 +112,7 @@ class WspCommentController extends Controller
         $replies = $wsp_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
-            $reply->html = view('comments.input_comment', ['comment' => $reply, 'status' => 'show'])->render();
+            $reply->html = view('comments.input_wsp_comment', ['comment' => $reply, 'status' => 'show'])->render();
             return $reply;
         });
 
