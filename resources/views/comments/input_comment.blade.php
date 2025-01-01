@@ -1,6 +1,6 @@
-<div id="comment-{{ $comment->id }}">
+<div id="comment-{{ $comment->id }}" data-parent-id="{{ $comment->parent_id ?? '' }}">
     @if ($status == 'child_comment_stored')
-        <hr class="border-t my-4">
+        <hr class="border-t my-4" id="border-{{ $comment->id }}">
     @endif
     <div class='flex items-center justify-between'>
         <div class="flex items-center space-x-4">
@@ -29,13 +29,13 @@
                 </button>
             </x-slot>
             <x-slot name="content">
-                <form action="{{ route('work_review.comments.delete', ['comment_id' => $comment->id]) }}"
+                <form action="{{ route($baseRoute . '.comments.delete', ['comment_id' => $comment->id]) }}"
                     id="comment_{{ $comment->id }}" method="post">
                     @csrf
                     @method('DELETE')
                     <button type="button" data-comment-id="{{ $comment->id }}"
                         class="delete-comment-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                        onclick="deleteComment({{ $comment->id }})">
+                        onclick="deleteComment({{ $comment->id }}, '{{ $baseRoute }}s')">
                         コメントを削除する
                     </button>
                 </form>
@@ -72,12 +72,12 @@
         <!-- 子コメントがあれば表示 -->
         <div class="flex items-center gap-4">
             @if ($comment->replies->where('parent_id', $comment->id)->count() > 0)
-                <button onclick="loadReplies({{ $comment->id }})" id="replies-button-{{ $comment->id }}"
-                    class='text-sm text-blue-500 hover:text-blue-600'>
+                <button onclick="loadReplies({{ $comment->id }}, '{{ $baseRoute }}s')"
+                    id="replies-button-{{ $comment->id }}" class='text-sm text-blue-500 hover:text-blue-600'>
                     続きの返信を見る
                 </button>
-                <button onclick="loadReplies({{ $comment->id }})" id="close-button-{{ $comment->id }}"
-                    class='text-sm text-gray-400 hover:text-gray-500 hidden'>
+                <button onclick="loadReplies({{ $comment->id }}, '{{ $baseRoute }}s')"
+                    id="close-button-{{ $comment->id }}" class='text-sm text-gray-400 hover:text-gray-500 hidden'>
                     続きの返信を閉じる
                 </button>
             @endif
@@ -94,12 +94,12 @@
             <div class='comment-like flex items-center gap-2'>
                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                 <button id="comment-like_button-{{ $comment->id }}" data-comment-id="{{ $comment->id }}"
-                    onclick="toggleLike({{ $comment->id }}, 'comment-like_button-{{ $comment->id }}', 'comment-like_count-{{ $comment->id }}')"
+                    onclick="toggleLike({{ $comment->id }}, 'comment-like_button-{{ $comment->id }}', 'comment-like_count-{{ $comment->id }}', '{{ $baseRoute }}s')"
                     class="comment-like_button px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
                     {{ $comment->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                 </button>
                 <div class="comment-like_user">
-                    <a href="{{ route('work_review_comment.like.index', ['comment_id' => $comment->id]) }}"
+                    <a href="{{ route($baseRoute . '_comment.like.index', ['comment_id' => $comment->id]) }}"
                         class="text-lg font-medium text-gray-700">
                         <p id="comment-like_count-{{ $comment->id }}">
                             {{ $comment->users->count() }}件
@@ -109,40 +109,20 @@
             </div>
         </div>
     </div>
+    <!-- 子コメント作成フォーム -->
     <div id='addChildCommentBlock-{{ $comment->id }}' class="w-full p-4 mt-4 border rounded-lg bg-gray-50"
         style="display: none;">
-        <p class="text-lg font-semibold mb-2">コメントの作成</p>
-        <div>
-            <input type="hidden" id="work_review_id-{{ $comment->id }}" value="{{ $comment->work_review_id }}">
-            <input type="hidden" id="parent_id-{{ $comment->id }}" value="{{ $comment->id }}">
-            <textarea id="comment_body-{{ $comment->id }}" required class="w-full p-2 mb-2 border rounded-lg"
-                placeholder="コメントを入力してください"></textarea>
-            <p id="body_error-{{ $comment->id }}" class="text-red-500 text-sm hidden">コメントを入力してください。</p>
-            <div class="image mb-4">
-                <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
-                <label>
-                    <input id="inputElm-{{ $comment->id }}" type="file" style="display:none" multiple
-                        onchange="loadImage(this, {{ $comment->id }});">
-                    <span class="text-blue-500 cursor-pointer">画像の追加</span>
-                    <div id="count-{{ $comment->id }}" class="text-sm text-gray-600">
-                        現在、0枚の画像を選択しています。</div>
-                </label>
-                <p id="image_error" class="text-red-500 text-sm hidden">画像が正しくありません。
-                </p>
-            </div>
-            <!-- プレビュー画像の表示 -->
-            <div id="preview-{{ $comment->id }}" class="grid grid-cols-2 md:grid-cols-4 gap-2">
-            </div>
-            <div class="flex justify-center mt-4">
-                <button id="submit_comment" data-comment-id='{{ $comment->id }}'
-                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
-                    onclick="storeComment({{ $comment->id }})">
-                    コメントする
-                </button>
-            </div>
-        </div>
+        @include('comments.input_create_comment', [
+            'comment' => $comment,
+            'inputName' => $inputName,
+            'inputPostIdName' => $inputPostIdName,
+            'baseRoute' => $baseRoute,
+            'postCommentId' => $postCommentId,
+            'parentId' => $comment->id,
+        ])
     </div>
 
     <!-- 続きの返信を見るボタンが表示された後にフォームを追加 -->
-    <div id="replies-{{ $comment->id }}" style="margin-left: 40px;"></div>
+    <div id="replies-{{ $comment->id }}" style="margin-left: 40px;">
+    </div>
 </div>

@@ -1,6 +1,6 @@
 // コメントの保存に関する処理
-async function storeComment(dataCommentId) {
-    const workReviewId = document.getElementById(`work_review_id-${dataCommentId}`).value;
+async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName) {
+    const postId = document.getElementById(`post_comment_id-${dataCommentId}`).value;
     const parentId = document.getElementById(`parent_id-${dataCommentId}`).value;
     const commentBody = document.getElementById(`comment_body-${dataCommentId}`).value;
     const images = document.getElementById(`inputElm-${dataCommentId}`).files;
@@ -8,9 +8,9 @@ async function storeComment(dataCommentId) {
 
     // フォームデータ作成
     const formData = new FormData();
-    formData.append('work_review_comment[work_review_id]', workReviewId);
-    formData.append('work_review_comment[parent_id]', parentId);
-    formData.append('work_review_comment[body]', commentBody);
+    formData.append(`${inputName}[${inputPostIdName}]`, postId);
+    formData.append(`${inputName}[parent_id]`, parentId);
+    formData.append(`${inputName}[body]`, commentBody);
 
     // 画像を追加
     Array.from(images).forEach((image, index) => {
@@ -26,7 +26,7 @@ async function storeComment(dataCommentId) {
 
     // 非同期リクエスト
     try {
-        const response = await fetch('/work_reviews/comments/store', {
+        const response = await fetch(`/${baseRoute}/comments/store`, {
             method: 'POST',
             headers: {
                 'X-CSRF-TOKEN': csrfToken,
@@ -107,6 +107,9 @@ async function storeComment(dataCommentId) {
             if (!commentBlock.innerHTML.trim() && repliesButton) {
                 // 「続きの返信を見る」をクリックして開く
                 // 「続きの返信を見る」をクリックした時点で新しいコメントが追加される
+                if (repliesButton.style.display == 'none') {
+                    repliesButton.style.display = 'inline';
+                }
                 repliesButton.click();
 
                 // MutationObserverでDOM の変化を監視

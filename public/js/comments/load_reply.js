@@ -1,4 +1,4 @@
-function loadReplies(commentId) {
+function loadReplies(commentId, baseRoute) {
     const openRepliesButton = document.getElementById(`replies-button-${commentId}`);
     const closeRepliesButton = document.getElementById(`close-button-${commentId}`);
     const repliesContainer = document.getElementById(`replies-${commentId}`);
@@ -7,7 +7,7 @@ function loadReplies(commentId) {
         openRepliesButton.textContent = "読み込み中...";
         repliesContainer.style.display = 'block';
         // Ajax リクエスト
-        fetch(`/work_reviews/comments/${commentId}/replies`, {
+        fetch(`/${baseRoute}/comments/${commentId}/replies`, {
             method: 'GET',
             headers: {
                 'X-CSRF-TOKEN': `${csrfToken}`,
@@ -22,7 +22,8 @@ function loadReplies(commentId) {
                     if (reply.html) {
                         // 区切り線を追加
                         const hr = document.createElement('hr');
-                        hr.className = "border-t my-4";
+                        hr.className = "border-t my-4 ";
+                        hr.id = `border-${reply.id}`;
                         repliesContainer.appendChild(hr);
 
                         repliesContainer.insertAdjacentHTML('beforeend', reply.html);

@@ -139,6 +139,13 @@
                                     </div>
                                 @endif
                             </div>
+                            <div class='comment_num'>
+                                @if ($work_story_post->workStoryPostComments)
+                                    <p>コメント:{{ count($work_story_post->workStoryPostComments) }}件</p>
+                                @else
+                                    <p>コメント:0件</p>
+                                @endif
+                            </div>
                             <form
                                 action="{{ route('work_story_posts.delete', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}"
                                 id="form_{{ $work_story_post->id }}" method="post">

@@ -94,7 +94,7 @@ class WorkStoryPostController extends Controller
         $workStoryPost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $workStoryPost->categories()->attach($input_categories);
-        return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id])->with('status', '新しい投稿を作成しました');
+        return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id])->with('message', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -162,7 +162,7 @@ class WorkStoryPostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetWorkStoryPost->categories()->sync($input_categories);
-        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id])->with('status', '投稿を編集しました');
+        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id])->with('message', '投稿を編集しました');
     }
 
     // 感想投稿を削除する
@@ -182,7 +182,7 @@ class WorkStoryPostController extends Controller
         }
         // データの削除
         $targetWorkStoryPost->delete();
-        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id])->with('status', '投稿を削除しました');
+        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id])->with('message', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う

@@ -1,10 +1,10 @@
 // いいね処理を関数として定義
-async function toggleLike(commentId, buttonId, userCountId) {
+async function toggleLike(commentId, buttonId, userCountId, baseRoute) {
     const button = document.getElementById(buttonId);
     const userCount = document.getElementById(userCountId);
     try {
         const response = await fetch(
-            `/work_reviews/comments/${commentId}/like`, {
+            `/${baseRoute}/comments/${commentId}/like`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
