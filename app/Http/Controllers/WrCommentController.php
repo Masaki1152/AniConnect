@@ -42,7 +42,15 @@ class WrCommentController extends Controller
         $status = is_null($wr_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
 
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', ['comment' => $wr_comment, 'status' => $status])->render();
+        $commentHtml = view('comments.input_comment', [
+            'comment' => $wr_comment,
+            'status' => $status,
+            'inputName' => 'work_review_comment',
+            'baseRoute' => 'work_review',
+            'inputPostIdName' => 'work_review_id',
+            'postCommentId' => $wr_comment->work_review_id,
+            'parentId' => $wr_comment->parent_id
+        ])->render();
         return response()->json(['message' => 'コメントを投稿しました。', 'new_comment_id' => $wr_comment->id, 'commentHtml' => $commentHtml]);
     }
 
@@ -112,7 +120,15 @@ class WrCommentController extends Controller
         $replies = $wr_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
-            $reply->html = view('comments.input_comment', ['comment' => $reply, 'status' => 'show'])->render();
+            $reply->html = view('comments.input_comment', [
+                'comment' => $reply,
+                'status' => 'show',
+                'inputName' => 'work_review_comment',
+                'baseRoute' => 'work_review',
+                'inputPostIdName' => 'work_review_id',
+                'postCommentId' => $reply->work_review_id,
+                'parentId' => $reply->parent_id
+            ])->render();
             return $reply;
         });
 

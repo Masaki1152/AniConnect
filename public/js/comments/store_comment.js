@@ -25,8 +25,6 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
     }
 
     // 非同期リクエスト
-    console.log(baseRoute);
-    console.log(`/${baseRoute}/comments/store`);
     try {
         const response = await fetch(`/${baseRoute}/comments/store`, {
             method: 'POST',
@@ -107,7 +105,6 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
         if (commentBlock) {
             // 子コメントがすでに存在し、「続きの返信を見る」が未クリックの場合
             if (!commentBlock.innerHTML.trim() && repliesButton) {
-                console.log("D");
                 // 「続きの返信を見る」をクリックして開く
                 // 「続きの返信を見る」をクリックした時点で新しいコメントが追加される
                 repliesButton.click();
@@ -136,7 +133,6 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
                 newComment.scrollIntoView({ behavior: 'smooth', block: 'center' });
             }
         } else {
-            console.log("C");
             // 子コメントセクションがない場合、まず開く
             const childCommentContainer = document.createElement('div');
             childCommentContainer.id = `replies-${newCommentId}`;
@@ -144,7 +140,6 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
 
             const parentCommentBlock = document.querySelector(`#replies-${parentId}`);
             if (!parentCommentBlock) {
-                console.log("A");
                 const newParentBlock = document.createElement('div');
                 newParentBlock.id = `replies-${parentId}`;
                 newParentBlock.style.marginLeft = '40px';
@@ -152,7 +147,6 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
                 document.getElementById('comments-section').appendChild(newParentBlock);
                 newParentBlock.scrollIntoView({ behavior: 'smooth', block: 'center' });
             } else {
-                console.log("B");
                 parentCommentBlock.appendChild(childCommentContainer);
                 childCommentContainer.insertAdjacentHTML('beforeend', data.commentHtml);
                 childCommentContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });

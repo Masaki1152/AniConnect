@@ -1,10 +1,10 @@
 <x-app-layout>
-    @if (session('status'))
+    @if (session('message'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
             class="fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50"
             style="background-color: {{ getCategoryColor(session('status')) }};">
             <div class="text-white">
-                {{ session('status') }}
+                {{ session('message') }}
             </div>
         </div>
     @endif
@@ -133,39 +133,16 @@
                             </div>
                         </div>
                     </div>
+                    <!-- コメント作成フォーム -->
                     <div id='addCommentBlock' class="w-full p-4 border rounded-lg bg-gray-50" style="display: none;">
-                        <p class="text-lg font-semibold mb-2">コメントの作成</p>
-                        <div>
-                            <input type="hidden" id="work_review_id-{{ $work_review->id }}"
-                                value="{{ $work_review->id }}">
-                            <input type="hidden" id="parent_id-{{ $work_review->id }}" value="">
-                            <textarea id="comment_body-{{ $work_review->id }}" required class="w-full p-2 mb-2 border rounded-lg"
-                                placeholder="コメントを入力してください"></textarea>
-                            <p id="body_error-{{ $work_review->id }}" class="text-red-500 text-sm hidden">
-                                コメントを入力してください。</p>
-                            <div class="image mb-4">
-                                <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
-                                <label>
-                                    <input id="inputElm-{{ $work_review->id }}" type="file" style="display:none"
-                                        multiple onchange="loadImage(this, {{ $work_review->id }});">
-                                    <span class="text-blue-500 cursor-pointer">画像の追加</span>
-                                    <div id="count-{{ $work_review->id }}" class="text-sm text-gray-600">
-                                        現在、0枚の画像を選択しています。
-                                    </div>
-                                </label>
-                                <p id="image_error" class="text-red-500 text-sm hidden">画像が正しくありません。</p>
-                            </div>
-                            <!-- プレビュー画像の表示 -->
-                            <div id="preview-{{ $work_review->id }}" class="grid grid-cols-2 md:grid-cols-4 gap-2">
-                            </div>
-                            <div class="flex justify-center mt-4">
-                                <button id="submit_comment" data-comment-id='{{ $work_review->id }}' type='button'
-                                    class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
-                                    onclick="storeComment({{ $work_review->id }})">
-                                    コメントする
-                                </button>
-                            </div>
-                        </div>
+                        @include('comments.input_create_comment', [
+                            'comment' => $work_review,
+                            'inputName' => 'work_review_comment',
+                            'inputPostIdName' => 'work_review_id',
+                            'baseRoute' => 'work_review',
+                            'postCommentId' => $work_review->id,
+                            'parentId' => null,
+                        ])
                     </div>
                 </div>
             </div>
@@ -180,14 +157,19 @@
                     <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
                         @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
                             <div id='replies-{{ $work_review->id }}'>
+                                <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
+                                @if (!$loop->first)
+                                    <hr class="border-t my-4" id="border-{{ $comment->id }}">
+                                @endif
                                 @include('comments.input_comment', [
                                     'comment' => $comment,
                                     'status' => 'show',
+                                    'inputName' => 'work_review_comment',
+                                    'baseRoute' => 'work_review',
+                                    'inputPostIdName' => 'work_review_id',
+                                    'postCommentId' => $comment->work_review_id,
+                                    'parentId' => $comment->id,
                                 ])
-                                <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
-                                @if (!$loop->last)
-                                    <hr class="border-t my-4" id="border-{{ $comment->id + 1 }}">
-                                @endif
                             </div>
                         @endforeach
                     </div>
@@ -209,7 +191,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
-    <script src="{{ asset('/js/comments/like_comments/like_wr_comment.js') }}"></script>
+    <script src="{{ asset('/js/comments/like_comments/like_wsp_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/load_reply.js') }}"></script>
     <script src="{{ asset('/js/comments/add_comment.js') }}"></script>

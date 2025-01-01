@@ -19,8 +19,6 @@ function deleteComment(commentId, baseRoute) {
                 return response.json();
             })
             .then((data) => {
-                console.log(commentId);
-                console.log(data);
                 // 削除するコメントが一番上かどうかを確認
                 const commentBlock = document.getElementById('comment_block');
                 // ブロック内の最初の子要素を取得
@@ -28,7 +26,6 @@ function deleteComment(commentId, baseRoute) {
                 // 子コメントがない場合は「続きの返信を閉じる」ボタンの非表示
                 const childCommentBlock = document.querySelector(`#comment-${commentId}`);
                 const parentId = childCommentBlock.getAttribute('data-parent-id');
-                console.log(parentId);
 
                 // 削除成功時の処理
                 // DOM から削除
