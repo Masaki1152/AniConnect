@@ -142,12 +142,16 @@
                         </div>
                     </div>
                     <!-- コメント作成フォーム -->
-                    @include('comments.input_create_comment', [
-                        'comment' => $work_story_post,
-                        'inputName' => 'work_story_post_comment',
-                        'inputPostIdName' => 'work_story_post_id',
-                        'baseRoute' => 'work_story_post',
-                    ])
+                    <div id='addCommentBlock' class="w-full p-4 border rounded-lg bg-gray-50" style="display: none;">
+                        @include('comments.input_create_comment', [
+                            'comment' => $work_story_post,
+                            'inputName' => 'work_story_post_comment',
+                            'inputPostIdName' => 'work_story_post_id',
+                            'baseRoute' => 'work_story_post',
+                            'postCommentId' => $work_story_post->id,
+                            'parentId' => null,
+                        ])
+                    </div>
                 </div>
             </div>
             <div class="text-lg font-semibold">
@@ -161,17 +165,19 @@
                     <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
                         @foreach ($work_story_post->workStoryPostComments->where('parent_id', null) as $comment)
                             <div id='replies-{{ $work_story_post->id }}'>
-                                @include('comments.input_wsp_comment', [
+                                <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
+                                @if (!$loop->first)
+                                    <hr class="border-t my-4" id="border-{{ $comment->id }}">
+                                @endif
+                                @include('comments.input_comment', [
                                     'comment' => $comment,
                                     'status' => 'show',
                                     'inputName' => 'work_story_post_comment',
                                     'baseRoute' => 'work_story_post',
                                     'inputPostIdName' => 'work_story_post_id',
+                                    'postCommentId' => $comment->work_story_post_id,
+                                    'parentId' => $comment->id,
                                 ])
-                                <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
-                                @if (!$loop->last)
-                                    <hr class="border-t my-4" id="border-{{ $comment->id + 1 }}">
-                                @endif
                             </div>
                         @endforeach
                     </div>

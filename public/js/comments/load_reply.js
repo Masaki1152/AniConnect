@@ -22,7 +22,8 @@ function loadReplies(commentId, baseRoute) {
                     if (reply.html) {
                         // 区切り線を追加
                         const hr = document.createElement('hr');
-                        hr.className = "border-t my-4";
+                        hr.className = "border-t my-4 ";
+                        hr.id = `border-${reply.id}`;
                         repliesContainer.appendChild(hr);
 
                         repliesContainer.insertAdjacentHTML('beforeend', reply.html);
