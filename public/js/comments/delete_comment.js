@@ -68,6 +68,7 @@ function deleteComment(commentId, baseRoute) {
                         const closeRepliesButton = document.querySelector(`#close-button-${parentId}`);
                         if (closeRepliesButton) {
                             closeRepliesButton.style.display = 'none';
+                            repliesBlock.style.display = 'none';
                         }
                     }
                 }

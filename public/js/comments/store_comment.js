@@ -107,6 +107,9 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
             if (!commentBlock.innerHTML.trim() && repliesButton) {
                 // 「続きの返信を見る」をクリックして開く
                 // 「続きの返信を見る」をクリックした時点で新しいコメントが追加される
+                if (repliesButton.style.display == 'none') {
+                    repliesButton.style.display = 'inline';
+                }
                 repliesButton.click();
 
                 // MutationObserverでDOM の変化を監視
