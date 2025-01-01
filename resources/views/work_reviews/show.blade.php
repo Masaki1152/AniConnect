@@ -191,7 +191,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
-    <script src="{{ asset('/js/comments/like_comments/like_wsp_comment.js') }}"></script>
+    <script src="{{ asset('/js/comments/like_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/delete_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/load_reply.js') }}"></script>
     <script src="{{ asset('/js/comments/add_comment.js') }}"></script>
