@@ -18,9 +18,10 @@
                 @else
                     @foreach ($users as $user)
                         <!-- ユーザーセルの表示 -->
-                        @include('users.user_cell', [
-                            'user' => $user,
-                        ])
+                        <div
+                            class='user_cell w-full sm:w-full lg:w-[50%] flex items-start p-1 gap-2 bg-white shadow rounded-lg h-[170px]'>
+                            @include('users.user_cell', ['user' => $user])
+                        </div>
                     @endforeach
                 @endif
             </div>
