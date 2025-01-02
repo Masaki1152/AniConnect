@@ -12,6 +12,6 @@ class AnimePilgrimagePostLikeController extends Controller
     {
         // 聖地感想テーブルから、今回開いている聖地感想にいいねしたユーザーidを取得
         $users = AnimePilgrimagePost::whereId($pilgrimage_post_id)->first()->users()->get();
-        return view('pilgrimage_post_likes.index')->with(['users' => $users]);
+        return view('like_list')->with(['users' => $users]);
     }
 }

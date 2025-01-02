@@ -16,6 +16,7 @@
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@tailwindcss/line-clamp": "^0.4.4",
         "autoprefixer": "^9.8.8",
         "cropper": "^4.1.0",
         "cropperjs": "^1.6.2",

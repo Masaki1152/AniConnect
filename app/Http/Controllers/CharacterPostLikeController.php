@@ -12,6 +12,6 @@ class CharacterPostLikeController extends Controller
     {
         // 登場人物感想テーブルから、今回開いている登場人物感想にいいねしたユーザーidを取得
         $users = CharacterPost::whereId($character_post_id)->first()->users()->get();
-        return view('character_post_likes.index')->with(['users' => $users]);
+        return view('like_list')->with(['users' => $users]);
     }
 }

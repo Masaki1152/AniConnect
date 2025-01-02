@@ -12,6 +12,6 @@ class WorkStoryPostLikeController extends Controller
     {
         // あらすじ感想テーブルから、今回開いている登場人物感想にいいねしたユーザーidを取得
         $users = WorkStoryPost::whereId($work_story_post_id)->first()->users()->get();
-        return view('work_story_post_likes.index')->with(['users' => $users]);
+        return view('like_list')->with(['users' => $users]);
     }
 }

@@ -142,5 +142,7 @@
     "Age": "年齢",
     "Sex": "性別",
     "Introduction": "紹介文",
-    "User_Image": "ユーザー画像"
+    "User_Image": "ユーザー画像",
+    "Name Max15": "名前（15文字まで）",
+    "Introduction Max200": "紹介文（200文字まで）"
 }

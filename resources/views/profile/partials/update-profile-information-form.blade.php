@@ -18,7 +18,7 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name')" />
+            <x-input-label for="name" :value="__('Name Max15')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)"
                 required autofocus autocomplete="name" />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
@@ -66,7 +66,7 @@
 
         <!-- Introduction -->
         <div class="mt-4">
-            <x-input-label for="introduction" :value="__('Introduction')" />
+            <x-input-label for="introduction" :value="__('Introduction Max200')" />
             <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction"
                 :value="old('introduction', $user->introduction)" required autofocus autocomplete="introduction" />
             <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
