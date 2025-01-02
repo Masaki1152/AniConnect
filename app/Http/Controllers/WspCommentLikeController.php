@@ -12,6 +12,6 @@ class WspCommentLikeController extends Controller
     {
         // あらすじ感想のコメントテーブルから、今回開いているコメントにいいねしたユーザーidを取得
         $users = WorkStoryPostComment::find($comment_id)->users()->get();
-        return view('work_story_post_likes.index')->with(['users' => $users]);
+        return view('like_list')->with(['users' => $users]);
     }
 }

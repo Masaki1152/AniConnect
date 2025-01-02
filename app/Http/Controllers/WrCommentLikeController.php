@@ -12,6 +12,6 @@ class WrCommentLikeController extends Controller
     {
         // 作品感想のコメントテーブルから、今回開いているコメントにいいねしたユーザーidを取得
         $users = WorkReviewComment::whereId($comment_id)->first()->users()->get();
-        return view('work_review_likes.index')->with(['users' => $users]);
+        return view('like_list')->with(['users' => $users]);
     }
 }
