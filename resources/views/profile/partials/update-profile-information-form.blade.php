@@ -20,7 +20,9 @@
         <div>
             <x-input-label for="name" :value="__('Name Max15')" />
             <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)"
-                required autofocus autocomplete="name" />
+                required autofocus autocomplete="name" data-max-length="15" data-counter-id="nameCharacterCount"
+                oninput="countCharacter(this)" />
+            <p id="nameCharacterCount" class="mt-1 text-sm text-gray-500"></p>
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
@@ -68,7 +70,9 @@
         <div class="mt-4">
             <x-input-label for="introduction" :value="__('Introduction Max200')" />
             <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction"
-                :value="old('introduction', $user->introduction)" required autofocus autocomplete="introduction" />
+                :value="old('introduction', $user->introduction)" required autofocus autocomplete="introduction" data-max-length="200"
+                data-counter-id="introductionCharacterCount" oninput="countCharacter(this)" />
+            <p id="introductionCharacterCount" class="mt-1 text-sm text-gray-500"></p>
             <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
         </div>
 
