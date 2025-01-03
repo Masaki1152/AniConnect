@@ -11,12 +11,12 @@ function countCharacter(inputElement) {
 
     if (currentLength <= maxLength) {
         characterCountDisplay.textContent = `あと${maxLength - currentLength}文字入力できます。`;
-        characterCountDisplay.classList.remove('text-red-600');
+        characterCountDisplay.classList.remove('text-red-500');
         characterCountDisplay.classList.add('text-gray-500');
     } else {
         characterCountDisplay.textContent = `${currentLength - maxLength}文字オーバーしています。`;
         characterCountDisplay.classList.remove('text-gray-500');
-        characterCountDisplay.classList.add('text-red-600');
+        characterCountDisplay.classList.add('text-red-500');
     }
 }
 

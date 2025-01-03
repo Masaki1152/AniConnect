@@ -94,7 +94,7 @@
         <!-- プレビュー画像の表示 -->
         <div id="preview" style="width: 300px;"></div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center  justify-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')
