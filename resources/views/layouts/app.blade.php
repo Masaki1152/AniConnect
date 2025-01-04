@@ -15,6 +15,7 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/css/lightbox.min.css">
     <link rel="stylesheet" href="/css/preview.css">
+    <link rel="stylesheet" href="/css/category_form.css">
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])

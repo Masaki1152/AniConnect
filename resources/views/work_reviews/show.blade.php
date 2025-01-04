@@ -2,7 +2,7 @@
     @if (session('message'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
             class="fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50"
-            style="background-color: {{ getCategoryColor(session('status')) }};">
+            style="background-color: {{ getCategoryColor(session('message')) }};">
             <div class="text-white">
                 {{ session('message') }}
             </div>

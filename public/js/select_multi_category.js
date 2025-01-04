@@ -1,13 +1,19 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const selectBox = document.getElementById('custom-multi-select');
     const optionList = document.getElementById('custom-multi-select-list');
+    const selectedCategoriesContainer = document.getElementById('selected-categories-container');
     const maxSelections = 3;
-    let selectedValues = [];
 
-    // 初期化: 既に選択されている項目を配列に追加
-    // selectedValues = Array.from(selectBox.options)
-    //     .filter(option => option.selected)
-    //     .map(option => option.value);
+    // 初期値の取得
+    let selectedValues = Array.from(selectedCategoriesContainer.querySelectorAll('input'))
+        .map(input => input.value);
+
+    // 初期値に基づいて背景色を設定
+    selectedValues.forEach((categoryId) => {
+        const option = optionList.querySelector(`[data-value="${categoryId}"]`);
+        if (option) {
+            option.classList.add('bg-gray-500', 'text-white');
+        }
+    });
 
     // セレクトボックスにクリックイベントを追加
     optionList.addEventListener('click', (event) => {
@@ -20,6 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 // 選択解除
                 selectedValues = selectedValues.filter(v => v !== value);
                 option.classList.remove('bg-gray-500', 'text-white');
+                // hidden inputを削除
+                const inputToRemove = selectedCategoriesContainer.querySelector(`input[value="${value}"]`);
+                if (inputToRemove) {
+                    selectedCategoriesContainer.removeChild(inputToRemove);
+                }
             } else {
                 if (selectedValues.length >= maxSelections) {
                     // 最大選択数を超えた場合
@@ -28,6 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
                     // 新規選択
                     selectedValues.push(value);
                     option.classList.add('bg-gray-500', 'text-white');
+
+                    // hidden inputを追加
+                    const newInput = document.createElement('input');
+                    newInput.type = 'hidden';
+                    newInput.name = 'work_review[categories_array][]';
+                    newInput.value = value;
+                    selectedCategoriesContainer.appendChild(newInput);
                 }
             }
         }

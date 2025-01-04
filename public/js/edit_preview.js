@@ -75,7 +75,7 @@ function renderExistingImages() {
         const rmBtn = document.createElement('button');
         rmBtn.type = 'button';
         rmBtn.textContent = '削除';
-        rmBtn.className = 'px-2 py-1 bg-red-500 text-white text-sm rounded hover:bg-red-600';
+        rmBtn.className = 'bg-red-500 text-white text-xs mt-2 px-2 py-1 rounded hover:bg-red-600';
         rmBtn.onclick = function () {
             removeExistingImage(image.id);
         };
