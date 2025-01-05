@@ -66,8 +66,6 @@ document.getElementById('image').addEventListener('change', function (event) {
 
     if (file) {
         cropImage(file);
-        console.log(currentImage);
-        console.log("cropImageよりも後");
         preview.innerHTML = '';
         const reader = new FileReader();
 
@@ -134,7 +132,6 @@ function removeExistingImage() {
 
 // 選択した画像をトリミング
 function cropImage(file) {
-    console.log("cropImageが呼ばれた");
     const reader = new FileReader();
     reader.onload = function (e) {
         cropPreview.src = e.target.result;

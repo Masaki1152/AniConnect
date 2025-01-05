@@ -75,6 +75,8 @@ function renderExistingImages() {
 function loadImage(obj) {
     // 新しく選択された画像
     newImages = Array.from(obj.files);
+    // ボタンの表示の初期化
+    cropNextButton.innerText = "次へ";
     // 合計が4枚を超える場合のチェック
     // 元々選択されていた画像と新しい画像、以前保存していた画像の合計を確認
     if (selectedImages.length + newImages.length + existingImages.length > 4) {
@@ -88,6 +90,10 @@ function loadImage(obj) {
     // 新しいファイルを選択済みリストに追加
     //selectedImages.push(...newImages);
     currentIndex = 0;
+    // ボタンのテキスト名の表示変更
+    if (currentIndex === newImages.length - 1) {
+        cropNextButton.innerText = "トリミング完了";
+    }
     // 新しい画像をトリミング
     if (newImages.length > 0) {
         cropImage(newImages[currentIndex]);
@@ -130,6 +136,10 @@ cropNextButton.addEventListener('click', function (event) {
         // 次の画像を読み込む
         currentIndex++;
         if (currentIndex < newImages.length) {
+            // ボタンのテキスト名の表示変更
+            if (currentIndex === newImages.length - 1) {
+                cropNextButton.innerText = "トリミング完了";
+            }
             cropImage(newImages[currentIndex]);
         } else {
             // メッセージを表示

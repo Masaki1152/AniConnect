@@ -23,13 +23,11 @@ function loadImage(obj) {
         return;
     }
 
-    // 新しいファイルを選択済みリストに追加
-    //selectedImages.push(...newImages);
     currentIndex = 0;
     // ボタンのテキスト名の表示変更
-    // if (currentIndex === newImages.length - 1) {
-    //     cropNextButton.innerText = "トリミング完了";
-    // }
+    if (currentIndex === newImages.length - 1) {
+        cropNextButton.innerText = "トリミング完了";
+    }
     // 新しい画像をトリミング
     if (newImages.length > 0) {
         cropImage(newImages[currentIndex]);
@@ -59,10 +57,6 @@ function cropImage(file) {
 // トリミングして次の画像へ
 cropNextButton.addEventListener('click', function (event) {
     event.preventDefault();
-    // ボタンのテキスト名の表示変更
-    // if (currentIndex === newImages.length - 1) {
-    //     cropNextButton.innerText = "トリミング完了";
-    // }
 
     if (cropper) {
         const croppedCanvas = cropper.getCroppedCanvas({
@@ -77,6 +71,10 @@ cropNextButton.addEventListener('click', function (event) {
         // 次の画像を読み込む
         currentIndex++;
         if (currentIndex < newImages.length) {
+            // ボタンのテキスト名の表示変更
+            if (currentIndex === newImages.length - 1) {
+                cropNextButton.innerText = "トリミング完了";
+            }
             cropImage(newImages[currentIndex]);
         } else {
             // メッセージを表示
