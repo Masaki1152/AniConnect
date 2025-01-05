@@ -93,7 +93,7 @@ class MusicPostController extends Controller
         $musicPost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $musicPost->categories()->attach($input_categories);
-        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id])->with('status', '新しい投稿を作成しました');
+        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id])->with('message', '新しい投稿を作成しました');
     }
 
     // 感想投稿編集画面を表示する
@@ -161,7 +161,7 @@ class MusicPostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetMusicPost->categories()->sync($input_categories);
-        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id])->with('status', '投稿を編集しました');
+        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id])->with('message', '投稿を編集しました');
     }
 
     // 感想投稿を削除する
@@ -180,7 +180,7 @@ class MusicPostController extends Controller
             Cloudinary::destroy($public_id);
         }
         $targetMusicPost->delete();
-        return redirect()->route('music_posts.index', ['music_id' => $music_id])->with('status', '投稿を削除しました');
+        return redirect()->route('music_posts.index', ['music_id' => $music_id])->with('message', '投稿を削除しました');
     }
 
     // 投稿にいいねを行う
