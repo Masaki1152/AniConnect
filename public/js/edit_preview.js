@@ -74,7 +74,7 @@ function renderExistingImages() {
 
 function loadImage(obj) {
     // 新しく選択された画像
-    const newImages = Array.from(obj.files);
+    newImages = Array.from(obj.files);
     // 合計が4枚を超える場合のチェック
     // 元々選択されていた画像と新しい画像、以前保存していた画像の合計を確認
     if (selectedImages.length + newImages.length + existingImages.length > 4) {
@@ -86,11 +86,11 @@ function loadImage(obj) {
     }
 
     // 新しいファイルを選択済みリストに追加
-    selectedImages.push(...newImages);
-    currentIndex = selectedImages.length - newImages.length;
+    //selectedImages.push(...newImages);
+    currentIndex = 0;
     // 新しい画像をトリミング
     if (newImages.length > 0) {
-        cropImage(newImages[0]);
+        cropImage(newImages[currentIndex]);
     }
 }
 
@@ -125,7 +125,7 @@ cropNextButton.addEventListener('click', function (event) {
 
         // トリミング結果をBase64データとして取得
         const croppedImage = croppedCanvas.toDataURL('image/jpeg');
-        selectedImages[currentIndex] = croppedImage;
+        selectedImages.push(croppedImage);
 
         // 次の画像を読み込む
         currentIndex++;

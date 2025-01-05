@@ -13,6 +13,8 @@ let currentIndex = 0;
 function loadImage(obj) {
     // 新しく選択されたファイル
     newImages = Array.from(obj.files);
+    // ボタンの表示の初期化
+    cropNextButton.innerText = "次へ";
 
     // 合計が4枚を超える場合のチェック
     // 元々選択されていたファイルと新しいファイルの合計を確認
@@ -22,11 +24,15 @@ function loadImage(obj) {
     }
 
     // 新しいファイルを選択済みリストに追加
-    selectedImages.push(...newImages);
-    currentIndex = selectedImages.length - newImages.length;
+    //selectedImages.push(...newImages);
+    currentIndex = 0;
+    // ボタンのテキスト名の表示変更
+    // if (currentIndex === newImages.length - 1) {
+    //     cropNextButton.innerText = "トリミング完了";
+    // }
     // 新しい画像をトリミング
     if (newImages.length > 0) {
-        cropImage(newImages[0]);
+        cropImage(newImages[currentIndex]);
     }
 }
 
@@ -53,6 +59,11 @@ function cropImage(file) {
 // トリミングして次の画像へ
 cropNextButton.addEventListener('click', function (event) {
     event.preventDefault();
+    // ボタンのテキスト名の表示変更
+    // if (currentIndex === newImages.length - 1) {
+    //     cropNextButton.innerText = "トリミング完了";
+    // }
+
     if (cropper) {
         const croppedCanvas = cropper.getCroppedCanvas({
             width: 400,
@@ -61,7 +72,7 @@ cropNextButton.addEventListener('click', function (event) {
 
         // トリミング結果をBase64データとして取得
         const croppedImage = croppedCanvas.toDataURL('image/jpeg');
-        selectedImages[currentIndex] = croppedImage;
+        selectedImages.push(croppedImage);
 
         // 次の画像を読み込む
         currentIndex++;
