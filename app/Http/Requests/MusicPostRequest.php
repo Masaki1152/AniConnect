@@ -19,6 +19,7 @@ class MusicPostRequest extends FormRequest
             'music_post.body' => 'required|string|max:4000',
             'music_post.categories_array' => 'required|array|max:3',
             'music_post.star_num' => 'required',
+            'images' => 'array|max:4'
         ];
     }
 }

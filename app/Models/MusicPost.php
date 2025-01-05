@@ -18,6 +18,10 @@ class MusicPost extends Model
         'post_title',
         'star_num',
         'body',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
     ];
 
     // 参照させたいmusic_postsを指定
