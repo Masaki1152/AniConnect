@@ -19,9 +19,9 @@
                         <div class="title">
                             <label class="block font-medium text-sm text-gray-700 mb-2">タイトル</label>
                             <input type="text" name="work_review[post_title]" placeholder="タイトル"
-                                value="{{ $work_review->post_title }}"
+                                value="{{ old('work_review.post_title', $work_review->post_title) }}"
                                 class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                data-max-length="25" data-counter-id="titleCharacterCount"
+                                data-max-length="40" data-counter-id="titleCharacterCount"
                                 oninput="countCharacter(this)" />
                             <p id="titleCharacterCount" class="mt-1 text-sm text-gray-500"></p>
                             <p class="title__error text-sm text-red-500 mt-1">
@@ -60,7 +60,7 @@
                             <label class="block font-medium text-sm text-gray-700 mb-2">内容</label>
                             <textarea name="work_review[body]" placeholder="内容を記入してください。"
                                 class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-40"
-                                data-max-length="4000" data-counter-id="bodyCharacterCount" oninput="countCharacter(this)">{{ $work_review->body }}</textarea>
+                                data-max-length="4000" data-counter-id="bodyCharacterCount" oninput="countCharacter(this)">{{ old('work_review.body', $work_review->body) }}</textarea>
                             <p id="bodyCharacterCount" class="mt-1 text-sm text-gray-500"></p>
                             <p class="body__error text-sm text-red-500 mt-1">{{ $errors->first('work_review.body') }}
                             </p>
@@ -80,11 +80,31 @@
                                 $existingImages = json_encode($existingImages);
                             @endphp
                             <div id="existing_image_paths" data-php-variable="{{ $existingImages }}"></div>
-                            <label class="flex items-center gap-2 cursor-pointer text-blue-500 hover:underline">
+                            <label
+                                class="inline-flex items-center gap-2 cursor-pointer text-blue-500 bg-blue-20 border-2 border-gray-300 rounded-lg py-1 px-2 hover:bg-blue-50">
                                 <input id="inputElm" type="file" name="images[]" multiple class="hidden"
-                                    onchange="loadImage(this);"><span>画像の追加</span>
+                                    onchange="loadImage(this);"><span>画像を追加する</span>
                             </label>
                             <div id="count" class="text-sm text-gray-600 mt-1"></div>
+                            <!-- 画像トリミング用のモーダルウィンドウ表示 -->
+                            <div id="crop-modal"
+                                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div class="bg-white p-4 rounded-lg shadow-lg relative w-full max-w-2xl">
+                                    <div class="overflow-hidden w-full h-auto">
+                                        <img id="crop-preview" class="w-full h-auto object-cover" />
+                                    </div>
+                                    <div class="flex justify-end gap-2 mt-4">
+                                        <button id="crop-cancel-button" type="button"
+                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                                            キャンセル
+                                        </button>
+                                        <button id="crop-next-button" type="button"
+                                            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                                            次へ
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
                             <!-- プレビュー画像の表示 -->
                             <div id="preview" class="grid grid-cols-2 gap-4 mt-4"></div>
                             <!-- 削除された既存画像のリスト -->

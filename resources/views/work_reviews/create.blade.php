@@ -16,7 +16,7 @@
                             <input type="text" name="work_review[post_title]" placeholder="タイトル"
                                 value="{{ old('work_review.post_title') }}"
                                 class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                data-max-length="25" data-counter-id="titleCharacterCount"
+                                data-max-length="40" data-counter-id="titleCharacterCount"
                                 oninput="countCharacter(this)" />
                             <p id="titleCharacterCount" class="mt-1 text-sm text-gray-500"></p>
                             <p class="title__error text-sm text-red-500 mt-1">
