@@ -1,10 +1,10 @@
-//document.addEventListener('DOMContentLoaded', () => {
 // 元々選択されているファイルのリスト
 let selectedImages = [];
 const inputElm = document.getElementById('inputElm');
-const cropContainer = document.getElementById('crop-container');
+const cropModal = document.getElementById('crop-modal');
 const cropPreview = document.getElementById('crop-preview');
 const cropNextButton = document.getElementById('crop-next-button');
+const cropCancelButton = document.getElementById('crop-cancel-button');
 const preview = document.getElementById('preview');
 let cropper;
 let newImages = [];
@@ -18,21 +18,16 @@ function loadImage(obj) {
     // 元々選択されていたファイルと新しいファイルの合計を確認
     if (selectedImages.length + newImages.length > 4) {
         alert('画像は4枚までアップロード可能です');
-        // プレビューを更新し、以前選択していたファイルを再表示する
-        // 新しく選択していた方のファイルは破棄
-        //renderPreviews();
         return;
     }
 
-    currentIndex = 0;
     // 新しいファイルを選択済みリストに追加
     selectedImages.push(...newImages);
+    currentIndex = selectedImages.length - newImages.length;
     // 新しい画像をトリミング
     if (newImages.length > 0) {
-        cropImage(newImages[currentIndex]);
+        cropImage(newImages[0]);
     }
-    // プレビューの更新
-    //renderPreviews();
 }
 
 // 選択した画像をトリミング
@@ -40,14 +35,17 @@ function cropImage(file) {
     const reader = new FileReader();
     reader.onload = function (e) {
         cropPreview.src = e.target.result;
-        cropContainer.style.display = 'block';
 
         // Cropper.jsを初期化
         if (cropper) cropper.destroy();
         cropper = new Cropper(cropPreview, {
-            aspectRatio: 1, // 正方形のトリミング
-            viewMode: 1,    // トリミング領域を画像内に収める
+            // 正方形のトリミング
+            aspectRatio: 4 / 3,
+            // トリミング領域を画像内に収める
+            viewMode: 1
         });
+        // モーダルを表示
+        cropModal.classList.add('show');
     };
     reader.readAsDataURL(file);
 }
@@ -57,14 +55,13 @@ cropNextButton.addEventListener('click', function (event) {
     event.preventDefault();
     if (cropper) {
         const croppedCanvas = cropper.getCroppedCanvas({
-            width: 300,
+            width: 400,
             height: 300
         });
 
-        // トリミング結果を保存
+        // トリミング結果をBase64データとして取得
         const croppedImage = croppedCanvas.toDataURL('image/jpeg');
         selectedImages[currentIndex] = croppedImage;
-        console.log('トリミング結果:', croppedImage);
 
         // 次の画像を読み込む
         currentIndex++;
@@ -72,10 +69,24 @@ cropNextButton.addEventListener('click', function (event) {
             cropImage(newImages[currentIndex]);
         } else {
             alert('すべての画像のトリミングが完了しました！');
-            cropContainer.style.display = 'none';
+            // モーダルを閉じる
+            cropModal.classList.remove('show');
             renderPreviews();
         }
     }
+});
+
+// キャンセルボタンの動作
+cropCancelButton.addEventListener('click', () => {
+    if (cropper) cropper.destroy();
+    cropModal.classList.remove('show');
+    // 新しく選択した画像の消去
+    if (newImages) {
+        newImages.forEach(newImage => {
+            selectedImages = selectedImages.filter(selectedImage => selectedImage !== newImage);
+        })
+    }
+    renderPreviews()
 });
 
 function renderPreviews() {
@@ -85,23 +96,29 @@ function renderPreviews() {
     countImages();
 
     selectedImages.forEach((image, index) => {
-        //const fileReader = new FileReader();
-
-        //fileReader.onload = function (e) {
         const figure = document.createElement('figure');
         figure.setAttribute('id', `img-${index}`);
         figure.className = 'relative flex flex-col items-center mb-4';
 
         const img = document.createElement('img');
-        img.src = image;
         img.alt = 'preview';
-        img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-square';
+        img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-w-4 aspect-h-3';
+        // ファイルがBase64文字列かFileオブジェクトかをチェック
+        if (typeof image === 'string') {
+            img.src = image;
+        } else if (image instanceof File) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(image);
+        }
 
         // 削除ボタン
         const rmBtn = document.createElement('button');
         rmBtn.type = 'button';
         rmBtn.textContent = '削除';
-        rmBtn.className = 'bg-red-500 text-white text-xs mt-2 px-2 py-1 rounded hover:bg-red-600';
+        rmBtn.className = 'bg-red-500 text-white mt-2 px-2 py-1 rounded hover:bg-red-600';
         rmBtn.onclick = function () {
             removeImage(index);
         };
@@ -109,9 +126,6 @@ function renderPreviews() {
         figure.appendChild(img);
         figure.appendChild(rmBtn);
         preview.appendChild(figure);
-        //};
-
-        //fileReader.readAsDataURL(image);
     });
 
     // 選択しているファイルを反映
@@ -164,4 +178,3 @@ function countImages() {
     countText.textContent = `現在、${ImageCount}枚の画像を選択しています。`;
     count.appendChild(countText);
 }
-//});
