@@ -69,9 +69,10 @@
         <!-- Introduction -->
         <div class="mt-4">
             <x-input-label for="introduction" :value="__('Introduction Max200')" />
-            <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction"
-                :value="old('introduction', $user->introduction)" required autofocus autocomplete="introduction" data-max-length="200"
-                data-counter-id="introductionCharacterCount" oninput="countCharacter(this)" />
+            <textarea id="introduction" name="introduction"
+                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                rows="4" required autofocus autocomplete="introduction" data-max-length="200"
+                data-counter-id="introductionCharacterCount" oninput="countCharacter(this)">{{ old('introduction', $user->introduction) }}</textarea>
             <p id="introductionCharacterCount" class="mt-1 text-sm text-gray-500"></p>
             <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
         </div>
