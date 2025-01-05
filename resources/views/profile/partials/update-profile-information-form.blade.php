@@ -83,13 +83,32 @@
         <div id="existing_image_path" data-php-variable="{{ $existingImagePath }}"></div>
         <div>
             <x-input-label for="image" :value="__('User_Image')" />
-            <label>
+            <label
+                class="inline-flex items-center gap-2 cursor-pointer  font-medium text-sm text-blue-500 bg-blue-20 border-2 border-gray-300 rounded-lg py-1 px-2 hover:bg-blue-50 mt-2">
                 <input id="image" class="block mt-1 w-full" type="file" name="image"
                     :value="old('image', $user - > image)" style="display:none">画像の選択
             </label>
             <!-- 既存画像のパス -->
             <input type="hidden" name="existingImage" id="existingImage" value="">
             <x-input-error :messages="$errors->get('image')" class="mt-2" />
+        </div>
+        <!-- 画像トリミング用のモーダルウィンドウ表示 -->
+        <div id="crop-modal" class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+            <div class="bg-white p-4 rounded-lg shadow-lg relative w-full max-w-2xl">
+                <div class="overflow-hidden w-full h-auto">
+                    <img id="crop-preview" class="w-full h-auto object-cover" />
+                </div>
+                <div class="flex justify-end gap-2 mt-4">
+                    <button id="crop-cancel-button" type="button"
+                        class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
+                        キャンセル
+                    </button>
+                    <button id="crop-button" type="button"
+                        class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
+                        トリミング完了
+                    </button>
+                </div>
+            </div>
         </div>
         <!-- プレビュー画像の表示 -->
         <div id="preview" style="width: 300px;"></div>

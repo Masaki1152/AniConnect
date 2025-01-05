@@ -150,7 +150,7 @@ cropCancelButton.addEventListener('click', () => {
             selectedImages = selectedImages.filter(selectedImage => selectedImage !== newImage);
         })
     }
-    renderPreviews()
+    renderPreviews();
 });
 
 function renderPreviews() {
@@ -161,9 +161,6 @@ function renderPreviews() {
     renderExistingImages();
     // 新規追加された画像を表示
     selectedImages.forEach((image, index) => {
-        //const fileReader = new FileReader();
-
-        //fileReader.onload = function (e) {
         const figure = document.createElement('figure');
         figure.setAttribute('id', `img-${index}`);
         figure.className = 'relative flex flex-col items-center mb-4';

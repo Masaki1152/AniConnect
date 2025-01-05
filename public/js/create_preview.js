@@ -86,7 +86,7 @@ cropCancelButton.addEventListener('click', () => {
             selectedImages = selectedImages.filter(selectedImage => selectedImage !== newImage);
         })
     }
-    renderPreviews()
+    renderPreviews();
 });
 
 function renderPreviews() {

@@ -53,3 +53,9 @@
     height: auto;
     object-fit: contain; /* 画像全体を表示して、縦横比を保持 */
 }
+
+/* ユーザーアイコン用の追加スタイル */
+.circle-cropper .cropper-view-box,
+.circle-cropper .cropper-face {
+  border-radius: 50%;
+}
