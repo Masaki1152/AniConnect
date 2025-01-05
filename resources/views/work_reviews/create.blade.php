@@ -1,4 +1,8 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
@@ -112,4 +116,10 @@
     <script src="{{ asset('/js/create_preview.js') }}"></script>
     <script src="{{ asset('/js/select_multi_category.js') }}"></script>
     <script src="{{ asset('/js/count_character.js') }}"></script>
+    <script>
+        // PHP の Helper 関数で定義した色データを JavaScript に渡す
+        const categoryColors = {!! json_encode([
+            'すべての画像のトリミングが完了しました' => getCategoryColor('すべての画像のトリミングが完了しました'),
+        ]) !!};
+    </script>
 </x-app-layout>

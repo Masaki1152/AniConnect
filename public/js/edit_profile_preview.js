@@ -172,6 +172,20 @@ cropButton.addEventListener('click', function (event) {
         // トリミング結果をBase64データとして取得
         const croppedImage = croppedCanvas.toDataURL('image/jpeg');
         currentImage = croppedImage;
+
+        // メッセージを表示
+        const croppedMessage = document.getElementById('message');
+        croppedMessage.textContent = 'すべての画像のトリミングが完了しました';
+        croppedMessage.classList.remove('hidden');
+        croppedMessage.classList.add('block');
+        croppedMessage.style.backgroundColor = categoryColors[croppedMessage.textContent] || '#d1d5db';
+
+        // 3秒後にメッセージを非表示
+        setTimeout(() => {
+            croppedMessage.classList.add('hidden');
+            croppedMessage.classList.remove('block');
+        }, 3000);
+
         // モーダルを閉じる
         cropModal.classList.remove('show');
         // トリミング後の画像をプレビューとして表示
