@@ -33,3 +33,29 @@
     text-align: center;
     cursor: pointer;
 }
+
+/* 画像トリミング用のモーダルウィンドウ*/
+#crop-modal {
+    /* デフォルトで非表示 */
+    display: none; 
+}
+
+#crop-modal.show {
+    /* 表示時はフレックスボックスで中央揃え */
+    display: flex;
+}
+
+/* モーダルウィンドウ内の画像のサイズ設定 */
+#crop-preview {
+    max-width: 100%;
+    max-height: 60vh; /* ビューポートの80%の高さに制限 */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* 画像全体を表示して、縦横比を保持 */
+}
+
+/* ユーザーアイコン用の追加スタイル */
+.circle-cropper .cropper-view-box,
+.circle-cropper .cropper-face {
+  border-radius: 50%;
+}

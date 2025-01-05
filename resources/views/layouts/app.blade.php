@@ -15,6 +15,8 @@
     <!-- Styles -->
     <link rel="stylesheet" href="/css/lightbox.min.css">
     <link rel="stylesheet" href="/css/preview.css">
+    <link rel="stylesheet" href="/css/category_form.css">
+    <link rel="stylesheet" href="/css/cropper.css" />
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -38,6 +40,7 @@
             {{ $slot }}
             <!-- Lightbox JS -->
             <script src="/js/lightbox-plus-jquery.min.js"></script>
+            <script src="/js/cropper.js"></script>
         </main>
     </div>
 </body>

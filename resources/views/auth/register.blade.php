@@ -5,8 +5,10 @@
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name Max15')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required
-                autofocus autocomplete="name" />
+            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name', '')" required
+                autofocus autocomplete="name" data-max-length="15" data-counter-id="nameCharacterCount"
+                oninput="countCharacter(this)" />
+            <p id="nameCharacterCount" class="mt-1 text-sm text-gray-500"></p>
             <x-input-error :messages="$errors->get('name')" class="mt-2" />
         </div>
 
@@ -57,8 +59,12 @@
         <!-- Introduction -->
         <div class="mt-4">
             <x-input-label for="introduction" :value="__('Introduction Max200')" />
-            <x-text-input id="introduction" class="block mt-1 w-full" type="text" name="introduction"
-                :value="old('introduction')" required autofocus autocomplete="introduction" />
+            <textarea id="introduction"
+                class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+                type="text" name="introduction" :value="old('introduction')" rows="4" required autofocus
+                autocomplete="introduction" data-max-length="200" data-counter-id="introductionCharacterCount"
+                oninput="countCharacter(this)">{{ old('introduction', '') }}</textarea>
+            <p id="introductionCharacterCount" class="mt-1 text-sm text-gray-500"></p>
             <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
         </div>
 

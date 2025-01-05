@@ -2,7 +2,7 @@
     @if (session('message'))
         <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
             class="fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50"
-            style="background-color: {{ getCategoryColor(session('status')) }};">
+            style="background-color: {{ getCategoryColor(session('message')) }};">
             <div class="text-white">
                 {{ session('message') }}
             </div>
@@ -100,8 +100,7 @@
                                     <a href="{{ $image }}" data-lightbox="gallery"
                                         data-title="{{ '画像' . ($index + 1) }}">
                                         <img src="{{ $image }}" alt="画像が読み込めません。"
-                                            class="w-full object-cover rounded-md border border-gray-300"
-                                            style="aspect-ratio: 1/1;">
+                                            class="w-full object-cover rounded-md border border-gray-300 aspect-w-4 aspect-h-3">
                                     </a>
                                 @endforeach
                             </div>

@@ -1,0 +1,43 @@
+#custom-multi-select {
+    border: 1px solid #D1D5DB;
+    /* カテゴリーブロック全体に角丸を適用 */
+    border-radius: 0.5rem;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    outline: none;
+    /* 内部の要素が角丸を超えて表示されないように */
+    overflow: hidden; 
+}
+/* フォーカス時に青色の枠線 */
+#custom-multi-select:focus {
+    border-color: #2563EB;
+    outline: 4px solid rgba(59, 130, 246, 0.3);
+    outline-offset: 0;
+}
+/* セルが選択されたときのフォーカスリング */
+#custom-multi-select:focus .custom-option {
+    border-color: rgba(59, 130, 246, 0.5); 
+}
+
+#custom-multi-select-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.custom-option {
+    /* カテゴリーセルにも角丸を適用 */
+    border-radius: 0.375rem; 
+    /* セル間の隙間を調整 */
+    margin: 2px 0; 
+}
+
+.custom-option:first-child {
+    /* 最初のセルに上部左右角を丸める */
+    border-top-left-radius: 0.5rem; 
+    border-top-right-radius: 0.5rem; 
+}
+
+.custom-option:last-child {
+    /* 最後のセルに下部左右角を丸める */
+    border-bottom-left-radius: 0.5rem; 
+    border-bottom-right-radius: 0.5rem;
+}
