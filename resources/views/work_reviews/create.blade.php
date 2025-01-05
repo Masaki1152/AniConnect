@@ -66,6 +66,10 @@
                             </label>
                             <div id="count" class="text-sm text-gray-600 mt-1">現在、0枚の画像を選択しています。</div>
                             <!-- プレビュー画像の表示 -->
+                            <div id="crop-container" class="hidden max-w-sm mt-5">
+                                <img id="crop-preview" class="max-w-full" />
+                                <button id="crop-next-button" type="button">次へ</button>
+                            </div>
                             <div id="preview" class="grid grid-cols-2 gap-4 mt-4"></div>
                             <p class="image__error text-sm text-red-500 mt-1">{{ $errors->first('images') }}</p>
                         </div>
