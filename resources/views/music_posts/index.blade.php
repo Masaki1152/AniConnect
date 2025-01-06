@@ -126,6 +126,13 @@
                                     </a>
                                 </div>
                             @endif
+                            <div class='comment_num'>
+                                @if ($music_post->musicPostComments)
+                                    <p>コメント:{{ count($music_post->musicPostComments) }}件</p>
+                                @else
+                                    <p>コメント:0件</p>
+                                @endif
+                            </div>
                             <form
                                 action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}"
                                 id="form_{{ $music_post->id }}" method="post">

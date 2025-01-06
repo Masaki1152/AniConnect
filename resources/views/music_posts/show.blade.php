@@ -17,7 +17,7 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="text-lg font-semibold">
                 「
-                <a href="{{ route('music.show', ['music_id' => $music->music_id]) }}"
+                <a href="{{ route('music.show', ['music_id' => $music_post->music_id]) }}"
                     class="text-blue-500 hover:text-blue-700 underline">
                     {{ $music_post->music->name }}
                 </a>
@@ -25,7 +25,7 @@
             </div>
             <!-- 感想詳細ブロック -->
             <div class="bg-white rounded-lg shadow-md">
-                <div class="bg-pink-100 rounded-t-lg px-6 py-4">
+                <div class="bg-sky-100 rounded-t-lg px-6 py-4">
                     <h1 class="text-2xl font-bold">{{ $music_post->post_title }}</h1>
                 </div>
                 <div class='p-6 space-y-4'>
@@ -82,6 +82,13 @@
                                         {{ $music_post->created_at->format('Y/m/d H:i') }}</p>
                                 </div>
                             </div>
+                            <div class="content mt-2">
+                                @php
+                                    $numbers = [1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★'];
+                                @endphp
+                                <p>評価：
+                                    {{ $numbers[$music_post->star_num] }}</p>
+                            </div>
                             <p class="mt-4 text-gray-800">{!! nl2br(e($music_post->body)) !!}</p>
                         </div>
                         <div class="right_block flex-1">
@@ -118,8 +125,8 @@
                         </div>
                         <div class='like flex items-center gap-2'>
                             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                            <button id="like_button" data-work-id="{{ $music_post->work_id }}"
-                                data-review-id="{{ $music_post->id }}" type="submit"
+                            <button id="like_button" data-music-id="{{ $music_post->work_id }}"
+                                data-post-id="{{ $music_post->id }}" type="submit"
                                 class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
                                 {{ $music_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                             </button>
@@ -201,7 +208,7 @@
         const categoryColors = {!! json_encode([
             'コメントと関連するすべての返信を削除しました' => getCategoryColor('コメントと関連するすべての返信を削除しました'),
             'コメントの削除に失敗しました' => getCategoryColor('コメントの削除に失敗しました'),
-            'コメントを投稿しました。' => getCategoryColor('コメントを投稿しました。'),
+            'コメントを投稿しました。' => getCategoryColor('コメントを投稿しました'),
             'いいねしました' => getCategoryColor('いいねしました'),
             'いいねを解除しました' => getCategoryColor('いいねを解除しました'),
         ]) !!};

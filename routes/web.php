@@ -33,6 +33,8 @@ use App\Http\Controllers\WrCommentController;
 use App\Http\Controllers\WrCommentLikeController;
 use App\Http\Controllers\WspCommentController;
 use App\Http\Controllers\WspCommentLikeController;
+use App\Http\Controllers\MpCommentController;
+use App\Http\Controllers\MpCommentLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -224,6 +226,24 @@ Route::controller(MusicController::class)->middleware(['auth'])->group(function 
     Route::get('/music', 'index')->name('music.index');
     // 音楽の詳細表示
     Route::get('/music/{music_id}', 'show')->name('music.show');
+});
+
+// MpCommentControllerに関するルーティング
+Route::controller(MpCommentController::class)->middleware(['auth'])->group(function () {
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/music_posts/comments/store', 'store')->name('music_post.comments.store');
+    // コメントの削除を行うdeleteメソッドを実行
+    Route::delete('/music_posts/comments/{comment_id}/delete', 'delete')->name('music_post.comments.delete');
+    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/music_posts/comments/{comment_id}/like', 'like')->name('music_post.comments.like');
+    // ネスト化したコメントを表示するreplyメソッドを実行
+    Route::get('/music_posts/comments/{comment_id}/replies', 'replies')->name('music_post.comments.replies');
+});
+
+// MpCommentLikeControllerに関するルーティング
+Route::controller(MpCommentLikeController::class)->middleware(['auth'])->group(function () {
+    // いいねしたユーザーの表示
+    Route::get('/music_posts/comments/{comment_id}/like/index', 'index')->name('music_post_comment.like.index');
 });
 
 // MusicPostControllerに関するルーティング

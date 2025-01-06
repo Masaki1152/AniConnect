@@ -290,7 +290,8 @@ return [
         'notification.categories_array' => 'カテゴリー',
         // コメントのバリデーション
         'work_review_comment.body' => 'コメント',
-        'work_story_post_comment.body' => 'コメント'
+        'work_story_post_comment.body' => 'コメント',
+        'music_post_comment.body' => 'コメント'
     ],
 
 ];

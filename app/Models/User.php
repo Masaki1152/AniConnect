@@ -360,4 +360,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(WorkStoryPostComment::class, 'user_wsp_comment', 'user_id', 'wsp_comment_id');
     }
+
+    // MusicPostCommentに対するリレーション 1対1の関係
+    public function musicPostComment()
+    {
+        return $this->hasOne(MusicPostComment::class, 'id', 'music_post_id');
+    }
+
+    // いいねをしたMusicPostCommentに対するリレーション 多対多の関係
+    public function musicPostComments()
+    {
+        return $this->belongsToMany(MusicPostComment::class, 'user_mp_comment', 'user_id', 'mp_comment_id');
+    }
 }

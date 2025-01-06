@@ -115,4 +115,10 @@ class MusicPost extends Model
     {
         return $this->where($condition, $column_name)->first();
     }
+
+    // コメントに対するリレーション 一対多の関係
+    public function musicPostComments()
+    {
+        return $this->hasMany(MusicPostComment::class, 'music_post_id', 'id');
+    }
 }
