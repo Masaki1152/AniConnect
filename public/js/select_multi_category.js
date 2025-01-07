@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (option.classList.contains('custom-option')) {
             const value = option.dataset.value;
+            const type = option.dataset.postType;
 
             if (selectedValues.includes(value)) {
                 // 選択解除
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // hidden inputを追加
                     const newInput = document.createElement('input');
                     newInput.type = 'hidden';
-                    newInput.name = 'work_review[categories_array][]';
+                    newInput.name = `${type}[categories_array][]`;
                     newInput.value = value;
                     selectedCategoriesContainer.appendChild(newInput);
                 }

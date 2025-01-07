@@ -15,7 +15,7 @@ class MusicPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'music_post.post_title' => 'required|string|max:100',
+            'music_post.post_title' => 'required|string|max:40',
             'music_post.body' => 'required|string|max:4000',
             'music_post.categories_array' => 'required|array|max:3',
             'music_post.star_num' => 'required',
