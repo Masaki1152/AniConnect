@@ -172,7 +172,7 @@ cropButton.addEventListener('click', function (event) {
 
         // メッセージを表示
         const croppedMessage = document.getElementById('message');
-        croppedMessage.textContent = 'すべての画像のトリミングが完了しました';
+        croppedMessage.textContent = '画像のトリミングが完了しました';
         croppedMessage.classList.remove('hidden');
         croppedMessage.classList.add('block');
         croppedMessage.style.backgroundColor = categoryColors[croppedMessage.textContent] || '#d1d5db';

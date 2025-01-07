@@ -15,7 +15,7 @@
     <script>
         // PHP の Helper 関数で定義した色データを JavaScript に渡す
         const categoryColors = {!! json_encode([
-            'すべての画像のトリミングが完了しました' => getCategoryColor('すべての画像のトリミングが完了しました'),
+            '画像のトリミングが完了しました' => getCategoryColor('画像のトリミングが完了しました'),
         ]) !!};
     </script>
 </x-app-layout>
