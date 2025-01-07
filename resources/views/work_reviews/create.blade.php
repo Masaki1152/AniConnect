@@ -36,7 +36,7 @@
                                     @endphp
                                     @foreach ($categories as $category)
                                         <div class="custom-option p-2 cursor-pointer @if (in_array($category->id, $selectedCategories)) bg-gray-500 text-white @endif"
-                                            data-value="{{ $category->id }}">
+                                            data-value="{{ $category->id }}" data-post-type="work_review">
                                             {{ $category->name }}
                                         </div>
                                     @endforeach
