@@ -152,7 +152,7 @@ class MusicPostController extends Controller
         $counter = 1;
         // 今回保存するPathをDBのImageカラムに代入する
         foreach ($image_paths as $imagePath) {
-            $input_review["image$counter"] = $imagePath;
+            $input_post["image$counter"] = $imagePath;
             $counter++;
         }
         // 編集の対象となるデータを取得
