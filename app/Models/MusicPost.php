@@ -18,6 +18,10 @@ class MusicPost extends Model
         'post_title',
         'star_num',
         'body',
+        'image1',
+        'image2',
+        'image3',
+        'image4',
     ];
 
     // 参照させたいmusic_postsを指定
@@ -110,5 +114,11 @@ class MusicPost extends Model
     public function getRestrictedPost($condition, $column_name)
     {
         return $this->where($condition, $column_name)->first();
+    }
+
+    // コメントに対するリレーション 一対多の関係
+    public function musicPostComments()
+    {
+        return $this->hasMany(MusicPostComment::class, 'music_post_id', 'id');
     }
 }

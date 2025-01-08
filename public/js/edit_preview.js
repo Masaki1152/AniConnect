@@ -87,8 +87,6 @@ function loadImage(obj) {
         return;
     }
 
-    // 新しいファイルを選択済みリストに追加
-    //selectedImages.push(...newImages);
     currentIndex = 0;
     // ボタンのテキスト名の表示変更
     if (currentIndex === newImages.length - 1) {

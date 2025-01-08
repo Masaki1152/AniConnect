@@ -117,6 +117,22 @@
                                 @endforeach
                             </h5>
                             <p class='body'>{{ $music_post->body }}</p>
+                            @if ($music_post->image1)
+                                <div>
+                                    <a href="{{ $music_post->image1 }}" data-lightbox="{{ $music_post->image1 }}"
+                                        data-title="画像">
+                                        <img src="{{ $music_post->image1 }}" alt="画像が読み込めません。"
+                                            class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
+                                    </a>
+                                </div>
+                            @endif
+                            <div class='comment_num'>
+                                @if ($music_post->musicPostComments)
+                                    <p>コメント:{{ count($music_post->musicPostComments) }}件</p>
+                                @else
+                                    <p>コメント:0件</p>
+                                @endif
+                            </div>
                             <form
                                 action="{{ route('music_posts.delete', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}"
                                 id="form_{{ $music_post->id }}" method="post">
