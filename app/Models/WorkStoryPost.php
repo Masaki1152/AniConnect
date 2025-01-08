@@ -16,6 +16,7 @@ class WorkStoryPost extends Model
         'user_id',
         'sub_title_id',
         'post_title',
+        'star_num',
         'body',
         'image1',
         'image2',
