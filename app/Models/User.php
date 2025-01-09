@@ -372,4 +372,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(MusicPostComment::class, 'user_mp_comment', 'user_id', 'mp_comment_id');
     }
+
+    // CharacterPostCommentに対するリレーション 1対1の関係
+    public function characterPostComment()
+    {
+        return $this->hasOne(CharacterPostComment::class, 'id', 'character_post_id');
+    }
+
+    // いいねをしたCharacterPostCommentに対するリレーション 多対多の関係
+    public function characterPostComments()
+    {
+        return $this->belongsToMany(CharacterPostComment::class, 'user_cp_comment', 'user_id', 'cp_comment_id');
+    }
 }

@@ -137,6 +137,13 @@
                                     </a>
                                 </div>
                             @endif
+                            <div class='comment_num'>
+                                @if ($character_post->characterPostComments)
+                                    <p>コメント:{{ count($character_post->characterPostComments) }}件</p>
+                                @else
+                                    <p>コメント:0件</p>
+                                @endif
+                            </div>
                             <form
                                 action="{{ route('character_posts.delete', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}"
                                 id="form_{{ $character_post->id }}" method="post">

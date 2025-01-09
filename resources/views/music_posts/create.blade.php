@@ -31,7 +31,7 @@
                             </p>
                         </div>
                         <div class="star_num">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">星の数</label>
+                            <label class="block font-medium text-sm text-gray-700 mb-2">評価</label>
                             <select name="music_post[star_num]"
                                 class="block w-1/3 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
                                 @php
