@@ -35,6 +35,8 @@ use App\Http\Controllers\WspCommentController;
 use App\Http\Controllers\WspCommentLikeController;
 use App\Http\Controllers\MpCommentController;
 use App\Http\Controllers\MpCommentLikeController;
+use App\Http\Controllers\CpCommentController;
+use App\Http\Controllers\CpCommentLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -186,6 +188,24 @@ Route::controller(CharacterController::class)->middleware(['auth'])->group(funct
     Route::get('/characters', 'index')->name('characters.index');
     // 登場人物の詳細表示
     Route::get('/characters/{character_id}', 'show')->name('characters.show');
+});
+
+// CpCommentControllerに関するルーティング
+Route::controller(CpCommentController::class)->middleware(['auth'])->group(function () {
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/character_posts/comments/store', 'store')->name('character_post.comments.store');
+    // コメントの削除を行うdeleteメソッドを実行
+    Route::delete('/character_posts/comments/{comment_id}/delete', 'delete')->name('character_post.comments.delete');
+    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/character_posts/comments/{comment_id}/like', 'like')->name('character_post.comments.like');
+    // ネスト化したコメントを表示するreplyメソッドを実行
+    Route::get('/character_posts/comments/{comment_id}/replies', 'replies')->name('character_post.comments.replies');
+});
+
+// CpCommentLikeControllerに関するルーティング
+Route::controller(CpCommentLikeController::class)->middleware(['auth'])->group(function () {
+    // いいねしたユーザーの表示
+    Route::get('/character_posts/comments/{comment_id}/like/index', 'index')->name('character_post_comment.like.index');
 });
 
 // CharacterPostControllerに関するルーティング
