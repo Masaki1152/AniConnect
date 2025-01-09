@@ -15,7 +15,7 @@ class CharacterPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'character_post.post_title' => 'required|string|max:100',
+            'character_post.post_title' => 'required|string|max:40',
             'character_post.body' => 'required|string|max:4000',
             'character_post.categories_array' => 'required|array|max:3',
             'character_post.star_num' => 'required',

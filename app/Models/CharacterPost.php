@@ -94,6 +94,12 @@ class CharacterPost extends Model
         return $this->belongsToMany(User::class, 'character_posts_users', 'character_post_id', 'user_id');
     }
 
+    // コメントに対するリレーション 一対多の関係
+    public function characterPostComments()
+    {
+        return $this->hasMany(CharacterPostComment::class, 'character_post_id', 'id');
+    }
+
     // 登場人物idと投稿idを指定して、投稿の詳細表示を行う
     public function getDetailPost($character_id, $character_post_id)
     {
