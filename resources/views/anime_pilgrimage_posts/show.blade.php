@@ -93,10 +93,14 @@
                                         </svg>
                                     @endfor
                                 </p>
-                                <p class="flex items-center text-lg font-semibold text-gray-800">
-                                    <span class="mr-2 mt-1">シーン：</span>
-                                    {{ $pilgrimage_post->scene }}
-                                </p>
+                                <div class="mt-1">
+                                    <p class="text-lg font-semibold text-gray-800">
+                                        シーン：
+                                    </p>
+                                    <p class="text-lg font-semibold text-gray-800 break-words">
+                                        {{ $pilgrimage_post->scene }}
+                                    </p>
+                                </div>
                             </div>
                             <p class="mt-4 text-gray-800">{!! nl2br(e($pilgrimage_post->body)) !!}</p>
                         </div>
