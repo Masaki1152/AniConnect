@@ -15,6 +15,7 @@ class AnimePilgrimagePost extends Model
         'user_id',
         'anime_pilgrimage_id',
         'post_title',
+        'star_num',
         'scene',
         'body',
         'image1',
@@ -108,5 +109,11 @@ class AnimePilgrimagePost extends Model
     public function users()
     {
         return $this->belongsToMany(User::class, 'anime_pilgrimage_posts_users', 'anime_pilgrimage_post_id', 'user_id');
+    }
+
+    // コメントに対するリレーション 一対多の関係
+    public function pilgrimagePostComments()
+    {
+        return $this->hasMany(AnimePilgrimagePostComment::class, 'anime_pilgrimage_post_id', 'id');
     }
 }

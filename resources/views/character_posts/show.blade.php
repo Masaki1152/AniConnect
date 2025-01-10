@@ -25,7 +25,7 @@
             </div>
             <!-- 感想詳細ブロック -->
             <div class="bg-white rounded-lg shadow-md">
-                <div class="bg-sky-100 rounded-t-lg px-6 py-4">
+                <div class="bg-amber-100 rounded-t-lg px-6 py-4">
                     <h1 class="text-2xl font-bold">{{ $character_post->post_title }}</h1>
                 </div>
                 <div class='p-6 space-y-4'>
