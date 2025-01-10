@@ -15,6 +15,7 @@ class AnimePilgrimagePost extends Model
         'user_id',
         'anime_pilgrimage_id',
         'post_title',
+        'star_num',
         'scene',
         'body',
         'image1',
