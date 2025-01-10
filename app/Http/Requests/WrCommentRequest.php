@@ -9,7 +9,7 @@ class WrCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'work_review_comment.body' => 'required|string|max:1000',
+            'work_review_comment.body' => 'required|string|max:200',
             'images' => 'array|max:4'
         ];
     }

@@ -23,6 +23,10 @@ function toggleChildCommentForm(replyId) {
         addChildCommentBlock.style.display = 'block';
         toggleChildCommentButton.style.display = 'none';
         closeChildCommentButtton.style.display = 'inline';
+        if (document.getElementById(`commentCharacterCount-${replyId}`)) {
+            document.getElementById(`commentCharacterCount-${replyId}`).innerText = "あと200文字入力できます。";
+            document.getElementById(`comment_body-${replyId}`).value = "";
+        }
     } else {
         addChildCommentBlock.style.display = 'none';
         toggleChildCommentButton.style.display = 'inline';

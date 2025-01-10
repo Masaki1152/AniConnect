@@ -9,7 +9,7 @@ class WspCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'work_story_post_comment.body' => 'required|string|max:1000',
+            'work_story_post_comment.body' => 'required|string|max:200',
             'images' => 'array|max:4'
         ];
     }

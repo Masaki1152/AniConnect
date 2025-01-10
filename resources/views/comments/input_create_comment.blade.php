@@ -2,11 +2,14 @@
 <div>
     <input type="hidden" id="post_comment_id-{{ $comment->id }}" value="{{ $postCommentId }}">
     <input type="hidden" id="parent_id-{{ $comment->id }}" value="{{ $parentId }}">
-    <textarea id="comment_body-{{ $comment->id }}" required class="w-full p-2 mb-2 border rounded-lg"
+    <textarea id="comment_body-{{ $comment->id }}" required
+        class="w-full p-2 border rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
+        data-max-length="200" data-counter-id="commentCharacterCount-{{ $comment->id }}" oninput="countCharacter(this)"
         placeholder="コメントを入力してください"></textarea>
-    <p id="body_error-{{ $comment->id }}" class="text-red-500 text-sm hidden">
-        コメントを入力してください。</p>
-    <div class="image mb-4">
+    <p id="commentCharacterCount-{{ $comment->id }}" class="text-sm text-gray-600">あと200文字入力できます。</p>
+    <p id="body_error-{{ $comment->id }}" class="title__error text-sm text-red-500 mt-1">
+        {{ $errors->first("{$inputName}.body") }}</p>
+    <div class="image mt-2 mb-4">
         <h2 class="text-sm font-medium mb-1">画像（4枚まで）</h2>
         <label>
             <input id="inputElm-{{ $comment->id }}" type="file" style="display:none" multiple
@@ -28,4 +31,5 @@
             コメントする
         </button>
     </div>
+    <script src="{{ asset('/js/count_character.js') }}"></script>
 </div>
