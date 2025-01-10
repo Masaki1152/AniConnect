@@ -384,4 +384,16 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(CharacterPostComment::class, 'user_cp_comment', 'user_id', 'cp_comment_id');
     }
+
+    // AnimePilgrimagePostCommentに対するリレーション 1対1の関係
+    public function animePilgrimagePostComment()
+    {
+        return $this->hasOne(AnimePilgrimagePostComment::class, 'id', 'anime_pilgrimage_post_id');
+    }
+
+    // いいねをしたAnimePilgrimagePostCommentに対するリレーション 多対多の関係
+    public function animePilgrimagePostComments()
+    {
+        return $this->belongsToMany(AnimePilgrimagePostComment::class, 'user_app_comment', 'user_id', 'app_comment_id');
+    }
 }

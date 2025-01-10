@@ -292,7 +292,8 @@ return [
         'work_review_comment.body' => 'コメント',
         'work_story_post_comment.body' => 'コメント',
         'character_post_comment.body' => 'コメント',
-        'music_post_comment.body' => 'コメント'
+        'music_post_comment.body' => 'コメント',
+        'pilgrimage_post_comment.body' => 'コメント'
     ],
 
 ];
