@@ -111,7 +111,7 @@ class AnimePilgrimagePost extends Model
     }
 
     // コメントに対するリレーション 一対多の関係
-    public function characterPostComments()
+    public function pilgrimagePostComments()
     {
         return $this->hasMany(AnimePilgrimagePostComment::class, 'anime_pilgrimage_post_id', 'id');
     }

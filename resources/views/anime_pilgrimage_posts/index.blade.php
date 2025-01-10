@@ -136,6 +136,13 @@
                                     </a>
                                 </div>
                             @endif
+                            <div class='comment_num'>
+                                @if ($pilgrimage_post->pilgrimagePostComments)
+                                    <p>コメント:{{ count($pilgrimage_post->pilgrimagePostComments) }}件</p>
+                                @else
+                                    <p>コメント:0件</p>
+                                @endif
+                            </div>
                             <form
                                 action="{{ route('pilgrimage_posts.delete', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}"
                                 id="form_{{ $pilgrimage_post->id }}" method="post">
