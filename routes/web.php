@@ -37,6 +37,8 @@ use App\Http\Controllers\MpCommentController;
 use App\Http\Controllers\MpCommentLikeController;
 use App\Http\Controllers\CpCommentController;
 use App\Http\Controllers\CpCommentLikeController;
+use App\Http\Controllers\AppCommentController;
+use App\Http\Controllers\AppCommentLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -316,6 +318,24 @@ Route::controller(AnimePilgrimageController::class)->middleware(['auth'])->group
     Route::get('/pilgrimages', 'index')->name('pilgrimages.index');
     // 聖地の詳細表示
     Route::get('/pilgrimages/{pilgrimage_id}', 'show')->name('pilgrimages.show');
+});
+
+// AppCommentControllerに関するルーティング
+Route::controller(AppCommentController::class)->middleware(['auth'])->group(function () {
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/pilgrimage_posts/comments/store', 'store')->name('pilgrimage_post.comments.store');
+    // コメントの削除を行うdeleteメソッドを実行
+    Route::delete('/pilgrimage_posts/comments/{comment_id}/delete', 'delete')->name('pilgrimage_post.comments.delete');
+    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/pilgrimage_posts/comments/{comment_id}/like', 'like')->name('pilgrimage_post.comments.like');
+    // ネスト化したコメントを表示するreplyメソッドを実行
+    Route::get('/pilgrimage_posts/comments/{comment_id}/replies', 'replies')->name('pilgrimage_post.comments.replies');
+});
+
+// AppCommentLikeControllerに関するルーティング
+Route::controller(AppCommentLikeController::class)->middleware(['auth'])->group(function () {
+    // いいねしたユーザーの表示
+    Route::get('/pilgrimage_posts/comments/{comment_id}/like/index', 'index')->name('pilgrimage_post_comment.like.index');
 });
 
 // AnimePilgrimagePostControllerに関するルーティング
