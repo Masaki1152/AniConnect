@@ -89,10 +89,10 @@
                             <div id="count" class="text-sm text-gray-600 mt-1">現在、0枚の画像を選択しています。</div>
                             <!-- 画像トリミング用のモーダルウィンドウ表示 -->
                             <div id="crop-modal"
-                                class="hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                class="crop-modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                                 <div class="bg-white p-4 rounded-lg shadow-lg relative w-full max-w-2xl">
                                     <div class="overflow-hidden w-full h-auto">
-                                        <img id="crop-preview" class="w-full h-auto object-cover" />
+                                        <img id="crop-preview" class="crop-preview w-full h-auto object-cover" />
                                     </div>
                                     <div class="flex justify-end gap-2 mt-4">
                                         <button id="crop-cancel-button" type="button"
