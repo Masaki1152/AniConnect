@@ -62,7 +62,7 @@
                     <a href="{{ $image }}" data-lightbox="{{ $comment->id }}"
                         data-title="{{ '画像' . ($index + 1) }}">
                         <img src="{{ $image }}" alt="画像が読み込めません。"
-                            class="w-full object-cover rounded-md border border-gray-300" style="aspect-ratio: 1/1;">
+                            class="w-full object-cover rounded-md border border-gray-300 aspect-w-4 aspect-h-3">
                     </a>
                 @endforeach
             </div>

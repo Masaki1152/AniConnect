@@ -179,6 +179,21 @@ class MusicPostController extends Controller
             $public_id = $this->extractPublicIdFromUrl($removed_image_path);
             Cloudinary::destroy($public_id);
         }
+
+        // 投稿へのコメントの画像も削除する処理
+        $comments = $targetMusicPost->musicPostComments;
+        foreach ($comments as $comment) {
+            for ($counter = 1; $counter < 5; $counter++) {
+                $comment_image_path = $comment->{'image' . $counter};
+                if (is_null($comment_image_path)) {
+                    continue;
+                }
+                $public_id = $this->extractPublicIdFromUrl($comment_image_path);
+                Cloudinary::destroy($public_id);
+            }
+            // コメント自体も削除
+            $comment->delete();
+        }
         $targetMusicPost->delete();
         return redirect()->route('music_posts.index', ['music_id' => $music_id])->with('message', '投稿を削除しました');
     }

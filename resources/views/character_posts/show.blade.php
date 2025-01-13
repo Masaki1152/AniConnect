@@ -214,6 +214,7 @@
             'コメントを投稿しました。' => getCategoryColor('コメントを投稿しました'),
             'いいねしました' => getCategoryColor('いいねしました'),
             'いいねを解除しました' => getCategoryColor('いいねを解除しました'),
+            'すべての画像のトリミングが完了しました' => getCategoryColor('すべての画像のトリミングが完了しました'),
         ]) !!};
     </script>
 </x-app-layout>

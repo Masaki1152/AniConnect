@@ -18,6 +18,11 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
     });
     // フィールドのバリデーションチェック
     if (!commentBody.trim()) {
+        bodyError.textContent = 'コメントを入力してください。';
+        bodyError.classList.remove('hidden');
+        return;
+    } else if (commentBody.length > 200) {
+        bodyError.textContent = 'コメントは200文字以内で入力してください。';
         bodyError.classList.remove('hidden');
         return;
     } else {
@@ -93,6 +98,9 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
             // コメント数の表示変更
             const commentCount = document.getElementById('comment_count');
             commentCount.innerHTML = Number(commentCount.innerHTML) + 1;
+            // 選択している画像枚数のリセット
+            const imageCount = document.getElementById(`count-${postId}`);
+            imageCount.innerText = "現在、0枚の画像を選択しています。";
             // フォームを閉じる
             toggleCommentForm();
             return;
@@ -165,6 +173,9 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
         // コメント数の表示変更
         const commentCount = document.getElementById('comment_count');
         commentCount.innerHTML = Number(commentCount.innerHTML) + 1;
+        // 選択している画像枚数のリセット
+        const imageCount = document.getElementById(`count-${parentId}`);
+        imageCount.innerText = "現在、0枚の画像を選択しています。";
 
         // 3秒後にメッセージを非表示
         setTimeout(() => {

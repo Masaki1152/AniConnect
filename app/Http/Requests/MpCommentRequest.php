@@ -9,7 +9,7 @@ class MpCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'music_post_comment.body' => 'required|string|max:1000',
+            'music_post_comment.body' => 'required|string|max:200',
             'images' => 'array|max:4'
         ];
     }

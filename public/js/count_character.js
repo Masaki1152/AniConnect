@@ -24,3 +24,9 @@ function countCharacter(inputElement) {
 window.onload = () => {
     document.querySelectorAll('[data-max-length]').forEach(inputElement => countCharacter(inputElement));
 };
+// 投稿フォームが開かれるたびにすべての入力フィールドを再初期化
+if (document.getElementById('toggleComments')) {
+    document.getElementById('toggleComments').addEventListener('click', () => {
+        document.querySelectorAll('[data-max-length]').forEach(inputElement => countCharacter(inputElement));
+    });
+}

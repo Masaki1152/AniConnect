@@ -35,18 +35,18 @@
 }
 
 /* 画像トリミング用のモーダルウィンドウ*/
-#crop-modal {
+.crop-modal {
     /* デフォルトで非表示 */
     display: none; 
 }
 
-#crop-modal.show {
+.crop-modal.show {
     /* 表示時はフレックスボックスで中央揃え */
     display: flex;
 }
 
 /* モーダルウィンドウ内の画像のサイズ設定 */
-#crop-preview {
+.crop-preview {
     max-width: 100%;
     max-height: 60vh; /* ビューポートの80%の高さに制限 */
     width: auto;

@@ -9,7 +9,7 @@ class CpCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'character_post_comment.body' => 'required|string|max:1000',
+            'character_post_comment.body' => 'required|string|max:200',
             'images' => 'array|max:4'
         ];
     }

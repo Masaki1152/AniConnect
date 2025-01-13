@@ -9,7 +9,7 @@ class AppCommentRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pilgrimage_post_comment.body' => 'required|string|max:1000',
+            'pilgrimage_post_comment.body' => 'required|string|max:200',
             'images' => 'array|max:4'
         ];
     }

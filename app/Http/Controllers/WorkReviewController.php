@@ -182,6 +182,22 @@ class WorkReviewController extends Controller
             $public_id = $this->extractPublicIdFromUrl($removed_image_path);
             Cloudinary::destroy($public_id);
         }
+
+        // 投稿へのコメントの画像も削除する処理
+        $comments = $targetworkreview->workReviewComments;
+        foreach ($comments as $comment) {
+            for ($counter = 1; $counter < 5; $counter++) {
+                $comment_image_path = $comment->{'image' . $counter};
+                if (is_null($comment_image_path)) {
+                    continue;
+                }
+                $public_id = $this->extractPublicIdFromUrl($comment_image_path);
+                Cloudinary::destroy($public_id);
+            }
+            // コメント自体も削除
+            $comment->delete();
+        }
+
         // データの削除
         $targetworkreview->delete();
         return redirect()->route('work_reviews.index', ['work_id' => $work_id])->with('message', '投稿を削除しました');
