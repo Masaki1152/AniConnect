@@ -6,8 +6,6 @@ let currentIndex = 0;
 
 // コメント画像のプレビューを行う
 function loadImage(obj, commentId) {
-    // 新しい選択を開始するために、マップのクリア
-    selectedImagesMap.set(commentId, []);
 
     // 新しく選択されたファイル
     newImages = Array.from(obj.files);
@@ -32,6 +30,13 @@ function loadImage(obj, commentId) {
     if (newImages.length > 0) {
         cropImage(newImages[currentIndex], commentId);
     }
+
+    // 投稿するボタンを押した際の処理
+    const submitButton = document.getElementById(`submit_comment-${commentId}`);
+    submitButton.addEventListener('click', function () {
+        // 新しい選択を開始するために、マップのクリア
+        selectedImagesMap.set(commentId, []);
+    });
 }
 
 // 選択した画像をトリミング

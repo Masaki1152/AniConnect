@@ -43,7 +43,7 @@
         <p id="image_error" class="text-red-500 text-sm hidden">画像が正しくありません。</p>
     </div>
     <div class="flex justify-center mt-4">
-        <button id="submit_comment" data-comment-id='{{ $comment->id }}' type='button'
+        <button id="submit_comment-{{ $comment->id }}" data-comment-id='{{ $comment->id }}' type='button'
             class="px-2 py-1 bg-green-500 text-white rounded-lg shadow-md hover:bg-green-600"
             onclick="storeComment({{ $comment->id }}, '{{ $inputName }}', '{{ $baseRoute }}s', '{{ $inputPostIdName }}')">
             コメントする
