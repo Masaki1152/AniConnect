@@ -18,6 +18,11 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
     });
     // フィールドのバリデーションチェック
     if (!commentBody.trim()) {
+        bodyError.textContent = 'コメントを入力してください。';
+        bodyError.classList.remove('hidden');
+        return;
+    } else if (commentBody.length > 200) {
+        bodyError.textContent = 'コメントは200文字以内で入力してください。';
         bodyError.classList.remove('hidden');
         return;
     } else {
