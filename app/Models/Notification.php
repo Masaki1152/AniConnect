@@ -83,4 +83,10 @@ class Notification extends Model
     {
         return $this->belongsToMany(NotificationCategory::class, 'notification_category', 'notification_id', 'notification_category_id');
     }
+
+    // コメントに対するリレーション 一対多の関係
+    public function notificationComments()
+    {
+        return $this->hasMany(NotificationComment::class, 'notification_id', 'id');
+    }
 }
