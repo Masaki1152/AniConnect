@@ -39,6 +39,8 @@ use App\Http\Controllers\CpCommentController;
 use App\Http\Controllers\CpCommentLikeController;
 use App\Http\Controllers\AppCommentController;
 use App\Http\Controllers\AppCommentLikeController;
+use App\Http\Controllers\NotificationCommentController;
+use App\Http\Controllers\NotificationCommentLikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +81,24 @@ Route::prefix('admin')
         // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
         Route::post('notification/like/{notification_id}', [AdminNotificationController::class, 'like'])->name('notifications.like');
     });
+
+// NotificationControllerに関するルーティング
+Route::controller(NotificationCommentController::class)->middleware(['auth'])->group(function () {
+    // 作成するボタン押下で、storeメソッドを実行
+    Route::post('/notifications/comments/store', 'store')->name('notification.comments.store');
+    // コメントの削除を行うdeleteメソッドを実行
+    Route::delete('/notifications/comments/{comment_id}/delete', 'delete')->name('notification.comments.delete');
+    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+    Route::post('/notifications/comments/{comment_id}/like', 'like')->name('notification.comments.like');
+    // ネスト化したコメントを表示するreplyメソッドを実行
+    Route::get('/notifications/comments/{comment_id}/replies', 'replies')->name('notification.comments.replies');
+});
+
+// NotificationCommentLikeControllerに関するルーティング
+Route::controller(NotificationCommentLikeController::class)->middleware(['auth'])->group(function () {
+    // いいねしたユーザーの表示
+    Route::get('/notifications/comments/{comment_id}/like/index', 'index')->name('notification_comment.like.index');
+});
 
 // NotificationControllerに関するルーティング
 Route::controller(NotificationController::class)->middleware(['auth'])->group(function () {
