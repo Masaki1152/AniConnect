@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Notification;
+use App\Models\User;
 use App\Models\NotificationCategory;
 use Illuminate\Support\Facades\Auth;
 
@@ -44,8 +45,11 @@ class NotificationController extends Controller
     public function show($notification_id)
     {
         $notification = Notification::find($notification_id);
+        // 運営の情報を取得
+        $operate = User::find(1);
         return view('notifications.show')->with([
-            'notification' => $notification
+            'notification' => $notification,
+            'operate' => $operate
         ]);
     }
 
