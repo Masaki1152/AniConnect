@@ -201,7 +201,7 @@
         const categoryColors = {!! json_encode([
             'コメントと関連するすべての返信を削除しました' => getCategoryColor('コメントと関連するすべての返信を削除しました'),
             'コメントの削除に失敗しました' => getCategoryColor('コメントの削除に失敗しました'),
-            'コメントを投稿しました。' => getCategoryColor('コメントを投稿しました'),
+            'コメントを投稿しました' => getCategoryColor('コメントを投稿しました'),
             'いいねしました' => getCategoryColor('いいねしました'),
             'いいねを解除しました' => getCategoryColor('いいねを解除しました'),
             'すべての画像のトリミングが完了しました' => getCategoryColor('すべての画像のトリミングが完了しました'),

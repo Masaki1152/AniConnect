@@ -45,12 +45,12 @@ class NotificationCommentController extends Controller
             'comment' => $notification_comment,
             'status' => $status,
             'inputName' => 'notification_comment',
-            'baseRoute' => 'notification_post',
-            'inputPostIdName' => 'notification_post_id',
+            'baseRoute' => 'notification',
+            'inputPostIdName' => 'notification_id',
             'postCommentId' => $notification_comment->notification_id,
             'parentId' => $notification_comment->parent_id
         ])->render();
-        return response()->json(['message' => 'コメントを投稿しました。', 'new_comment_id' => $notification_comment->id, 'commentHtml' => $commentHtml]);
+        return response()->json(['message' => 'コメントを投稿しました', 'new_comment_id' => $notification_comment->id, 'commentHtml' => $commentHtml]);
     }
 
     // コメントを削除する

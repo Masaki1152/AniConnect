@@ -89,6 +89,13 @@
                         <div class='created_at'>
                             <p>{{ $notification->created_at->format('Y/m/d H:i') }}</p>
                         </div>
+                        <div class='comment_num'>
+                            @if ($notification->notificationComments)
+                                <p>コメント:{{ count($notification->notificationComments) }}件</p>
+                            @else
+                                <p>コメント:0件</p>
+                            @endif
+                        </div>
                         <div class="like">
                             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                             <button id="like_button" data-notification-id="{{ $notification->id }}" type="submit">
