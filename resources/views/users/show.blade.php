@@ -21,10 +21,67 @@
                         @include('users.input_profile', ['user' => $user])
                     </div>
                 </div>
+                <div class="post_type_button py-2 flex flex-row justify-evenly items-center w-full">
+                    <span
+                        class="impressions_button py-2 rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center">
+                        感想投稿
+                    </span>
+                    <span
+                        class="comments_button py-2 rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center">
+                        コメント投稿
+                    </span>
+                    <span
+                        class="liked_posts_button py-2 rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center">
+                        いいねした投稿
+                    </span>
+                </div>
+                <!-- 検索機能 -->
+                <div class='search flex flex-row justify-center items-center w-full gap-4'>
+                    <div class="search_bar w-full max-w-lg">
+                        <form action="{{ route('users.index') }}" method="GET" class="flex items-center w-full gap-2">
+                            <!-- 検索バー -->
+                            <div class="relative w-4/5">
+                                <input type="text" id="searchInput" name="search" value="{{ request('search') }}"
+                                    placeholder="キーワードを入力..." aria-label="検索..."
+                                    class="px-4 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 h-[44px] min-w-[300px] text-base pr-10"
+                                    oninput="toggleClearButton()">
+                                <button type="button" id="clearButton"
+                                    class="absolute right-4 top-1/2 transform -translate-y-1/2  flex items-center justify-center text-gray-600 hover:text-gray-400 focus:outline-none hidden"
+                                    onclick="clearSearch()">
+                                    ✕
+                                </button>
+                            </div>
+                            <!-- 検索ボタン -->
+                            <button type="submit"
+                                class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 h-[30px] min-w-[60px] text-base">検索</button>
+                            <select name="category"
+                                class="px-4 ml-4 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-[44px] min-w-[200px] text-base"
+                                onchange="removeEmptyCategory(this)">
+                                <option value="">投稿の種類で絞り込む</option>
+                                @php
+                                    $numbers = [
+                                        1 => '作品感想',
+                                        2 => 'あらすじ感想',
+                                        3 => '登場人物感想',
+                                        4 => '音楽感想',
+                                        5 => '聖地感想',
+                                    ];
+                                @endphp
+                                @foreach ($numbers as $num => $star)
+                                    <option value="{{ $num }}">
+                                        {{ $star }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </form>
+                    </div>
+                </div>
+                <div class="cancel mt-2">
+                    <a href="{{ route('users.index') }}"
+                        class="text-blue-500 hover:underline focus:outline-none">キャンセル</a>
+                </div>
                 <div class="bg-sky-100">曜ちゃん！</div>
                 <div class="bg-sky-200">テキストが入ります</div>
-                <div class="bg-sky-300">テキストが入ります</div>
-                <div class="bg-sky-400">テキストが入ります</div>
                 <div class="bg-sky-500">テキストが入ります</div>
             </div>
         </div>
@@ -32,4 +89,5 @@
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/follow_user.js') }}"></script>
+    <script src="{{ asset('/js/search_user_post.js') }}"></script>
 </x-app-layout>

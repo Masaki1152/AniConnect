@@ -3,7 +3,7 @@
     <div class="left_block w-1/3 h-full pl-2 flex flex-col justify-center items-center gap-4">
         <!-- ユーザー画像 -->
         <div
-            class='user_image flex-grow w-[280px] h-[280px] rounded-full overflow-hidden flex items-center justify-center'>
+            class='user_image flex-grow w-[280px] h-[280px] rounded-full overflow-hidden flex items-center justify-center border border-gray-400'>
             @if ($user->image)
                 <div>
                     <img src="{{ $user->image }}" alt="画像が読み込めません。" class="object-cover w-full h-full">
