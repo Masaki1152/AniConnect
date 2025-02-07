@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Helpers\PaginationHelper;
 
 class User extends Authenticatable
 {
@@ -50,182 +51,110 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
+    // 投稿の種類ごとのモデルとリレーション設定
+    protected $postTypes = [
+        'work' => [
+            'model' => WorkReview::class,
+            'relations' => ['work' => ['name', 'term']],
+        ],
+        'workStory' => [
+            'model' => WorkStoryPost::class,
+            'relations' => [
+                'work' => ['name', 'term'],
+                'workStory' => ['sub_title', 'episode'],
+            ],
+        ],
+        'character' => [
+            'model' => CharacterPost::class,
+            'relations' => [
+                'character' => ['name'],
+                'character.works' => ['name', 'term'],
+                'character.voiceArtist' => ['name'],
+            ],
+        ],
+        'music' => [
+            'model' => MusicPost::class,
+            'relations' => [
+                'music' => ['name'],
+                'music.work' => ['name', 'term'],
+                'music.singer' => ['name'],
+            ],
+        ],
+        'animePilgrimage' => [
+            'model' => AnimePilgrimagePost::class,
+            'relations' => [
+                'animePilgrimage' => ['name', 'place'],
+                'animePilgrimage.works' => ['name', 'term'],
+            ],
+        ],
+    ];
+
     // 投稿の種類とユーザーidで投稿を取得する処理
     public function fetchPosts($user_id, $type, $search)
     {
-        // 必要な種類の投稿を取得
-        // 合わせて投稿者情報をリレーションで取得
-        switch ($type) {
-            case 'work':
-                $posts = WorkReview::where('user_id', $user_id)
-                    ->with(['user', 'work'])
-                    ->where(function ($query) use ($search) {
-                        // キーワード検索がなされた場合
-                        if ($search != '') {
-                            // 検索語のスペースを半角に統一
-                            $search_split = mb_convert_kana($search, 's');
-                            // 半角スペースで単語ごとに分割して配列にする
-                            $search_array = preg_split('/[\s]+/', $search_split);
-                            foreach ($search_array as $search_word) {
-                                $query->where(function ($query) use ($search_word) {
-                                    // 自身のカラムでの検索
-                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+        // typeが'none'の場合、すべての投稿を取得
+        if ($type === 'none') {
+            $posts = collect();
 
-                                    // リレーション先のWorksテーブルのカラムでの検索
-                                    $query->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                        $workQuery->where('name', 'like', '%' . $search_word . '%')
-                                            ->orWhere('term', 'like', '%' . $search_word . '%');
-                                    });
-                                });
-                            }
-                        }
-                    })->orderBy('created_at', 'DESC')->paginate(10);
-                $this->addPostType($posts, $type);
-                break;
-            case 'workStory':
-                $posts = WorkStoryPost::where('user_id', $user_id)
-                    ->with(['user', 'work', 'workStory'])
-                    ->where(function ($query) use ($search) {
-                        // キーワード検索がなされた場合
-                        if ($search != '') {
-                            // 検索語のスペースを半角に統一
-                            $search_split = mb_convert_kana($search, 's');
-                            // 半角スペースで単語ごとに分割して配列にする
-                            $search_array = preg_split('/[\s]+/', $search_split);
-                            foreach ($search_array as $search_word) {
-                                $query->where(function ($query) use ($search_word) {
-                                    // 自身のカラムでの検索
-                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+            foreach ($this->postTypes as $key => $config) {
+                $query = $config['model']::where('user_id', $user_id)
+                    ->with(array_keys($config['relations']))
+                    ->where(function ($query) use ($search, $config) {
+                        $this->applySearchFilter($query, $search, $config['relations']);
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
 
-                                    // リレーション先のWorksテーブルのカラムでの検索
-                                    $query->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                        $workQuery->where('name', 'like', '%' . $search_word . '%')
-                                            ->orWhere('term', 'like', '%' . $search_word . '%');
-                                    });
+                $this->addPostType($query, $key);
+                $posts = $posts->merge($query);
+            }
 
-                                    // リレーション先のWork_storiesテーブルのカラムでの検索
-                                    $query->orWhereHas('workStory', function ($workStoryQuery) use ($search_word) {
-                                        $workStoryQuery->where('sub_title', 'like', '%' . $search_word . '%')
-                                            ->orWhere('episode', 'like', '%' . $search_word . '%');
-                                    });
-                                });
-                            }
-                        }
-                    })->orderBy('created_at', 'DESC')->paginate(10);
-                $this->addPostType($posts, $type);
-                break;
-            case 'character':
-                $posts = CharacterPost::where('user_id', $user_id)
-                    ->with(['user', 'character', 'character.works', 'character.voiceArtist'])
-                    ->where(function ($query) use ($search) {
-                        // キーワード検索がなされた場合
-                        if ($search != '') {
-                            // 検索語のスペースを半角に統一
-                            $search_split = mb_convert_kana($search, 's');
-                            // 半角スペースで単語ごとに分割して配列にする
-                            $search_array = preg_split('/[\s]+/', $search_split);
-                            foreach ($search_array as $search_word) {
-                                $query->where(function ($query) use ($search_word) {
-                                    // 自身のカラムでの検索
-                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
-
-                                    // リレーション先のCharactersテーブルのカラムでの検索
-                                    $query->orWhereHas('character', function ($characterQuery) use ($search_word) {
-                                        $characterQuery->where('name', 'like', '%' . $search_word . '%');
-
-                                        // リレーション先のWorksテーブルのカラムでの検索
-                                        $characterQuery->orWhereHas('works', function ($workQuery) use ($search_word) {
-                                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
-                                                ->orWhere('term', 'like', '%' . $search_word . '%');
-                                        });
-
-                                        // リレーション先のvoice_artistsテーブルのカラムでの検索
-                                        $characterQuery->orWhereHas('voiceArtist', function ($voiceArtistQuery) use ($search_word) {
-                                            $voiceArtistQuery->where('name', 'LIKE', "%{$search_word}%");
-                                        });
-                                    });
-                                });
-                            }
-                        }
-                    })->orderBy('created_at', 'DESC')->paginate(10);
-                $this->addPostType($posts, $type);
-                break;
-            case 'music':
-                $posts = MusicPost::where('user_id', $user_id)
-                    ->with(['user', 'music', 'music.work', 'music.singer'])
-                    ->where(function ($query) use ($search) {
-                        // キーワード検索がなされた場合
-                        if ($search != '') {
-                            // 検索語のスペースを半角に統一
-                            $search_split = mb_convert_kana($search, 's');
-                            // 半角スペースで単語ごとに分割して配列にする
-                            $search_array = preg_split('/[\s]+/', $search_split);
-                            foreach ($search_array as $search_word) {
-                                $query->where(function ($query) use ($search_word) {
-                                    // 自身のカラムでの検索
-                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('body', 'LIKE', "%{$search_word}%");
-
-                                    // リレーション先のMusicsテーブルのカラムでの検索
-                                    $query->orWhereHas('music', function ($musicQuery) use ($search_word) {
-                                        $musicQuery->where('name', 'like', '%' . $search_word . '%');
-
-                                        // リレーション先のWorksテーブルのカラムでの検索
-                                        $musicQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
-                                                ->orWhere('term', 'like', '%' . $search_word . '%');
-                                        });
-
-                                        // リレーション先のsingersテーブルのカラムでの検索
-                                        $musicQuery->orWhereHas('singer', function ($singerQuery) use ($search_word) {
-                                            $singerQuery->where('name', 'LIKE', "%{$search_word}%");
-                                        });
-                                    });
-                                });
-                            }
-                        }
-                    })->orderBy('created_at', 'DESC')->paginate(10);
-                $this->addPostType($posts, $type);
-                break;
-            case 'animePilgrimage':
-                $posts = AnimePilgrimagePost::where('user_id', $user_id)
-                    ->with(['user', 'animePilgrimage'])
-                    ->where(function ($query) use ($search) {
-                        // キーワード検索がなされた場合
-                        if ($search != '') {
-                            // 検索語のスペースを半角に統一
-                            $search_split = mb_convert_kana($search, 's');
-                            // 半角スペースで単語ごとに分割して配列にする
-                            $search_array = preg_split('/[\s]+/', $search_split);
-                            foreach ($search_array as $search_word) {
-                                $query->where(function ($query) use ($search_word) {
-                                    // 自身のカラムでの検索
-                                    $query->where('post_title', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('body', 'LIKE', "%{$search_word}%")
-                                        ->orWhere('scene', 'LIKE', "%{$search_word}%");
-
-                                    // リレーション先のanime_pilgrimagesテーブルのカラムでの検索
-                                    $query->orWhereHas('animePilgrimage', function ($animePilgrimageQuery) use ($search_word) {
-                                        $animePilgrimageQuery->where('name', 'like', '%' . $search_word . '%')
-                                            ->orWhere('place', 'LIKE', "%{$search_word}%");
-
-                                        // リレーション先のWorksテーブルのカラムでの検索
-                                        $animePilgrimageQuery->orWhereHas('work', function ($workQuery) use ($search_word) {
-                                            $workQuery->where('name', 'LIKE', "%{$search_word}%")
-                                                ->orWhere('term', 'like', '%' . $search_word . '%');
-                                        });;
-                                    });
-                                });
-                            }
-                        }
-                    })->orderBy('created_at', 'DESC')->paginate(10);
-                $this->addPostType($posts, $type);
-                break;
+            // 作成日時でソートしてページネーション
+            $posts = $posts->sortByDesc('created_at')->values();
+            return PaginationHelper::paginateCollection($posts, 10);
         }
+
+        $config = $this->postTypes[$type];
+
+        $posts = $config['model']::where('user_id', $user_id)
+            ->with(array_keys($config['relations']))
+            ->where(function ($query) use ($search, $config) {
+                $this->applySearchFilter($query, $search, $config['relations']);
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+
+        $this->addPostType($posts, $type);
+
         return $posts;
+    }
+
+    // 投稿の検索を行う
+    public function applySearchFilter($query, $search, $relations)
+    {
+        if ($search != '') {
+            // 検索語のスペースを半角に統一
+            $search_split = mb_convert_kana($search, 's');
+            // 半角スペースで単語ごとに分割して配列にする
+            $search_array = preg_split('/[\s]+/', $search_split);
+
+            foreach ($search_array as $search_word) {
+                $query->where(function ($query) use ($search_word, $relations) {
+                    // 自身のカラムで検索
+                    $query->where('post_title', 'LIKE', "%{$search_word}%")
+                        ->orWhere('body', 'LIKE', "%{$search_word}%");
+
+                    // 各リレーション先でも検索
+                    foreach ($relations as $relation => $columns) {
+                        $query->orWhereHas($relation, function ($relationQuery) use ($search_word, $columns) {
+                            foreach ($columns as $column) {
+                                $relationQuery->orWhere($column, 'LIKE', "%{$search_word}%");
+                            }
+                        });
+                    }
+                });
+            }
+        }
     }
 
     // 取得した投稿に投稿の種類を付与する処理
@@ -241,7 +170,7 @@ class User extends Authenticatable
         ];
 
         // 各投稿に postType を追加
-        $posts->getCollection()->transform(function ($post) use ($postTypes, $type) {
+        $posts->transform(function ($post) use ($postTypes, $type) {
             // 任意の種類を設定
             $post->postType = $postTypes[$type];
             return $post;

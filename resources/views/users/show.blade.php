@@ -41,7 +41,7 @@
                         <form action="{{ route('users.index') }}" method="GET" class="flex items-center w-full gap-2">
                             <!-- 検索バー -->
                             <div class="relative w-4/5">
-                                <input type="text" id="searchInput" name="search" value="{{ request('search') }}"
+                                <input type="text" id="search-input" name="search" value="{{ request('search') }}"
                                     placeholder="キーワードを入力..." aria-label="検索..."
                                     class="px-4 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200 h-[44px] min-w-[300px] text-base pr-10"
                                     oninput="toggleClearButton()">
@@ -52,19 +52,19 @@
                                 </button>
                             </div>
                             <!-- 検索ボタン -->
-                            <button type="submit"
+                            <button type="submit" id="search-button"
                                 class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 h-[30px] min-w-[60px] text-base">検索</button>
-                            <select name="category"
+                            <select name="post_type"
                                 class="px-4 ml-4 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-[44px] min-w-[200px] text-base"
-                                onchange="removeEmptyCategory(this)">
-                                <option value="">投稿の種類で絞り込む</option>
+                                onchange="changePostType(this)">
+                                <option value='none'>投稿の種類で絞り込む</option>
                                 @php
                                     $numbers = [
-                                        1 => '作品感想',
-                                        2 => 'あらすじ感想',
-                                        3 => '登場人物感想',
-                                        4 => '音楽感想',
-                                        5 => '聖地感想',
+                                        'work' => '作品感想',
+                                        'workStory' => 'あらすじ感想',
+                                        'character' => '登場人物感想',
+                                        'music' => '音楽感想',
+                                        'animePilgrimage' => '聖地感想',
                                     ];
                                 @endphp
                                 @foreach ($numbers as $num => $star)
@@ -76,6 +76,14 @@
                         </form>
                     </div>
                 </div>
+                <div id="post-container" class="mt-4 bg-white rounded-lg shadow-md">
+
+                </div>
+                <!-- ペジネーション -->
+                <div id="pagination-container" class="mt-4 flex justify-center space-x-2">
+                    <!-- ページナビゲーションボタンはJavaScriptで動的に生成 -->
+                </div>
+                <div id="user_id" data-user-id="{{ $user->id }}"></div>
                 <div class="cancel mt-2">
                     <a href="{{ route('users.index') }}"
                         class="text-blue-500 hover:underline focus:outline-none">キャンセル</a>
@@ -88,6 +96,7 @@
         <div class="bg-sky-400 basis-1/3">凛ちゃん</div>
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/fetch_post.js') }}"></script>
     <script src="{{ asset('/js/follow_user.js') }}"></script>
     <script src="{{ asset('/js/search_user_post.js') }}"></script>
 </x-app-layout>
