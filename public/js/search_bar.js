@@ -1,7 +1,7 @@
 // 検索バーの右端に表示するクリアボタンの表示/非表示
 function toggleClearButton() {
-    const input = document.getElementById("searchInput");
-    const clearButton = document.getElementById("clearButton");
+    const input = document.getElementById("search-input");
+    const clearButton = document.getElementById("clear-button");
 
     if (input.value.length > 0) {
         clearButton.classList.remove("hidden");
@@ -12,7 +12,7 @@ function toggleClearButton() {
 
 // 検索をクリアする
 function clearSearch() {
-    const input = document.getElementById("searchInput");
+    const input = document.getElementById("search-input");
     input.value = "";
     input.focus();
     // ボタンを非表示にする

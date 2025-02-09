@@ -117,24 +117,12 @@ document.addEventListener('DOMContentLoaded', async function () {
         const typeGroup = typeToGroup[type];
         return typeGroup;
     }
-
-    // 検索を行うメソッド
-    console.log(document.getElementById('search-button'));
-    // document.getElementById('search-button').addEventListener('click', async function () {
-    //     const activeButton = document.querySelector('.post-button.active');
-    //     const type = activeButton ? activeButton.dataset.type : 'work';
-    //     await fetchAndDisplayPosts(type, 1);
-    // });
-
-    // キャンセルを行うメソッド
-    // document.getElementById('cancel-button').addEventListener('click', async function () {
-    //     // 検索状態をリセット
-    //     document.getElementById('search-input').value = '';
-    //     const activeButton = document.querySelector('.post-button.active');
-    //     const type = activeButton ? activeButton.dataset.type : 'work';
-    //     await fetchAndDisplayPosts(type, 1);
-    // });
 });
+
+// 投稿の検索を行う
+function searchPosts() {
+    fetchAndDisplayPosts("work", page = 1);
+}
 
 // 投稿の種類別の検索を可能にする
 function changePostType(selectElement) {
@@ -174,12 +162,14 @@ function updatePagination(type, currentPage, lastPage) {
 
     // 「前へ」ボタン
     if (currentPage > 1) {
+
         const prevButton = document.createElement('button');
-        prevButton.textContent = '前へ';
-        prevButton.className = 'bg-blue-500 text-white px-4 py-2 rounded mx-1';
+        prevButton.className = 'bg-blue-500 text-white px-2 py-2 rounded mx-1';
         prevButton.addEventListener('click', () => {
             fetchAndDisplayPosts(type, currentPage - 1);
         });
+        const leftArrows = createPaginationButton("left");
+        prevButton.appendChild(leftArrows);
         paginationContainer.appendChild(prevButton);
     }
 
@@ -190,21 +180,17 @@ function updatePagination(type, currentPage, lastPage) {
         pages.push(1);
         if (currentPage > 4) pages.push('...');
     }
-
     // 現在のページの前後を表示
     let startPage = Math.max(1, currentPage - 2);
     let endPage = Math.min(lastPage, currentPage + 2);
-
     for (let i = startPage; i <= endPage; i++) {
         pages.push(i);
     }
-
     // 最後のページ
     if (currentPage < lastPage - 2) {
         if (currentPage < lastPage - 3) pages.push('...');
         pages.push(lastPage);
     }
-
     // ページボタンを作成
     pages.forEach(page => {
         if (page === '...') {
@@ -222,13 +208,34 @@ function updatePagination(type, currentPage, lastPage) {
             paginationContainer.appendChild(pageButton);
         }
     });
-
     // 「次へ」ボタン
     if (currentPage < lastPage) {
         const nextButton = document.createElement('button');
-        nextButton.textContent = '次へ';
-        nextButton.className = 'bg-blue-500 text-white px-4 py-2 rounded mx-1';
+        nextButton.className = 'bg-blue-500 text-white px-2 py-2 rounded mx-1';
         nextButton.addEventListener('click', () => fetchAndDisplayPosts(type, currentPage + 1));
+        const rightArrows = createPaginationButton("right");
+        nextButton.appendChild(rightArrows);
         paginationContainer.appendChild(nextButton);
     }
+}
+
+// ペジネーションボタンを作成する関数
+function createPaginationButton(arrowType) {
+    // SVG要素の作成
+    const svgNS = "http://www.w3.org/2000/svg";
+    const svg = document.createElementNS(svgNS, "svg");
+    svg.setAttribute("class", "w-5 h-5");
+    svg.setAttribute("fill", "currentColor");
+    svg.setAttribute("viewBox", "0 0 20 20");
+
+    // Path要素の作成
+    const path = document.createElementNS(svgNS, "path");
+    path.setAttribute("fill-rule", "evenodd");
+    let arrowIcon = arrowType === "right" ? "M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" : "M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z";
+    path.setAttribute("d", arrowIcon);
+    path.setAttribute("clip-rule", "evenodd");
+
+    // SVGにPathを追加
+    svg.appendChild(path);
+    return svg;
 }
