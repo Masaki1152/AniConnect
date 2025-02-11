@@ -96,6 +96,10 @@ async function fetchAndDisplayPosts(type, page = 1) {
     try {
         // 検索キーワードを取得
         const searchInput = document.getElementById('search-input').value.trim();
+
+        // ローディング表示
+        postContainer.innerHTML = '<p>読み込み中...</p>';
+
         // データの取得
         const response = await fetch(`/users/${userId}/posts/${type}?page=${page}`, {
             method: "POST",
