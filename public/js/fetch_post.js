@@ -75,6 +75,8 @@ document.addEventListener('DOMContentLoaded', async function () {
             this.classList.add('active', 'bg-blue-500', 'text-white', 'hover:bg-blue-600');
             // 検索状態をリセット
             document.getElementById('search-input').value = '';
+            // セレクトボックスの値をリセット
+            document.getElementById('select_box').value = 'none';
             // 投稿データを更新
             await fetchAndDisplayPosts(switchType, defaultPostType, 1);
         });
