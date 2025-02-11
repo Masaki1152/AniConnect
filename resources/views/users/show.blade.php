@@ -22,18 +22,15 @@
                     </div>
                 </div>
                 <div class="post_type_button py-2 flex flex-row justify-evenly items-center w-full">
-                    <span
-                        class="impressions_button py-2 rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center">
-                        感想投稿
-                    </span>
-                    <span
-                        class="comments_button py-2 rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center">
-                        コメント投稿
-                    </span>
-                    <span
-                        class="liked_posts_button py-2 rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center">
-                        いいねした投稿
-                    </span>
+                    <button
+                        class="switch-button active rounded-full text-base bg-blue-500 hover:bg-blue-600 text-white inline-block min-w-[180px] text-center py-2 h-10 min-h-[40px]"
+                        type="impressions">感想投稿</button>
+                    <button
+                        class="switch-button rounded-full text-base bg-blue-300 hover:bg-blue-400 text-white inline-block min-w-[180px] text-center py-2 h-10 min-h-[40px]"
+                        type="comments">コメント投稿</button>
+                    <button
+                        class="switch-button rounded-full text-base bg-blue-300 hover:bg-blue-400 text-white inline-block min-w-[180px] text-center py-2 h-10 min-h-[40px]"
+                        type="likes">いいねした投稿</button>
                 </div>
                 <!-- 検索機能 -->
                 <div class='search flex flex-row justify-center items-center w-full gap-4'>
