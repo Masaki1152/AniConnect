@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Log;
 
 class UserController extends Controller
 {
@@ -81,13 +82,28 @@ class UserController extends Controller
     {
         // 検索キーワードがあれば取得
         $keyword = $request->input('keyword', '');
-        // 必要な種類の投稿を取得
-        $posts = $user->fetchPosts($user_id, $type, $keyword);
+        // 投稿、コメント、いいねの種類を取得
+        $switchType = $request->input('switchType');
+        Log::info($switchType);
+        switch ($switchType) {
+            case "impressions":
+                // 必要な種類の投稿を取得
+                $posts = $user->fetchPosts($user_id, $type, $keyword);
 
-        return view('components.post-cell', [
-            'posts' => $posts,
-            'currentPage' => $posts->currentPage(),
-            'lastPage' => $posts->lastPage()
-        ]);
+                return view('components.post-cell', [
+                    'posts' => $posts,
+                    'currentPage' => $posts->currentPage(),
+                    'lastPage' => $posts->lastPage()
+                ]);
+            case "comments":
+                Log::info("呼ばれた");
+                // TODO: コメント一覧を呼ぶメソッドをmodelのUserに実装
+                return view('components.comment-cell', [
+                    'posts' => "コメント"
+                ]);
+            case "likes":
+                // TODO: いいね一覧を呼ぶメソッドをmodelのUserに実装
+                break;
+        }
     }
 }
