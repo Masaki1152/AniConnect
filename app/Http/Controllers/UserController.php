@@ -5,11 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use App\Models\WorkReview;
-use App\Models\WorkStoryPost;
-use App\Models\CharacterPost;
-use App\Models\MusicPost;
-use App\Models\AnimePilgrimagePost;
 
 class UserController extends Controller
 {
@@ -89,6 +84,10 @@ class UserController extends Controller
         // 必要な種類の投稿を取得
         $posts = $user->fetchPosts($user_id, $type, $keyword);
 
-        return response()->json($posts);
+        return view('components.post-cell', [
+            'posts' => $posts,
+            'currentPage' => $posts->currentPage(),
+            'lastPage' => $posts->lastPage()
+        ]);
     }
 }

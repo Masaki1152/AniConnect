@@ -445,7 +445,7 @@ Route::controller(UserController::class)->middleware(['auth'])->group(function (
     // ユーザーをフォローするメソッドを実行
     Route::post('/users/{user_id}/follow', 'follow')->name('users.follow');
     // ユーザーの投稿を表示するメソッドを実行
-    Route::get('/users/{user_id}/posts/{type}', 'fetchPosts')->name('users.fetchPosts');
+    Route::post('/users/{user_id}/posts/{type}', 'fetchPosts')->name('users.fetchPosts');
 });
 
 // UserFollowControllerに関するルーティング
