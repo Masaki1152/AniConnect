@@ -121,7 +121,9 @@ document.addEventListener('DOMContentLoaded', async function () {
 
 // 投稿の検索を行う
 function searchPosts() {
-    fetchAndDisplayPosts("work", page = 1);
+    const selectElement = document.getElementById("select_box");
+    const postType = selectElement.value;
+    fetchAndDisplayPosts(postType, page = 1);
 }
 
 // 投稿の種類別の検索を可能にする
@@ -134,15 +136,19 @@ async function fetchAndDisplayPosts(type, page = 1) {
     try {
         // 検索キーワードを取得
         const searchInput = document.getElementById('search-input').value.trim();
-
         // データの取得
-        const response = await fetch(`/users/${userId}/posts/${type}?page=${page}&keyword=${encodeURIComponent(searchInput)}`);
+        const response = await fetch(`/users/${userId}/posts/${type}?page=${page}`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF対策
+            },
+            body: JSON.stringify({ keyword: searchInput })
+        });
         const postCellHtml = await response.text();
-
-        // **取得したHTMLを適切な要素に挿入**
         postContainer.innerHTML = postCellHtml;
 
-        // **ページネーション情報を取得**
+        // ページネーション情報を取得
         const postContainerDiv = document.getElementById('post-cell');
         const currentPage = parseInt(postContainerDiv.dataset.currentPage);
         const lastPage = parseInt(postContainerDiv.dataset.lastPage);

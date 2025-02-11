@@ -38,7 +38,7 @@
                 <!-- 検索機能 -->
                 <div class='search flex flex-row justify-center items-center w-full gap-4'>
                     <div class="search_bar w-full max-w-lg">
-                        <form method="GET" class="flex items-center w-full gap-2">
+                        <form method="GET" onsubmit="return false;" class="flex items-center w-full gap-2">
                             <!-- 検索バー -->
                             <div class="relative w-4/5">
                                 <input type="text" id="search-input" name="search" value="{{ request('search') }}"
@@ -55,7 +55,7 @@
                             <button type="submit" id="search-button"
                                 class="bg-blue-500 text-white rounded-lg hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400 h-[30px] min-w-[60px] text-base"
                                 onclick="searchPosts()">検索</button>
-                            <select name="post_type"
+                            <select name="post_type" id="select_box"
                                 class="px-4 ml-4 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-[44px] min-w-[200px] text-base"
                                 onchange="changePostType(this)">
                                 <option value='none'>投稿の種類で絞り込む</option>

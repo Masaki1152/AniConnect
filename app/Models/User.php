@@ -139,20 +139,20 @@ class User extends Authenticatable
             $search_array = preg_split('/[\s]+/', $search_split);
 
             foreach ($search_array as $search_word) {
-                $query->where(function ($query) use ($search_word, $relations) {
-                    // 自身のカラムで検索
+                // 自身のカラムで検索
+                $query->where(function ($query) use ($search_word) {
                     $query->where('post_title', 'LIKE', "%{$search_word}%")
                         ->orWhere('body', 'LIKE', "%{$search_word}%");
-
-                    // 各リレーション先でも検索
-                    foreach ($relations as $relation => $columns) {
-                        $query->orWhereHas($relation, function ($relationQuery) use ($search_word, $columns) {
-                            foreach ($columns as $column) {
-                                $relationQuery->orWhere($column, 'LIKE', "%{$search_word}%");
-                            }
-                        });
-                    }
                 });
+
+                // 各リレーション先でも検索
+                foreach ($relations as $relation => $columns) {
+                    $query->whereHas($relation, function ($relationQuery) use ($search_word, $columns) {
+                        foreach ($columns as $column) {
+                            $relationQuery->orWhere($column, 'LIKE', "%{$search_word}%");
+                        }
+                    });
+                }
             }
         }
     }
