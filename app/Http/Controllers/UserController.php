@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
-use Log;
 
 class UserController extends Controller
 {
@@ -84,7 +83,6 @@ class UserController extends Controller
         $keyword = $request->input('keyword', '');
         // 投稿、コメント、いいねの種類を取得
         $switchType = $request->input('switchType');
-        Log::info($switchType);
         switch ($switchType) {
             case "impressions":
                 // 必要な種類の投稿を取得
@@ -96,7 +94,6 @@ class UserController extends Controller
                     'lastPage' => $posts->lastPage()
                 ]);
             case "comments":
-                Log::info("呼ばれた");
                 // TODO: コメント一覧を呼ぶメソッドをmodelのUserに実装
                 return view('components.comment-cell', [
                     'posts' => "コメント"

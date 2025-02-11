@@ -65,7 +65,6 @@ document.addEventListener('DOMContentLoaded', async function () {
         button.addEventListener('click', async function () {
             // 押下したボタンの種類を取得
             const switchType = this.getAttribute('switch-type');
-            console.log(switchType);
 
             // ボタンのスタイルを更新
             switchButtons.forEach(btn => {
