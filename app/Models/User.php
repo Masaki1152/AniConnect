@@ -106,6 +106,7 @@ class User extends Authenticatable
                     ->get();
 
                 $this->addPostType($query, $key);
+                $this->createTypeToURL($query, $key);
                 $posts = $posts->merge($query);
             }
 
@@ -125,6 +126,7 @@ class User extends Authenticatable
             ->paginate(10);
 
         $this->addPostType($posts, $type);
+        $this->createTypeToURL($posts, $type);
 
         return $posts;
     }
@@ -169,10 +171,42 @@ class User extends Authenticatable
             'animePilgrimage' => '聖地感想',
         ];
 
-        // 各投稿に postType を追加
+        // 各投稿に投稿の種類を追加
         $posts->transform(function ($post) use ($postTypes, $type) {
-            // 任意の種類を設定
             $post->postType = $postTypes[$type];
+            return $post;
+        });
+    }
+
+    public function createTypeToURL($posts, $type)
+    {
+        // 各投稿の種類のURL
+        $urls = [
+            // 作品感想の詳細ページ
+            'work' => function ($post) {
+                return "/work_reviews/{$post->work_id}/reviews";
+            },
+            // あらすじ感想の詳細ページ
+            'workStory' => function ($post) {
+                return "/works/{$post->work_id}/stories/{$post->sub_title_id}/posts";
+            },
+            // 登場人物感想の詳細ページ
+            'character' => function ($post) {
+                return "/character_posts/{$post->character_id}/posts";
+            },
+            // 音楽感想の詳細ページ
+            'music' => function ($post) {
+                return "/music_posts/{$post->music_id}/posts";
+            },
+            // 聖地感想の詳細ページ
+            'animePilgrimage' => function ($post) {
+                return "/pilgrimage_posts/{$post->anime_pilgrimage_id}/posts";
+            },
+        ];
+
+        // 投稿の種類に応じたURLを追加
+        $posts->transform(function ($post) use ($urls, $type) {
+            $post->postURL = $urls[$type]($post) . "/{$post->id}";
             return $post;
         });
     }

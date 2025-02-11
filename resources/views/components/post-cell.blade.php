@@ -39,7 +39,9 @@
                     </div>
                 </div>
                 {{ $post->postType }}
-                <h3 class="text-lg font-bold">{{ $post->post_title }}</h3>
+                <h3 class="text-lg font-bold">
+                    <a href={{ $post->postURL }}>{{ $post->post_title }}</a>
+                </h3>
                 <p class="text-gray-700">{!! nl2br(e($post->body)) !!}</p>
             </div>
         @endforeach

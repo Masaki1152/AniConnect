@@ -77,46 +77,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     //         await fetchAndDisplayPosts(type, 1);
     //     });
     // });
-
-    function createTypeToURL(type, post) {
-        // 各投稿の種類のURL
-        const typeToUrlMap = {
-            // 作品感想の詳細ページ
-            work: `work_reviews/${post.work_id}/reviews`,
-            // あらすじ感想の詳細ページ
-            workStory: `works/${post.work_id}/stories/${post.sub_title_id}/posts`,
-            // 登場人物感想の詳細ページ
-            character: `character_posts/${post.character_id}/posts`,
-            // 音楽感想の詳細ページ
-            music: `music_posts/${post.music_id}/posts`,
-            // 聖地感想の詳細ページ
-            animePilgrimage: `pilgrimage_posts/${post.anime_pilgrimage_id}/posts`,
-        };
-
-        // 投稿の種類に応じたURLを取得
-        const typeUrl = typeToUrlMap[type];
-        return `/${typeUrl}/${post.id}`;
-    }
-
-    function describeGroup(type, post) {
-        // 各投稿の種類に追加する文言
-        const typeToGroup = {
-            // 作品感想の文言
-            work: `「${post.work?.name || '不明な作品'}」への感想投稿`,
-            // あらすじ感想の文言
-            workStory: `「${post.work?.name || '不明な作品'}」${post.work_story?.episode || '不明な話数'}「${post.work_story?.sub_title || '不明なサブタイトル'}」への感想投稿`,
-            // 登場人物感想の文言
-            character: `「${post.character?.name || '不明なキャラクター'}」への感想投稿`,
-            // 音楽感想の文言
-            music: `「${post.music?.name || '不明な音楽'}」への感想投稿`,
-            // 聖地感想の文言
-            animePilgrimage: `「${post.anime_pilgrimage?.name || '不明な聖地'}」への感想投稿`,
-        };
-
-        // 投稿の種類に応じたURLを取得
-        const typeGroup = typeToGroup[type];
-        return typeGroup;
-    }
 });
 
 // 投稿の検索を行う
