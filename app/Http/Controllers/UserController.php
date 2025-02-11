@@ -81,13 +81,26 @@ class UserController extends Controller
     {
         // 検索キーワードがあれば取得
         $keyword = $request->input('keyword', '');
-        // 必要な種類の投稿を取得
-        $posts = $user->fetchPosts($user_id, $type, $keyword);
+        // 投稿、コメント、いいねの種類を取得
+        $switchType = $request->input('switchType');
+        switch ($switchType) {
+            case "impressions":
+                // 必要な種類の投稿を取得
+                $posts = $user->fetchPosts($user_id, $type, $keyword);
 
-        return view('components.post-cell', [
-            'posts' => $posts,
-            'currentPage' => $posts->currentPage(),
-            'lastPage' => $posts->lastPage()
-        ]);
+                return view('components.post-cell', [
+                    'posts' => $posts,
+                    'currentPage' => $posts->currentPage(),
+                    'lastPage' => $posts->lastPage()
+                ]);
+            case "comments":
+                // TODO: コメント一覧を呼ぶメソッドをmodelのUserに実装
+                return view('components.comment-cell', [
+                    'posts' => "コメント"
+                ]);
+            case "likes":
+                // TODO: いいね一覧を呼ぶメソッドをmodelのUserに実装
+                break;
+        }
     }
 }

@@ -4,9 +4,10 @@ const userId = userIdTag.dataset.userId;
 const postContainer = document.getElementById('post-container');
 
 document.addEventListener('DOMContentLoaded', async function () {
-    //const postButtons = document.querySelectorAll('.post-button');
+    const switchButtons = document.querySelectorAll('.switch-button');
     // デフォルトの投稿の種類
-    const defaultType = 'none';
+    const defaultPostType = 'none';
+    const defaultSwitchType = 'impressions';
 
     // 投稿の更新処理
     function updatePostContainer(type, html) {
@@ -57,42 +58,46 @@ document.addEventListener('DOMContentLoaded', async function () {
     }
 
     // 初期の読み込み
-    await fetchAndDisplayPosts(defaultType, 1);
+    await fetchAndDisplayPosts(defaultSwitchType, defaultPostType, 1);
 
     // ボタンの切り替えイベント（感想投稿・コメント・いいね）
-    // postButtons.forEach(button => {
-    //     button.addEventListener('click', async function () {
-    //         // 押下したボタンの種類を取得
-    //         const type = this.dataset.type;
+    switchButtons.forEach(button => {
+        button.addEventListener('click', async function () {
+            // 押下したボタンの種類を取得
+            const switchType = this.getAttribute('switch-type');
 
-    //         // ボタンのスタイルを更新
-    //         postButtons.forEach(btn => {
-    //             btn.classList.remove('active', 'bg-blue-500', 'text-white');
-    //             btn.classList.add('bg-blue-300', 'text-white');
-    //         });
-    //         this.classList.add('active', 'bg-blue-500', 'text-white');
-    //         // 検索状態をリセット
-    //         document.getElementById('search-input').value = '';
-    //         // 投稿データを更新
-    //         await fetchAndDisplayPosts(type, 1);
-    //     });
-    // });
+            // ボタンのスタイルを更新
+            switchButtons.forEach(btn => {
+                btn.classList.remove('active', 'bg-blue-500', 'text-white', 'hover:bg-blue-400', 'hover:bg-blue-600');
+                btn.classList.add('bg-blue-300', 'text-white', 'hover:bg-blue-400');
+            });
+            this.classList.add('active', 'bg-blue-500', 'text-white', 'hover:bg-blue-600');
+            // 検索状態をリセット
+            document.getElementById('search-input').value = '';
+            // セレクトボックスの値をリセット
+            document.getElementById('select_box').value = 'none';
+            // 投稿データを更新
+            await fetchAndDisplayPosts(switchType, defaultPostType, 1);
+        });
+    });
 });
 
 // 投稿の検索を行う
 function searchPosts() {
+    const switchType = document.querySelector('.switch-button.active').getAttribute('switch-type');
     const selectElement = document.getElementById("select_box");
     const postType = selectElement.value;
-    fetchAndDisplayPosts(postType, page = 1);
+    fetchAndDisplayPosts(switchType, postType, page = 1);
 }
 
 // 投稿の種類別の検索を可能にする
 function changePostType(selectElement) {
     let selectedType = selectElement.value;
-    fetchAndDisplayPosts(selectedType, page = 1);
+    const switchType = document.querySelector('.switch-button.active').getAttribute('switch-type');
+    fetchAndDisplayPosts(switchType, selectedType, page = 1);
 }
 
-async function fetchAndDisplayPosts(type, page = 1) {
+async function fetchAndDisplayPosts(switchType, postType, page = 1) {
     try {
         // 検索キーワードを取得
         const searchInput = document.getElementById('search-input').value.trim();
@@ -101,24 +106,24 @@ async function fetchAndDisplayPosts(type, page = 1) {
         postContainer.innerHTML = '<p>読み込み中...</p>';
 
         // データの取得
-        const response = await fetch(`/users/${userId}/posts/${type}?page=${page}`, {
+        const response = await fetch(`/users/${userId}/posts/${postType}?page=${page}`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
                 "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').getAttribute('content') // CSRF対策
             },
-            body: JSON.stringify({ keyword: searchInput })
+            body: JSON.stringify({ keyword: searchInput, switchType: switchType })
         });
         const postCellHtml = await response.text();
         postContainer.innerHTML = postCellHtml;
 
         // ページネーション情報を取得
-        const postContainerDiv = document.getElementById('post-cell');
-        const currentPage = parseInt(postContainerDiv.dataset.currentPage);
-        const lastPage = parseInt(postContainerDiv.dataset.lastPage);
+        //const postContainerDiv = document.getElementById('post-cell');
+        //const currentPage = parseInt(postContainerDiv.dataset.currentPage);
+        //const lastPage = parseInt(postContainerDiv.dataset.lastPage);
 
         // ページネーションの更新
-        updatePagination(type, currentPage, lastPage);
+        //updatePagination(postType, currentPage, lastPage);
 
     } catch (error) {
         postContainer.innerHTML = '<p class="text-gray-500">投稿がありません。</p>';
@@ -126,9 +131,10 @@ async function fetchAndDisplayPosts(type, page = 1) {
 }
 
 // ページネーションの更新
-function updatePagination(type, currentPage, lastPage) {
+function updatePagination(postType, currentPage, lastPage) {
     const paginationContainer = document.getElementById('pagination-container');
     paginationContainer.innerHTML = '';
+    const switchType = document.querySelector('.switch-button.active').getAttribute('switch-type');
 
     // 「前へ」ボタン
     if (currentPage > 1) {
@@ -136,7 +142,7 @@ function updatePagination(type, currentPage, lastPage) {
         const prevButton = document.createElement('button');
         prevButton.className = 'bg-blue-500 text-white px-2 py-2 rounded mx-1';
         prevButton.addEventListener('click', () => {
-            fetchAndDisplayPosts(type, currentPage - 1);
+            fetchAndDisplayPosts(switchType, postType, currentPage - 1);
         });
         const leftArrows = createPaginationButton("left");
         prevButton.appendChild(leftArrows);
@@ -173,7 +179,7 @@ function updatePagination(type, currentPage, lastPage) {
             pageButton.textContent = page;
             pageButton.className = `px-3 py-2 rounded mx-1 ${page === currentPage ? 'bg-blue-700 text-white' : 'bg-gray-300 text-black'}`;
             if (page !== currentPage) {
-                pageButton.addEventListener('click', () => fetchAndDisplayPosts(type, page));
+                pageButton.addEventListener('click', () => fetchAndDisplayPosts(switchType, postType, page));
             }
             paginationContainer.appendChild(pageButton);
         }
@@ -182,7 +188,7 @@ function updatePagination(type, currentPage, lastPage) {
     if (currentPage < lastPage) {
         const nextButton = document.createElement('button');
         nextButton.className = 'bg-blue-500 text-white px-2 py-2 rounded mx-1';
-        nextButton.addEventListener('click', () => fetchAndDisplayPosts(type, currentPage + 1));
+        nextButton.addEventListener('click', () => fetchAndDisplayPosts(switchType, postType, currentPage + 1));
         const rightArrows = createPaginationButton("right");
         nextButton.appendChild(rightArrows);
         paginationContainer.appendChild(nextButton);
