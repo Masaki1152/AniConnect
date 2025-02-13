@@ -83,24 +83,31 @@ class UserController extends Controller
         $keyword = $request->input('keyword', '');
         // 投稿、コメント、いいねの種類を取得
         $switchType = $request->input('switchType');
-        switch ($switchType) {
-            case "impressions":
-                // 必要な種類の投稿を取得
-                $posts = $user->fetchPosts($user_id, $type, $keyword);
 
-                return view('components.post-cell', [
-                    'posts' => $posts,
-                    'currentPage' => $posts->currentPage(),
-                    'lastPage' => $posts->lastPage()
-                ]);
-            case "comments":
-                // TODO: コメント一覧を呼ぶメソッドをmodelのUserに実装
-                return view('components.comment-cell', [
-                    'posts' => "コメント"
-                ]);
-            case "likes":
-                // TODO: いいね一覧を呼ぶメソッドをmodelのUserに実装
-                break;
-        }
+        // 各switchTypeに対応するメソッドとビューをマッピング
+        $actions = [
+            'impressions' => [
+                'method' => fn() => $user->fetchPosts($user_id, $type, $keyword),
+                'view'   => 'components.post-cell'
+            ],
+            'comments' => [
+                'method' => fn() => $user->fetchComments($user_id, $type, $keyword),
+                'view'   => 'components.comment-cell'
+            ],
+            'likes' => [
+                // TODO: 実装予定
+                'method' => fn() => "いいね",
+                'view'   => 'components.post-cell'
+            ]
+        ];
+
+        // 投稿を取得する
+        $posts = $actions[$switchType]['method']();
+
+        return view($actions[$switchType]['view'], [
+            'posts' => $posts,
+            'currentPage' => $posts->currentPage(),
+            'lastPage' => $posts->lastPage()
+        ]);
     }
 }

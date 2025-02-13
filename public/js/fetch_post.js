@@ -117,6 +117,7 @@ async function fetchAndDisplayPosts(switchType, postType, page = 1) {
         const postCellHtml = await response.text();
         postContainer.innerHTML = postCellHtml;
 
+        // TODO: いいねの投稿取得以後に修正
         // ページネーション情報を取得
         //const postContainerDiv = document.getElementById('post-cell');
         //const currentPage = parseInt(postContainerDiv.dataset.currentPage);
