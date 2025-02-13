@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Helpers\PaginationHelper;
+use Log;
 
 class User extends Authenticatable
 {
@@ -55,10 +56,14 @@ class User extends Authenticatable
     protected $postTypes = [
         'work' => [
             'model' => WorkReview::class,
-            'relations' => ['work' => ['name', 'term']],
+            'commentModel' => WorkReviewComment::class,
+            'relations' => [
+                'work' => ['name', 'term']
+            ],
         ],
         'workStory' => [
             'model' => WorkStoryPost::class,
+            'commentModel' => WorkStoryPostComment::class,
             'relations' => [
                 'work' => ['name', 'term'],
                 'workStory' => ['sub_title', 'episode'],
@@ -66,6 +71,7 @@ class User extends Authenticatable
         ],
         'character' => [
             'model' => CharacterPost::class,
+            'commentModel' => CharacterPostComment::class,
             'relations' => [
                 'character' => ['name'],
                 'character.works' => ['name', 'term'],
@@ -74,6 +80,7 @@ class User extends Authenticatable
         ],
         'music' => [
             'model' => MusicPost::class,
+            'commentModel' => MusicPostComment::class,
             'relations' => [
                 'music' => ['name'],
                 'music.work' => ['name', 'term'],
@@ -82,6 +89,7 @@ class User extends Authenticatable
         ],
         'animePilgrimage' => [
             'model' => AnimePilgrimagePost::class,
+            'commentModel' => AnimePilgrimagePostComment::class,
             'relations' => [
                 'animePilgrimage' => ['name', 'place'],
                 'animePilgrimage.works' => ['name', 'term'],
@@ -140,22 +148,24 @@ class User extends Authenticatable
             // 半角スペースで単語ごとに分割して配列にする
             $search_array = preg_split('/[\s]+/', $search_split);
 
-            foreach ($search_array as $search_word) {
-                // 自身のカラムで検索
-                $query->where(function ($query) use ($search_word) {
-                    $query->where('post_title', 'LIKE', "%{$search_word}%")
-                        ->orWhere('body', 'LIKE', "%{$search_word}%");
-                });
+            $query->where(function ($query) use ($search_array, $relations) {
+                foreach ($search_array as $search_word) {
+                    $query->orWhere(function ($query) use ($search_word, $relations) {
+                        // 投稿のタイトル・本文で検索
+                        $query->where('post_title', 'LIKE', "%{$search_word}%")
+                            ->orWhere('body', 'LIKE', "%{$search_word}%");
 
-                // 各リレーション先でも検索
-                foreach ($relations as $relation => $columns) {
-                    $query->whereHas($relation, function ($relationQuery) use ($search_word, $columns) {
-                        foreach ($columns as $column) {
-                            $relationQuery->orWhere($column, 'LIKE', "%{$search_word}%");
+                        // 各リレーション先のカラムでも検索
+                        foreach ($relations as $relation => $columns) {
+                            $query->orWhereHas($relation, function ($relationQuery) use ($search_word, $columns) {
+                                foreach ($columns as $column) {
+                                    $relationQuery->where($column, 'LIKE', "%{$search_word}%");
+                                }
+                            });
                         }
                     });
                 }
-            }
+            });
         }
     }
 
@@ -209,6 +219,67 @@ class User extends Authenticatable
             $post->postURL = $urls[$type]($post) . "/{$post->id}";
             return $post;
         });
+    }
+
+    // 投稿の種類とユーザーidでコメントを取得する処理
+    // 検索はコメント内のbodyのみ
+    public function fetchComments($user_id, $type, $search)
+    {
+        // typeが'none'の場合、すべてのコメントを取得
+        if ($type === 'none') {
+            $posts = collect();
+
+            foreach ($this->postTypes as $key => $config) {
+                $query = $config['commentModel']::where('user_id', $user_id)
+                    ->where(function ($query) use ($search) {
+                        $this->applySearchCommentFilter($query, $search);
+                    })
+                    ->orderBy('created_at', 'DESC')
+                    ->get();
+
+                $this->addPostType($query, $key);
+                $this->createTypeToURL($query, $key);
+                $posts = $posts->merge($query);
+            }
+
+            // 作成日時でソートしてページネーション
+            $posts = $posts->sortByDesc('created_at')->values();
+            return PaginationHelper::paginateCollection($posts, 10);
+        }
+
+        $config = $this->postTypes[$type];
+
+        $posts = $config['commentModel']::where('user_id', $user_id)
+            ->where(function ($query) use ($search) {
+                $this->applySearchCommentFilter($query, $search);
+            })
+            ->orderBy('created_at', 'DESC')
+            ->paginate(10);
+
+        $this->addPostType($posts, $type);
+        $this->createTypeToURL($posts, $type);
+
+        return $posts;
+    }
+
+    // コメントの検索を行う 検索はコメント内のbodyのみ
+    public function applySearchCommentFilter($query, $search)
+    {
+        if ($search != '') {
+            // 検索語のスペースを半角に統一
+            $search_split = mb_convert_kana($search, 's');
+            // 半角スペースで単語ごとに分割して配列にする
+            $search_array = preg_split('/[\s]+/', $search_split);
+
+            $query->where(function ($query) use ($search_array) {
+                foreach ($search_array as $search_word) {
+                    $query->orWhere(function ($query) use ($search_word) {
+                        // 投稿のタイトル・本文で検索
+                        $query->where('body', 'LIKE', "%{$search_word}%");
+                    });
+                }
+            });
+        }
     }
 
     // WorkReviewに対するリレーション 1対1の関係
