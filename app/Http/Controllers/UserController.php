@@ -96,7 +96,7 @@ class UserController extends Controller
             ],
             'likes' => [
                 // TODO: 実装予定
-                'method' => fn() => "いいね",
+                'method' => fn() => $user->fetchLikePosts($user_id, $type, $keyword),
                 'view'   => 'components.post-cell'
             ]
         ];

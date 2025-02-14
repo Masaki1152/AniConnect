@@ -111,7 +111,8 @@ class WorkReview extends Model
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class);
+        return $this->belongsToMany(User::class, 'user_work_review', 'work_review_id', 'user_id')
+            ->withPivot('created_at');
     }
 
     // コメントに対するリレーション 一対多の関係

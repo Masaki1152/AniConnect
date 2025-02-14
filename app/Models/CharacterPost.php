@@ -91,7 +91,8 @@ class CharacterPost extends Model
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class, 'character_posts_users', 'character_post_id', 'user_id');
+        return $this->belongsToMany(User::class, 'character_posts_users', 'character_post_id', 'user_id')
+            ->withPivot('created_at');
     }
 
     // コメントに対するリレーション 一対多の関係

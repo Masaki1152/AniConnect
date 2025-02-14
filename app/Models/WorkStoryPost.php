@@ -113,7 +113,8 @@ class WorkStoryPost extends Model
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class, 'work_story_posts_users', 'work_story_post_id', 'user_id');
+        return $this->belongsToMany(User::class, 'work_story_posts_users', 'work_story_post_id', 'user_id')
+            ->withPivot('created_at');
     }
 
     // コメントに対するリレーション 一対多の関係
