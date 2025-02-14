@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Helpers\PaginationHelper;
-use Log;
 
 class User extends Authenticatable
 {
@@ -163,9 +162,11 @@ class User extends Authenticatable
                         // 各リレーション先のカラムでも検索
                         foreach ($relations as $relation => $columns) {
                             $query->orWhereHas($relation, function ($relationQuery) use ($search_word, $columns) {
-                                foreach ($columns as $column) {
-                                    $relationQuery->where($column, 'LIKE', "%{$search_word}%");
-                                }
+                                $relationQuery->where(function ($subQuery) use ($search_word, $columns) {
+                                    foreach ($columns as $column) {
+                                        $subQuery->orWhere($column, 'LIKE', "%{$search_word}%");
+                                    }
+                                });
                             });
                         }
                     });
