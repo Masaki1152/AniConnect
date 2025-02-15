@@ -154,7 +154,7 @@ class User extends Authenticatable
 
             $query->where(function ($query) use ($search_array, $relations) {
                 foreach ($search_array as $search_word) {
-                    $query->orWhere(function ($query) use ($search_word, $relations) {
+                    $query->where(function ($query) use ($search_word, $relations) {
                         // 投稿のタイトル・本文で検索
                         $query->where('post_title', 'LIKE', "%{$search_word}%")
                             ->orWhere('body', 'LIKE', "%{$search_word}%");

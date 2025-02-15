@@ -119,12 +119,12 @@ async function fetchAndDisplayPosts(switchType, postType, page = 1) {
 
         // TODO: いいねの投稿取得以後に修正
         // ページネーション情報を取得
-        //const postContainerDiv = document.getElementById('post-cell');
-        //const currentPage = parseInt(postContainerDiv.dataset.currentPage);
-        //const lastPage = parseInt(postContainerDiv.dataset.lastPage);
+        const postContainerDiv = document.getElementById('cell');
+        const currentPage = parseInt(postContainerDiv.dataset.currentPage);
+        const lastPage = parseInt(postContainerDiv.dataset.lastPage);
 
         // ページネーションの更新
-        //updatePagination(postType, currentPage, lastPage);
+        updatePagination(postType, currentPage, lastPage);
 
     } catch (error) {
         postContainer.innerHTML = '<p class="text-gray-500">投稿がありません。</p>';

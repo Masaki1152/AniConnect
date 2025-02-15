@@ -1,4 +1,4 @@
-<div id="post-cell" data-current-page="{{ $currentPage }}" data-last-page="{{ $lastPage }}">
+<div id="cell" data-current-page="{{ $currentPage }}" data-last-page="{{ $lastPage }}">
     @if ($posts->isEmpty())
         <p class="text-gray-500">投稿がありません。</p>
     @else
