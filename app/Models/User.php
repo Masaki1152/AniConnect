@@ -16,11 +16,6 @@ class User extends Authenticatable
     // 参照させたいworksを指定
     protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -31,21 +26,11 @@ class User extends Authenticatable
         'introduction',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
@@ -54,6 +39,7 @@ class User extends Authenticatable
     // 投稿の種類ごとのモデルとリレーション設定
     protected $postTypes = [
         'work' => [
+            'name' => '作品感想',
             'model' => WorkReview::class,
             'commentModel' => WorkReviewComment::class,
             'relations' => [
@@ -62,6 +48,7 @@ class User extends Authenticatable
             'post_id' => 'work_review_id'
         ],
         'workStory' => [
+            'name' => 'あらすじ感想',
             'model' => WorkStoryPost::class,
             'commentModel' => WorkStoryPostComment::class,
             'relations' => [
@@ -71,6 +58,7 @@ class User extends Authenticatable
             'post_id' => 'work_story_post_id'
         ],
         'character' => [
+            'name' => '登場人物感想',
             'model' => CharacterPost::class,
             'commentModel' => CharacterPostComment::class,
             'relations' => [
@@ -81,6 +69,7 @@ class User extends Authenticatable
             'post_id' => 'character_post_id'
         ],
         'music' => [
+            'name' => '音楽感想',
             'model' => MusicPost::class,
             'commentModel' => MusicPostComment::class,
             'relations' => [
@@ -91,6 +80,7 @@ class User extends Authenticatable
             'post_id' => 'music_post_id'
         ],
         'animePilgrimage' => [
+            'name' => '聖地感想',
             'model' => AnimePilgrimagePost::class,
             'commentModel' => AnimePilgrimagePostComment::class,
             'relations' => [
@@ -178,22 +168,15 @@ class User extends Authenticatable
     // 取得した投稿に投稿の種類を付与する処理
     public function addPostType($posts, $type)
     {
-        // 投稿の種類
-        $postTypes = [
-            'work' => '作品感想',
-            'workStory' => 'あらすじ感想',
-            'character' => '登場人物感想',
-            'music' => '音楽感想',
-            'animePilgrimage' => '聖地感想',
-        ];
-
+        $config = $this->postTypes[$type];
         // 各投稿に投稿の種類を追加
-        $posts->transform(function ($post) use ($postTypes, $type) {
-            $post->postType = $postTypes[$type];
+        $posts->transform(function ($post) use ($config, $type) {
+            $post->postType = $config['name'];
             return $post;
         });
     }
 
+    // 投稿の種類からリンク用のパスを生成
     public function createTypeToURL($posts, $type)
     {
         // 各投稿の種類のURL
