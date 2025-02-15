@@ -59,6 +59,7 @@ class User extends Authenticatable
             'relations' => [
                 'work' => ['name', 'term']
             ],
+            'post_id' => 'work_review_id'
         ],
         'workStory' => [
             'model' => WorkStoryPost::class,
@@ -67,6 +68,7 @@ class User extends Authenticatable
                 'work' => ['name', 'term'],
                 'workStory' => ['sub_title', 'episode'],
             ],
+            'post_id' => 'work_story_post_id'
         ],
         'character' => [
             'model' => CharacterPost::class,
@@ -76,6 +78,7 @@ class User extends Authenticatable
                 'character.works' => ['name', 'term'],
                 'character.voiceArtist' => ['name'],
             ],
+            'post_id' => 'character_post_id'
         ],
         'music' => [
             'model' => MusicPost::class,
@@ -85,6 +88,7 @@ class User extends Authenticatable
                 'music.work' => ['name', 'term'],
                 'music.singer' => ['name'],
             ],
+            'post_id' => 'music_post_id'
         ],
         'animePilgrimage' => [
             'model' => AnimePilgrimagePost::class,
@@ -93,6 +97,7 @@ class User extends Authenticatable
                 'animePilgrimage' => ['name', 'place'],
                 'animePilgrimage.works' => ['name', 'term'],
             ],
+            'post_id' => 'anime_pilgrimage_post_id'
         ],
     ];
 
@@ -149,7 +154,7 @@ class User extends Authenticatable
 
             $query->where(function ($query) use ($search_array, $relations) {
                 foreach ($search_array as $search_word) {
-                    $query->orWhere(function ($query) use ($search_word, $relations) {
+                    $query->where(function ($query) use ($search_word, $relations) {
                         // 投稿のタイトル・本文で検索
                         $query->where('post_title', 'LIKE', "%{$search_word}%")
                             ->orWhere('body', 'LIKE', "%{$search_word}%");
@@ -157,9 +162,11 @@ class User extends Authenticatable
                         // 各リレーション先のカラムでも検索
                         foreach ($relations as $relation => $columns) {
                             $query->orWhereHas($relation, function ($relationQuery) use ($search_word, $columns) {
-                                foreach ($columns as $column) {
-                                    $relationQuery->where($column, 'LIKE', "%{$search_word}%");
-                                }
+                                $relationQuery->where(function ($subQuery) use ($search_word, $columns) {
+                                    foreach ($columns as $column) {
+                                        $subQuery->orWhere($column, 'LIKE', "%{$search_word}%");
+                                    }
+                                });
                             });
                         }
                     });
@@ -279,6 +286,99 @@ class User extends Authenticatable
                 }
             });
         }
+    }
+
+    // 投稿の種類とユーザーidで投稿を取得する処理
+    public function fetchLikePosts($user_id, $type, $search)
+    {
+        // typeが'none'の場合、すべての投稿を取得
+        if ($type === 'none') {
+            $posts = collect();
+
+            foreach ($this->postTypes as $key => $config) {
+                // ユーザーがいいねした投稿のidを取得
+                $likedPostIds = $config['model']::whereHas('users', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })
+                    ->pluck('id');
+
+                //  いいねした投稿を取得
+                $query = $config['model']::whereIn('id', $likedPostIds)
+                    ->with(array_keys($config['relations']))
+                    ->where(function ($query) use ($search, $config) {
+                        $this->applySearchFilter($query, $search, $config['relations']);
+                    })
+                    ->get();
+
+                // 各投稿に「いいねした日時」を追加
+                $query->each(function ($post) use ($user_id) {
+                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
+                        ->pivot
+                        ->created_at;
+                });
+
+                $this->addPostType($query, $key);
+                $this->createTypeToURL($query, $key);
+                $posts = $posts->merge($query);
+            }
+
+            foreach ($this->postTypes as $key => $config) {
+                // ユーザーがいいねしたコメントのidを取得
+                $likedPostIds = $config['commentModel']::whereHas('users', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })
+                    ->pluck('id');
+
+                //  いいねしたコメントを取得
+                $query = $config['commentModel']::whereIn('id', $likedPostIds)
+                    ->where(function ($query) use ($search) {
+                        $this->applySearchCommentFilter($query, $search);
+                    })
+                    ->get();
+
+                // 各コメントに「いいねした日時」を追加
+                $query->each(function ($post) use ($user_id) {
+                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
+                        ->pivot
+                        ->created_at;
+                });
+
+                $this->addPostType($query, $key);
+                $this->createTypeToURL($query, $key);
+                $posts = $posts->merge($query);
+            }
+
+            // 作成日時でソートしてページネーション
+            $posts = $posts->sortByDesc('liked_created_at')->values();
+            // 作成日時でソートしてページネーション
+            return PaginationHelper::paginateCollection($posts, 10);
+        }
+
+        $config = $this->postTypes[$type];
+        // ユーザーがいいねした投稿のidを取得
+        $likedPostIds = $config['model']::whereHas('users', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        })
+            ->pluck('id');
+
+        $posts = $config['model']::whereIn('id', $likedPostIds)
+            ->with(array_keys($config['relations']))
+            ->where(function ($query) use ($search, $config) {
+                $this->applySearchFilter($query, $search, $config['relations']);
+            })
+            ->paginate(10);
+
+        // 各投稿に「いいねした日時」を追加
+        $posts->each(function ($post) use ($user_id) {
+            $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
+                ->pivot
+                ->created_at;
+        });
+
+        $this->addPostType($posts, $type);
+        $this->createTypeToURL($posts, $type);
+
+        return $posts;
     }
 
     // WorkReviewに対するリレーション 1対1の関係

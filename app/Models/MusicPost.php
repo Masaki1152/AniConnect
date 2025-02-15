@@ -98,7 +98,8 @@ class MusicPost extends Model
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class, 'music_posts_users', 'music_post_id', 'user_id');
+        return $this->belongsToMany(User::class, 'music_posts_users', 'music_post_id', 'user_id')
+            ->withPivot('created_at');
     }
 
     // 音楽idと投稿idを指定して、投稿の詳細表示を行う
