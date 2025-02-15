@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Helpers\PaginationHelper;
+use Log;
 
 class User extends Authenticatable
 {
@@ -92,86 +93,48 @@ class User extends Authenticatable
     ];
 
     // 投稿の種類とユーザーidで投稿を取得する処理
-    public function fetchPosts($user_id, $type, $search)
+    public function fetchPosts($user_id, $postType, $search)
     {
         // typeが'none'の場合、すべての投稿を取得
-        if ($type === 'none') {
+        if ($postType === 'none') {
             $posts = collect();
-
             foreach ($this->postMaps as $key => $config) {
-                $query = $config['model']::where('user_id', $user_id)
-                    ->with(array_keys($config['relations']))
-                    ->where(function ($query) use ($search, $config) {
-                        $this->applySearchFilter($query, $search, 'posts', $config['relations']);
-                    })
-                    ->orderBy('created_at', 'DESC')
-                    ->get();
-
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
+                $query = $this->searchAndProcessPosts($config, $user_id, $search, $key, 'model', 'posts');
                 $posts = $posts->merge($query);
             }
-
             // 作成日時でソートしてページネーション
             $posts = $posts->sortByDesc('created_at')->values();
             return PaginationHelper::paginateCollection($posts, 10);
         }
-
-        $config = $this->postMaps[$type];
-
-        $posts = $config['model']::where('user_id', $user_id)
-            ->with(array_keys($config['relations']))
-            ->where(function ($query) use ($search, $config) {
-                $this->applySearchFilter($query, $search, 'posts', $config['relations']);
-            })
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10);
-
-        $this->addPostType($posts, $type);
-        $this->createTypeToURL($posts, $type);
-
-        return $posts;
+        // typeが指定されている場合
+        $config = $this->postMaps[$postType];
+        $posts = $this->searchAndProcessPosts($config, $user_id, $search, $postType, 'model', 'posts');
+        // 作成日時でソートしてページネーション
+        $posts = $posts->sortByDesc('created_at')->values();
+        return PaginationHelper::paginateCollection($posts, 10);
     }
 
     // 投稿の種類とユーザーidでコメントを取得する処理
     // 検索はコメント内のbodyのみ
-    public function fetchComments($user_id, $type, $search)
+    public function fetchComments($user_id, $postType, $search)
     {
         // typeが'none'の場合、すべてのコメントを取得
-        if ($type === 'none') {
+        if ($postType === 'none') {
             $posts = collect();
-
             foreach ($this->postMaps as $key => $config) {
-                $query = $config['commentModel']::where('user_id', $user_id)
-                    ->where(function ($query) use ($search) {
-                        $this->applySearchFilter($query, $search, 'comments');
-                    })
-                    ->orderBy('created_at', 'DESC')
-                    ->get();
-
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
+                $query = $this->searchAndProcessPosts($config, $user_id, $search, $key, 'commentModel', 'comments');
                 $posts = $posts->merge($query);
             }
-
             // 作成日時でソートしてページネーション
             $posts = $posts->sortByDesc('created_at')->values();
             return PaginationHelper::paginateCollection($posts, 10);
         }
-
-        $config = $this->postMaps[$type];
-
-        $posts = $config['commentModel']::where('user_id', $user_id)
-            ->where(function ($query) use ($search) {
-                $this->applySearchFilter($query, $search, 'comments');
-            })
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10);
-
-        $this->addPostType($posts, $type);
-        $this->createTypeToURL($posts, $type);
-
-        return $posts;
+        // typeが指定されている場合
+        $config = $this->postMaps[$postType];
+        $posts = $this->searchAndProcessPosts($config, $user_id, $search, $postType, 'commentModel', 'comments');
+        // 作成日時でソートしてページネーション
+        $posts = $posts->sortByDesc('created_at')->values();
+        return PaginationHelper::paginateCollection($posts, 10);
     }
 
     // 投稿の種類とユーザーidで投稿を取得する処理
@@ -196,13 +159,7 @@ class User extends Authenticatable
                     })
                     ->get();
 
-                // 各投稿に「いいねした日時」を追加
-                $query->each(function ($post) use ($user_id) {
-                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
-                        ->pivot
-                        ->created_at;
-                });
-
+                $this->addPostLikedTime($query, $user_id);
                 $this->addPostType($query, $key);
                 $this->createTypeToURL($query, $key);
                 $posts = $posts->merge($query);
@@ -222,13 +179,7 @@ class User extends Authenticatable
                     })
                     ->get();
 
-                // 各コメントに「いいねした日時」を追加
-                $query->each(function ($post) use ($user_id) {
-                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
-                        ->pivot
-                        ->created_at;
-                });
-
+                $this->addPostLikedTime($query, $user_id);
                 $this->addPostType($query, $key);
                 $this->createTypeToURL($query, $key);
                 $posts = $posts->merge($query);
@@ -254,13 +205,7 @@ class User extends Authenticatable
             })
             ->paginate(10);
 
-        // 各投稿に「いいねした日時」を追加
-        $posts->each(function ($post) use ($user_id) {
-            $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
-                ->pivot
-                ->created_at;
-        });
-
+        $this->addPostLikedTime($posts, $user_id);
         $this->addPostType($posts, $type);
         $this->createTypeToURL($posts, $type);
 
@@ -312,19 +257,48 @@ class User extends Authenticatable
         }
     }
 
-    // 取得した投稿に投稿の種類を付与する処理
-    public function addPostType($posts, $type)
+    // 投稿やコメントにいいねした時間を追加
+    public function addPostLikedTime($query, $user_id)
     {
-        $config = $this->postMaps[$type];
+        $query->each(function ($post) use ($user_id) {
+            $post->liked_created_at = optional($post->users->firstWhere('id', $user_id))
+                ->pivot
+                ->created_at;
+        });
+    }
+
+    // 投稿またはコメントを取得して加工する
+    public function searchAndProcessPosts($config, $user_id, $search, $postType, $modelType, $fetchType)
+    {
+        $query = $config[$modelType]::where('user_id', $user_id);
+        // コメント取得以外の場合のみwith()を適用
+        if ($fetchType !== 'comments') {
+            $query->with(array_keys($config['relations']));
+        }
+
+        $query->where(function ($query) use ($search, $config, $fetchType) {
+            $this->applySearchFilter($query, $search, $fetchType, $config['relations']);
+        });
+        $posts = $query->orderBy('created_at', 'DESC')->get();
+        // データの加工
+        $this->addPostType($posts, $postType);
+        $this->createTypeToURL($posts, $postType);
+        return $posts;
+    }
+
+    // 取得した投稿に投稿の種類を付与する処理
+    public function addPostType($posts, $postType)
+    {
+        $config = $this->postMaps[$postType];
         // 各投稿に投稿の種類を追加
-        $posts->transform(function ($post) use ($config, $type) {
+        $posts->transform(function ($post) use ($config) {
             $post->postType = $config['name'];
             return $post;
         });
     }
 
     // 投稿の種類からリンク用のパスを生成
-    public function createTypeToURL($posts, $type)
+    public function createTypeToURL($posts, $postType)
     {
         // 各投稿の種類のURL
         $urls = [
@@ -351,8 +325,8 @@ class User extends Authenticatable
         ];
 
         // 投稿の種類に応じたURLを追加
-        $posts->transform(function ($post) use ($urls, $type) {
-            $post->postURL = $urls[$type]($post) . "/{$post->id}";
+        $posts->transform(function ($post) use ($urls, $postType) {
+            $post->postURL = $urls[$postType]($post) . "/{$post->id}";
             return $post;
         });
     }
