@@ -56,7 +56,8 @@ class WorkReviewComment extends Model
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_wr_comment', 'wr_comment_id', 'user_id');
+        return $this->belongsToMany(User::class, 'user_wr_comment', 'wr_comment_id', 'user_id')
+            ->withPivot('created_at');
     }
 
     // 該当の親コメントを持つコメントを取得

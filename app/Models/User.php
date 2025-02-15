@@ -322,6 +322,32 @@ class User extends Authenticatable
                 $posts = $posts->merge($query);
             }
 
+            foreach ($this->postTypes as $key => $config) {
+                // ユーザーがいいねしたコメントのidを取得
+                $likedPostIds = $config['commentModel']::whereHas('users', function ($query) use ($user_id) {
+                    $query->where('user_id', $user_id);
+                })
+                    ->pluck('id');
+
+                //  いいねしたコメントを取得
+                $query = $config['commentModel']::whereIn('id', $likedPostIds)
+                    ->where(function ($query) use ($search) {
+                        $this->applySearchCommentFilter($query, $search);
+                    })
+                    ->get();
+
+                // 各コメントに「いいねした日時」を追加
+                $query->each(function ($post) use ($user_id) {
+                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
+                        ->pivot
+                        ->created_at;
+                });
+
+                $this->addPostType($query, $key);
+                $this->createTypeToURL($query, $key);
+                $posts = $posts->merge($query);
+            }
+
             // 作成日時でソートしてページネーション
             $posts = $posts->sortByDesc('liked_created_at')->values();
             // 作成日時でソートしてページネーション
