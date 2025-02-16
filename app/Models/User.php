@@ -8,7 +8,6 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use App\Helpers\PaginationHelper;
-use Log;
 
 class User extends Authenticatable
 {
@@ -140,51 +139,18 @@ class User extends Authenticatable
     // 投稿の種類とユーザーidで投稿を取得する処理
     public function fetchLikePosts($user_id, $type, $search)
     {
+        $posts = collect();
         // typeが'none'の場合、すべての投稿を取得
         if ($type === 'none') {
-            $posts = collect();
 
             foreach ($this->postMaps as $key => $config) {
-                // ユーザーがいいねした投稿のidを取得
-                $likedPostIds = $config['model']::whereHas('users', function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id);
-                })
-                    ->pluck('id');
-
                 //  いいねした投稿を取得
-                $query = $config['model']::whereIn('id', $likedPostIds)
-                    ->with(array_keys($config['relations']))
-                    ->where(function ($query) use ($search, $config) {
-                        $this->applySearchFilter($query, $search, 'likedPosts', $config['relations']);
-                    })
-                    ->get();
-
-                $this->addPostLikedTime($query, $user_id);
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
-                $posts = $posts->merge($query);
-            }
-
-            foreach ($this->postMaps as $key => $config) {
-                // ユーザーがいいねしたコメントのidを取得
-                $likedPostIds = $config['commentModel']::whereHas('users', function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id);
-                })
-                    ->pluck('id');
-
+                $postQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'model', 'likedPosts');
+                $posts = $posts->merge($postQuery);
                 //  いいねしたコメントを取得
-                $query = $config['commentModel']::whereIn('id', $likedPostIds)
-                    ->where(function ($query) use ($search) {
-                        $this->applySearchFilter($query, $search, 'comments');
-                    })
-                    ->get();
-
-                $this->addPostLikedTime($query, $user_id);
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
-                $posts = $posts->merge($query);
+                $commentQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'commentModel', 'comments');
+                $posts = $posts->merge($commentQuery);
             }
-
             // 作成日時でソートしてページネーション
             $posts = $posts->sortByDesc('liked_created_at')->values();
             // 作成日時でソートしてページネーション
@@ -192,24 +158,16 @@ class User extends Authenticatable
         }
 
         $config = $this->postMaps[$type];
-        // ユーザーがいいねした投稿のidを取得
-        $likedPostIds = $config['model']::whereHas('users', function ($query) use ($user_id) {
-            $query->where('user_id', $user_id);
-        })
-            ->pluck('id');
-
-        $posts = $config['model']::whereIn('id', $likedPostIds)
-            ->with(array_keys($config['relations']))
-            ->where(function ($query) use ($search, $config) {
-                $this->applySearchFilter($query, $search, 'likedPosts', $config['relations']);
-            })
-            ->paginate(10);
-
-        $this->addPostLikedTime($posts, $user_id);
-        $this->addPostType($posts, $type);
-        $this->createTypeToURL($posts, $type);
-
-        return $posts;
+        //  いいねした投稿を取得
+        $postQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'model', 'likedPosts');
+        $posts = $posts->merge($postQuery);
+        //  いいねしたコメントを取得
+        $commentQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'commentModel', 'comments');
+        $posts = $posts->merge($commentQuery);
+        // 作成日時でソートしてページネーション
+        $posts = $posts->sortByDesc('liked_created_at')->values();
+        // 作成日時でソートしてページネーション
+        return PaginationHelper::paginateCollection($posts, 10);
     }
 
     // 投稿とコメントの検索を行う
@@ -329,6 +287,28 @@ class User extends Authenticatable
             $post->postURL = $urls[$postType]($post) . "/{$post->id}";
             return $post;
         });
+    }
+
+    // ユーザーがいいねした投稿とコメントを取得
+    public function fetchAndProcessLikedPost($config, $key, $user_id, $search, $modelType, $fetchType)
+    {
+        // ユーザーがいいねしたコメントのidを取得
+        $likedPostIds = $config[$modelType]::whereHas('users', function ($query) use ($user_id) {
+            $query->where('user_id', $user_id);
+        })
+            ->pluck('id');
+
+        //  いいねしたコメントを取得
+        $query = $config[$modelType]::whereIn('id', $likedPostIds)
+            ->where(function ($query) use ($search, $fetchType) {
+                $this->applySearchFilter($query, $search, $fetchType);
+            })
+            ->get();
+
+        $this->addPostType($query, $key);
+        $this->createTypeToURL($query, $key);
+        $this->addPostLikedTime($query, $user_id);
+        return $query;
     }
 
     // WorkReviewに対するリレーション 1対1の関係
