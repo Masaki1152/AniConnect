@@ -145,7 +145,7 @@ class User extends Authenticatable
 
             foreach ($this->postMaps as $key => $config) {
                 //  いいねした投稿を取得
-                $postQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'model', 'likedPosts');
+                $postQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'model', 'likedPosts', $config['relations']);
                 $posts = $posts->merge($postQuery);
                 //  いいねしたコメントを取得
                 $commentQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'commentModel', 'comments');
@@ -159,7 +159,7 @@ class User extends Authenticatable
 
         $config = $this->postMaps[$type];
         //  いいねした投稿を取得
-        $postQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'model', 'likedPosts');
+        $postQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'model', 'likedPosts', $config['relations']);
         $posts = $posts->merge($postQuery);
         //  いいねしたコメントを取得
         $commentQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'commentModel', 'comments');
@@ -290,7 +290,7 @@ class User extends Authenticatable
     }
 
     // ユーザーがいいねした投稿とコメントを取得
-    public function fetchAndProcessLikedPost($config, $key, $user_id, $search, $modelType, $fetchType)
+    public function fetchAndProcessLikedPost($config, $key, $user_id, $search, $modelType, $fetchType, $relations = null)
     {
         // ユーザーがいいねしたコメントのidを取得
         $likedPostIds = $config[$modelType]::whereHas('users', function ($query) use ($user_id) {
@@ -300,8 +300,8 @@ class User extends Authenticatable
 
         //  いいねしたコメントを取得
         $query = $config[$modelType]::whereIn('id', $likedPostIds)
-            ->where(function ($query) use ($search, $fetchType) {
-                $this->applySearchFilter($query, $search, $fetchType);
+            ->where(function ($query) use ($search, $fetchType, $relations) {
+                $this->applySearchFilter($query, $search, $fetchType, $relations);
             })
             ->get();
 
