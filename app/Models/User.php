@@ -16,11 +16,6 @@ class User extends Authenticatable
     // 参照させたいworksを指定
     protected $table = 'users';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
     protected $fillable = [
         'name',
         'email',
@@ -31,29 +26,20 @@ class User extends Authenticatable
         'introduction',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
     protected $casts = [
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
 
     // 投稿の種類ごとのモデルとリレーション設定
-    protected $postTypes = [
+    protected $postMaps = [
         'work' => [
+            'name' => '作品感想',
             'model' => WorkReview::class,
             'commentModel' => WorkReviewComment::class,
             'relations' => [
@@ -62,6 +48,7 @@ class User extends Authenticatable
             'post_id' => 'work_review_id'
         ],
         'workStory' => [
+            'name' => 'あらすじ感想',
             'model' => WorkStoryPost::class,
             'commentModel' => WorkStoryPostComment::class,
             'relations' => [
@@ -71,6 +58,7 @@ class User extends Authenticatable
             'post_id' => 'work_story_post_id'
         ],
         'character' => [
+            'name' => '登場人物感想',
             'model' => CharacterPost::class,
             'commentModel' => CharacterPostComment::class,
             'relations' => [
@@ -81,6 +69,7 @@ class User extends Authenticatable
             'post_id' => 'character_post_id'
         ],
         'music' => [
+            'name' => '音楽感想',
             'model' => MusicPost::class,
             'commentModel' => MusicPostComment::class,
             'relations' => [
@@ -91,6 +80,7 @@ class User extends Authenticatable
             'post_id' => 'music_post_id'
         ],
         'animePilgrimage' => [
+            'name' => '聖地感想',
             'model' => AnimePilgrimagePost::class,
             'commentModel' => AnimePilgrimagePostComment::class,
             'relations' => [
@@ -102,49 +92,86 @@ class User extends Authenticatable
     ];
 
     // 投稿の種類とユーザーidで投稿を取得する処理
-    public function fetchPosts($user_id, $type, $search)
+    public function fetchPosts($user_id, $postType, $search)
     {
         // typeが'none'の場合、すべての投稿を取得
-        if ($type === 'none') {
+        if ($postType === 'none') {
             $posts = collect();
-
-            foreach ($this->postTypes as $key => $config) {
-                $query = $config['model']::where('user_id', $user_id)
-                    ->with(array_keys($config['relations']))
-                    ->where(function ($query) use ($search, $config) {
-                        $this->applySearchFilter($query, $search, $config['relations']);
-                    })
-                    ->orderBy('created_at', 'DESC')
-                    ->get();
-
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
+            foreach ($this->postMaps as $key => $config) {
+                $query = $this->searchAndProcessPosts($config, $user_id, $search, $key, 'model', 'posts');
                 $posts = $posts->merge($query);
             }
-
             // 作成日時でソートしてページネーション
             $posts = $posts->sortByDesc('created_at')->values();
             return PaginationHelper::paginateCollection($posts, 10);
         }
-
-        $config = $this->postTypes[$type];
-
-        $posts = $config['model']::where('user_id', $user_id)
-            ->with(array_keys($config['relations']))
-            ->where(function ($query) use ($search, $config) {
-                $this->applySearchFilter($query, $search, $config['relations']);
-            })
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10);
-
-        $this->addPostType($posts, $type);
-        $this->createTypeToURL($posts, $type);
-
-        return $posts;
+        // typeが指定されている場合
+        $config = $this->postMaps[$postType];
+        $posts = $this->searchAndProcessPosts($config, $user_id, $search, $postType, 'model', 'posts');
+        // 作成日時でソートしてページネーション
+        $posts = $posts->sortByDesc('created_at')->values();
+        return PaginationHelper::paginateCollection($posts, 10);
     }
 
-    // 投稿の検索を行う
-    public function applySearchFilter($query, $search, $relations)
+    // 投稿の種類とユーザーidでコメントを取得する処理
+    // 検索はコメント内のbodyのみ
+    public function fetchComments($user_id, $postType, $search)
+    {
+        // typeが'none'の場合、すべてのコメントを取得
+        if ($postType === 'none') {
+            $posts = collect();
+            foreach ($this->postMaps as $key => $config) {
+                $query = $this->searchAndProcessPosts($config, $user_id, $search, $key, 'commentModel', 'comments');
+                $posts = $posts->merge($query);
+            }
+            // 作成日時でソートしてページネーション
+            $posts = $posts->sortByDesc('created_at')->values();
+            return PaginationHelper::paginateCollection($posts, 10);
+        }
+        // typeが指定されている場合
+        $config = $this->postMaps[$postType];
+        $posts = $this->searchAndProcessPosts($config, $user_id, $search, $postType, 'commentModel', 'comments');
+        // 作成日時でソートしてページネーション
+        $posts = $posts->sortByDesc('created_at')->values();
+        return PaginationHelper::paginateCollection($posts, 10);
+    }
+
+    // 投稿の種類とユーザーidで投稿を取得する処理
+    public function fetchLikePosts($user_id, $type, $search)
+    {
+        $posts = collect();
+        // typeが'none'の場合、すべての投稿を取得
+        if ($type === 'none') {
+
+            foreach ($this->postMaps as $key => $config) {
+                //  いいねした投稿を取得
+                $postQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'model', 'likedPosts');
+                $posts = $posts->merge($postQuery);
+                //  いいねしたコメントを取得
+                $commentQuery = $this->fetchAndProcessLikedPost($config, $key, $user_id, $search, 'commentModel', 'comments');
+                $posts = $posts->merge($commentQuery);
+            }
+            // 作成日時でソートしてページネーション
+            $posts = $posts->sortByDesc('liked_created_at')->values();
+            // 作成日時でソートしてページネーション
+            return PaginationHelper::paginateCollection($posts, 10);
+        }
+
+        $config = $this->postMaps[$type];
+        //  いいねした投稿を取得
+        $postQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'model', 'likedPosts');
+        $posts = $posts->merge($postQuery);
+        //  いいねしたコメントを取得
+        $commentQuery = $this->fetchAndProcessLikedPost($config, $type, $user_id, $search, 'commentModel', 'comments');
+        $posts = $posts->merge($commentQuery);
+        // 作成日時でソートしてページネーション
+        $posts = $posts->sortByDesc('liked_created_at')->values();
+        // 作成日時でソートしてページネーション
+        return PaginationHelper::paginateCollection($posts, 10);
+    }
+
+    // 投稿とコメントの検索を行う
+    public function applySearchFilter($query, $search, $fetchType, $relations = null)
     {
         if ($search != '') {
             // 検索語のスペースを半角に統一
@@ -152,8 +179,21 @@ class User extends Authenticatable
             // 半角スペースで単語ごとに分割して配列にする
             $search_array = preg_split('/[\s]+/', $search_split);
 
-            $query->where(function ($query) use ($search_array, $relations) {
+            $query->where(function ($query) use ($search_array, $relations, $fetchType) {
                 foreach ($search_array as $search_word) {
+                    // コメント取得の場合
+                    if ($fetchType === 'comments') {
+                        $query->where(function ($query) use ($search_array) {
+                            foreach ($search_array as $search_word) {
+                                $query->orWhere(function ($query) use ($search_word) {
+                                    // 投稿のタイトル・本文で検索
+                                    $query->where('body', 'LIKE', "%{$search_word}%");
+                                });
+                            }
+                        });
+                        return $query;
+                    }
+
                     $query->where(function ($query) use ($search_word, $relations) {
                         // 投稿のタイトル・本文で検索
                         $query->where('post_title', 'LIKE', "%{$search_word}%")
@@ -175,26 +215,48 @@ class User extends Authenticatable
         }
     }
 
-    // 取得した投稿に投稿の種類を付与する処理
-    public function addPostType($posts, $type)
+    // 投稿やコメントにいいねした時間を追加
+    public function addPostLikedTime($query, $user_id)
     {
-        // 投稿の種類
-        $postTypes = [
-            'work' => '作品感想',
-            'workStory' => 'あらすじ感想',
-            'character' => '登場人物感想',
-            'music' => '音楽感想',
-            'animePilgrimage' => '聖地感想',
-        ];
+        $query->each(function ($post) use ($user_id) {
+            $post->liked_created_at = optional($post->users->firstWhere('id', $user_id))
+                ->pivot
+                ->created_at;
+        });
+    }
 
+    // 投稿またはコメントを取得して加工する
+    public function searchAndProcessPosts($config, $user_id, $search, $postType, $modelType, $fetchType)
+    {
+        $query = $config[$modelType]::where('user_id', $user_id);
+        // コメント取得以外の場合のみwith()を適用
+        if ($fetchType !== 'comments') {
+            $query->with(array_keys($config['relations']));
+        }
+
+        $query->where(function ($query) use ($search, $config, $fetchType) {
+            $this->applySearchFilter($query, $search, $fetchType, $config['relations']);
+        });
+        $posts = $query->orderBy('created_at', 'DESC')->get();
+        // データの加工
+        $this->addPostType($posts, $postType);
+        $this->createTypeToURL($posts, $postType);
+        return $posts;
+    }
+
+    // 取得した投稿に投稿の種類を付与する処理
+    public function addPostType($posts, $postType)
+    {
+        $config = $this->postMaps[$postType];
         // 各投稿に投稿の種類を追加
-        $posts->transform(function ($post) use ($postTypes, $type) {
-            $post->postType = $postTypes[$type];
+        $posts->transform(function ($post) use ($config) {
+            $post->postType = $config['name'];
             return $post;
         });
     }
 
-    public function createTypeToURL($posts, $type)
+    // 投稿の種類からリンク用のパスを生成
+    public function createTypeToURL($posts, $postType)
     {
         // 各投稿の種類のURL
         $urls = [
@@ -221,164 +283,32 @@ class User extends Authenticatable
         ];
 
         // 投稿の種類に応じたURLを追加
-        $posts->transform(function ($post) use ($urls, $type) {
-            $post->postURL = $urls[$type]($post) . "/{$post->id}";
+        $posts->transform(function ($post) use ($urls, $postType) {
+            $post->postURL = $urls[$postType]($post) . "/{$post->id}";
             return $post;
         });
     }
 
-    // 投稿の種類とユーザーidでコメントを取得する処理
-    // 検索はコメント内のbodyのみ
-    public function fetchComments($user_id, $type, $search)
+    // ユーザーがいいねした投稿とコメントを取得
+    public function fetchAndProcessLikedPost($config, $key, $user_id, $search, $modelType, $fetchType)
     {
-        // typeが'none'の場合、すべてのコメントを取得
-        if ($type === 'none') {
-            $posts = collect();
-
-            foreach ($this->postTypes as $key => $config) {
-                $query = $config['commentModel']::where('user_id', $user_id)
-                    ->where(function ($query) use ($search) {
-                        $this->applySearchCommentFilter($query, $search);
-                    })
-                    ->orderBy('created_at', 'DESC')
-                    ->get();
-
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
-                $posts = $posts->merge($query);
-            }
-
-            // 作成日時でソートしてページネーション
-            $posts = $posts->sortByDesc('created_at')->values();
-            return PaginationHelper::paginateCollection($posts, 10);
-        }
-
-        $config = $this->postTypes[$type];
-
-        $posts = $config['commentModel']::where('user_id', $user_id)
-            ->where(function ($query) use ($search) {
-                $this->applySearchCommentFilter($query, $search);
-            })
-            ->orderBy('created_at', 'DESC')
-            ->paginate(10);
-
-        $this->addPostType($posts, $type);
-        $this->createTypeToURL($posts, $type);
-
-        return $posts;
-    }
-
-    // コメントの検索を行う 検索はコメント内のbodyのみ
-    public function applySearchCommentFilter($query, $search)
-    {
-        if ($search != '') {
-            // 検索語のスペースを半角に統一
-            $search_split = mb_convert_kana($search, 's');
-            // 半角スペースで単語ごとに分割して配列にする
-            $search_array = preg_split('/[\s]+/', $search_split);
-
-            $query->where(function ($query) use ($search_array) {
-                foreach ($search_array as $search_word) {
-                    $query->orWhere(function ($query) use ($search_word) {
-                        // 投稿のタイトル・本文で検索
-                        $query->where('body', 'LIKE', "%{$search_word}%");
-                    });
-                }
-            });
-        }
-    }
-
-    // 投稿の種類とユーザーidで投稿を取得する処理
-    public function fetchLikePosts($user_id, $type, $search)
-    {
-        // typeが'none'の場合、すべての投稿を取得
-        if ($type === 'none') {
-            $posts = collect();
-
-            foreach ($this->postTypes as $key => $config) {
-                // ユーザーがいいねした投稿のidを取得
-                $likedPostIds = $config['model']::whereHas('users', function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id);
-                })
-                    ->pluck('id');
-
-                //  いいねした投稿を取得
-                $query = $config['model']::whereIn('id', $likedPostIds)
-                    ->with(array_keys($config['relations']))
-                    ->where(function ($query) use ($search, $config) {
-                        $this->applySearchFilter($query, $search, $config['relations']);
-                    })
-                    ->get();
-
-                // 各投稿に「いいねした日時」を追加
-                $query->each(function ($post) use ($user_id) {
-                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
-                        ->pivot
-                        ->created_at;
-                });
-
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
-                $posts = $posts->merge($query);
-            }
-
-            foreach ($this->postTypes as $key => $config) {
-                // ユーザーがいいねしたコメントのidを取得
-                $likedPostIds = $config['commentModel']::whereHas('users', function ($query) use ($user_id) {
-                    $query->where('user_id', $user_id);
-                })
-                    ->pluck('id');
-
-                //  いいねしたコメントを取得
-                $query = $config['commentModel']::whereIn('id', $likedPostIds)
-                    ->where(function ($query) use ($search) {
-                        $this->applySearchCommentFilter($query, $search);
-                    })
-                    ->get();
-
-                // 各コメントに「いいねした日時」を追加
-                $query->each(function ($post) use ($user_id) {
-                    $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
-                        ->pivot
-                        ->created_at;
-                });
-
-                $this->addPostType($query, $key);
-                $this->createTypeToURL($query, $key);
-                $posts = $posts->merge($query);
-            }
-
-            // 作成日時でソートしてページネーション
-            $posts = $posts->sortByDesc('liked_created_at')->values();
-            // 作成日時でソートしてページネーション
-            return PaginationHelper::paginateCollection($posts, 10);
-        }
-
-        $config = $this->postTypes[$type];
-        // ユーザーがいいねした投稿のidを取得
-        $likedPostIds = $config['model']::whereHas('users', function ($query) use ($user_id) {
+        // ユーザーがいいねしたコメントのidを取得
+        $likedPostIds = $config[$modelType]::whereHas('users', function ($query) use ($user_id) {
             $query->where('user_id', $user_id);
         })
             ->pluck('id');
 
-        $posts = $config['model']::whereIn('id', $likedPostIds)
-            ->with(array_keys($config['relations']))
-            ->where(function ($query) use ($search, $config) {
-                $this->applySearchFilter($query, $search, $config['relations']);
+        //  いいねしたコメントを取得
+        $query = $config[$modelType]::whereIn('id', $likedPostIds)
+            ->where(function ($query) use ($search, $fetchType) {
+                $this->applySearchFilter($query, $search, $fetchType);
             })
-            ->paginate(10);
+            ->get();
 
-        // 各投稿に「いいねした日時」を追加
-        $posts->each(function ($post) use ($user_id) {
-            $post->liked_created_at = optional($post->users->where('id', $user_id)->first())
-                ->pivot
-                ->created_at;
-        });
-
-        $this->addPostType($posts, $type);
-        $this->createTypeToURL($posts, $type);
-
-        return $posts;
+        $this->addPostType($query, $key);
+        $this->createTypeToURL($query, $key);
+        $this->addPostLikedTime($query, $user_id);
+        return $query;
     }
 
     // WorkReviewに対するリレーション 1対1の関係
