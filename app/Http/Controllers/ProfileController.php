@@ -21,7 +21,7 @@ class ProfileController extends Controller
     {
         // 現在認証しているユーザーを取得
         $user = auth()->user();
-        return view('profile.index', [
+        return view('users.show', [
             'user' => $user
         ]);
     }
