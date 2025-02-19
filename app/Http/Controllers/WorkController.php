@@ -72,4 +72,31 @@ class WorkController extends Controller
         }
         return view('works.show')->with(['work' => $work, 'categories' => $categories]);
     }
+
+    // 作品に「気になる」登録をする
+    public function interested($work_id)
+    {
+        // 投稿が見つからない場合の処理
+        $work = Work::find($work_id);
+        if (!$work) {
+            return response()->json(['message' => '作品がありません'], 404);
+        }
+        // 現在ログインしているユーザーが既に「気になる」登録していればtrueを返す
+        $isInterested = $work->users()->where('user_id', Auth::id())->exists();
+        if ($isInterested) {
+            // 既に「気になる」登録している場合
+            $work->users()->detach(Auth::id());
+            $status = 'unInterested';
+            $message = '「気になる」を解除しました';
+        } else {
+            // 初めての「気になる」登録の場合
+            $work->users()->attach(Auth::id());
+            $status = 'interested';
+            $message = '「気になる」しました';
+        }
+        // 「気になる」登録したユーザー数の取得
+        $count = count($work->users()->pluck('work_id')->toArray());
+
+        return response()->json(['status' => $status, 'interested_user' => $count, 'message' => $message]);
+    }
 }

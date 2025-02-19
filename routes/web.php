@@ -152,6 +152,14 @@ Route::controller(WorkController::class)->middleware(['auth'])->group(function (
     Route::get('/works', 'index')->name('works.index');
     // 各作品の詳細表示
     Route::get('/works/{work}', 'show')->name('works.show');
+    // 各作品の「気になる」ボタン押下で「気になる」登録をする処理
+    Route::get('/works/{work_id}/interested', 'interested')->name('works.interested');
+});
+
+// WorkInterestedControllerに関するルーティング
+Route::controller(WorkInterestedController::class)->middleware(['auth'])->group(function () {
+    // 作品一覧の表示
+    Route::get('/works/{work_id}/interested/index', 'index')->name('work.interested.index');
 });
 
 // WrCommentControllerに関するルーティング
