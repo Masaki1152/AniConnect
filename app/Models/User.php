@@ -471,4 +471,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(NotificationComment::class, 'user_notification_comment', 'user_id', 'notification_comment_id');
     }
+
+    // 気になるをしたWorkに対するリレーション 多対多の関係
+    public function works()
+    {
+        return $this->belongsToMany(Work::class);
+    }
 }
