@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Work;
 use App\Models\WorkReviewCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class WorkController extends Controller
 {
@@ -87,12 +88,12 @@ class WorkController extends Controller
             // 既に「気になる」登録している場合
             $work->users()->detach(Auth::id());
             $status = 'unInterested';
-            $message = '「気になる」を解除しました';
+            $message = '「気になる」登録を解除しました';
         } else {
             // 初めての「気になる」登録の場合
             $work->users()->attach(Auth::id());
             $status = 'interested';
-            $message = '「気になる」しました';
+            $message = '「気になる」登録しました';
         }
         // 「気になる」登録したユーザー数の取得
         $count = count($work->users()->pluck('work_id')->toArray());

@@ -1,4 +1,7 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <div class="container mx-auto py-8">
         <h1 class="text-3xl font-bold text-center mb-6">作品一覧</h1>
 
@@ -6,8 +9,8 @@
         <div class="flex justify-center mb-6">
             <form action="{{ route('works.index') }}" method="GET" class="flex items-center space-x-2">
                 <!-- キーワード検索 -->
-                <input type="text" name="search" id="search", value="{{ request('search') }}" placeholder="キーワードを検索"
-                    aria-label="検索..."
+                <input type="text" name="search" id="search", value="{{ request('search') }}"
+                    placeholder="キーワードを検索" aria-label="検索..."
                     class="px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring focus:ring-blue-200">
                 <!-- カテゴリー検索機能 -->
                 <div>
@@ -101,6 +104,18 @@
                             @endif
                         </h5>
                         <p class="text-gray-600">{{ $work->term }}</p>
+                        <div class="interested">
+                            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
+                            気になる
+                            <button id="interested_button" data-work-id="{{ $work->id }}" type="submit">
+                                {{ $work->users->contains(auth()->user()) ? '★' : '☆' }}
+                            </button>
+                            <div class="interested_user">
+                                <a href="{{ route('work.interested.index', ['work_id' => $work->id]) }}">
+                                    <p id="interested_count">{{ $work->users->count() }}件</p>
+                                </a>
+                            </div>
+                        </div>
                     </div>
                 @endforeach
             @endif
@@ -111,5 +126,14 @@
             {{ $works->appends(request()->query())->links() }}
         </div>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/search_category.js') }}"></script>
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
+    <script>
+        // PHP の Helper 関数で定義した色データを JavaScript に渡す
+        const categoryColors = {!! json_encode([
+            '「気になる」登録しました' => getCategoryColor('「気になる」登録しました'),
+            '「気になる」登録を解除しました' => getCategoryColor('「気になる」登録を解除しました'),
+        ]) !!};
+    </script>
 </x-app-layout>
