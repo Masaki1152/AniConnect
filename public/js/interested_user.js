@@ -29,9 +29,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (data.status === 'interested') {
                     button.innerText = '★';
+                    button.classList.remove('text-gray-400', 'hover:text-gray-600');
+                    button.classList.add('text-yellow-400');
                     users.innerText = `${data.interested_user}件`;
                 } else if (data.status === 'unInterested') {
                     button.innerText = '☆';
+                    button.classList.remove('text-yellow-400');
+                    button.classList.add('text-gray-400', 'hover:text-gray-600');
                     users.innerText = `${data.interested_user}件`;
                 }
                 // メッセージを表示
