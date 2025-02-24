@@ -14,10 +14,12 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //「気になる」登録ボタンクリックによる非同期処理
         button.addEventListener('click', async function () {
-            const workId = button.getAttribute('data-work-id');
+            const targetType = button.getAttribute('data-type');
+            const targetFirstId = button.getAttribute('data-id');
+            const path = createPath(targetType, targetFirstId);
             try {
                 const response = await fetch(
-                    `/works/${workId}/interested`, {
+                    path, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -49,3 +51,17 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+// 気になる登録をする対象の種類からパスを作成
+function createPath(targetType, targetFirstId, targetSecondId = 0) {
+    let path = "";
+    switch (targetType) {
+        case "works":
+            path = `/works/${targetFirstId}/interested`;
+            break;
+        case "workStories":
+            path = `/works/${targetFirstId}/stories/${targetSecondId}/interested`;
+            break;
+    }
+    return path;
+}

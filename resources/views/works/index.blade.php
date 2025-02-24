@@ -104,18 +104,7 @@
                             @endif
                         </h5>
                         <p class="text-gray-600">{{ $work->term }}</p>
-                        <div class="interested">
-                            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                            気になる
-                            <button id="interested_button" data-work-id="{{ $work->id }}" type="submit">
-                                {{ $work->users->contains(auth()->user()) ? '★' : '☆' }}
-                            </button>
-                            <div class="interested_user">
-                                <a href="{{ route('work.interested.index', ['work_id' => $work->id]) }}">
-                                    <p id="interested_count">{{ $work->users->count() }}件</p>
-                                </a>
-                            </div>
-                        </div>
+                        <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]" />
                     </div>
                 @endforeach
             @endif

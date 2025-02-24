@@ -78,18 +78,7 @@
             <p>{{ $work->wiki_link }}</p>
             <h3>Twitterへのリンク</h3>
             <p>{{ $work->twitter_link }}</p>
-            <div class="interested">
-                <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                気になる
-                <button id="interested_button" data-work-id="{{ $work->id }}" type="submit">
-                    {{ $work->users->contains(auth()->user()) ? '★' : '☆' }}
-                </button>
-                <div class="interested_user">
-                    <a href="{{ route('work.interested.index', ['work_id' => $work->id]) }}">
-                        <p id="interested_count">{{ $work->users->count() }}件</p>
-                    </a>
-                </div>
-            </div>
+            <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]" />
             <a href="{{ route('work_reviews.index', ['work_id' => $work->id]) }}">作品感想一覧</a>
         </div>
     </div>
