@@ -1,4 +1,8 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
+
     <h1 class="title">
         {{ $work->name }}
     </h1>
@@ -74,6 +78,7 @@
             <p>{{ $work->wiki_link }}</p>
             <h3>Twitterへのリンク</h3>
             <p>{{ $work->twitter_link }}</p>
+            <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]" />
             <a href="{{ route('work_reviews.index', ['work_id' => $work->id]) }}">作品感想一覧</a>
         </div>
     </div>
@@ -83,4 +88,13 @@
     <div class="footer">
         <a href="/works">作品一覧へ</a>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
+    <script>
+        // PHP の Helper 関数で定義した色データを JavaScript に渡す
+        const categoryColors = {!! json_encode([
+            '「気になる」登録しました' => getCategoryColor('「気になる」登録しました'),
+            '「気になる」登録を解除しました' => getCategoryColor('「気になる」登録を解除しました'),
+        ]) !!};
+    </script>
 </x-app-layout>
