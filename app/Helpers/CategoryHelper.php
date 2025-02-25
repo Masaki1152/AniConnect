@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Lang;
+
 if (!function_exists('getCategoryColor')) {
     /**
      * カテゴリー名に基づいて色コードを返す
@@ -11,54 +13,54 @@ if (!function_exists('getCategoryColor')) {
     {
         $colors = [
             // 作品とあらすじのカテゴリー
-            'かわいい' => '#FFB6C1',
-            '面白い' => '#FFD700',
-            'ホラー' => '#483d8b',
-            '泣ける' => '#4682B4',
-            '元気がもらえる' => '#FF4500',
-            'バトル' => '#DC143C',
+            __('categories.cute') => '#FFB6C1',
+            __('categories.interesting') => '#FFD700',
+            __('categories.horror') => '#483d8b',
+            __('categories.emotional') => '#4682B4',
+            __('categories.uplifting') => '#FF4500',
+            __('categories.battle') => '#DC143C',
             // 登場人物のカテゴリー
-            '短髪' => '#20B2AA',
-            '高校生' => '#40E0D0',
-            '金髪' => '#FFD700',
-            '元気' => '#FF6347',
-            'おとなしい' => '#B0C4DE',
+            __('categories.short_hair') => '#20B2AA',
+            __('categories.high_school_student') => '#40E0D0',
+            __('categories.blonde_hair') => '#FFD700',
+            __('categories.energetic') => '#FF6347',
+            __('categories.modest') => '#B0C4DE',
             // 音楽のカテゴリー
-            'かっこいい' => '#2F4F4F',
-            'しっとり' => '#556B2F',
-            '楽しい' => '#FF69B4',
-            '激しい' => '#FF0000',
+            __('categories.cool') => '#2F4F4F',
+            __('categories.mellow') => '#556B2F',
+            __('categories.fun') => '#FF69B4',
+            __('categories.intense') => '#FF0000',
             // 聖地のカテゴリー
-            '静か' => '#708090',
-            'にぎやか' => '#FF8C00',
-            '落ち着く' => '#6B8E23',
-            'エキサイティング' => '#8B0000',
-            'ロマンチック' => '#FF69B4',
-            'リラックスできる' => '#ADD8E6',
+            __('categories.quiet') => '#708090',
+            __('categories.lively') => '#FF8C00',
+            __('categories.calm') => '#6B8E23',
+            __('categories.exciting') => '#8B0000',
+            __('categories.romantic') => '#FF69B4',
+            __('categories.relaxing') => '#ADD8E6',
             // お知らせのカテゴリー
-            '作品追加' => '#4CAF50',
-            '登場人物追加' => '#FF9800',
-            '音楽追加' => '#2196F3',
-            '聖地追加' => '#9C27B0',
-            '機能追加' => '#FFC107',
-            '重要なお知らせ' => '#F44336',
-            '注意事項' => '#FF5722',
-            '不具合情報' => '#607D8B',
-            'その他' => '#9E9E9E',
+            __('categories.new_work_added') => '#4CAF50',
+            __('categories.new_character_added') => '#FF9800',
+            __('categories.new_music_added') => '#2196F3',
+            __('categories.new_location_added') => '#9C27B0',
+            __('categories.new_feature_added') => '#FFC107',
+            __('categories.important_announcement') => '#F44336',
+            __('categories.precautions') => '#FF5722',
+            __('categories.bug_report') => '#607D8B',
+            __('categories.others') => '#9E9E9E',
             // 投稿の作成後、保存後のセッションの色
-            '投稿を編集しました' => '#22c55e80',
-            '投稿を削除しました' => '#ef444480',
-            '新しい投稿を作成しました' => '#22c55e80',
-            'コメントと関連するすべての返信を削除しました' => '#ef444480',
-            'コメントの削除に失敗しました' => '#ef444480',
-            'コメントを投稿しました' => '#22c55e80',
-            'いいねしました' => '#3b82f680',
-            'いいねを解除しました' => '#3b82f680',
-            'すべての画像のトリミングが完了しました' => '#22c55e80',
-            '画像のトリミングが完了しました' => '#22c55e80',
+            __('messages.post_edited') => '#22c55e80',
+            __('messages.post_deleted') => '#ef444480',
+            __('messages.new_post_created') => '#22c55e80',
+            __('messages.all_related_replies_deleted') => '#ef444480',
+            __('messages.failed_to_delete_comment') => '#ef444480',
+            __('messages.comment_posted') => '#22c55e80',
+            __('messages.liked') => '#3b82f680',
+            __('messages.unliked') => '#3b82f680',
+            __('messages.all_images_cropped') => '#22c55e80',
+            __('messages.image_cropped') => '#22c55e80',
             // 気になる登録をした場合
-            '「気になる」登録しました' => '#3b82f680',
-            '「気になる」登録を解除しました' => '#3b82f680',
+            __('messages.marked_as_interested') => '#3b82f680',
+            __('messages.unmarked_as_interested') => '#3b82f680',
         ];
 
         // 見つからない場合はデフォルトのものを使用
