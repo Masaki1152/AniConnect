@@ -51,7 +51,8 @@ class WrCommentController extends Controller
             'postCommentId' => $wr_comment->work_review_id,
             'parentId' => $wr_comment->parent_id
         ])->render();
-        return response()->json(['message' => 'コメントを投稿しました。', 'new_comment_id' => $wr_comment->id, 'commentHtml' => $commentHtml]);
+        $message = __('messages.comment_posted');
+        return response()->json(['message' => $message, 'new_comment_id' => $wr_comment->id, 'commentHtml' => $commentHtml]);
     }
 
     // コメントを削除する
@@ -65,10 +66,12 @@ class WrCommentController extends Controller
             }
             // コメントの数を取得
             $cpmment_count = count($parentCommentArray);
+            $message = __('messages.all_related_replies_deleted');
 
-            return response()->json(['message' => 'コメントと関連するすべての返信を削除しました', 'commentCount' => $cpmment_count], 200);
+            return response()->json(['message' => $message, 'commentCount' => $cpmment_count], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'コメントの削除に失敗しました'], 500);
+            $message = __('messages.failed_to_delete_comment');
+            return response()->json(['message' => $message], 500);
         }
     }
 
@@ -86,12 +89,12 @@ class WrCommentController extends Controller
             // 既にいいねしている場合
             $comment->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $comment->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($comment->users()->pluck('wr_comment_id')->toArray());

@@ -68,8 +68,9 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+        $message = __('profile.updated');
 
-        return Redirect::route('profile.index')->with('status', 'プロフィール情報を更新しました。');
+        return Redirect::route('profile.index')->with('status', $message);
     }
 
     // パスワード更新ページの表示
@@ -97,8 +98,9 @@ class ProfileController extends Controller
         $request->user()->update([
             'password' => Hash::make($request->password),
         ]);
+        $message = __('password_updated');
 
-        return redirect()->route('profile.index')->with('status', 'パスワードを更新しました。');
+        return redirect()->route('profile.index')->with('status', $message);
     }
 
     // アカウント削除確認ページの表示
@@ -122,8 +124,9 @@ class ProfileController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        $message = __('account_deleted');
 
-        return Redirect::to('/register')->with('status', 'アカウントが削除されました。');
+        return Redirect::to('/register')->with('status', $message);
     }
 
     // Cloudinaryにある画像のURLからpublic_Idを取得する

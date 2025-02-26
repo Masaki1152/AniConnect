@@ -67,12 +67,12 @@ class NotificationController extends Controller
             // 既にいいねしている場合
             $notification->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $notification->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($notification->users()->pluck('notification_id')->toArray());

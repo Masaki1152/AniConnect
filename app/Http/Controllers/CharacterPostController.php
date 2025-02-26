@@ -95,7 +95,8 @@ class CharacterPostController extends Controller
         $characterPost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $characterPost->categories()->attach($input_categories);
-        return redirect()->route('character_posts.show', ['character_id' => $characterPost->character_id, 'character_post_id' => $characterPost->id])->with('message', '新しい投稿を作成しました');
+        $message = __('messages.new_post_created');
+        return redirect()->route('character_posts.show', ['character_id' => $characterPost->character_id, 'character_post_id' => $characterPost->id])->with('message', $message);
     }
 
     // 感想投稿編集画面を表示する
@@ -163,7 +164,8 @@ class CharacterPostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetCharacterPost->categories()->sync($input_categories);
-        return redirect()->route('character_posts.show', ['character_id' => $targetCharacterPost->character_id, 'character_post_id' => $targetCharacterPost->id])->with('message', '投稿を編集しました');
+        $message = __('messages.post_edited');
+        return redirect()->route('character_posts.show', ['character_id' => $targetCharacterPost->character_id, 'character_post_id' => $targetCharacterPost->id])->with('message', $message);
     }
 
     // 感想投稿を削除する
@@ -198,7 +200,8 @@ class CharacterPostController extends Controller
         }
         // データの削除
         $targetCharacterPost->delete();
-        return redirect()->route('character_posts.index', ['character_id' => $character_id])->with('message', '投稿を削除しました');
+        $message = __('messages.post_deleted');
+        return redirect()->route('character_posts.index', ['character_id' => $character_id])->with('message', $message);
     }
 
     // 投稿にいいねを行う
@@ -215,12 +218,12 @@ class CharacterPostController extends Controller
             // 既にいいねしている場合
             $character_post->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');;
         } else {
             // 初めてのいいねの場合
             $character_post->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');;
         }
         // いいねしたユーザー数の取得
         $count = count($character_post->users()->pluck('character_post_id')->toArray());

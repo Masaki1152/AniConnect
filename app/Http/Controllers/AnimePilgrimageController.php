@@ -41,7 +41,7 @@ class AnimePilgrimageController extends Controller
                 ->map(function ($categoryId) {
                     $category = AnimePilgrimagePostCategory::find($categoryId);
                     return [
-                        'name' => $category->name ?? '不明なカテゴリー',
+                        'name' => $category->name ?? __('messages.unknown_category'),
                         'color' => getCategoryColor($category->name ?? ''),
                     ];
                 });

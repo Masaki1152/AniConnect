@@ -37,59 +37,63 @@ class User extends Authenticatable
     ];
 
     // 投稿の種類ごとのモデルとリレーション設定
-    protected $postMaps = [
-        'work' => [
-            'name' => '作品感想',
-            'model' => WorkReview::class,
-            'commentModel' => WorkReviewComment::class,
-            'relations' => [
-                'work' => ['name', 'term']
+    protected $postMaps;
+    public function __construct()
+    {
+        $this->postMaps = [
+            'work' => [
+                'name' => __('common.work_post'),
+                'model' => WorkReview::class,
+                'commentModel' => WorkReviewComment::class,
+                'relations' => [
+                    'work' => ['name', 'term']
+                ],
+                'post_id' => 'work_review_id'
             ],
-            'post_id' => 'work_review_id'
-        ],
-        'workStory' => [
-            'name' => 'あらすじ感想',
-            'model' => WorkStoryPost::class,
-            'commentModel' => WorkStoryPostComment::class,
-            'relations' => [
-                'work' => ['name', 'term'],
-                'workStory' => ['sub_title', 'episode'],
+            'workStory' => [
+                'name' => __('common.work_story_post'),
+                'model' => WorkStoryPost::class,
+                'commentModel' => WorkStoryPostComment::class,
+                'relations' => [
+                    'work' => ['name', 'term'],
+                    'workStory' => ['sub_title', 'episode'],
+                ],
+                'post_id' => 'work_story_post_id'
             ],
-            'post_id' => 'work_story_post_id'
-        ],
-        'character' => [
-            'name' => '登場人物感想',
-            'model' => CharacterPost::class,
-            'commentModel' => CharacterPostComment::class,
-            'relations' => [
-                'character' => ['name'],
-                'character.works' => ['name', 'term'],
-                'character.voiceArtist' => ['name'],
+            'character' => [
+                'name' => __('common.character_post'),
+                'model' => CharacterPost::class,
+                'commentModel' => CharacterPostComment::class,
+                'relations' => [
+                    'character' => ['name'],
+                    'character.works' => ['name', 'term'],
+                    'character.voiceArtist' => ['name'],
+                ],
+                'post_id' => 'character_post_id'
             ],
-            'post_id' => 'character_post_id'
-        ],
-        'music' => [
-            'name' => '音楽感想',
-            'model' => MusicPost::class,
-            'commentModel' => MusicPostComment::class,
-            'relations' => [
-                'music' => ['name'],
-                'music.work' => ['name', 'term'],
-                'music.singer' => ['name'],
+            'music' => [
+                'name' => __('common.music_post'),
+                'model' => MusicPost::class,
+                'commentModel' => MusicPostComment::class,
+                'relations' => [
+                    'music' => ['name'],
+                    'music.work' => ['name', 'term'],
+                    'music.singer' => ['name'],
+                ],
+                'post_id' => 'music_post_id'
             ],
-            'post_id' => 'music_post_id'
-        ],
-        'animePilgrimage' => [
-            'name' => '聖地感想',
-            'model' => AnimePilgrimagePost::class,
-            'commentModel' => AnimePilgrimagePostComment::class,
-            'relations' => [
-                'animePilgrimage' => ['name', 'place'],
-                'animePilgrimage.works' => ['name', 'term'],
+            'animePilgrimage' => [
+                'name' => __('common.anime_pilgrimage_post'),
+                'model' => AnimePilgrimagePost::class,
+                'commentModel' => AnimePilgrimagePostComment::class,
+                'relations' => [
+                    'animePilgrimage' => ['name', 'place'],
+                    'animePilgrimage.works' => ['name', 'term'],
+                ],
+                'post_id' => 'anime_pilgrimage_post_id'
             ],
-            'post_id' => 'anime_pilgrimage_post_id'
-        ],
-    ];
+        ];
+    }
 
     // 投稿の種類とユーザーidで投稿を取得する処理
     public function fetchPosts($user_id, $postType, $search)

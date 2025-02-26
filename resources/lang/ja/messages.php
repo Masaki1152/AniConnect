@@ -19,4 +19,11 @@ return [
     'new_notification_created' => '新しいお知らせを作成しました',
     'notification_edited' => 'お知らせを編集しました',
     'notification_deleted' => 'お知らせを削除しました',
+    'unknown_category' => '不明なカテゴリー',
+    // プロフィール
+    'profile_updated' => 'プロフィール情報を更新しました',
+    'password_updated' => 'パスワードを更新しました',
+    'account_deleted' => 'アカウントが削除されました',
+    // 検索結果
+    'work_not_found' => '作品がありません',
 ];

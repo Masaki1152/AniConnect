@@ -36,7 +36,7 @@ class WorkController extends Controller
                 ->map(function ($categoryId) {
                     $category = WorkReviewCategory::find($categoryId);
                     return [
-                        'name' => $category->name ?? '不明なカテゴリー',
+                        'name' => $category->name ?? __('messages.unknown_category'),
                         'color' => getCategoryColor($category->name ?? ''),
                     ];
                 });
@@ -80,7 +80,8 @@ class WorkController extends Controller
         // 投稿が見つからない場合の処理
         $work = Work::find($work_id);
         if (!$work) {
-            return response()->json(['message' => '作品がありません'], 404);
+            $message = __('work_not_found');
+            return response()->json(['message' => $message], 404);
         }
         // 現在ログインしているユーザーが既に「気になる」登録していればtrueを返す
         $isInterested = $work->users()->where('user_id', Auth::id())->exists();
@@ -88,12 +89,12 @@ class WorkController extends Controller
             // 既に「気になる」登録している場合
             $work->users()->detach(Auth::id());
             $status = 'unInterested';
-            $message = '「気になる」登録を解除しました';
+            $message = __('unmarked_as_interested');
         } else {
             // 初めての「気になる」登録の場合
             $work->users()->attach(Auth::id());
             $status = 'interested';
-            $message = '「気になる」登録しました';
+            $message = __('marked_as_interested');
         }
         // 「気になる」登録したユーザー数の取得
         $count = count($work->users()->pluck('work_id')->toArray());

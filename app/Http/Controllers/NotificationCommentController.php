@@ -50,7 +50,8 @@ class NotificationCommentController extends Controller
             'postCommentId' => $notification_comment->notification_id,
             'parentId' => $notification_comment->parent_id
         ])->render();
-        return response()->json(['message' => 'コメントを投稿しました', 'new_comment_id' => $notification_comment->id, 'commentHtml' => $commentHtml]);
+        $message = __('messages.comment_posted');
+        return response()->json(['message' => $message, 'new_comment_id' => $notification_comment->id, 'commentHtml' => $commentHtml]);
     }
 
     // コメントを削除する
@@ -64,10 +65,12 @@ class NotificationCommentController extends Controller
             }
             // コメントの数を取得
             $comment_count = count($parentCommentArray);
+            $message = __('messages.all_related_replies_deleted');
 
-            return response()->json(['message' => 'コメントと関連するすべての返信を削除しました', 'commentCount' => $comment_count], 200);
+            return response()->json(['message' => $message, 'commentCount' => $comment_count], 200);
         } catch (\Exception $e) {
-            return response()->json(['message' => 'コメントの削除に失敗しました'], 500);
+            $message = __('messages.failed_to_delete_comment');
+            return response()->json(['message' => $message], 500);
         }
     }
 
@@ -77,7 +80,8 @@ class NotificationCommentController extends Controller
         // コメントが見つからない場合の処理
         $comment = NotificationComment::find($comment_id);
         if (!$comment) {
-            return response()->json(['message' => 'コメントがありませんでした'], 404);
+            $message = __('messages.comment_not_found');
+            return response()->json(['message' => $message], 404);
         }
         // 現在ログインしているユーザーが既にいいねしていればtrueを返す
         $isLiked = $comment->users()->where('user_id', Auth::id())->exists();
@@ -85,12 +89,12 @@ class NotificationCommentController extends Controller
             // 既にいいねしている場合
             $comment->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $comment->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($comment->users()->pluck('notification_comment_id')->toArray());
