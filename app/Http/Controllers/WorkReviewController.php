@@ -95,7 +95,8 @@ class WorkReviewController extends Controller
         $workreview->fill($input_review)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $workreview->categories()->attach($input_categories);
-        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'work_review_id' => $workreview->id])->with('message', '新しい投稿を作成しました');
+        $message = __('messages.new_post_created');
+        return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'work_review_id' => $workreview->id])->with('message', $message);
     }
 
     // 感想投稿編集画面を表示する
@@ -164,7 +165,8 @@ class WorkReviewController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetworkreview->categories()->sync($input_categories);
-        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'work_review_id' => $targetworkreview->id])->with('message', '投稿を編集しました');
+        $message = __('messages.post_edited');
+        return redirect()->route('work_reviews.show', ['work_id' => $targetworkreview->work_id, 'work_review_id' => $targetworkreview->id])->with('message', $message);
     }
 
     // 感想投稿を削除する
@@ -200,7 +202,8 @@ class WorkReviewController extends Controller
 
         // データの削除
         $targetworkreview->delete();
-        return redirect()->route('work_reviews.index', ['work_id' => $work_id])->with('message', '投稿を削除しました');
+        $message = __('messages.post_deleted');
+        return redirect()->route('work_reviews.index', ['work_id' => $work_id])->with('message', $message);
     }
 
     // 投稿にいいねを行う
@@ -217,12 +220,12 @@ class WorkReviewController extends Controller
             // 既にいいねしている場合
             $work_review->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $work_review->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($work_review->users()->pluck('work_review_id')->toArray());

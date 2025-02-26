@@ -94,7 +94,8 @@ class WorkStoryPostController extends Controller
         $workStoryPost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $workStoryPost->categories()->attach($input_categories);
-        return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id])->with('message', '新しい投稿を作成しました');
+        $message = __('messages.new_post_created');
+        return redirect()->route('work_story_posts.show', ['work_id' => $workStoryPost->work_id, 'work_story_id' => $workStoryPost->sub_title_id, 'work_story_post_id' => $workStoryPost->id])->with('message', $message);
     }
 
     // 感想投稿編集画面を表示する
@@ -162,7 +163,8 @@ class WorkStoryPostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetWorkStoryPost->categories()->sync($input_categories);
-        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id])->with('message', '投稿を編集しました');
+        $message = __('messages.post_edited');
+        return redirect()->route('work_story_posts.show', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id, 'work_story_post_id' => $targetWorkStoryPost->id])->with('message', $message);
     }
 
     // 感想投稿を削除する
@@ -197,7 +199,8 @@ class WorkStoryPostController extends Controller
         }
         // データの削除
         $targetWorkStoryPost->delete();
-        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id])->with('message', '投稿を削除しました');
+        $message = __('messages.post_deleted');
+        return redirect()->route('work_story_posts.index', ['work_id' => $targetWorkStoryPost->work_id, 'work_story_id' => $targetWorkStoryPost->sub_title_id])->with('message', $message);
     }
 
     // 投稿にいいねを行う
@@ -214,12 +217,12 @@ class WorkStoryPostController extends Controller
             // 既にいいねしている場合
             $work_story_post->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $work_story_post->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());

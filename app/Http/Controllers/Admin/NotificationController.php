@@ -88,7 +88,8 @@ class NotificationController extends Controller
         $notification->fill($input_notification)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $notification->categories()->attach($input_categories);
-        return redirect()->route('admin.notifications.show', ['notification_id' => $notification->id])->with('message', '新しいお知らせを作成しました');
+        $message = __('messages.new_notification_created');
+        return redirect()->route('admin.notifications.show', ['notification_id' => $notification->id])->with('message', $message);
     }
 
     // お知らせ編集画面を表示する
@@ -161,7 +162,8 @@ class NotificationController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $target_notification->categories()->sync($input_categories);
-        return redirect()->route('admin.notifications.show', ['notification_id' => $target_notification->id])->with('message', 'お知らせを編集しました');
+        $message = __('messages.notification_edited');
+        return redirect()->route('admin.notifications.show', ['notification_id' => $target_notification->id])->with('message', $message);
     }
 
     // お知らせを削除する
@@ -181,7 +183,8 @@ class NotificationController extends Controller
         }
         // データの削除
         $target_notification->delete();
-        return redirect()->route('admin.notifications.index')->with('message', 'お知らせを削除しました');
+        $message = __('messages.notification_deleted');
+        return redirect()->route('admin.notifications.index')->with('message', $message);
     }
 
     // お知らせにいいねを行う
@@ -198,12 +201,12 @@ class NotificationController extends Controller
             // 既にいいねしている場合
             $notification->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $notification->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($notification->users()->pluck('notification_id')->toArray());

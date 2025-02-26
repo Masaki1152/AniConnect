@@ -93,7 +93,8 @@ class AnimePilgrimagePostController extends Controller
         $pilgrimagePost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $pilgrimagePost->categories()->attach($input_categories);
-        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimagePost->id])->with('message', '新しい投稿を作成しました');
+        $message = __('messages.new_post_created');
+        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $pilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimagePost->id])->with('message', $message);
     }
 
     // 感想投稿編集画面を表示する
@@ -161,7 +162,8 @@ class AnimePilgrimagePostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetPilgrimagePost->categories()->sync($input_categories);
-        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id])->with('message', '投稿を編集しました');
+        $message = __('messages.post_edited');
+        return redirect()->route('pilgrimage_posts.show', ['pilgrimage_id' => $targetPilgrimagePost->anime_pilgrimage_id, 'pilgrimage_post_id' => $targetPilgrimagePost->id])->with('message', $message);
     }
 
     // 感想投稿を削除する
@@ -196,7 +198,8 @@ class AnimePilgrimagePostController extends Controller
         }
         // データの削除
         $targetPilgrimagePost->delete();
-        return redirect()->route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_id])->with('message', '投稿を削除しました');
+        $message = __('messages.post_deleted');
+        return redirect()->route('pilgrimage_posts.index', ['pilgrimage_id' => $pilgrimage_id])->with('message', $message);
     }
 
     // 投稿にいいねを行う
@@ -213,12 +216,12 @@ class AnimePilgrimagePostController extends Controller
             // 既にいいねしている場合
             $pilgrimage_post->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $pilgrimage_post->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($pilgrimage_post->users()->pluck('anime_pilgrimage_post_id')->toArray());

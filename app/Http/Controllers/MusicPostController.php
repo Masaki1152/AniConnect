@@ -93,7 +93,8 @@ class MusicPostController extends Controller
         $musicPost->fill($input_post)->save();
         // カテゴリーとの中間テーブルにデータを保存
         $musicPost->categories()->attach($input_categories);
-        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id])->with('message', '新しい投稿を作成しました');
+        $message = __('messages.new_post_created');
+        return redirect()->route('music_posts.show', ['music_id' => $musicPost->music_id, 'music_post_id' => $musicPost->id])->with('message', $message);
     }
 
     // 感想投稿編集画面を表示する
@@ -161,7 +162,8 @@ class MusicPostController extends Controller
         // カテゴリーとの中間テーブルにデータを保存
         // 中間テーブルへの紐づけと解除を行うsyncメソッドを使用
         $targetMusicPost->categories()->sync($input_categories);
-        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id])->with('message', '投稿を編集しました');
+        $message = __('messages.post_edited');
+        return redirect()->route('music_posts.show', ['music_id' => $targetMusicPost->music_id, 'music_post_id' => $targetMusicPost->id])->with('message', $message);
     }
 
     // 感想投稿を削除する
@@ -195,7 +197,8 @@ class MusicPostController extends Controller
             $comment->delete();
         }
         $targetMusicPost->delete();
-        return redirect()->route('music_posts.index', ['music_id' => $music_id])->with('message', '投稿を削除しました');
+        $message = __('messages.post_deleted');
+        return redirect()->route('music_posts.index', ['music_id' => $music_id])->with('message', $message);
     }
 
     // 投稿にいいねを行う
@@ -212,12 +215,12 @@ class MusicPostController extends Controller
             // 既にいいねしている場合
             $music_post->users()->detach(Auth::id());
             $status = 'unliked';
-            $message = 'いいねを解除しました';
+            $message = __('messages.unliked');
         } else {
             // 初めてのいいねの場合
             $music_post->users()->attach(Auth::id());
             $status = 'liked';
-            $message = 'いいねしました';
+            $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
         $count = count($music_post->users()->pluck('music_post_id')->toArray());
