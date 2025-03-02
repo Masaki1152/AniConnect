@@ -29,10 +29,10 @@ document.addEventListener('DOMContentLoaded', function () {
                 const data = await response.json();
                 if (data.status === 'liked') {
                     button.innerText = window.Lang.common.unlike_action;
-                    users.innerText = `${data.like_user}${window.Lang.common.liked_num}`;
+                    users.innerText = `${data.like_user}${window.Lang.common.num}`;
                 } else if (data.status === 'unliked') {
                     button.innerText = window.Lang.common.like_action;
-                    users.innerText = `${data.like_user}${window.Lang.common.liked_num}`;
+                    users.innerText = `${data.like_user}${window.Lang.common.num}`;
                 }
                 // メッセージを表示
                 likeMessage.textContent = data.message;
