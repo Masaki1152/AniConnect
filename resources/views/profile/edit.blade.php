@@ -12,10 +12,4 @@
         </div>
     </div>
     <script src="{{ asset('/js/count_character.js') }}"></script>
-    <script>
-        // PHP の Helper 関数で定義した色データを JavaScript に渡す
-        const categoryColors = {!! json_encode([
-            '画像のトリミングが完了しました' => getCategoryColor('画像のトリミングが完了しました'),
-        ]) !!};
-    </script>
 </x-app-layout>
