@@ -20,6 +20,13 @@
 
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <script>
+        window.Lang = {!! json_encode([
+            'messages' => trans('messages'),
+            'common' => trans('common'),
+            'validation' => trans('validation'),
+        ]) !!};
+    </script>
 </head>
 
 <body class="font-sans antialiased">

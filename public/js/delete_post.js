@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function () {
 function deletePost(postId) {
     'use strict'
 
-    if (confirm('削除すると復元できません。\n本当に削除しますか？')) {
+    if (confirm(window.Lang.messages.confirm_delete)) {
         document.getElementById(`form_${postId}`).submit();
     }
 }

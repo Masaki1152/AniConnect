@@ -10,8 +10,18 @@ return [
     'comment_posted' => 'コメントを投稿しました',
     'liked' => 'いいねしました',
     'unliked' => 'いいねを解除しました',
+    'follow_action' => 'フォローする',
+    'unfollow_action' => 'フォロー解除',
+    'followings' => 'フォロー中',
+    'followers' => 'フォロワー',
+    'confirm_delete' => "削除すると復元できません。\n本当に削除しますか？",
+    // 画像のトリミング
     'all_images_cropped' => 'すべての画像のトリミングが完了しました',
     'image_cropped' => '画像のトリミングが完了しました',
+    'image_cropped_for_button' => 'トリミング完了',
+    'image_count' => '現在、:count枚の画像を選択しています',
+    'enable_upload_four_images' => '画像は4枚までアップロード可能です',
+    'reset_image_change' => '画像変更のリセット',
     // 気になる登録をした場合
     'marked_as_interested' => '「気になる」登録しました',
     'unmarked_as_interested' => '「気になる」登録を解除しました',
@@ -26,4 +36,5 @@ return [
     'account_deleted' => 'アカウントが削除されました',
     // 検索結果
     'work_not_found' => '作品がありません',
+    'post_not_found' => '投稿がありません',
 ];

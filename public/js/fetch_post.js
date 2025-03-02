@@ -9,54 +9,6 @@ document.addEventListener('DOMContentLoaded', async function () {
     const defaultPostType = 'none';
     const defaultSwitchType = 'impressions';
 
-    // 投稿の更新処理
-    function updatePostContainer(type, html) {
-        // 表示を更新
-        postContainer.innerHTML = html;
-        // 投稿の表示
-        // if (posts.length > 0) {
-        //     posts.forEach(post => {
-        //         // 投稿の種類に応じたURLを取得
-        //         const postDetailUrl = createTypeToURL(type, post);
-        //         // 投稿の種類に応じた文言を取得
-        //         const typeDescription = describeGroup(type, post);
-
-        //         const postElement = document.createElement('div');
-        //         postElement.className = 'post-item p-4 mb-4 bg-gray-100 rounded max-w-3xl text-left';
-        //         postElement.innerHTML = `
-        //                 <div class="post-header flex items-center mb-4">
-        //                     <img src="${post.user.image || 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png'}" 
-        //                         alt="${post.user.name}のアバター" 
-        //                         class="w-10 h-10 rounded-full mr-4">
-        //                         <a href="/users/${post.user.id}" class="text-lg font-bold">${post.user.name || '名無し'}</a>
-        //                 </div>
-        //                 <p>${post.postType}</p>
-        //                 <p>${post.created_at}</p>
-        //                 <p>${typeDescription}</p>
-        //                 <div class="post-content flex items-start gap-4 max-w-[800px] mx-auto">
-        //                     <div class="flex-1">
-        //                         <h3 class="text-lg font-bold">
-        //                             <a href="${postDetailUrl}" class="hover:underline">
-        //             ${post.post_title || 'タイトルがありません'}
-        //                             </a>
-        //                         </h3>
-        //                         <p class="text-gray-700">${post.body || '内容がありません'}</p>
-        //                     </div>
-        //                     ${post.image1 ? `
-        //                     <div class="flex-shrink-0">
-        //                         <img src="${post.image1}" 
-        //          alt="投稿画像"
-        //          class="w-24 h-24 object-cover rounded border border-gray-300">
-        //                     </div>` : ''}
-        //                 </div>
-        //             `;
-        //         postContainer.appendChild(postElement);
-        //     });
-        // } else {
-        //     postContainer.innerHTML = '<p class="text-gray-500">投稿がありません。</p>';
-        // }
-    }
-
     // 初期の読み込み
     await fetchAndDisplayPosts(defaultSwitchType, defaultPostType, 1);
 
@@ -127,7 +79,7 @@ async function fetchAndDisplayPosts(switchType, postType, page = 1) {
         updatePagination(postType, currentPage, lastPage);
 
     } catch (error) {
-        postContainer.innerHTML = '<p class="text-gray-500">投稿がありません。</p>';
+        postContainer.innerHTML = `<p class="text-gray-500">${window.Lang.messages.post_not_found}</p>`;
     }
 }
 
