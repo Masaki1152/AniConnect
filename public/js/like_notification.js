@@ -26,11 +26,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 const data = await response.json();
                 if (data.status === 'liked') {
-                    button.innerText = 'いいね取り消し';
-                    users.innerText = data.like_user;
+                    button.innerText = window.Lang.common.unlike_action;
+                    users.innerText = `${data.like_user}${window.Lang.common.liked_num}`;
                 } else if (data.status === 'unliked') {
-                    button.innerText = 'いいね';
-                    users.innerText = data.like_user;
+                    button.innerText = window.Lang.common.like_action;
+                    users.innerText = `${data.like_user}${window.Lang.common.liked_num}`;
                 }
                 // メッセージを表示
                 likeMessage.textContent = data.message;

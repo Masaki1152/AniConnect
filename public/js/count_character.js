@@ -10,11 +10,11 @@ function countCharacter(inputElement) {
     }
 
     if (currentLength <= maxLength) {
-        characterCountDisplay.textContent = `あと${maxLength - currentLength}文字入力できます。`;
+        characterCountDisplay.textContent = window.Lang.validation.character_count.replace(':count', maxLength - currentLength);
         characterCountDisplay.classList.remove('text-red-500');
         characterCountDisplay.classList.add('text-gray-500');
     } else {
-        characterCountDisplay.textContent = `${currentLength - maxLength}文字オーバーしています。`;
+        characterCountDisplay.textContent = window.Lang.validation.character_count_over.replace(':count', currentLength - maxLength);
         characterCountDisplay.classList.remove('text-gray-500');
         characterCountDisplay.classList.add('text-red-500');
     }

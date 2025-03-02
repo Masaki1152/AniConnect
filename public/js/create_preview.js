@@ -14,19 +14,19 @@ function loadImage(obj) {
     // 新しく選択されたファイル
     newImages = Array.from(obj.files);
     // ボタンの表示の初期化
-    cropNextButton.innerText = "次へ";
+    cropNextButton.innerText = window.Lang.common.next;
 
     // 合計が4枚を超える場合のチェック
     // 元々選択されていたファイルと新しいファイルの合計を確認
     if (selectedImages.length + newImages.length > 4) {
-        alert('画像は4枚までアップロード可能です');
+        alert(window.Lang.messages.enable_upload_four_images);
         return;
     }
 
     currentIndex = 0;
     // ボタンのテキスト名の表示変更
     if (currentIndex === newImages.length - 1) {
-        cropNextButton.innerText = "トリミング完了";
+        cropNextButton.innerText = window.Lang.messages.image_cropped_for_button;
     }
     // 新しい画像をトリミング
     if (newImages.length > 0) {
@@ -73,13 +73,13 @@ cropNextButton.addEventListener('click', function (event) {
         if (currentIndex < newImages.length) {
             // ボタンのテキスト名の表示変更
             if (currentIndex === newImages.length - 1) {
-                cropNextButton.innerText = "トリミング完了";
+                cropNextButton.innerText = window.Lang.messages.image_cropped_for_button;
             }
             cropImage(newImages[currentIndex]);
         } else {
             // メッセージを表示
             const croppedMessage = document.getElementById('message');
-            croppedMessage.textContent = 'すべての画像のトリミングが完了しました';
+            croppedMessage.textContent = window.Lang.messages.all_images_cropped;
             croppedMessage.classList.remove('hidden');
             croppedMessage.classList.add('block');
             croppedMessage.style.backgroundColor = categoryColors[croppedMessage.textContent] || '#d1d5db';
@@ -138,7 +138,7 @@ function renderPreviews() {
         // 削除ボタン
         const rmBtn = document.createElement('button');
         rmBtn.type = 'button';
-        rmBtn.textContent = '削除';
+        rmBtn.textContent = window.Lang.common.delete;
         rmBtn.className = 'bg-red-500 text-white mt-2 px-2 py-1 rounded hover:bg-red-600';
         rmBtn.onclick = function () {
             removeImage(index);
@@ -195,7 +195,7 @@ function countImages() {
     const count = document.getElementById('count');
     count.innerHTML = '';
     const countText = document.createElement('p');
-    const ImageCount = selectedImages.length;
-    countText.textContent = `現在、${ImageCount}枚の画像を選択しています。`;
+    const imageCount = selectedImages.length;
+    countText.textContent = window.Lang.messages.image_count.replace(':count', imageCount);
     count.appendChild(countText);
 }

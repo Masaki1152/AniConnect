@@ -33,23 +33,23 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
                 const data = await response.json();
                 if (data.status === 'followed') {
-                    button.innerText = 'フォロー解除';
+                    button.innerText = window.Lang.messages.unfollow_action;
                     if (followingUsers) followingUsers.innerText =
-                        `${data.followingCount} フォロー中`;
+                        `${data.followingCount} ${window.Lang.messages.followings}`;
                     if (followersUsers) followersUsers.innerText =
-                        `${data.followersCount} フォロワー`;
+                        `${data.followersCount} ${window.Lang.messages.followers}`;
                 } else if (data.status === 'unfollowed') {
-                    button.innerText = 'フォローする';
+                    button.innerText = window.Lang.messages.follow_action;
                     if (followingUsers) followingUsers.innerText =
-                        `${data.followingCount} フォロー中`;
+                        `${data.followingCount} ${window.Lang.messages.followings}`;
                     if (followersUsers) followersUsers.innerText =
-                        `${data.followersCount} フォロワー`;
+                        `${data.followersCount} ${window.Lang.messages.followers}`;
                 }
                 // ログインしているユーザーのフォロー数の更新
                 if (authFollowingUsers) authFollowingUsers.innerText =
-                    `${data.authFollowingCount} フォロー中`;
+                    `${data.authFollowingCount} ${window.Lang.messages.followings}`;
                 if (authFollowersUsers) authFollowersUsers.innerText =
-                    `${data.authFollowersCount} フォロワー`;
+                    `${data.authFollowersCount} ${window.Lang.messages.followers}`;
             } catch (error) {
                 console.error('Error:', error);
             }

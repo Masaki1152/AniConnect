@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 if (selectedValues.length >= maxSelections) {
                     // 最大選択数を超えた場合
-                    alert(`カテゴリーは最大${maxSelections}個まで選択できます。`);
+                    alert(window.Lang.validation.enable_select_three_categories.replace(':count', maxSelections));
                 } else {
                     // 新規選択
                     selectedValues.push(value);
