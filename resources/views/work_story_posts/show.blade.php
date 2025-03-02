@@ -217,15 +217,4 @@
     <script src="{{ asset('/js/comments/add_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/create_comment_preview.js') }}"></script>
     <script src="{{ asset('/js/comments/store_comment.js') }}"></script>
-    <script>
-        // PHP の Helper 関数で定義した色データを JavaScript に渡す
-        const categoryColors = {!! json_encode([
-            'コメントと関連するすべての返信を削除しました' => getCategoryColor('コメントと関連するすべての返信を削除しました'),
-            'コメントの削除に失敗しました' => getCategoryColor('コメントの削除に失敗しました'),
-            'コメントを投稿しました' => getCategoryColor('コメントを投稿しました'),
-            'いいねしました' => getCategoryColor('いいねしました'),
-            'いいねを解除しました' => getCategoryColor('いいねを解除しました'),
-            'すべての画像のトリミングが完了しました' => getCategoryColor('すべての画像のトリミングが完了しました'),
-        ]) !!};
-    </script>
 </x-app-layout>

@@ -27,6 +27,10 @@
             'validation' => trans('validation'),
         ]) !!};
     </script>
+    <!-- categoryColors を全ページに適用 -->
+    <script>
+        window.categoryColors = {!! json_encode($categoryColors) !!};
+    </script>
 </head>
 
 <body class="font-sans antialiased">

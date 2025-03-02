@@ -90,11 +90,4 @@
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/interested_user.js') }}"></script>
-    <script>
-        // PHP の Helper 関数で定義した色データを JavaScript に渡す
-        const categoryColors = {!! json_encode([
-            '「気になる」登録しました' => getCategoryColor('「気になる」登録しました'),
-            '「気になる」登録を解除しました' => getCategoryColor('「気になる」登録を解除しました'),
-        ]) !!};
-    </script>
 </x-app-layout>
