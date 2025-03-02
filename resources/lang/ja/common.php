@@ -10,7 +10,7 @@ return [
     // いいね機能
     'like_action' => 'いいね',
     'unlike_action' => 'いいね取り消し',
-    'liked_num' => '件',
+    'num' => '件',
     'next' => '次へ',
     'delete' => '削除',
 ];
