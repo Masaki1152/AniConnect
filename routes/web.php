@@ -24,6 +24,7 @@ use App\Http\Controllers\AnimePilgrimageController;
 use App\Http\Controllers\AnimePilgrimagePostController;
 use App\Http\Controllers\AnimePilgrimagePostLikeController;
 use App\Http\Controllers\WorkStoryController;
+use App\Http\Controllers\WorkStoryInterestedController;
 use App\Http\Controllers\WorkStoryPostController;
 use App\Http\Controllers\WorkStoryPostLikeController;
 use App\Http\Controllers\UserController;
@@ -159,7 +160,7 @@ Route::controller(WorkController::class)->middleware(['auth'])->group(function (
 
 // WorkInterestedControllerに関するルーティング
 Route::controller(WorkInterestedController::class)->middleware(['auth'])->group(function () {
-    // 作品一覧の表示
+    // 各作品を気になる登録したユーザーの表示
     Route::get('/works/{work_id}/interested/index', 'index')->name('work.interested.index');
 });
 
@@ -399,6 +400,14 @@ Route::controller(WorkStoryController::class)->middleware(['auth'])->group(funct
     Route::get('/works/{work_id}/stories', 'index')->name('work_stories.index');
     // あらすじの詳細表示
     Route::get('/works/{work_id}/stories/{work_story_id}', 'show')->name('work_stories.show');
+    // 各あらすじの「気になる」ボタン押下で「気になる」登録をする処理
+    Route::post('/works/{work_id}/stories/{work_story_id}/interested', 'interested')->name('work_stories.interested');
+});
+
+// WorkStoryInterestedControllerに関するルーティング
+Route::controller(WorkStoryInterestedController::class)->middleware(['auth'])->group(function () {
+    // 各あらすじを気になる登録したユーザーの表示
+    Route::get('/works/{work_id}/stories/{work_story_id}/interested/index', 'index')->name('work_stories.interested.index');
 });
 
 // WspCommentControllerに関するルーティング
