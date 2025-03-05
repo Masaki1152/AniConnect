@@ -58,7 +58,7 @@ if (!function_exists('getCategoryColor')) {
             __('messages.unliked') => '#3b82f680',
             __('messages.all_images_cropped') => '#22c55e80',
             __('messages.image_cropped') => '#22c55e80',
-            // 気になる登録をした場合work_story_not_found
+            // 気になる登録をした場合
             __('messages.marked_as_interested') => '#3b82f680',
             __('messages.unmarked_as_interested') => '#3b82f680',
         ];
