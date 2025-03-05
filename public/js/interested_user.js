@@ -15,8 +15,15 @@ document.addEventListener('DOMContentLoaded', function () {
         //「気になる」登録ボタンクリックによる非同期処理
         button.addEventListener('click', async function () {
             const targetType = button.getAttribute('data-type');
-            const targetFirstId = button.getAttribute('data-id');
-            const path = createPath(targetType, targetFirstId);
+            const targetFirstId = button.getAttribute('data-first-id');
+            let path = '';
+            if (button.getAttribute('data-second-id')) {
+                const targetSecondId = button.getAttribute('data-second-id');
+                path = createPath(targetType, targetFirstId, targetSecondId);
+            } else {
+                path = createPath(targetType, targetFirstId);
+            }
+
             try {
                 const response = await fetch(
                     path, {
@@ -64,7 +71,7 @@ function createPath(targetType, targetFirstId, targetSecondId = 0) {
             path = `/works/${targetFirstId}/interested`;
             break;
         case "workStories":
-            path = `/works/${targetFirstId}/stories/${targetSecondId}/interested`;
+            path = `/works/${targetSecondId}/stories/${targetFirstId}/interested`;
             break;
     }
     return path;
