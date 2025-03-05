@@ -104,7 +104,8 @@
                             @endif
                         </h5>
                         <p class="text-gray-600">{{ $work->term }}</p>
-                        <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]" />
+                        <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]"
+                            isMultiple="false" />
                     </div>
                 @endforeach
             @endif

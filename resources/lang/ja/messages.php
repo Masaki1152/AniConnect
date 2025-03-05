@@ -36,5 +36,6 @@ return [
     'account_deleted' => 'アカウントが削除されました',
     // 検索結果
     'work_not_found' => '作品がありません',
+    'work_story_not_found' => 'あらすじがありません',
     'post_not_found' => '投稿がありません',
 ];

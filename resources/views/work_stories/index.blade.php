@@ -1,4 +1,7 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <h1>「{{ $work_story_model->work->name }}」のあらすじ一覧</h1>
     <!-- 検索機能 -->
     <div class=serch>
@@ -98,6 +101,8 @@
                             <p>カテゴリー情報がありません。</p>
                         @endif
                     </h5>
+                    <x-interested type="workStories" :root="$work_story" path="work_stories.interested.index"
+                        :prop="['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]" isMultiple="true" />
                 </div>
             @endforeach
         @endif
@@ -105,5 +110,7 @@
     <div class='paginate'>
         {{ $work_stories->appends(request()->query())->links() }}
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/search_category.js') }}"></script>
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
 </x-app-layout>

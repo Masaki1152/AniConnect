@@ -2,7 +2,8 @@
     <div class="text-gray-700 font-semibold">
         気になる
     </div>
-    <button id="interested_button" data-type="{{ $type }}" data-id="{{ $root->id }}" type="submit"
+    <button id="interested_button" data-type="{{ $type }}" data-first-id="{{ $root->id }}"
+        {{ $isMultiple ? 'data-second-id=' . $root->work_id : 'data-second-id=' . null }} type="submit"
         class="px-1 text-lg hover:bg-gray-200 transition 
         {{ $root->users->contains(auth()->user()) ? 'text-yellow-400' : 'text-gray-400 hover:text-gray-600' }}">
         {{ $root->users->contains(auth()->user()) ? '★' : '☆' }}

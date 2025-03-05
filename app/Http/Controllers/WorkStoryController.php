@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\WorkStory;
 use App\Models\WorkStoryPostCategory;
+use Illuminate\Support\Facades\Auth;
 
 class WorkStoryController extends Controller
 {
@@ -71,5 +72,33 @@ class WorkStoryController extends Controller
             }
         }
         return view('work_stories.show')->with(['work_story' => $work_story, 'categories' => $categories]);
+    }
+
+    // 作品に「気になる」登録をする
+    public function interested($work_id, $work_story_id)
+    {
+        // 投稿が見つからない場合の処理
+        $workStory = WorkStory::find($work_story_id);
+        if (!$workStory) {
+            $message = __('messages.work_story_not_found');
+            return response()->json(['message' => $message], 404);
+        }
+        // 現在ログインしているユーザーが既に「気になる」登録していればtrueを返す
+        $isInterested = $workStory->users()->where('user_id', Auth::id())->exists();
+        if ($isInterested) {
+            // 既に「気になる」登録している場合
+            $workStory->users()->detach(Auth::id());
+            $status = 'unInterested';
+            $message = __('messages.unmarked_as_interested');
+        } else {
+            // 初めての「気になる」登録の場合
+            $workStory->users()->attach(Auth::id());
+            $status = 'interested';
+            $message = __('messages.marked_as_interested');
+        }
+        // 「気になる」登録したユーザー数の取得
+        $count = count($workStory->users()->pluck('work_story_id')->toArray());
+
+        return response()->json(['status' => $status, 'interested_user' => $count, 'message' => $message]);
     }
 }
