@@ -11,6 +11,7 @@ use App\Http\Controllers\WorkReviewController;
 use App\Http\Controllers\WorkReviewLikeController;
 use App\Http\Controllers\CreatorController;
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\CharacterInterestedController;
 use App\Http\Controllers\CharacterPostController;
 use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
@@ -220,6 +221,14 @@ Route::controller(CharacterController::class)->middleware(['auth'])->group(funct
     Route::get('/characters', 'index')->name('characters.index');
     // 登場人物の詳細表示
     Route::get('/characters/{character_id}', 'show')->name('characters.show');
+    // 各登場人物の「気になる」ボタン押下で「気になる」登録をする処理
+    Route::post('/characters/{character_id}/interested', 'interested')->name('characters.interested');
+});
+
+// CharacterInterestedControllerに関するルーティング
+Route::controller(CharacterInterestedController::class)->middleware(['auth'])->group(function () {
+    // 各登場人物を気になる登録したユーザーの表示
+    Route::get('/characters/{character_id}/interested/index', 'index')->name('characters.interested.index');
 });
 
 // CpCommentControllerに関するルーティング

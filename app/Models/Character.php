@@ -135,4 +135,11 @@ class Character extends Model
     {
         return $this->hasOne(CharacterPost::class, 'id', 'character_id');
     }
+
+    // 気になるをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_character', 'character_id', 'user_id')
+            ->withPivot('created_at');
+    }
 }

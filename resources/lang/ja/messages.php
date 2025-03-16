@@ -35,7 +35,8 @@ return [
     'password_updated' => 'パスワードを更新しました',
     'account_deleted' => 'アカウントが削除されました',
     // 検索結果
-    'work_not_found' => '作品がありません',
-    'work_story_not_found' => 'あらすじがありません',
-    'post_not_found' => '投稿がありません',
+    'work_not_found' => '作品が見つかりません',
+    'work_story_not_found' => 'あらすじが見つかりません',
+    'character_not_found' => '登場人物が見つかりません',
+    'post_not_found' => '投稿が見つかりません',
 ];
