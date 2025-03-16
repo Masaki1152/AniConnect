@@ -157,4 +157,11 @@ class Music extends Model
     {
         return $this->hasOne(MusicPost::class, 'id', 'music_id');
     }
+
+    // 気になるをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_music', 'music_id', 'user_id')
+            ->withPivot('created_at');
+    }
 }

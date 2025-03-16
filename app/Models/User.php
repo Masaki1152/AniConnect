@@ -493,4 +493,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Character::class);
     }
+
+    // 気になるをしたMusicに対するリレーション 多対多の関係
+    public function music()
+    {
+        return $this->belongsToMany(Music::class);
+    }
 }

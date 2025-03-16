@@ -1,4 +1,7 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <h1>音楽一覧</h1>
     <!-- 検索機能 -->
     <div class=serch>
@@ -105,6 +108,8 @@
                             {{ $music_object->singer->name }}
                         </a>
                     </p>
+                    <x-interested type="music" :root="$music_object" path="music.interested.index" :prop="['music_id' => $music_object->id]"
+                        isMultiple="false" />
                 </div>
             @endforeach
         @endif
@@ -112,5 +117,7 @@
     <div class='paginate'>
         {{ $music->appends(request()->query())->links() }}
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/search_category.js') }}"></script>
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
 </x-app-layout>

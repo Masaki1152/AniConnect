@@ -16,6 +16,7 @@ use App\Http\Controllers\CharacterPostController;
 use App\Http\Controllers\CharacterPostLikeController;
 use App\Http\Controllers\VoiceArtistController;
 use App\Http\Controllers\MusicController;
+use App\Http\Controllers\MusicInterestedController;
 use App\Http\Controllers\MusicPostController;
 use App\Http\Controllers\MusicPostLikeController;
 use App\Http\Controllers\SingerController;
@@ -287,6 +288,14 @@ Route::controller(MusicController::class)->middleware(['auth'])->group(function 
     Route::get('/music', 'index')->name('music.index');
     // 音楽の詳細表示
     Route::get('/music/{music_id}', 'show')->name('music.show');
+    // 音楽の「気になる」ボタン押下で「気になる」登録をする処理
+    Route::post('/music/{music_id}/interested', 'interested')->name('music.interested');
+});
+
+// MusicInterestedControllerに関するルーティング
+Route::controller(MusicInterestedController::class)->middleware(['auth'])->group(function () {
+    // 音楽を気になる登録したユーザーの表示
+    Route::get('/music/{music_id}/interested/index', 'index')->name('music.interested.index');
 });
 
 // MpCommentControllerに関するルーティング

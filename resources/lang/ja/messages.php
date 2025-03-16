@@ -38,5 +38,6 @@ return [
     'work_not_found' => '作品が見つかりません',
     'work_story_not_found' => 'あらすじが見つかりません',
     'character_not_found' => '登場人物が見つかりません',
+    'music_not_found' => '音楽が見つかりません',
     'post_not_found' => '投稿が見つかりません',
 ];
