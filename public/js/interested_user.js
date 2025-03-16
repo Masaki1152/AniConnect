@@ -73,6 +73,9 @@ function createPath(targetType, targetFirstId, targetSecondId = 0) {
         case "workStories":
             path = `/works/${targetSecondId}/stories/${targetFirstId}/interested`;
             break;
+        case "characters":
+            path = `/characters/${targetFirstId}/interested`;
+            break;
     }
     return path;
 }
