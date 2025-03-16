@@ -487,4 +487,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(WorkStory::class);
     }
+
+    // 気になるをしたCharacterに対するリレーション 多対多の関係
+    public function characters()
+    {
+        return $this->belongsToMany(Character::class);
+    }
 }
