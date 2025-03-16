@@ -1,4 +1,7 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <h1 class="title">
         {{ $music->name }}
     </h1>
@@ -51,9 +54,13 @@
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+            <x-interested type="music" :root="$music" path="music.interested.index" :prop="['music_id' => $music->id]"
+                isMultiple="false" />
         </div>
     </div>
     <div class="post_link">
         <a href="{{ route('music_posts.index', ['music_id' => $music->id]) }}">音楽感想一覧</a>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
 </x-app-layout>

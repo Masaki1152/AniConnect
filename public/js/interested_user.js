@@ -76,6 +76,9 @@ function createPath(targetType, targetFirstId, targetSecondId = 0) {
         case "characters":
             path = `/characters/${targetFirstId}/interested`;
             break;
+        case "music":
+            path = `/music/${targetFirstId}/interested`;
+            break;
     }
     return path;
 }
