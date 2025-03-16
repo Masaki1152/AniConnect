@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Character;
 use App\Models\CharacterPostCategory;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterController extends Controller
 {
@@ -73,5 +74,33 @@ class CharacterController extends Controller
             }
         }
         return view('characters.show')->with(['character' => $character, 'categories' => $categories]);
+    }
+
+    // 登場人物に「気になる」登録をする
+    public function interested($character_id)
+    {
+        // 登場人物が見つからない場合の処理
+        $character = Character::find($character_id);
+        if (!$character) {
+            $message = __('messages.character_not_found');
+            return response()->json(['message' => $message], 404);
+        }
+        // 現在ログインしているユーザーが既に「気になる」登録していればtrueを返す
+        $isInterested = $character->users()->where('user_id', Auth::id())->exists();
+        if ($isInterested) {
+            // 既に「気になる」登録している場合
+            $character->users()->detach(Auth::id());
+            $status = 'unInterested';
+            $message = __('messages.unmarked_as_interested');
+        } else {
+            // 初めての「気になる」登録の場合
+            $character->users()->attach(Auth::id());
+            $status = 'interested';
+            $message = __('messages.marked_as_interested');
+        }
+        // 「気になる」登録したユーザー数の取得
+        $count = count($character->users()->pluck('character_id')->toArray());
+
+        return response()->json(['status' => $status, 'interested_user' => $count, 'message' => $message]);
     }
 }
