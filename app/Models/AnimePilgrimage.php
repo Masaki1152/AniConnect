@@ -141,4 +141,11 @@ class AnimePilgrimage extends Model
     {
         return $this->hasMany(AnimePilgrimagePost::class, 'anime_pilgrimage_id',  'id');
     }
+
+    // 気になるをしたUserに対するリレーション　多対多の関係
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_pilgrimage', 'anime_pilgrimage_id', 'user_id')
+            ->withPivot('created_at');
+    }
 }
