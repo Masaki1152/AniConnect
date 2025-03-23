@@ -1,4 +1,7 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <h1 class="title">
         {{ $pilgrimage->name }}
     </h1>
@@ -32,6 +35,8 @@
             <p>{{ $pilgrimage->map_link }}</p>
             <h3>Wikipediaへのリンク</h3>
             <p>{{ $pilgrimage->wiki_link }}</p>
+            <x-interested type="animePilgrimage" :root="$pilgrimage" path="pilgrimages.interested.index" :prop="['pilgrimage_id' => $pilgrimage->id]"
+                isMultiple="false" />
         </div>
     </div>
     <div class="post_link">
@@ -40,4 +45,6 @@
     <div class="footer">
         <a href="/works">作品一覧へ</a>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
 </x-app-layout>

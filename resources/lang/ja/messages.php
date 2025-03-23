@@ -39,5 +39,6 @@ return [
     'work_story_not_found' => 'あらすじが見つかりません',
     'character_not_found' => '登場人物が見つかりません',
     'music_not_found' => '音楽が見つかりません',
+    'pilgrimage_not_found' => '聖地が見つかりません',
     'post_not_found' => '投稿が見つかりません',
 ];

@@ -499,4 +499,10 @@ class User extends Authenticatable
     {
         return $this->belongsToMany(Music::class);
     }
+
+    // 気になるをしたAnimePilgrimageに対するリレーション 多対多の関係
+    public function animePilgrimages()
+    {
+        return $this->belongsToMany(AnimePilgrimage::class);
+    }
 }

@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Models\AnimePilgrimage;
 use App\Models\Prefecture;
 use App\Models\AnimePilgrimagePostCategory;
+use Illuminate\Support\Facades\Auth;
 
 class AnimePilgrimageController extends Controller
 {
@@ -89,5 +90,33 @@ class AnimePilgrimageController extends Controller
         }
 
         return view('pilgrimages.show')->with(['pilgrimage' => $pilgrimage, 'categories' => $categories]);
+    }
+
+    // 聖地に「気になる」登録をする
+    public function interested($pilgrimage_id)
+    {
+        // 聖地が見つからない場合の処理
+        $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
+        if (!$pilgrimage) {
+            $message = __('messages.pilgrimage_not_found');
+            return response()->json(['message' => $message], 404);
+        }
+        // 現在ログインしているユーザーが既に「気になる」登録していればtrueを返す
+        $isInterested = $pilgrimage->users()->where('user_id', Auth::id())->exists();
+        if ($isInterested) {
+            // 既に「気になる」登録している場合
+            $pilgrimage->users()->detach(Auth::id());
+            $status = 'unInterested';
+            $message = __('messages.unmarked_as_interested');
+        } else {
+            // 初めての「気になる」登録の場合
+            $pilgrimage->users()->attach(Auth::id());
+            $status = 'interested';
+            $message = __('messages.marked_as_interested');
+        }
+        // 「気になる」登録したユーザー数の取得
+        $count = count($pilgrimage->users()->pluck('anime_pilgrimage_id')->toArray());
+
+        return response()->json(['status' => $status, 'interested_user' => $count, 'message' => $message]);
     }
 }

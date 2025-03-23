@@ -1,4 +1,7 @@
 <x-app-layout>
+    <div id="message"
+        class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
+    </div>
     <h1>聖地一覧</h1>
     <!-- 検索機能 -->
     <div class='serch'>
@@ -137,6 +140,8 @@
                     <p class='place'>
                         {{ $pilgrimage->place }}
                     </p>
+                    <x-interested type="animePilgrimage" :root="$pilgrimage" path="pilgrimages.interested.index"
+                        :prop="['pilgrimage_id' => $pilgrimage->id]" isMultiple="false" />
                 </div>
             @endforeach
         @endif
@@ -144,5 +149,7 @@
     <div class='paginate'>
         {{ $pilgrimages->appends(request()->query())->links() }}
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/search_category.js') }}"></script>
+    <script src="{{ asset('/js/interested_user.js') }}"></script>
 </x-app-layout>

@@ -23,6 +23,7 @@ use App\Http\Controllers\SingerController;
 use App\Http\Controllers\LyricWriterController;
 use App\Http\Controllers\ComposerController;
 use App\Http\Controllers\AnimePilgrimageController;
+use App\Http\Controllers\AnimePilgrimageInterestedController;
 use App\Http\Controllers\AnimePilgrimagePostController;
 use App\Http\Controllers\AnimePilgrimagePostLikeController;
 use App\Http\Controllers\WorkStoryController;
@@ -366,6 +367,14 @@ Route::controller(AnimePilgrimageController::class)->middleware(['auth'])->group
     Route::get('/pilgrimages', 'index')->name('pilgrimages.index');
     // 聖地の詳細表示
     Route::get('/pilgrimages/{pilgrimage_id}', 'show')->name('pilgrimages.show');
+    // 聖地の「気になる」ボタン押下で「気になる」登録をする処理
+    Route::post('/pilgrimages/{pilgrimage_id}/interested', 'interested')->name('pilgrimages.interested');
+});
+
+// AnimePilgrimageInterestedControllerに関するルーティング
+Route::controller(AnimePilgrimageInterestedController::class)->middleware(['auth'])->group(function () {
+    // 聖地を気になる登録したユーザーの表示
+    Route::get('/pilgrimages/{pilgrimage_id}/interested/index', 'index')->name('pilgrimages.interested.index');
 });
 
 // AppCommentControllerに関するルーティング
