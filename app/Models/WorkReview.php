@@ -15,6 +15,7 @@ class WorkReview extends Model
         'work_id',
         'user_id',
         'post_title',
+        'star_num',
         'body',
         'image1',
         'image2',

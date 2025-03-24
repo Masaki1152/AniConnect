@@ -27,25 +27,7 @@
                                 {{ $errors->first('pilgrimage_post.post_title') }}
                             </p>
                         </div>
-                        <div class="star_num">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">評価</label>
-                            <select name="pilgrimage_post[star_num]"
-                                class="block w-1/3 px-3 py-2 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200">
-                                @php
-                                    $numbers = [1 => '★', 2 => '★★', 3 => '★★★', 4 => '★★★★', 5 => '★★★★★'];
-                                @endphp
-                                @foreach ($numbers as $num => $star)
-                                    <option value="{{ $num }}"
-                                        @if (old('pilgrimage_post.star_num') == $num) selected @endif>
-                                        {{ $star }}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @if ($errors->has('pilgrimage_post.star_num'))
-                                <p class="mt-2 text-sm text-red-600">{{ $errors->first('pilgrimage_post.star_num') }}
-                                </p>
-                            @endif
-                        </div>
+                        <x-star-num-select-box :postType="$pilgrimage" postTypeString="pilgrimage_post" :isCreateType="true" />
                         <div class="scene">
                             <label class="block font-medium text-sm text-gray-700 mb-2">シーン</label>
                             <input type="text" name="pilgrimage_post[scene]" placeholder="シーン"

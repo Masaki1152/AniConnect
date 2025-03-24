@@ -27,6 +27,7 @@
                                 {{ $errors->first('work_review.post_title') }}
                             </p>
                         </div>
+                        <x-star-num-select-box :postType="$work" postTypeString="work_review" :isCreateType="true" />
                         <div id="custom-multi-select-container" class="category relative">
                             <label class="block font-medium text-sm text-gray-700 mb-2">カテゴリー（3個まで）</label>
                             <div id="custom-multi-select" tabindex="0" class="w-1/3">

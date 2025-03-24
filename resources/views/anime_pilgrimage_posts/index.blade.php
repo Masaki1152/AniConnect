@@ -104,6 +104,7 @@
                             <h3 class='scene'>
                                 {{ $pilgrimage_post->scene }}
                             </h3>
+                            <x-star-num :starNum="$pilgrimage_post->star_num" />
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button"
