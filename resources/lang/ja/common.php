@@ -37,6 +37,7 @@ return [
     'not_reload_images' => '画像が読み込めません',
     'post' => '投稿する',
     'update_post' => '変更を保存する',
+    'evaluation' => '評価：',
     // 検索
     'search' => '検索',
     'search_keyword' => 'キーワードを検索',
