@@ -82,6 +82,7 @@
                                         {{ $work_review->created_at->format('Y/m/d H:i') }}</p>
                                 </div>
                             </div>
+                            <x-star-num :starNum="$work_review->star_num" />
                             <p class="mt-4 text-gray-800">{!! nl2br(e($work_review->body)) !!}</p>
                         </div>
                         <div class="right_block flex-1">

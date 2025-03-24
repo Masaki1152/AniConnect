@@ -100,8 +100,8 @@
                             <div class='created_at'>
                                 <p>{{ $work_review->created_at->format('Y/m/d H:i') }}</p>
                             </div>
+                            <x-star-num :starNum="$work_review->star_num" />
                             <div class="like">
-
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button" data-work-id="{{ $work_review->work_id }}"
                                     data-review-id="{{ $work_review->id }}" type="submit">

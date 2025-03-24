@@ -8,7 +8,7 @@ class StarNum extends Component
 {
     public $starNum;
 
-    public function __construct($starNum = 0)
+    public function __construct($starNum)
     {
         $this->starNum = (int) $starNum;
     }
