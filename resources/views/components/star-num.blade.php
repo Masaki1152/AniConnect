@@ -1,6 +1,6 @@
 <div class="content mt-2">
     <p class="flex items-center text-lg font-semibold text-gray-800">
-        <span class="mr-2 mt-1">{{ __('common.evaluation') }}</span>
+        <span class="mr-2 mt-1">{{ __('common.evaluation_colon') }}</span>
         @for ($i = 1; $i <= 5; $i++)
             <svg class="inline-block w-6 h-6 {{ $i <= $starNum ? 'text-yellow-400' : 'text-gray-300' }}"
                 fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
