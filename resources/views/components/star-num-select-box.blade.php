@@ -7,7 +7,7 @@
         @endphp
         @foreach ($numbers as $num => $star)
             @php
-                $isSelected = $isCreateType ? old("{$postType}.star_num") == $num : $postType->star_num == $num;
+                $isSelected = $isCreateType ? old("{$postTypeString}.star_num") == $num : $postType->star_num == $num;
             @endphp
 
             <option value="{{ $num }}" @if ($isSelected) selected @endif>
@@ -15,7 +15,7 @@
             </option>
         @endforeach
     </select>
-    @if ($errors->has('{ $postTypeString }.star_num'))
+    @if ($errors->has('{$postTypeString}.star_num'))
         <p class="mt-2 text-sm text-red-600">{{ $errors->first('{$postTypeString}.star_num') }}
         </p>
     @endif
