@@ -21,7 +21,8 @@ class UpdateTopPopularity extends Command
 
     public function handle()
     {
-        $this->work->updateTopPopularityWorks();
+        $sufficientReviewsWorks = $this->work->fetchSufficientReviewNumWorks();
+        $this->work->updateTopPopularityItems($sufficientReviewsWorks, 'workReviews', 'top_popular_works');
         $this->info('Popularity scores updated successfully.');
     }
 }

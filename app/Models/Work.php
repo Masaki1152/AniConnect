@@ -6,11 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
-use Illuminate\Support\Carbon;
+use App\Traits\CommonFunction;
 
 class Work extends Model
 {
     use HasFactory;
+    use CommonFunction;
 
     // 参照させたいworksを指定
     protected $table = 'works';
@@ -138,48 +139,18 @@ class Work extends Model
         ]);
     }
 
-    // 作品感想から星の評価と投稿数を取得、計算し、人気度を算出
-    public function updateTopPopularityWorks()
+    // 指定の投稿数以上の作品を取得
+    public function fetchSufficientReviewNumWorks()
     {
         // 人気度を算出する際の最低投稿数
-        $minWorkReviewNum = 3;
-        // 30日で影響度が半減する設定
-        $halfLife = 30;
-        // 指定の投稿数以上の作品を取得
+        $minReviewNum = 3;
         $sufficientReviewsWorks = Work::with(['workReviews' => function ($query) {
             $query->select('id', 'work_id', 'star_num', 'created_at');
         }])
             ->withCount('workReviews')
-            ->having('workreview_count', '>=', $minWorkReviewNum)
+            ->having('work_reviews_count', '>=', $minReviewNum)
             ->get();
-
-        $popularityScores = [];
-
-        foreach ($sufficientReviewsWorks as $sufficientReviewsWork) {
-            $totalScore = 0;
-            $totalWeight = 0;
-
-            foreach ($sufficientReviewsWork->workReviews as $post) {
-                $daysSincePost = Carbon::now()->diffInDays($post->created_at);
-                // 各投稿の重み 指数関数を使って重みつけ
-                $weight = exp(-$daysSincePost / $halfLife);
-                $totalScore += $post->star_num * $weight;
-                $totalWeight += $weight;
-            }
-            // 投稿数が多いほど信頼性が上がるよう補正
-            $numReviews = $sufficientReviewsWork->workReviews->count();
-            $finalScore = ($totalWeight > 0) ? ($totalScore / $totalWeight) : 0;
-            $finalScore *= log($numReviews + 1) + 1;
-            $popularityScores[] = ['work' => $sufficientReviewsWork, 'score' => $finalScore];
-        }
-
-        // 人気度で並べる
-        usort($popularityScores, function ($a, $b) {
-            return $b['score'] <=> $a['score'];
-        });
-
-        // 上位3作品をキャッシュに保存
-        Cache::put('top_popular_works', array_slice($popularityScores, 0, 3), now()->addDay());
+        return $sufficientReviewsWorks;
     }
 
     // WorkReviewに対するリレーション 1対多の関係

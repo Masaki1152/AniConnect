@@ -17,8 +17,9 @@ class WorkController extends Controller
         $topPopularityWorks = Cache::get('top_popular_works');
         // キャッシュが見つからない場合
         if (!$topPopularityWorks) {
+            $sufficientReviewsWorks = $work->fetchSufficientReviewNumWorks();
             // updateTopPopularityWorksを実行して人気度の高い作品を再計算
-            $work->updateTopPopularityWorks();
+            $work->updateTopPopularityItems($sufficientReviewsWorks, 'workReviews', 'top_popular_works');
             // 再度キャッシュから人気度の高い作品を取得
             $topPopularityWorks = Cache::get('top_popular_works');
         }

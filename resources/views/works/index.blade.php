@@ -11,7 +11,7 @@
             <ul>
                 @foreach ($topPopularityWorks as $topPopularityWork)
                     <li>
-                        <h3>{{ $topPopularityWork['work']->name }}</h3>
+                        <h3>{{ $topPopularityWork['item']->name }}</h3>
                     </li>
                 @endforeach
             </ul>
