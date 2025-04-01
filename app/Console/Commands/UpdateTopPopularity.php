@@ -4,8 +4,8 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use App\Models\Work;
-use App\Models\WorkStory;
 use App\Models\Character;
+use App\Models\Music;
 
 class UpdateTopPopularity extends Command
 {
@@ -14,15 +14,15 @@ class UpdateTopPopularity extends Command
     protected $description = 'Update Top Popularity';
 
     private $work;
-    private $workStory;
     private $character;
+    private $music;
 
-    public function __construct(Work $work, WorkStory $workStory, Character $character)
+    public function __construct(Work $work, Character $character, Music $music)
     {
         parent::__construct();
         $this->work = $work;
-        $this->workStory = $workStory;
         $this->character = $character;
+        $this->music = $music;
     }
 
     public function handle()
@@ -35,6 +35,10 @@ class UpdateTopPopularity extends Command
         // 登場人物の上位3つを取得
         $sufficientReviewsCharacters = $this->character->fetchSufficientReviewNumCharacters();
         $this->character->updateTopPopularityItems($sufficientReviewsCharacters, 'characterPosts', 'top_popular_characters');
+
+        // 音楽の上位3つを取得
+        $sufficientPostsMusic = $this->music->fetchSufficientPostNumMusic();
+        $this->music->updateTopPopularityItems($sufficientPostsMusic, 'musicPosts', 'top_popular_music');
         $this->info('Popularity scores updated successfully.');
     }
 }

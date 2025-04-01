@@ -6,12 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Music;
 use App\Models\MusicPostCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class MusicController extends Controller
 {
     // 音楽画面の表示
     public function index(Request $request, Music $music, MusicPostCategory $category)
     {
+        // 人気上位の音楽を取得
+        $topPopularityMusic = Cache::get('top_popular_music');
+        // キャッシュが見つからない場合
+        if (!$topPopularityMusic) {
+            $sufficientPostsMusic = $music->fetchSufficientPostNumMusic();
+            // updateTopPopularityItemsを実行して人気度の高い音楽を再計算
+            $music->updateTopPopularityItems($sufficientPostsMusic, 'musicPosts', 'top_popular_music');
+            // 再度キャッシュから人気度の高い音楽を取得
+            $topPopularityMusic = Cache::get('top_popular_music');
+        }
+
         // クリックされたカテゴリーidを取得
         $categoryIds = $request->filled('checkedCategories')
             ? ($request->input('checkedCategories'))
@@ -56,7 +68,8 @@ class MusicController extends Controller
             'categories' => $category->get(),
             'totalResults' => $totalResults,
             'search' => $search,
-            'selectedCategories' => $selectedCategories
+            'selectedCategories' => $selectedCategories,
+            'topPopularityMusic' => $topPopularityMusic
         ]);
     }
 

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\CommonFunction;
 
 class Music extends Model
 {
     use HasFactory;
+    use CommonFunction;
 
     // 参照させたいmusicを指定
     protected $table = 'music';
@@ -128,6 +130,20 @@ class Music extends Model
         ]);
     }
 
+    // 指定の投稿数以上の作品を取得
+    public function fetchSufficientPostNumMusic()
+    {
+        // 人気度を算出する際の最低投稿数
+        $minPostNum = 3;
+        $sufficientPostsMusic = Music::with(['musicPosts' => function ($query) {
+            $query->select('id', 'music_id', 'star_num', 'created_at');
+        }])
+            ->withCount('musicPosts')
+            ->having('music_posts_count', '>=', $minPostNum)
+            ->get();
+        return $sufficientPostsMusic;
+    }
+
     // Workに対するリレーション 1対多の関係
     public function work()
     {
@@ -152,10 +168,10 @@ class Music extends Model
         return $this->belongsTo(Singer::class, 'singer_id', 'id');
     }
 
-    // MusicPostに対するリレーション 1対1の関係
-    public function musicPost()
+    // MusicPostに対するリレーション 1対多の関係
+    public function musicPosts()
     {
-        return $this->hasOne(MusicPost::class, 'id', 'music_id');
+        return $this->hasMany(MusicPost::class, 'music_id');
     }
 
     // 気になるをしたUserに対するリレーション　多対多の関係

@@ -21,6 +21,7 @@ class Kernel extends ConsoleKernel
         $schedule->call(function () {
             Cache::forget('top_popular_works');
             Cache::forget('top_popular_characters');
+            Cache::forget('top_popular_music');
         })->dailyAt('00:00');
     }
 
