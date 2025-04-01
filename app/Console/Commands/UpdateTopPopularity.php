@@ -7,6 +7,7 @@ use App\Models\Work;
 use App\Models\Character;
 use App\Models\Music;
 use App\Models\AnimePilgrimage;
+use Illuminate\Support\Facades\Log;
 
 class UpdateTopPopularity extends Command
 {
@@ -46,6 +47,9 @@ class UpdateTopPopularity extends Command
         // 聖地の上位3つを取得
         $sufficientPostsPilgrimages = $this->animePilgrimage->fetchSufficientPostNumPilgrimages();
         $this->animePilgrimage->updateTopPopularityItems($sufficientPostsPilgrimages, 'animePilgrimagePosts', 'top_popular_pilgrimages');
+
+        // 明示的にログを記録
+        Log::info('Popularity scores updated successfully.');
         $this->info('Popularity scores updated successfully.');
     }
 }
