@@ -3,6 +3,19 @@
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
     <h1>聖地一覧</h1>
+
+    <!-- 人気上位の聖地 デザインはあとで作成 -->
+    <div class="flex-cols">
+        <h2>人気の聖地</h2>
+        <ul>
+            @foreach ($topPopularityPilgrimages as $topPopularityPilgrimage)
+                <li>
+                    <h3>{{ $topPopularityPilgrimage['item']->name }}</h3>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
     <!-- 検索機能 -->
     <div class='serch'>
         <form action="{{ route('pilgrimages.index') }}" method="GET">

@@ -7,12 +7,24 @@ use App\Models\AnimePilgrimage;
 use App\Models\Prefecture;
 use App\Models\AnimePilgrimagePostCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class AnimePilgrimageController extends Controller
 {
     // 聖地一覧画面の表示
     public function index(Request $request, AnimePilgrimage $animePilgrimage, Prefecture $prefecture, AnimePilgrimagePostCategory $category)
     {
+        // 人気上位の聖地を取得
+        $topPopularityPilgrimages = Cache::get('top_popular_pilgrimages');
+        // キャッシュが見つからない場合
+        if (!$topPopularityPilgrimages) {
+            $sufficientPostsPilgrimages = $animePilgrimage->fetchSufficientPostNumPilgrimages();
+            // updateTopPopularityItemsを実行して人気度の高い作品を再計算
+            $animePilgrimage->updateTopPopularityItems($sufficientPostsPilgrimages, 'animePilgrimagePosts', 'top_popular_pilgrimages');
+            // 再度キャッシュから人気度の高い作品を取得
+            $topPopularityPilgrimages = Cache::get('top_popular_pilgrimages');
+        }
+
         // クリックされたカテゴリーidを取得
         $categoryIds = $request->filled('checkedCategories')
             ? ($request->input('checkedCategories'))
@@ -71,7 +83,8 @@ class AnimePilgrimageController extends Controller
             'totalResults' => $totalResults,
             'search' => $search,
             'selected_prefecture' => $selected_prefecture,
-            'selectedCategories' => $selectedCategories
+            'selectedCategories' => $selectedCategories,
+            'topPopularityPilgrimages' => $topPopularityPilgrimages
         ]);
     }
 

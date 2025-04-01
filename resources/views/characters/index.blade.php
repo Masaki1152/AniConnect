@@ -3,6 +3,19 @@
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
     <h1>登場人物一覧</h1>
+
+    <!-- 人気上位の登場人物 デザインはあとで作成 -->
+    <div class="flex-cols">
+        <h2>人気の登場人物</h2>
+        <ul>
+            @foreach ($topPopularityCharacters as $topPopularityCharacter)
+                <li>
+                    <h3>{{ $topPopularityCharacter['item']->name }}</h3>
+                </li>
+            @endforeach
+        </ul>
+    </div>
+
     <!-- 検索機能 -->
     <div class=serch>
         <form action="{{ route('characters.index') }}" method="GET">

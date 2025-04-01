@@ -16,6 +16,14 @@ class Kernel extends ConsoleKernel
         Log::info('Schedule method called.');
         $schedule->command('categories:update-top')->daily();
         $schedule->command('popularity:update-top')->daily();
+
+        // 毎日0時にキャッシュを削除
+        $schedule->call(function () {
+            Cache::forget('top_popular_works');
+            Cache::forget('top_popular_characters');
+            Cache::forget('top_popular_music');
+            Cache::forget('top_popular_pilgrimages');
+        })->dailyAt('00:00');
     }
 
     /**
