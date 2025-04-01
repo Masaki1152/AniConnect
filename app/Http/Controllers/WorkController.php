@@ -6,12 +6,23 @@ use App\Models\Work;
 use App\Models\WorkReviewCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class WorkController extends Controller
 {
     // 作品一覧画面の表示
     public function index(Request $request, Work $work, WorkReviewCategory $category)
     {
+        // 人気上位の作品を取得
+        $topPopularityWorks = Cache::get('top_popular_works');
+        // キャッシュが見つからない場合
+        if (!$topPopularityWorks) {
+            // updateTopPopularityWorksを実行して人気度の高い作品を再計算
+            $work->updateTopPopularityWorks();
+            // 再度キャッシュから人気度の高い作品を取得
+            $topPopularityWorks = Cache::get('top_popular_works');
+        }
+
         // クリックされたカテゴリーidを取得
         $categoryIds = $request->filled('checkedCategories')
             ? ($request->input('checkedCategories'))
@@ -56,7 +67,8 @@ class WorkController extends Controller
             'categories' => $category->get(),
             'totalResults' => $totalResults,
             'search' => $search,
-            'selectedCategories' => $selectedCategories
+            'selectedCategories' => $selectedCategories,
+            'topPopularityWorks' => $topPopularityWorks
         ]);
     }
 

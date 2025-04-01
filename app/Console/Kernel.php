@@ -4,7 +4,6 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
-use App\Console\Commands\UpdateTopCategories;
 use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
@@ -16,6 +15,7 @@ class Kernel extends ConsoleKernel
     {
         Log::info('Schedule method called.');
         $schedule->command('categories:update-top')->daily();
+        $schedule->command('popularity:update-top')->daily();
     }
 
     /**

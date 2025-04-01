@@ -5,6 +5,18 @@
     <div class="container mx-auto py-8">
         <h1 class="text-3xl font-bold text-center mb-6">作品一覧</h1>
 
+        <!-- 人気上位の作品 デザインはあとで作成 -->
+        <div class="flex-cols">
+            <h2>人気作品</h2>
+            <ul>
+                @foreach ($topPopularityWorks as $topPopularityWork)
+                    <li>
+                        <h3>{{ $topPopularityWork['work']->name }}</h3>
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+
         <!-- 検索機能 -->
         <div class="flex justify-center mb-6">
             <form action="{{ route('works.index') }}" method="GET" class="flex items-center space-x-2">
