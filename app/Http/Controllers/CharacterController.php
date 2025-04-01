@@ -6,12 +6,24 @@ use Illuminate\Http\Request;
 use App\Models\Character;
 use App\Models\CharacterPostCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class CharacterController extends Controller
 {
     // 登場人物一覧画面の表示
     public function index(Request $request, Character $character, CharacterPostCategory $category)
     {
+        // 人気上位の登場人物を取得
+        $topPopularityCharacters = Cache::get('top_popular_characters');
+        // キャッシュが見つからない場合
+        if (!$topPopularityCharacters) {
+            $sufficientReviewsCharacters = $character->fetchSufficientReviewNumCharacters();
+            // updateTopPopularityCharactersを実行して人気度の高い登場人物を再計算
+            $character->updateTopPopularityItems($sufficientReviewsCharacters, 'CharacterPosts', 'top_popular_characters');
+            // 再度キャッシュから人気度の高い登場人物を取得
+            $topPopularityCharacters = Cache::get('top_popular_characters');
+        }
+
         // クリックされたカテゴリーidを取得
         $categoryIds = $request->filled('checkedCategories')
             ? ($request->input('checkedCategories'))
@@ -56,7 +68,8 @@ class CharacterController extends Controller
             'categories' => $category->get(),
             'totalResults' => $totalResults,
             'search' => $search,
-            'selectedCategories' => $selectedCategories
+            'selectedCategories' => $selectedCategories,
+            'topPopularityCharacters' => $topPopularityCharacters
         ]);
     }
 

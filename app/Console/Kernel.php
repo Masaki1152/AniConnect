@@ -20,6 +20,7 @@ class Kernel extends ConsoleKernel
         // 毎日0時にキャッシュを削除
         $schedule->call(function () {
             Cache::forget('top_popular_works');
+            Cache::forget('top_popular_characters');
         })->dailyAt('00:00');
     }
 

@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\CommonFunction;
 
 class Character extends Model
 {
     use HasFactory;
+    use CommonFunction;
 
     // 参照させたいcharactersを指定
     protected $table = 'characters';
@@ -118,6 +120,20 @@ class Character extends Model
         ]);
     }
 
+    // 指定の投稿数以上の作品を取得
+    public function fetchSufficientReviewNumCharacters()
+    {
+        // 人気度を算出する際の最低投稿数
+        $minReviewNum = 3;
+        $sufficientReviewsCharacters = Character::with(['characterPosts' => function ($query) {
+            $query->select('id', 'character_id', 'star_num', 'created_at');
+        }])
+            ->withCount('characterPosts')
+            ->having('character_posts_count', '>=', $minReviewNum)
+            ->get();
+        return $sufficientReviewsCharacters;
+    }
+
     // Workに対するリレーション 多対多の関係
     public function works()
     {
@@ -130,10 +146,10 @@ class Character extends Model
         return $this->belongsTo(VoiceArtist::class, 'voice_artist_id', 'id');
     }
 
-    // CharacterPostに対するリレーション 1対1の関係
-    public function characterPost()
+    // CharacterPostに対するリレーション 1対多の関係
+    public function characterPosts()
     {
-        return $this->hasOne(CharacterPost::class, 'id', 'character_id');
+        return $this->hasMany(CharacterPost::class, 'character_id');
     }
 
     // 気になるをしたUserに対するリレーション　多対多の関係

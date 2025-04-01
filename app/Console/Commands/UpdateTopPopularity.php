@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use App\Models\Work;
 use App\Models\WorkStory;
+use App\Models\Character;
 
 class UpdateTopPopularity extends Command
 {
@@ -14,12 +15,14 @@ class UpdateTopPopularity extends Command
 
     private $work;
     private $workStory;
+    private $character;
 
-    public function __construct(Work $work, WorkStory $workStory)
+    public function __construct(Work $work, WorkStory $workStory, Character $character)
     {
         parent::__construct();
         $this->work = $work;
         $this->workStory = $workStory;
+        $this->character = $character;
     }
 
     public function handle()
@@ -29,8 +32,9 @@ class UpdateTopPopularity extends Command
         $this->work->updateTopPopularityItems($sufficientReviewsWorks, 'workReviews', 'top_popular_works');
 
         // あらすじは話数に上限があるため上位3つを取得するためにKernelは使用しない
-        // $sufficientReviewsWorkStories = $this->work->fetchSufficientReviewNumWorks();
-        // $this->workStory->updateTopPopularityItems($sufficientReviewsWorkStories, 'workStoryPosts', 'top_popular_work_stories');
+        // 登場人物の上位3つを取得
+        $sufficientReviewsCharacters = $this->character->fetchSufficientReviewNumCharacters();
+        $this->character->updateTopPopularityItems($sufficientReviewsCharacters, 'characterPosts', 'top_popular_characters');
         $this->info('Popularity scores updated successfully.');
     }
 }
