@@ -6,12 +6,21 @@ use Illuminate\Http\Request;
 use App\Models\WorkStory;
 use App\Models\WorkStoryPostCategory;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 
 class WorkStoryController extends Controller
 {
     // あらすじ一覧画面の表示
     public function index(Request $request, WorkStory $workStory, WorkStoryPostCategory $category, $work_id)
     {
+        // 人気上位のあらすじを取得(毎度作品ごとに異なるためforgetを行う)
+        Cache::forget('top_popular_work_stories');
+        $sufficientReviewsWorkStories = $workStory->fetchSufficientReviewNumWorkStories($work_id);
+        // updateTopPopularityItemsを実行して人気度の高い作品を再計算
+        $workStory->updateTopPopularityItems($sufficientReviewsWorkStories, 'workStoryPosts', 'top_popular_work_stories');
+        // キャッシュから人気度の高い作品を取得
+        $topPopularityWorkStories = Cache::get('top_popular_work_stories');
+
         // クリックされたカテゴリーidを取得
         $categoryIds = $request->filled('checkedCategories')
             ? ($request->input('checkedCategories'))
@@ -55,7 +64,8 @@ class WorkStoryController extends Controller
             'categories' => $category->get(),
             'totalResults' => $totalResults,
             'search' => $search,
-            'selectedCategories' => $selectedCategories
+            'selectedCategories' => $selectedCategories,
+            'topPopularityWorkStories' => $topPopularityWorkStories
         ]);
     }
 

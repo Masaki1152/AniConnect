@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\CommonFunction;
 
 class WorkStory extends Model
 {
     use HasFactory;
+    use CommonFunction;
 
     // 参照させたいwork_storiesを指定
     protected $table = 'work_stories';
@@ -107,16 +109,31 @@ class WorkStory extends Model
         ]);
     }
 
+    // 指定の投稿数以上のあらすじを取得
+    public function fetchSufficientReviewNumWorkStories($work_id)
+    {
+        // 人気度を算出する際の最低投稿数
+        $minReviewNum = 2;
+        $sufficientReviewsWorkStories = WorkStory::with(['workStoryPosts' => function ($query) {
+            $query->select('id', 'sub_title_id', 'star_num', 'created_at');
+        }])
+            ->where('work_id', $work_id)
+            ->withCount('workStoryPosts')
+            ->having('work_story_posts_count', '>=', $minReviewNum)
+            ->get();
+        return $sufficientReviewsWorkStories;
+    }
+
     // Workに対するリレーション 1対多の関係
     public function work()
     {
         return $this->belongsTo(Work::class, 'work_id', 'id');
     }
 
-    // WorkStoryPostに対するリレーション 1対1の関係
-    public function workStoryPost()
+    // WorkStoryPostに対するリレーション 1対多の関係
+    public function workStoryPosts()
     {
-        return $this->hasOne(WorkStoryPost::class, 'id', 'sub_title_id');
+        return $this->hasMany(WorkStoryPost::class, 'sub_title_id');
     }
 
     // 気になるをしたUserに対するリレーション　多対多の関係
