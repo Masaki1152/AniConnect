@@ -22,6 +22,7 @@ class Kernel extends ConsoleKernel
             Cache::forget('top_popular_works');
             Cache::forget('top_popular_characters');
             Cache::forget('top_popular_music');
+            Cache::forget('top_popular_pilgrimages');
         })->dailyAt('00:00');
     }
 

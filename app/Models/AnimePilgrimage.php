@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\CommonFunction;
 
 class AnimePilgrimage extends Model
 {
     use HasFactory;
+    use CommonFunction;
 
     // 参照させたいanime_pilgrimagesを指定
     protected $table = 'anime_pilgrimages';
@@ -124,6 +126,20 @@ class AnimePilgrimage extends Model
         ]);
     }
 
+    // 指定の投稿数以上の作品を取得
+    public function fetchSufficientPostNumPilgrimages()
+    {
+        // 人気度を算出する際の最低投稿数
+        $minPostNum = 3;
+        $sufficientPostsPilgrimages = AnimePilgrimage::with(['animePilgrimagePosts' => function ($query) {
+            $query->select('id', 'anime_pilgrimage_id', 'star_num', 'created_at');
+        }])
+            ->withCount('animePilgrimagePosts')
+            ->having('anime_pilgrimage_posts_count', '>=', $minPostNum)
+            ->get();
+        return $sufficientPostsPilgrimages;
+    }
+
     // Workに対するリレーション 多対多の関係
     public function works()
     {
@@ -139,7 +155,7 @@ class AnimePilgrimage extends Model
     // AnimePilgrimagePostに対するリレーション 1対多の関係
     public function animePilgrimagePosts()
     {
-        return $this->hasMany(AnimePilgrimagePost::class, 'anime_pilgrimage_id',  'id');
+        return $this->hasMany(AnimePilgrimagePost::class, 'anime_pilgrimage_id');
     }
 
     // 気になるをしたUserに対するリレーション　多対多の関係

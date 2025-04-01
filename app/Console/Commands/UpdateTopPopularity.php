@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Work;
 use App\Models\Character;
 use App\Models\Music;
+use App\Models\AnimePilgrimage;
 
 class UpdateTopPopularity extends Command
 {
@@ -16,13 +17,15 @@ class UpdateTopPopularity extends Command
     private $work;
     private $character;
     private $music;
+    private $animePilgrimage;
 
-    public function __construct(Work $work, Character $character, Music $music)
+    public function __construct(Work $work, Character $character, Music $music, AnimePilgrimage $animePilgrimage)
     {
         parent::__construct();
         $this->work = $work;
         $this->character = $character;
         $this->music = $music;
+        $this->animePilgrimage = $animePilgrimage;
     }
 
     public function handle()
@@ -39,6 +42,10 @@ class UpdateTopPopularity extends Command
         // 音楽の上位3つを取得
         $sufficientPostsMusic = $this->music->fetchSufficientPostNumMusic();
         $this->music->updateTopPopularityItems($sufficientPostsMusic, 'musicPosts', 'top_popular_music');
+
+        // 聖地の上位3つを取得
+        $sufficientPostsPilgrimages = $this->animePilgrimage->fetchSufficientPostNumPilgrimages();
+        $this->animePilgrimage->updateTopPopularityItems($sufficientPostsPilgrimages, 'animePilgrimagePosts', 'top_popular_pilgrimages');
         $this->info('Popularity scores updated successfully.');
     }
 }
