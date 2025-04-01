@@ -17,9 +17,9 @@ class CharacterController extends Controller
         $topPopularityCharacters = Cache::get('top_popular_characters');
         // キャッシュが見つからない場合
         if (!$topPopularityCharacters) {
-            $sufficientReviewsCharacters = $character->fetchSufficientReviewNumCharacters();
-            // updateTopPopularityCharactersを実行して人気度の高い登場人物を再計算
-            $character->updateTopPopularityItems($sufficientReviewsCharacters, 'CharacterPosts', 'top_popular_characters');
+            $sufficientPostsCharacters = $character->fetchSufficientPostNumCharacters();
+            // updateTopPopularityItemsを実行して人気度の高い登場人物を再計算
+            $character->updateTopPopularityItems($sufficientPostsCharacters, 'CharacterPosts', 'top_popular_characters');
             // 再度キャッシュから人気度の高い登場人物を取得
             $topPopularityCharacters = Cache::get('top_popular_characters');
         }

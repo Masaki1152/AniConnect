@@ -33,8 +33,8 @@ class UpdateTopPopularity extends Command
 
         // あらすじは話数に上限があるため上位3つを取得するためにKernelは使用しない
         // 登場人物の上位3つを取得
-        $sufficientReviewsCharacters = $this->character->fetchSufficientReviewNumCharacters();
-        $this->character->updateTopPopularityItems($sufficientReviewsCharacters, 'characterPosts', 'top_popular_characters');
+        $sufficientPostsCharacters = $this->character->fetchSufficientPostNumCharacters();
+        $this->character->updateTopPopularityItems($sufficientPostsCharacters, 'characterPosts', 'top_popular_characters');
 
         // 音楽の上位3つを取得
         $sufficientPostsMusic = $this->music->fetchSufficientPostNumMusic();

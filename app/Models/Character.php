@@ -121,17 +121,17 @@ class Character extends Model
     }
 
     // 指定の投稿数以上の作品を取得
-    public function fetchSufficientReviewNumCharacters()
+    public function fetchSufficientPostNumCharacters()
     {
         // 人気度を算出する際の最低投稿数
-        $minReviewNum = 3;
-        $sufficientReviewsCharacters = Character::with(['characterPosts' => function ($query) {
+        $minPostNum = 3;
+        $sufficientPostsCharacters = Character::with(['characterPosts' => function ($query) {
             $query->select('id', 'character_id', 'star_num', 'created_at');
         }])
             ->withCount('characterPosts')
-            ->having('character_posts_count', '>=', $minReviewNum)
+            ->having('character_posts_count', '>=', $minPostNum)
             ->get();
-        return $sufficientReviewsCharacters;
+        return $sufficientPostsCharacters;
     }
 
     // Workに対するリレーション 多対多の関係
