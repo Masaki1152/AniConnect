@@ -6,10 +6,12 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\CommonFunction;
 
 class Work extends Model
 {
     use HasFactory;
+    use CommonFunction;
 
     // 参照させたいworksを指定
     protected $table = 'works';
@@ -137,10 +139,24 @@ class Work extends Model
         ]);
     }
 
-    // WorkReviewに対するリレーション 1対1の関係
-    public function workreview()
+    // 指定の投稿数以上の作品を取得
+    public function fetchSufficientReviewNumWorks()
     {
-        return $this->belongsTo(WorkReview::class);
+        // 人気度を算出する際の最低投稿数
+        $minReviewNum = 3;
+        $sufficientReviewsWorks = Work::with(['workReviews' => function ($query) {
+            $query->select('id', 'work_id', 'star_num', 'created_at');
+        }])
+            ->withCount('workReviews')
+            ->having('work_reviews_count', '>=', $minReviewNum)
+            ->get();
+        return $sufficientReviewsWorks;
+    }
+
+    // WorkReviewに対するリレーション 1対多の関係
+    public function workReviews()
+    {
+        return $this->hasMany(WorkReview::class, 'work_id');
     }
 
     // AnimePilgrimageに対するリレーション 多対多の関係
