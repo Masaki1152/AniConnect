@@ -146,10 +146,10 @@ class Work extends Model
         // 30日で影響度が半減する設定
         $halfLife = 30;
         // 指定の投稿数以上の作品を取得
-        $sufficientReviewsWorks = Work::with(['workreview' => function ($query) {
+        $sufficientReviewsWorks = Work::with(['workReviews' => function ($query) {
             $query->select('id', 'work_id', 'star_num', 'created_at');
         }])
-            ->withCount('workreview')
+            ->withCount('workReviews')
             ->having('workreview_count', '>=', $minWorkReviewNum)
             ->get();
 
@@ -159,7 +159,7 @@ class Work extends Model
             $totalScore = 0;
             $totalWeight = 0;
 
-            foreach ($sufficientReviewsWork->workreview as $post) {
+            foreach ($sufficientReviewsWork->workReviews as $post) {
                 $daysSincePost = Carbon::now()->diffInDays($post->created_at);
                 // 各投稿の重み 指数関数を使って重みつけ
                 $weight = exp(-$daysSincePost / $halfLife);
@@ -167,7 +167,7 @@ class Work extends Model
                 $totalWeight += $weight;
             }
             // 投稿数が多いほど信頼性が上がるよう補正
-            $numReviews = $sufficientReviewsWork->workreview->count();
+            $numReviews = $sufficientReviewsWork->workReviews->count();
             $finalScore = ($totalWeight > 0) ? ($totalScore / $totalWeight) : 0;
             $finalScore *= log($numReviews + 1) + 1;
             $popularityScores[] = ['work' => $sufficientReviewsWork, 'score' => $finalScore];
@@ -182,8 +182,8 @@ class Work extends Model
         Cache::put('top_popular_works', array_slice($popularityScores, 0, 3), now()->addDay());
     }
 
-    // WorkReviewに対するリレーション 1対1の関係
-    public function workreview()
+    // WorkReviewに対するリレーション 1対多の関係
+    public function workReviews()
     {
         return $this->hasMany(WorkReview::class, 'work_id');
     }
