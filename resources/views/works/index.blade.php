@@ -115,6 +115,7 @@
                                 <p>カテゴリー情報がありません。</p>
                             @endif
                         </h5>
+                        <x-star-num-detail :starNum="$work->evaluationData['evaluation']" :postNum="$work->evaluationData['count']" />
                         <p class="text-gray-600">{{ $work->term }}</p>
                         <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]"
                             isMultiple="false" />
