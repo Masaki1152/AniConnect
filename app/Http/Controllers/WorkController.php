@@ -37,6 +37,10 @@ class WorkController extends Controller
         // 更新時間表示のために単体の作品オブジェクトを取得
         $work = Work::find(1);
 
+        // 各作品の投稿数を追加　
+        // 平均評価と異なりリアルタイム性が必要なため作品一覧表示の度に取得
+        $works = $work->countPosts($works, 'workReviews');
+
         // カテゴリー情報をまとめる
         foreach ($works as $work) {
             $work->top_categories = collect([

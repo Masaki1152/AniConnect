@@ -16,6 +16,7 @@ class Kernel extends ConsoleKernel
         Log::info('Schedule method called.');
         $schedule->command('categories:update-top')->daily();
         $schedule->command('popularity:update-top')->daily();
+        $schedule->command('average-star-num:update')->daily();
 
         // 毎日0時にキャッシュを削除
         $schedule->call(function () {
