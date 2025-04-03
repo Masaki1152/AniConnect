@@ -43,7 +43,7 @@ trait CommonFunction
     }
 
     // 各投稿数と星の数から平均を取得
-    public function getItemEvaluation($sufficientReviewsItems, $relation)
+    public function updateAverageStarNum($items, $sufficientReviewsItems, $relation)
     {
 
         $itemEvaluations = [];
@@ -61,6 +61,20 @@ trait CommonFunction
             $itemEvaluations[$sufficientReviewsItem->id] = ['evaluation' => $averageEvaluation, 'count' => $numReviews];
         }
 
-        return $itemEvaluations;
+        // 各アイテムの平均評価をテーブルに反映
+        foreach ($items as $item) {
+            $average_star_num = $itemEvaluations[$item->id]['evaluation'] ?? 9.9;
+            $item->average_star_num = $average_star_num;
+            $item->save();
+        }
+    }
+
+    // 各アイテムの投稿数を取得
+    public function countPosts($items, $relation)
+    {
+        foreach ($items as $item) {
+            $item->post_num = $item->$relation->count() ?? 0;
+        }
+        return $items;
     }
 }

@@ -1,4 +1,4 @@
-@if ($starNum == '評価数が足りません')
+@if ($starNum == 9.9)
     <p class="text-sm text-gray-500">評価数が足りません</p>
 @else
     <div class="content mt-2">

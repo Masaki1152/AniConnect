@@ -37,6 +37,10 @@ class WorkController extends Controller
         // 更新時間表示のために単体の作品オブジェクトを取得
         $work = Work::find(1);
 
+        // 各作品の投稿数を追加　
+        // 平均評価と異なりリアルタイム性が必要なため作品一覧表示の度に取得
+        $works = $work->countPosts($works, 'workReviews');
+
         // カテゴリー情報をまとめる
         foreach ($works as $work) {
             $work->top_categories = collect([
@@ -60,12 +64,6 @@ class WorkController extends Controller
         foreach ($categoryIds as $categoryId) {
             $category = WorkReviewCategory::find($categoryId);
             array_push($selectedCategories, $category->name);
-        }
-
-        // 各作品の平均評価を取得
-        $averageEvaluation = $work->getItemEvaluation($sufficientReviewsWorks, 'workReviews');
-        foreach ($works as $work) {
-            $work->evaluationData = $averageEvaluation[$work->id] ?? ['evaluation' => '評価数が足りません', 'count' => 0];
         }
 
         return view('works.index')->with([
