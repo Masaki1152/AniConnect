@@ -14,10 +14,10 @@ class WorkController extends Controller
     public function index(Request $request, Work $work, WorkReviewCategory $category)
     {
         // 人気上位の作品を取得
-        $sufficientReviewsWorks = $work->fetchSufficientReviewNumWorks();
         $topPopularityWorks = Cache::get('top_popular_works');
         // キャッシュが見つからない場合
         if (!$topPopularityWorks) {
+            $sufficientReviewsWorks = $work->fetchSufficientReviewNumWorks();
             // updateTopPopularityWorksを実行して人気度の高い作品を再計算
             $work->updateTopPopularityItems($sufficientReviewsWorks, 'workReviews', 'top_popular_works');
             // 再度キャッシュから人気度の高い作品を取得
