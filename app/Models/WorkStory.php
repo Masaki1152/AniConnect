@@ -110,18 +110,21 @@ class WorkStory extends Model
     }
 
     // 指定の投稿数以上のあらすじを取得
-    public function fetchSufficientReviewNumWorkStories($work_id)
+    public function fetchSufficientReviewNumWorkStories($work_id = null)
     {
         // 人気度を算出する際の最低投稿数
-        $minReviewNum = 2;
-        $sufficientReviewsWorkStories = WorkStory::with(['workStoryPosts' => function ($query) {
+        $minReviewNum = 3;
+        $query = WorkStory::with(['workStoryPosts' => function ($query) {
             $query->select('id', 'sub_title_id', 'star_num', 'created_at');
         }])
-            ->where('work_id', $work_id)
             ->withCount('workStoryPosts')
-            ->having('work_story_posts_count', '>=', $minReviewNum)
-            ->get();
-        return $sufficientReviewsWorkStories;
+            ->having('work_story_posts_count', '>=', $minReviewNum);
+
+        if (!is_null($work_id)) {
+            $query->where('work_id', $work_id);
+        }
+
+        return $query->get();
     }
 
     // Workに対するリレーション 1対多の関係

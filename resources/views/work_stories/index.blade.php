@@ -114,6 +114,7 @@
                             <p>カテゴリー情報がありません。</p>
                         @endif
                     </h5>
+                    <x-star-num-detail :starNum="$work_story->average_star_num" :postNum="$work_story->post_num" />
                     <x-interested type="workStories" :root="$work_story" path="work_stories.interested.index"
                         :prop="['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]" isMultiple="true" />
                 </div>

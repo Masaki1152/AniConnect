@@ -121,6 +121,7 @@
                             {{ $music_object->singer->name }}
                         </a>
                     </p>
+                    <x-star-num-detail :starNum="$music_object->average_star_num" :postNum="$music_object->post_num" />
                     <x-interested type="music" :root="$music_object" path="music.interested.index" :prop="['music_id' => $music_object->id]"
                         isMultiple="false" />
                 </div>
