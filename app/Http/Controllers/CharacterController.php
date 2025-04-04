@@ -37,6 +37,10 @@ class CharacterController extends Controller
         // 更新時間表示のために単体の登場人物オブジェクトを取得
         $character = Character::find(1);
 
+        // 各登場人物の投稿数を追加　
+        // 平均評価と異なりリアルタイム性が必要なため登場人物一覧表示の度に取得
+        $characters = $character->countPosts($characters, 'characterPosts');
+
         // カテゴリー情報をまとめる
         foreach ($characters as $character) {
             $character->top_categories = collect([
