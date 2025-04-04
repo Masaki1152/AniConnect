@@ -6,6 +6,7 @@ use Illuminate\Console\Command;
 use App\Models\Work;
 use App\Models\WorkStory;
 use App\Models\Character;
+use App\Models\Music;
 use Illuminate\Support\Facades\Log;
 
 class UpdateAverageStarNum extends Command
@@ -17,13 +18,15 @@ class UpdateAverageStarNum extends Command
     private $work;
     private $workStory;
     private $character;
+    private $music;
 
-    public function __construct(Work $work, WorkStory $workStory, Character $character)
+    public function __construct(Work $work, WorkStory $workStory, Character $character, Music $music)
     {
         parent::__construct();
         $this->work = $work;
         $this->workStory = $workStory;
         $this->character = $character;
+        $this->music = $music;
     }
 
     public function handle()
@@ -40,6 +43,10 @@ class UpdateAverageStarNum extends Command
         $sufficientPostsCharacters = $this->character->fetchSufficientPostNumCharacters();
         $characters = $this->character->all();
         $this->character->updateAverageStarNum($characters, $sufficientPostsCharacters, 'characterPosts');
+        // 各音楽の平均評価を取得
+        $sufficientPostsMusic = $this->music->fetchSufficientPostNumMusic();
+        $music = $this->music->all();
+        $this->music->updateAverageStarNum($music, $sufficientPostsMusic, 'musicPosts');
 
         // 明示的にログを記録
         Log::info('Average starNum updated successfully.');

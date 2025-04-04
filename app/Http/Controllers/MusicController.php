@@ -37,6 +37,10 @@ class MusicController extends Controller
         // 更新時間表示のために単体の音楽オブジェクトを取得
         $music_object = Music::find(1);
 
+        // 各音楽の投稿数を追加　
+        // 平均評価と異なりリアルタイム性が必要なため音楽一覧表示の度に取得
+        $music = $music_object->countPosts($music, 'musicPosts');
+
         // カテゴリー情報をまとめる
         foreach ($music as $one_of_music) {
             $one_of_music->top_categories = collect([
