@@ -43,6 +43,10 @@ class AnimePilgrimageController extends Controller
         // 更新時間表示のために単体の聖地オブジェクトを取得
         $pilgrimage = AnimePilgrimage::find(1);
 
+        // 各聖地の投稿数を追加　
+        // 平均評価と異なりリアルタイム性が必要なため聖地一覧表示の度に取得
+        $pilgrimages = $animePilgrimage->countPosts($pilgrimages, 'animePilgrimagePosts');
+
         // カテゴリー情報をまとめる
         foreach ($pilgrimages as $pilgrimage) {
             $pilgrimage->top_categories = collect([
