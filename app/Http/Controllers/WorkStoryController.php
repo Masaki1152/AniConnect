@@ -33,6 +33,11 @@ class WorkStoryController extends Controller
         $totalResults = $work_stories->total();
         // あらすじのオブジェクトを1つ取得
         $work_story_model = WorkStory::where('work_id', '=', $work_id)->first();
+
+        // 各あらすじの感想投稿数を追加　
+        // 平均評価と異なりリアルタイム性が必要なためあらすじ一覧表示の度に取得
+        $work_stories = $workStory->countPosts($work_stories, 'workStoryPosts');
+
         // カテゴリー情報をまとめる
         foreach ($work_stories as $work_story) {
             $work_story->top_categories = collect([
