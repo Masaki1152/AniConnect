@@ -64,16 +64,7 @@
                                     {{ $errors->first('character_post.categories_array') }}</p>
                             @endif
                         </div>
-                        <div class="body">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">内容</label>
-                            <textarea name="character_post[body]" placeholder="内容を記入してください。"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-40"
-                                data-max-length="4000" data-counter-id="bodyCharacterCount" oninput="countCharacter(this)">{{ old('character_post.body', $character_post->body) }}</textarea>
-                            <p id="bodyCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-                            <p class="body__error text-sm text-red-500 mt-1">
-                                {{ $errors->first('character_post.body') }}
-                            </p>
-                        </div>
+                        <x-body-text-area :postType="$character_post" postTypeString="character_post" />
                         <div class="image">
                             <label class="block font-medium text-sm text-gray-700 mb-2">画像（4枚まで）</label>
                             @php
