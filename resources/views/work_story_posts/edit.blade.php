@@ -129,10 +129,7 @@
                             <p class="image__error text-sm text-red-500 mt-1">{{ $errors->first('images') }}</p>
                         </div>
                         <!-- 投稿ボタン -->
-                        <div class="flex items-center  justify-center">
-                            <button type="submit"
-                                class="bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">変更を保存する</button>
-                        </div>
+                        <x-post-button buttonText="common.update_post" />
                     </form>
                 </div>
             </div>
