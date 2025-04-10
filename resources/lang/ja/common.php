@@ -23,6 +23,8 @@ return [
     'cancel' => 'キャンセル',
     'edit' => '編集する',
     'title' => 'タイトル',
+    'scene' => 'シーン',
+    'text_placeholder' => 'を記入してください',
     'created_at' => '作成日',
     'keyword' => 'キーワード',
     'category' => 'カテゴリー',

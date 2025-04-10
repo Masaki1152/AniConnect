@@ -26,17 +26,8 @@
                             <input type="hidden" name="work_story_post[sub_title_id]"
                                 value="{{ $work_story_post->sub_title_id }}">
                         </div>
-                        <div class="title">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">タイトル</label>
-                            <input type="text" name="work_story_post[post_title]" placeholder="タイトル"
-                                value="{{ old('work_story_post.post_title', $work_story_post->post_title) }}"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                data-max-length="40" data-counter-id="titleCharacterCount"
-                                oninput="countCharacter(this)" />
-                            <p id="titleCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-                            <p class="title__error text-sm text-red-500 mt-1">
-                                {{ $errors->first('work_story_post.post_title') }}</p>
-                        </div>
+                        <x-input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$work_story_post" postTypeString="work_story_post"
+                            characterMaxLength="40" />
                         <x-star-num-select-box :postType="$work_story_post" postTypeString="work_story_post" :isCreateType="false" />
                         <div id="custom-multi-select-container" class="category relative">
                             <label class="block font-medium text-sm text-gray-700 mb-2">カテゴリー（3個まで）</label>
@@ -70,16 +61,7 @@
                                     {{ $errors->first('work_story_post.categories_array') }}</p>
                             @endif
                         </div>
-                        <div class="body">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">内容</label>
-                            <textarea name="work_story_post[body]" placeholder="内容を記入してください。"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200 h-40"
-                                data-max-length="4000" data-counter-id="bodyCharacterCount" oninput="countCharacter(this)">{{ old('work_story_post.body', $work_story_post->body) }}</textarea>
-                            <p id="bodyCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-                            <p class="body__error text-sm text-red-500 mt-1">
-                                {{ $errors->first('work_story_post.body') }}
-                            </p>
-                        </div>
+                        <x-body-text-area :postType="$work_story_post" postTypeString="work_story_post" />
                         <div class="image">
                             <label class="block font-medium text-sm text-gray-700 mb-2">画像（4枚まで）</label>
                             @php
@@ -129,10 +111,7 @@
                             <p class="image__error text-sm text-red-500 mt-1">{{ $errors->first('images') }}</p>
                         </div>
                         <!-- 投稿ボタン -->
-                        <div class="flex items-center  justify-center">
-                            <button type="submit"
-                                class="bg-blue-500 text-white py-2 px-4 rounded-lg shadow hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300">変更を保存する</button>
-                        </div>
+                        <x-post-button buttonText="common.update_post" />
                     </form>
                 </div>
             </div>
