@@ -15,18 +15,8 @@
                         <div class="work_id">
                             <input type="hidden" name="work_review[work_id]" value="{{ $work->id }}">
                         </div>
-                        <div class="title">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">タイトル</label>
-                            <input type="text" name="work_review[post_title]" placeholder="タイトル"
-                                value="{{ old('work_review.post_title') }}"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                data-max-length="40" data-counter-id="titleCharacterCount"
-                                oninput="countCharacter(this)" />
-                            <p id="titleCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-                            <p class="title__error text-sm text-red-500 mt-1">
-                                {{ $errors->first('work_review.post_title') }}
-                            </p>
-                        </div>
+                        <x-input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null" postTypeString="work_review"
+                            characterMaxLength="40" />
                         <x-star-num-select-box :postType="$work" postTypeString="work_review" :isCreateType="true" />
                         <div id="custom-multi-select-container" class="category relative">
                             <label class="block font-medium text-sm text-gray-700 mb-2">カテゴリー（3個まで）</label>

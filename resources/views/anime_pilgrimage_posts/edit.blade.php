@@ -22,29 +22,11 @@
                             <input type="hidden" name="pilgrimage_post[anime_pilgrimage_id]"
                                 value="{{ $pilgrimage_post->anime_pilgrimage_id }}">
                         </div>
-                        <div class="title">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">タイトル</label>
-                            <input type="text" name="pilgrimage_post[post_title]" placeholder="タイトル"
-                                value="{{ old('pilgrimage_post.post_title', $pilgrimage_post->post_title) }}"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                data-max-length="40" data-counter-id="titleCharacterCount"
-                                oninput="countCharacter(this)" />
-                            <p id="titleCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-                            <p class="title__error text-sm text-red-500 mt-1">
-                                {{ $errors->first('pilgrimage_post.post_title') }}</p>
-                        </div>
+                        <x-input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$pilgrimage_post" postTypeString="pilgrimage_post"
+                            characterMaxLength="40" />
                         <x-star-num-select-box :postType="$pilgrimage_post" postTypeString="pilgrimage_post" :isCreateType="false" />
-                        <div class="title">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">シーン</label>
-                            <input type="text" name="pilgrimage_post[scene]" placeholder="シーン"
-                                value="{{ old('pilgrimage_post.scene', $pilgrimage_post->scene) }}"
-                                class="w-full border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring focus:ring-blue-200"
-                                data-max-length="40" data-counter-id="sceneCharacterCount"
-                                oninput="countCharacter(this)" />
-                            <p id="sceneCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-                            <p class="title__error text-sm text-red-500 mt-1">
-                                {{ $errors->first('pilgrimage_post.scene') }}</p>
-                        </div>
+                        <x-input-text :inputTextType="\App\Enums\InputTextType::Scene" :postType="$pilgrimage_post" postTypeString="pilgrimage_post"
+                            characterMaxLength="40" />
                         <div id="custom-multi-select-container" class="category relative">
                             <label class="block font-medium text-sm text-gray-700 mb-2">カテゴリー（3個まで）</label>
                             <div id="custom-multi-select" tabindex="0" class="w-1/3">
