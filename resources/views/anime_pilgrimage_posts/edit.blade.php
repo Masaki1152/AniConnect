@@ -27,38 +27,7 @@
                         <x-star-num-select-box :postType="$pilgrimage_post" postTypeString="pilgrimage_post" :isCreateType="false" />
                         <x-input-text :inputTextType="\App\Enums\InputTextType::Scene" :postType="$pilgrimage_post" postTypeString="pilgrimage_post"
                             characterMaxLength="40" />
-                        <div id="custom-multi-select-container" class="category relative">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">カテゴリー（3個まで）</label>
-                            <div id="custom-multi-select" tabindex="0" class="w-1/3">
-                                <div id="custom-multi-select-list" class="max-h-48 overflow-y-auto">
-                                    @php
-                                        // old() が存在すればそれを使用し、なければ過去の保存値を使用
-                                        $existingCategories = $pilgrimage_post->categories->pluck('id')->toArray();
-                                        $selectedCategories = old(
-                                            'pilgrimage_post.categories_array',
-                                            $existingCategories,
-                                        );
-                                    @endphp
-                                    @foreach ($categories as $category)
-                                        <div class="custom-option p-2 cursor-pointer @if (in_array($category->id, $selectedCategories)) bg-gray-500 text-white @endif"
-                                            data-value="{{ $category->id }}" data-post-type="pilgrimage_post">
-                                            {{ $category->name }}
-                                        </div>
-                                    @endforeach
-                                </div>
-                            </div>
-                            <!-- 選択された値を格納する -->
-                            <div id="selected-categories-container">
-                                @foreach ($selectedCategories as $selectedCategory)
-                                    <input type="hidden" name="pilgrimage_post[categories_array][]"
-                                        value="{{ $selectedCategory }}">
-                                @endforeach
-                            </div>
-                            @if ($errors->has('pilgrimage_post.categories_array'))
-                                <p class="category__error text-sm text-red-500 mt-1">
-                                    {{ $errors->first('pilgrimage_post.categories_array') }}</p>
-                            @endif
-                        </div>
+                        <x-category-select-box :postType="$pilgrimage_post" postTypeString="pilgrimage_post" :categories="$categories" />
                         <x-body-text-area :postType="$pilgrimage_post" postTypeString="pilgrimage_post" />
                         <div class="image">
                             <label class="block font-medium text-sm text-gray-700 mb-2">画像（4枚まで）</label>
