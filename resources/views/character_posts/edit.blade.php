@@ -25,54 +25,7 @@
                         <x-star-num-select-box :postType="$character_post" postTypeString="character_post" :isCreateType="false" />
                         <x-category-select-box :postType="$character_post" postTypeString="character_post" :categories="$categories" />
                         <x-body-text-area :postType="$character_post" postTypeString="character_post" />
-                        <div class="image">
-                            <label class="block font-medium text-sm text-gray-700 mb-2">画像（4枚まで）</label>
-                            @php
-                                // 既にファイルが選択されている場合はそれらを表示する
-                                $existingImages = [];
-                                $numbers = [1, 2, 3, 4];
-                                foreach ($numbers as $number) {
-                                    $image = 'image' . $number;
-                                    if ($character_post->$image) {
-                                        array_push($existingImages, $character_post->$image);
-                                    }
-                                }
-                                $existingImages = json_encode($existingImages);
-                            @endphp
-                            <div id="existing_image_paths" data-php-variable="{{ $existingImages }}"></div>
-                            <label
-                                class="inline-flex items-center gap-2 cursor-pointer text-blue-500 bg-blue-20 border-2 border-gray-300 rounded-lg py-1 px-2 hover:bg-blue-50">
-                                <input id="inputElm" type="file" name="images[]" multiple class="hidden"
-                                    onchange="loadImage(this);"><span>画像を追加する</span>
-                            </label>
-                            <div id="count" class="text-sm text-gray-600 mt-1"></div>
-                            <!-- 画像トリミング用のモーダルウィンドウ表示 -->
-                            <div id="crop-modal"
-                                class="crop-modal hidden fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                                <div class="bg-white p-4 rounded-lg shadow-lg relative w-full max-w-2xl">
-                                    <div class="overflow-hidden w-full h-auto">
-                                        <img id="crop-preview" class="crop-preview w-full h-auto object-cover" />
-                                    </div>
-                                    <div class="flex justify-end gap-2 mt-4">
-                                        <button id="crop-cancel-button" type="button"
-                                            class="px-4 py-2 bg-gray-500 text-white rounded hover:bg-gray-600">
-                                            キャンセル
-                                        </button>
-                                        <button id="crop-next-button" type="button"
-                                            class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">
-                                            次へ
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <!-- プレビュー画像の表示 -->
-                            <div id="preview" class="grid grid-cols-2 gap-4 mt-4"></div>
-                            <!-- 削除された既存画像のリスト -->
-                            <input type="hidden" name="removedImages[]" id="removedImages" value="">
-                            <!-- 削除されず残った既存画像のリスト -->
-                            <input type="hidden" name="remainedImages[]" id="remainedImages" value="">
-                            <p class="image__error text-sm text-red-500 mt-1">{{ $errors->first('images') }}</p>
-                        </div>
+                        <x-preview-image-edit :postType="$character_post" />
                         <!-- 投稿ボタン -->
                         <x-post-button buttonText="common.update_post" />
                     </form>
