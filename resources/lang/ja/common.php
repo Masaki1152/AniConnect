@@ -36,6 +36,7 @@ return [
     'image_up_to_four' => '画像（4枚まで）',
     'image_num_zero' => '現在、0枚の画像を選択しています',
     'add_image' => '画像の追加',
+    'add_images' => '画像を追加する',
     'not_reload_images' => '画像が読み込めません',
     'post' => '投稿する',
     'update_post' => '変更を保存する',
