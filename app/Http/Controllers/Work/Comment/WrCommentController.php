@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Work\Comment;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\WrCommentRequest;
 use App\Models\WorkReviewComment;
 use Illuminate\Database\Eloquent\SoftDeletes;

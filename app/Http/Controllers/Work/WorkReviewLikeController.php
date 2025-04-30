@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Work;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\WorkReview;
 
 class WorkReviewLikeController extends Controller
