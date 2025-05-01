@@ -32,8 +32,8 @@ use App\Http\Controllers\WorkStory\WorkStoryPostController;
 use App\Http\Controllers\WorkStory\WorkStoryPostLikeController;
 use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserFollowController;
-use App\Http\Controllers\NotificationController;
-use App\Http\Controllers\NotificationLikeController;
+use App\Http\Controllers\Notification\NotificationController;
+use App\Http\Controllers\Notification\NotificationLikeController;
 use App\Http\Controllers\Work\Comment\WrCommentController;
 use App\Http\Controllers\Work\Comment\WrCommentLikeController;
 use App\Http\Controllers\WorkStory\Comment\WspCommentController;
@@ -44,8 +44,8 @@ use App\Http\Controllers\Character\Comment\CpCommentController;
 use App\Http\Controllers\Character\Comment\CpCommentLikeController;
 use App\Http\Controllers\AnimePilgrimage\Comment\AppCommentController;
 use App\Http\Controllers\AnimePilgrimage\Comment\AppCommentLikeController;
-use App\Http\Controllers\NotificationCommentController;
-use App\Http\Controllers\NotificationCommentLikeController;
+use App\Http\Controllers\Notification\Comment\NotificationCommentController;
+use App\Http\Controllers\Notification\Comment\NotificationCommentLikeController;
 
 /*
 |--------------------------------------------------------------------------
