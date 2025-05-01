@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\RelatedParty;
 
+use App\Http\Controllers\Controller;
 use App\Models\Creator;
 use Illuminate\Http\Request;
 
