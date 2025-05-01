@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\MainController;
 use App\Http\Controllers\Admin\AdminController;
@@ -30,8 +30,8 @@ use App\Http\Controllers\WorkStory\WorkStoryController;
 use App\Http\Controllers\WorkStory\WorkStoryInterestedController;
 use App\Http\Controllers\WorkStory\WorkStoryPostController;
 use App\Http\Controllers\WorkStory\WorkStoryPostLikeController;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\UserFollowController;
+use App\Http\Controllers\User\UserController;
+use App\Http\Controllers\User\UserFollowController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\NotificationLikeController;
 use App\Http\Controllers\Work\Comment\WrCommentController;
