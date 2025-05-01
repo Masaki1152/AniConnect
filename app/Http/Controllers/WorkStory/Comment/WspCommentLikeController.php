@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\WorkStory\Comment;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 use App\Models\WorkStoryPostComment;
 
 class WspCommentLikeController extends Controller
