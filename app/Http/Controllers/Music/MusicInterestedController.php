@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Music;
 
+use App\Http\Controllers\Controller;
 use App\Models\Music;
 use Illuminate\Http\Request;
 
