@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\User\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\MainController;
+use App\Http\Controllers\Main\MainController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Work\WorkController;
