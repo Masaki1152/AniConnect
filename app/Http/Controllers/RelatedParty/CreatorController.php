@@ -12,6 +12,6 @@ class CreatorController extends Controller
     public function show($creator_id)
     {
         $creator = Creator::find($creator_id);
-        return view('creators.show')->with(['creator' => $creator]);
+        return view('related_party.creators.show')->with(['creator' => $creator]);
     }
 }

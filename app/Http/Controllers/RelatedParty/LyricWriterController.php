@@ -12,6 +12,6 @@ class LyricWriterController extends Controller
     public function show($lyric_writer_id)
     {
         $lyric_writer = LyricWriter::find($lyric_writer_id);
-        return view('lyric_writers.show')->with(['lyric_writer' => $lyric_writer]);
+        return view('related_party.lyric_writers.show')->with(['lyric_writer' => $lyric_writer]);
     }
 }

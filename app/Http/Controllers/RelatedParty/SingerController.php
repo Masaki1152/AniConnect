@@ -12,6 +12,6 @@ class SingerController extends Controller
     public function show($singer_id)
     {
         $singer = Singer::find($singer_id);
-        return view('singers.show')->with(['singer' => $singer]);
+        return view('related_party.singers.show')->with(['singer' => $singer]);
     }
 }
