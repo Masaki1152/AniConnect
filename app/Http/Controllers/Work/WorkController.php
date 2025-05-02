@@ -67,7 +67,7 @@ class WorkController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('works.index')->with([
+        return view('entities.works.index')->with([
             'works' => $works,
             'work' => $work,
             'categories' => $category->get(),
@@ -89,7 +89,7 @@ class WorkController extends Controller
                 array_push($categories, $category->name);
             }
         }
-        return view('works.show')->with(['work' => $work, 'categories' => $categories]);
+        return view('entities.works.show')->with(['work' => $work, 'categories' => $categories]);
     }
 
     // 作品に「気になる」登録をする

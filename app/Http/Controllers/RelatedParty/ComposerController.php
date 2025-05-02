@@ -12,6 +12,6 @@ class ComposerController extends Controller
     public function show($composer_id)
     {
         $composer = Composer::find($composer_id);
-        return view('related_party.composers.show')->with(['composer' => $composer]);
+        return view('entities.related_party.composers.show')->with(['composer' => $composer]);
     }
 }
