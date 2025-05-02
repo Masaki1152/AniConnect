@@ -22,7 +22,7 @@ class ProfileController extends Controller
     {
         // 現在認証しているユーザーを取得
         $user = auth()->user();
-        return view('users.show', [
+        return view('user_interactions.users.show', [
             'user' => $user
         ]);
     }
@@ -30,7 +30,7 @@ class ProfileController extends Controller
     // 編集画面の表示
     public function edit(Request $request): View
     {
-        return view('profile.edit', [
+        return view('user_interactions.profile.edit', [
             'user' => $request->user(),
         ]);
     }
@@ -77,7 +77,7 @@ class ProfileController extends Controller
     // パスワード更新ページの表示
     public function editPassword()
     {
-        return view('profile.edit-password');
+        return view('user_interactions.profile.edit-password');
     }
 
     // パスワード更新の処理
@@ -107,7 +107,7 @@ class ProfileController extends Controller
     // アカウント削除確認ページの表示
     public function confirmDelete()
     {
-        return view('profile.delete-account');
+        return view('user_interactions.profile.delete-account');
     }
 
     // アカウント削除の処理

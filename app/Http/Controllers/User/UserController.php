@@ -29,14 +29,14 @@ class UserController extends Controller
         })->paginate(10);
         // ログインしているユーザー
         $auth_user_id = Auth::id();
-        return view('users.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id]);
+        return view('user_interactions.users.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id]);
     }
 
     // 詳細なユーザー情報を表示する
     public function show($user_id)
     {
         $user = User::where('id', $user_id)->first();
-        return view('users.show')->with(['user' => $user]);
+        return view('user_interactions.users.show')->with(['user' => $user]);
     }
 
     // ユーザーのフォロー行う

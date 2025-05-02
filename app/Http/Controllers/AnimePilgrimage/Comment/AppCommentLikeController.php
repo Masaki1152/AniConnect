@@ -13,6 +13,6 @@ class AppCommentLikeController extends Controller
     {
         // 聖地感想のコメントテーブルから、今回開いているコメントにいいねしたユーザーidを取得
         $users = AnimePilgrimagePostComment::find($comment_id)->users()->get();
-        return view('like_list')->with(['users' => $users]);
+        return view('user_interactions.like_list')->with(['users' => $users]);
     }
 }

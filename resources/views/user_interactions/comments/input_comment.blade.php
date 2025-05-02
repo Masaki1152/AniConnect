@@ -112,7 +112,7 @@
     <!-- 子コメント作成フォーム -->
     <div id='addChildCommentBlock-{{ $comment->id }}' class="w-full p-4 mt-4 border rounded-lg bg-gray-50"
         style="display: none;">
-        @include('comments.input_create_comment', [
+        @include('user_interactions.comments.input_create_comment', [
             'comment' => $comment,
             'inputName' => $inputName,
             'inputPostIdName' => $inputPostIdName,

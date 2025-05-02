@@ -43,7 +43,7 @@ class CpCommentController extends Controller
         $status = is_null($cp_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
 
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', [
+        $commentHtml = view('user_interactions.comments.input_comment', [
             'comment' => $cp_comment,
             'status' => $status,
             'inputName' => 'character_post_comment',
@@ -125,7 +125,7 @@ class CpCommentController extends Controller
         $replies = $cp_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
-            $reply->html = view('comments.input_comment', [
+            $reply->html = view('user_interactions.comments.input_comment', [
                 'comment' => $reply,
                 'status' => 'show',
                 'inputName' => 'character_post_comment',

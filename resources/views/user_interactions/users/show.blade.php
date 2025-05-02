@@ -18,7 +18,7 @@
                 <!-- プロフィール詳細ブロック -->
                 <div class="bg-white rounded-lg shadow-md">
                     <div class="w-full p-4 border rounded-lg bg-gray-50">
-                        @include('users.input_profile', ['user' => $user])
+                        @include('user_interactions.users.input_profile', ['user' => $user])
                     </div>
                 </div>
                 <div class="post_type_button py-2 flex flex-row justify-evenly items-center w-full">

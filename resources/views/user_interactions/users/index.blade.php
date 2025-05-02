@@ -27,7 +27,7 @@
                         <!-- ユーザーセルの表示 -->
                         <div
                             class='user_cell w-full sm:w-full lg:w-[96%] flex items-center p-1 gap-2 bg-white shadow rounded-lg h-[170px]'>
-                            @include('users.user_cell', ['user' => $user])
+                            @include('user_interactions.users.user_cell', ['user' => $user])
                         </div>
                     @endforeach
                 </div>

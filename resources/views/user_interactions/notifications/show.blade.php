@@ -90,7 +90,7 @@
                     </div>
                     <!-- コメント作成フォーム -->
                     <div id='addCommentBlock' class="w-full p-4 border rounded-lg bg-gray-50" style="display: none;">
-                        @include('comments.input_create_comment', [
+                        @include('user_interactions.comments.input_create_comment', [
                             'comment' => $notification,
                             'inputName' => 'notification_comment',
                             'inputPostIdName' => 'notification_id',
@@ -116,7 +116,7 @@
                                 @if (!$loop->first)
                                     <hr class="border-t my-4" id="border-{{ $comment->id }}">
                                 @endif
-                                @include('comments.input_comment', [
+                                @include('user_interactions.comments.input_comment', [
                                     'comment' => $comment,
                                     'status' => 'show',
                                     'inputName' => 'notification_comment',

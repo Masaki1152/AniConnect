@@ -33,7 +33,7 @@ class NotificationController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('notifications.index')->with([
+        return view('user_interactions.notifications.index')->with([
             'notifications' => $notifications,
             'categories' => $category->get(),
             'totalResults' => $totalResults,
@@ -48,7 +48,7 @@ class NotificationController extends Controller
         $notification = Notification::find($notification_id);
         // 運営の情報を取得
         $operate = User::find(1);
-        return view('notifications.show')->with([
+        return view('user_interactions.notifications.show')->with([
             'notification' => $notification,
             'operate' => $operate
         ]);

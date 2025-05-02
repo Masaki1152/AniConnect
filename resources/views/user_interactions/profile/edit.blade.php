@@ -6,7 +6,7 @@
                     <div id="message"
                         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
                     </div>
-                    @include('profile.partials.update-profile-information-form')
+                    @include('user_interactions.profile.partials.update-profile-information-form')
                 </div>
             </div>
         </div>

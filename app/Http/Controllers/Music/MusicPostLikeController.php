@@ -13,6 +13,6 @@ class MusicPostLikeController extends Controller
     {
         // 音楽感想テーブルから、今回開いている音楽感想にいいねしたユーザーidを取得
         $users = MusicPost::whereId($music_post_id)->first()->users()->get();
-        return view('like_list')->with(['users' => $users]);
+        return view('user_interactions.like_list')->with(['users' => $users]);
     }
 }
