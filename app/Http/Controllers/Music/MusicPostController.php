@@ -42,7 +42,7 @@ class MusicPostController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('music_posts.index')->with([
+        return view('posts.music_posts.index')->with([
             'music_posts' => $music_posts,
             'music_first' => $music_first,
             'music' => $music,
@@ -56,7 +56,7 @@ class MusicPostController extends Controller
     // 音楽感想投稿詳細の表示
     public function show(MusicPost $musicPost, MusicPostCategory $category, $music_id, $music_post_id)
     {
-        return view('music_posts.show')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id), 'categories' => $category->get()]);
+        return view('posts.music_posts.show')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
@@ -64,7 +64,7 @@ class MusicPostController extends Controller
     {
         // 音楽のオブジェクトを取得
         $music = Music::find($music_id);
-        return view('music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id), 'music' => $music, 'categories' => $category->get()]);
+        return view('posts.music_posts.create')->with(['music_post' => $musicPost->getRestrictedPost('music_id', $music_id), 'music' => $music, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
@@ -101,7 +101,7 @@ class MusicPostController extends Controller
     // 感想投稿編集画面を表示する
     public function edit(MusicPost $musicPost, MusicPostCategory $category, $music_id, $music_post_id)
     {
-        return view('music_posts.edit')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id), 'categories' => $category->get()]);
+        return view('posts.music_posts.edit')->with(['music_post' => $musicPost->getDetailPost($music_id, $music_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する

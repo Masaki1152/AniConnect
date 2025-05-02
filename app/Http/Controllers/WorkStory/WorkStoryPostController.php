@@ -42,7 +42,7 @@ class WorkStoryPostController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('work_story_posts.index')->with([
+        return view('posts.work_story_posts.index')->with([
             'work_story_posts' => $work_story_posts,
             'work_story_post_first' => $work_story_post_first,
             'work_id' => $work_id,
@@ -58,14 +58,14 @@ class WorkStoryPostController extends Controller
     // あらすじ感想投稿詳細の表示
     public function show(WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id, $work_story_post_id)
     {
-        return view('work_story_posts.show')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id), 'categories' => $category->get()]);
+        return view('posts.work_story_posts.show')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
     public function create(WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id)
     {
         $work_story = WorkStory::find($work_story_id);
-        return view('work_story_posts.create')->with(['work_story_post' => $workStoryPost->getRestrictedPost('sub_title_id', $work_story_id), 'work_story' => $work_story, 'categories' => $category->get()]);
+        return view('posts.work_story_posts.create')->with(['work_story_post' => $workStoryPost->getRestrictedPost('sub_title_id', $work_story_id), 'work_story' => $work_story, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
@@ -102,7 +102,7 @@ class WorkStoryPostController extends Controller
     // 感想投稿編集画面を表示する
     public function edit(WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id, $work_story_post_id)
     {
-        return view('work_story_posts.edit')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id), 'categories' => $category->get()]);
+        return view('posts.work_story_posts.edit')->with(['work_story_post' => $workStoryPost->getDetailPost($work_story_id, $work_story_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する
