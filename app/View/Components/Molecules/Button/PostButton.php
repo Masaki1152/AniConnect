@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Molecules\Button;
 
 use Illuminate\View\Component;
 
@@ -15,6 +15,6 @@ class PostButton extends Component
 
     public function render()
     {
-        return view('components.post-button');
+        return view('components.molecules.button.post-button');
     }
 }

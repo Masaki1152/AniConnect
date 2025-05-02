@@ -18,19 +18,19 @@
         @method('patch')
 
         <div>
-            <x-input-label for="name" :value="__('Name Max15')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)"
+            <x-atom.input-label for="name" :value="__('Name Max15')" />
+            <x-atom.text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)"
                 required autofocus autocomplete="name" data-max-length="15" data-counter-id="nameCharacterCount"
                 oninput="countCharacter(this)" />
             <p id="nameCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-            <x-input-error class="mt-2" :messages="$errors->get('name')" />
+            <x-atom.input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
 
         <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)"
+            <x-atom.input-label for="email" :value="__('Email')" />
+            <x-atom.text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)"
                 required autocomplete="username" />
-            <x-input-error class="mt-2" :messages="$errors->get('email')" />
+            <x-atom.input-error class="mt-2" :messages="$errors->get('email')" />
 
             @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && !$user->hasVerifiedEmail())
                 <div>
@@ -54,27 +54,27 @@
 
         <!-- Age -->
         <div class="mt-4">
-            <x-input-label for="age" :value="__('Age')" />
-            <x-text-input id="age" class="block mt-1 w-full" type="number" min="0" name="age"
+            <x-atom.input-label for="age" :value="__('Age')" />
+            <x-atom.text-input id="age" class="block mt-1 w-full" type="number" min="0" name="age"
                 :value="old('age', $user->age)" required autocomplete="age" />
-            <x-input-error :messages="$errors->get('age')" class="mt-2" />
+            <x-atom.input-error :messages="$errors->get('age')" class="mt-2" />
         </div>
 
         <!-- Sex -->
         <div class="mt-4">
-            <x-input-label for="sex" :value="__('Sex')" />
+            <x-atom.input-label for="sex" :value="__('Sex')" />
             {{ $user->sex }}
         </div>
 
         <!-- Introduction -->
         <div class="mt-4">
-            <x-input-label for="introduction" :value="__('Introduction Max200')" />
+            <x-atom.input-label for="introduction" :value="__('Introduction Max200')" />
             <textarea id="introduction" name="introduction"
                 class="block mt-1 w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
                 rows="4" required autofocus autocomplete="introduction" data-max-length="200"
                 data-counter-id="introductionCharacterCount" oninput="countCharacter(this)">{{ old('introduction', $user->introduction) }}</textarea>
             <p id="introductionCharacterCount" class="mt-1 text-sm text-gray-500"></p>
-            <x-input-error :messages="$errors->get('introduction')" class="mt-2" />
+            <x-atom.input-error :messages="$errors->get('introduction')" class="mt-2" />
         </div>
 
         <!-- Image -->
@@ -83,7 +83,7 @@
         @endphp
         <div id="existing_image_path" data-php-variable="{{ $existingImagePath }}"></div>
         <div>
-            <x-input-label for="image" :value="__('User_Image')" />
+            <x-atom.input-label for="image" :value="__('User_Image')" />
             <label
                 class="inline-flex items-center gap-2 cursor-pointer  font-medium text-sm text-blue-500 bg-blue-20 border-2 border-gray-300 rounded-lg py-1 px-2 hover:bg-blue-50 mt-2">
                 <input id="image" class="block mt-1 w-full" type="file" name="image"
@@ -91,7 +91,7 @@
             </label>
             <!-- 既存画像のパス -->
             <input type="hidden" name="existingImage" id="existingImage" value="">
-            <x-input-error :messages="$errors->get('image')" class="mt-2" />
+            <x-atom.input-error :messages="$errors->get('image')" class="mt-2" />
         </div>
         <!-- 画像トリミング用のモーダルウィンドウ表示 -->
         <div id="crop-modal"
@@ -116,7 +116,7 @@
         <div id="preview" style="width: 300px;"></div>
 
         <div class="flex items-center  justify-center gap-4">
-            <x-primary-button>{{ __('Save') }}</x-primary-button>
+            <x-atom.primary-button>{{ __('Save') }}</x-atom.primary-button>
 
             @if (session('status') === 'profile-updated')
                 <p x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 2000)"

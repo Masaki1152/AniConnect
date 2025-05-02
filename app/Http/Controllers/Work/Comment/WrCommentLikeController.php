@@ -13,6 +13,6 @@ class WrCommentLikeController extends Controller
     {
         // 作品感想のコメントテーブルから、今回開いているコメントにいいねしたユーザーidを取得
         $users = WorkReviewComment::whereId($comment_id)->first()->users()->get();
-        return view('user_interactions.like_list')->with(['users' => $users]);
+        return view('components.molecules.list.like_list')->with(['users' => $users]);
     }
 }

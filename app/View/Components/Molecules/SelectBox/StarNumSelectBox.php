@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Molecules\SelectBox;
 
 use Illuminate\View\Component;
 
@@ -19,6 +19,6 @@ class StarNumSelectBox extends Component
 
     public function render()
     {
-        return view('components.star-num-select-box');
+        return view('components.molecules.select-box.star-num-select-box');
     }
 }

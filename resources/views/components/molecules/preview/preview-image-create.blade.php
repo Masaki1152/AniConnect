@@ -6,7 +6,7 @@
             onchange="loadImage(this);"><span>{{ __('common.add_images') }}</span>
     </label>
     <div id="count" class="text-sm text-gray-600 mt-1">{{ __('common.image_num_zero') }}</div>
-    <x-crop-image-modal />
+    <x-molecules.preview.crop-image-modal />
     <!-- プレビュー画像の表示 -->
     <div id="preview" class="grid grid-cols-2 gap-4 mt-4"></div>
     <p class="image__error text-sm text-red-500 mt-1">{{ $errors->first('images') }}</p>

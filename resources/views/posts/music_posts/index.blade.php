@@ -95,7 +95,7 @@
                             <div class='created_at'>
                                 <p>{{ $music_post->created_at->format('Y/m/d H:i') }}</p>
                             </div>
-                            <x-star-num :starNum="$music_post->star_num" />
+                            <x-molecules.evaluation.star-num :starNum="$music_post->star_num" />
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button" data-music-id="{{ $music_post->music_id }}"

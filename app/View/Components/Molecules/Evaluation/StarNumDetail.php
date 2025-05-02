@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Molecules\Evaluation;
 
 use Illuminate\View\Component;
 
@@ -17,6 +17,6 @@ class StarNumDetail extends Component
 
     public function render()
     {
-        return view('components.star-num-detail');
+        return view('components.molecules.evaluation.star-num-detail');
     }
 }

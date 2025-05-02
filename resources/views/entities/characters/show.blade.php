@@ -37,8 +37,8 @@
             </div>
             <h3>pixivへのリンク</h3>
             <p>{{ $character->wiki_link }}</p>
-            <x-interested type="characters" :root="$character" path="characters.interested.index" :prop="['character_id' => $character->id]"
-                isMultiple="false" />
+            <x-molecules.button.interested type="characters" :root="$character" path="characters.interested.index"
+                :prop="['character_id' => $character->id]" isMultiple="false" />
         </div>
     </div>
     <div class="post_link">

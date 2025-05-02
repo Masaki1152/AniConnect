@@ -153,9 +153,9 @@
                     <p class='place'>
                         {{ $pilgrimage->place }}
                     </p>
-                    <x-star-num-detail :starNum="$pilgrimage->average_star_num" :postNum="$pilgrimage->post_num" />
-                    <x-interested type="animePilgrimage" :root="$pilgrimage" path="pilgrimages.interested.index"
-                        :prop="['pilgrimage_id' => $pilgrimage->id]" isMultiple="false" />
+                    <x-molecules.evaluation.star-num-detail :starNum="$pilgrimage->average_star_num" :postNum="$pilgrimage->post_num" />
+                    <x-molecules.button.interested type="animePilgrimage" :root="$pilgrimage"
+                        path="pilgrimages.interested.index" :prop="['pilgrimage_id' => $pilgrimage->id]" isMultiple="false" />
                 </div>
             @endforeach
         @endif

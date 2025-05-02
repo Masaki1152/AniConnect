@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Molecules\TextField;
 
 use Illuminate\View\Component;
 
@@ -26,6 +26,6 @@ class InputText extends Component
 
     public function render()
     {
-        return view('components.input-text');
+        return view('components.molecules.text-field.input-text');
     }
 }

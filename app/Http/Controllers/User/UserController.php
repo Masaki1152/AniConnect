@@ -89,15 +89,15 @@ class UserController extends Controller
         $actions = [
             'impressions' => [
                 'method' => fn() => $user->fetchPosts($user_id, $type, $keyword),
-                'view'   => 'components.post-cell'
+                'view'   => 'components.molecules.cell.post-cell'
             ],
             'comments' => [
                 'method' => fn() => $user->fetchComments($user_id, $type, $keyword),
-                'view'   => 'components.comment-cell'
+                'view'   => 'components.molecules.cell.comment-cell'
             ],
             'likes' => [
                 'method' => fn() => $user->fetchLikePosts($user_id, $type, $keyword),
-                'view'   => 'components.post-cell'
+                'view'   => 'components.molecules.cell.post-cell'
             ]
         ];
 

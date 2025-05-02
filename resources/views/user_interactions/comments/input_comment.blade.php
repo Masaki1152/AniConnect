@@ -22,7 +22,7 @@
             </div>
         </div>
         <!-- ドロップダウンメニュー -->
-        <x-dropdown align="right" class='ml-auto'>
+        <x-atom.dropdown align="right" class='ml-auto'>
             <x-slot name="trigger">
                 <button class="p-1 bg-slate-400 text-white rounded hover:bg-slate-500">
                     コメントを管理する
@@ -40,7 +40,7 @@
                     </button>
                 </form>
             </x-slot>
-        </x-dropdown>
+        </x-atom.dropdown>
     </div>
     <div class="flex flex-col md:flex-row gap-4">
         <div class="left_block flex-1">

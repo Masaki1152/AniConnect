@@ -13,6 +13,6 @@ class WorkReviewLikeController extends Controller
     {
         // 作品感想テーブルから、今回開いている作品感想にいいねしたユーザーidを取得
         $users = WorkReview::whereId($work_review_id)->first()->users()->get();
-        return view('user_interactions.like_list')->with(['users' => $users]);
+        return view('components.molecules.list.like_list')->with(['users' => $users]);
     }
 }

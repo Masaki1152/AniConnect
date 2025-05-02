@@ -105,7 +105,7 @@
                                     </a>
                                 @endforeach
                             </p>
-                            <x-star-num :starNum="$character_post->star_num" />
+                            <x-molecules.evaluation.star-num :starNum="$character_post->star_num" />
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
                                 <button id="like_button" data-character-id="{{ $character_post->character_id }}"

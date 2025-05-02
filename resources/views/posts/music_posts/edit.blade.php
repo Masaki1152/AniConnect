@@ -22,14 +22,16 @@
                         <div class="user_id">
                             <input type="hidden" name="music_post[user_id]" value="{{ $music_post->user_id }}">
                         </div>
-                        <x-input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$music_post" postTypeString="music_post"
-                            characterMaxLength="40" />
-                        <x-star-num-select-box :postType="$music_post" postTypeString="music_post" :isCreateType="false" />
-                        <x-category-select-box :postType="$music_post" postTypeString="music_post" :categories="$categories" />
-                        <x-body-text-area :postType="$music_post" postTypeString="music_post" />
-                        <x-preview-image-edit :postType="$music_post" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$music_post"
+                            postTypeString="music_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$music_post" postTypeString="music_post"
+                            :isCreateType="false" />
+                        <x-molecules.select-box.category-select-box :postType="$music_post" postTypeString="music_post"
+                            :categories="$categories" />
+                        <x-molecules.text-field.body-text-area :postType="$music_post" postTypeString="music_post" />
+                        <x-molecules.preview.preview-image-edit :postType="$music_post" />
                         <!-- 投稿ボタン -->
-                        <x-post-button buttonText="common.update_post" />
+                        <x-molecules.button.post-button buttonText="common.update_post" />
                     </form>
                 </div>
             </div>

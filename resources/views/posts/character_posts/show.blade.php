@@ -39,15 +39,15 @@
                             @endforeach
                         </div>
                         <!-- ドロップダウンメニュー -->
-                        <x-dropdown align="right" class='ml-auto'>
+                        <x-atom.dropdown align="right" class='ml-auto'>
                             <x-slot name="trigger">
                                 <button class="p-1 bg-slate-400 text-white rounded hover:bg-slate-500">
                                     投稿を管理する
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link
-                                    href="{{ route('character_posts.edit', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">投稿を編集する</x-dropdown-link>
+                                <x-atom.dropdown-link
+                                    href="{{ route('character_posts.edit', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">投稿を編集する</x-atom.dropdown-link>
                                 <form
                                     action="{{ route('character_posts.delete', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}"
                                     id="form_{{ $character_post->id }}" method="post">
@@ -59,7 +59,7 @@
                                     </button>
                                 </form>
                             </x-slot>
-                        </x-dropdown>
+                        </x-atom.dropdown>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="left_block flex-1">
@@ -82,7 +82,7 @@
                                         {{ $character_post->created_at->format('Y/m/d H:i') }}</p>
                                 </div>
                             </div>
-                            <x-star-num :starNum="$character_post->star_num" />
+                            <x-molecules.evaluation.star-num :starNum="$character_post->star_num" />
                             <p class="mt-4 text-gray-800">{!! nl2br(e($character_post->body)) !!}</p>
                         </div>
                         <div class="right_block flex-1">

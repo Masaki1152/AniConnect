@@ -39,15 +39,15 @@
                             @endforeach
                         </div>
                         <!-- ドロップダウンメニュー -->
-                        <x-dropdown align="right" class='ml-auto'>
+                        <x-atom.dropdown align="right" class='ml-auto'>
                             <x-slot name="trigger">
                                 <button class="p-1 bg-slate-400 text-white rounded hover:bg-slate-500">
                                     投稿を管理する
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link
-                                    href="{{ route('pilgrimage_posts.edit', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}">投稿を編集する</x-dropdown-link>
+                                <x-atom.dropdown-link
+                                    href="{{ route('pilgrimage_posts.edit', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}">投稿を編集する</x-atom.dropdown-link>
                                 <form
                                     action="{{ route('pilgrimage_posts.delete', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}"
                                     id="form_{{ $pilgrimage_post->id }}" method="post">
@@ -59,7 +59,7 @@
                                     </button>
                                 </form>
                             </x-slot>
-                        </x-dropdown>
+                        </x-atom.dropdown>
                     </div>
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="left_block flex-1">
@@ -83,7 +83,7 @@
                                 </div>
                             </div>
                             <div class="content mt-2">
-                                <x-star-num :starNum="$pilgrimage_post->star_num" />
+                                <x-molecules.evaluation.star-num :starNum="$pilgrimage_post->star_num" />
                                 <div class="mt-1">
                                     <p class="text-lg font-semibold text-gray-800">
                                         シーン：

@@ -123,9 +123,9 @@
                             CV:{{ $character->voiceArtist->name }}
                         </a>
                     </p>
-                    <x-star-num-detail :starNum="$character->average_star_num" :postNum="$character->post_num" />
-                    <x-interested type="characters" :root="$character" path="characters.interested.index"
-                        :prop="['character_id' => $character->id]" isMultiple="false" />
+                    <x-molecules.evaluation.star-num-detail :starNum="$character->average_star_num" :postNum="$character->post_num" />
+                    <x-molecules.button.interested type="characters" :root="$character"
+                        path="characters.interested.index" :prop="['character_id' => $character->id]" isMultiple="false" />
                 </div>
             @endforeach
         @endif

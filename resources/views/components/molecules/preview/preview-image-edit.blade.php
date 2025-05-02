@@ -20,7 +20,7 @@
             onchange="loadImage(this);"><span>{{ __('common.add_images') }}</span>
     </label>
     <div id="count" class="text-sm text-gray-600 mt-1"></div>
-    <x-crop-image-modal />
+    <x-molecules.preview.crop-image-modal />
     <!-- プレビュー画像の表示 -->
     <div id="preview" class="grid grid-cols-2 gap-4 mt-4"></div>
     <!-- 削除された既存画像のリスト -->

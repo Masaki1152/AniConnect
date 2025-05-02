@@ -13,6 +13,6 @@ class CpCommentLikeController extends Controller
     {
         // 登場人物感想のコメントテーブルから、今回開いているコメントにいいねしたユーザーidを取得
         $users = CharacterPostComment::find($comment_id)->users()->get();
-        return view('user_interactions.like_list')->with(['users' => $users]);
+        return view('components.molecules.list.like_list')->with(['users' => $users]);
     }
 }

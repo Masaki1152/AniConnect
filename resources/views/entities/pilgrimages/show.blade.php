@@ -35,8 +35,8 @@
             <p>{{ $pilgrimage->map_link }}</p>
             <h3>Wikipediaへのリンク</h3>
             <p>{{ $pilgrimage->wiki_link }}</p>
-            <x-interested type="animePilgrimage" :root="$pilgrimage" path="pilgrimages.interested.index" :prop="['pilgrimage_id' => $pilgrimage->id]"
-                isMultiple="false" />
+            <x-molecules.button.interested type="animePilgrimage" :root="$pilgrimage" path="pilgrimages.interested.index"
+                :prop="['pilgrimage_id' => $pilgrimage->id]" isMultiple="false" />
         </div>
     </div>
     <div class="post_link">

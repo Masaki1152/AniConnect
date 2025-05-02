@@ -1,6 +1,6 @@
 <?php
 
-namespace App\View\Components;
+namespace App\View\Components\Molecules\SelectBox;
 
 use Illuminate\View\Component;
 
@@ -19,6 +19,6 @@ class CategorySelectBox extends Component
 
     public function render()
     {
-        return view('components.category-select-box');
+        return view('components.molecules.select-box.category-select-box');
     }
 }

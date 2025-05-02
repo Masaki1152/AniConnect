@@ -54,8 +54,8 @@
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-            <x-interested type="music" :root="$music" path="music.interested.index" :prop="['music_id' => $music->id]"
-                isMultiple="false" />
+            <x-molecules.button.interested type="music" :root="$music" path="music.interested.index"
+                :prop="['music_id' => $music->id]" isMultiple="false" />
         </div>
     </div>
     <div class="post_link">

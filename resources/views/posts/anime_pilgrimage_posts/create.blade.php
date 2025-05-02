@@ -15,16 +15,18 @@
                             <input type="hidden" name="pilgrimage_post[anime_pilgrimage_id]"
                                 value="{{ $pilgrimage->id }}">
                         </div>
-                        <x-input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null" postTypeString="pilgrimage_post"
-                            characterMaxLength="40" />
-                        <x-star-num-select-box :postType="$pilgrimage" postTypeString="pilgrimage_post" :isCreateType="true" />
-                        <x-input-text :inputTextType="\App\Enums\InputTextType::Scene" :postType="null" postTypeString="pilgrimage_post"
-                            characterMaxLength="40" />
-                        <x-category-select-box :postType="null" postTypeString="pilgrimage_post" :categories="$categories" />
-                        <x-body-text-area :postType="null" postTypeString="pilgrimage_post" />
-                        <x-preview-image-create />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null"
+                            postTypeString="pilgrimage_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$pilgrimage" postTypeString="pilgrimage_post"
+                            :isCreateType="true" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Scene" :postType="null"
+                            postTypeString="pilgrimage_post" characterMaxLength="40" />
+                        <x-molecules.select-box.category-select-box :postType="null" postTypeString="pilgrimage_post"
+                            :categories="$categories" />
+                        <x-molecules.text-field.body-text-area :postType="null" postTypeString="pilgrimage_post" />
+                        <x-molecules.preview.preview-image-create />
                         <!-- 投稿ボタン -->
-                        <x-post-button buttonText="common.post" />
+                        <x-molecules.button.post-button buttonText="common.post" />
                     </form>
                 </div>
             </div>

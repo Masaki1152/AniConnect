@@ -32,8 +32,8 @@
                 <h3>公式サイトへのリンク</h3>
                 <a>{{ $work_story->official_link }}</a>
             </div>
-            <x-interested type="workStories" :root="$work_story" path="work_stories.interested.index" :prop="['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]"
-                isMultiple="true" />
+            <x-molecules.button.interested type="workStories" :root="$work_story" path="work_stories.interested.index"
+                :prop="['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]" isMultiple="true" />
         </div>
     </div>
     <div class="post_link">

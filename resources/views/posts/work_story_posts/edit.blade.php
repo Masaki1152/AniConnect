@@ -26,14 +26,16 @@
                             <input type="hidden" name="work_story_post[sub_title_id]"
                                 value="{{ $work_story_post->sub_title_id }}">
                         </div>
-                        <x-input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$work_story_post" postTypeString="work_story_post"
-                            characterMaxLength="40" />
-                        <x-star-num-select-box :postType="$work_story_post" postTypeString="work_story_post" :isCreateType="false" />
-                        <x-category-select-box :postType="$work_story_post" postTypeString="work_story_post" :categories="$categories" />
-                        <x-body-text-area :postType="$work_story_post" postTypeString="work_story_post" />
-                        <x-preview-image-edit :postType="$work_story_post" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$work_story_post"
+                            postTypeString="work_story_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$work_story_post" postTypeString="work_story_post"
+                            :isCreateType="false" />
+                        <x-molecules.select-box.category-select-box :postType="$work_story_post" postTypeString="work_story_post"
+                            :categories="$categories" />
+                        <x-molecules.text-field.body-text-area :postType="$work_story_post" postTypeString="work_story_post" />
+                        <x-molecules.preview.preview-image-edit :postType="$work_story_post" />
                         <!-- 投稿ボタン -->
-                        <x-post-button buttonText="common.update_post" />
+                        <x-molecules.button.post-button buttonText="common.update_post" />
                     </form>
                 </div>
             </div>

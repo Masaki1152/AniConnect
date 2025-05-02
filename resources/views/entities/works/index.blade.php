@@ -115,10 +115,10 @@
                                 <p>カテゴリー情報がありません。</p>
                             @endif
                         </h5>
-                        <x-star-num-detail :starNum="$work->average_star_num" :postNum="$work->post_num" />
+                        <x-molecules.evaluation.star-num-detail :starNum="$work->average_star_num" :postNum="$work->post_num" />
                         <p class="text-gray-600">{{ $work->term }}</p>
-                        <x-interested type="works" :root="$work" path="work.interested.index" :prop="['work_id' => $work->id]"
-                            isMultiple="false" />
+                        <x-molecules.button.interested type="works" :root="$work" path="work.interested.index"
+                            :prop="['work_id' => $work->id]" isMultiple="false" />
                     </div>
                 @endforeach
             @endif
