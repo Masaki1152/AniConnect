@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum InputtextType: string
+enum InputTextType: string
 {
     case Title = 'title';
     case Scene = 'scene';

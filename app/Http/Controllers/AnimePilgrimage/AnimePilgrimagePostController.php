@@ -42,7 +42,7 @@ class AnimePilgrimagePostController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('anime_pilgrimage_posts.index')->with([
+        return view('posts.anime_pilgrimage_posts.index')->with([
             'pilgrimage_posts' => $pilgrimage_posts,
             'pilgrimage_first' => $pilgrimage_first,
             'pilgrimage' => $pilgrimage,
@@ -56,7 +56,7 @@ class AnimePilgrimagePostController extends Controller
     // 聖地感想投稿詳細の表示
     public function show(AnimePilgrimagePost $pilgrimagePost, AnimePilgrimagePostCategory $category, $pilgrimage_id, $pilgrimage_post_id)
     {
-        return view('anime_pilgrimage_posts.show')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id), 'categories' => $category->get()]);
+        return view('posts.anime_pilgrimage_posts.show')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
@@ -64,7 +64,7 @@ class AnimePilgrimagePostController extends Controller
     {
         // 聖地のオブジェクトを取得
         $pilgrimage = AnimePilgrimage::find($pilgrimage_id);
-        return view('anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id), 'pilgrimage' => $pilgrimage, 'categories' => $category->get()]);
+        return view('posts.anime_pilgrimage_posts.create')->with(['pilgrimage_post' => $pilgrimagePost->getRestrictedPost('anime_pilgrimage_id', $pilgrimage_id), 'pilgrimage' => $pilgrimage, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
@@ -101,7 +101,7 @@ class AnimePilgrimagePostController extends Controller
     // 感想投稿編集画面を表示する
     public function edit(AnimePilgrimagePost $pilgrimagePost, AnimePilgrimagePostCategory $category, $pilgrimage_id, $pilgrimage_post_id)
     {
-        return view('anime_pilgrimage_posts.edit')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id), 'categories' => $category->get()]);
+        return view('posts.anime_pilgrimage_posts.edit')->with(['pilgrimage_post' => $pilgrimagePost->getDetailPost($pilgrimage_id, $pilgrimage_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する

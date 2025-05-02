@@ -79,7 +79,7 @@ class AnimePilgrimageController extends Controller
             $selected_prefecture = Prefecture::find($prefecture_search)->name;
         }
 
-        return view('pilgrimages.index')->with([
+        return view('entities.pilgrimages.index')->with([
             'pilgrimages' => $pilgrimages,
             'prefectures' => $prefectures,
             'prefecture_search' => $prefecture_search,
@@ -107,7 +107,7 @@ class AnimePilgrimageController extends Controller
             }
         }
 
-        return view('pilgrimages.show')->with(['pilgrimage' => $pilgrimage, 'categories' => $categories]);
+        return view('entities.pilgrimages.show')->with(['pilgrimage' => $pilgrimage, 'categories' => $categories]);
     }
 
     // 聖地に「気になる」登録をする

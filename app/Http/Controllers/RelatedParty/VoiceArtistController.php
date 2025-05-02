@@ -12,6 +12,6 @@ class VoiceArtistController extends Controller
     public function show($voice_artist_id)
     {
         $voice_artist = VoiceArtist::find($voice_artist_id);
-        return view('voice_artists.show')->with(['voice_artist' => $voice_artist]);
+        return view('entities.related_party.voice_artists.show')->with(['voice_artist' => $voice_artist]);
     }
 }

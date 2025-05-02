@@ -67,7 +67,7 @@ class CharacterController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('characters.index')->with([
+        return view('entities.characters.index')->with([
             'characters' => $characters,
             'character' => $character,
             'categories' => $category->get(),
@@ -91,7 +91,7 @@ class CharacterController extends Controller
                 array_push($categories, $category->name);
             }
         }
-        return view('characters.show')->with(['character' => $character, 'categories' => $categories]);
+        return view('entities.characters.show')->with(['character' => $character, 'categories' => $categories]);
     }
 
     // 登場人物に「気になる」登録をする

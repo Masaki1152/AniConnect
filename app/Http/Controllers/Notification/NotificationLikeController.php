@@ -13,6 +13,6 @@ class NotificationLikeController extends Controller
     {
         // お知らせテーブルから、今回開いているお知らせにいいねしたユーザーidを取得
         $users = Notification::whereId($notification_id)->first()->users()->get();
-        return view('like_list')->with(['users' => $users]);
+        return view('components.molecules.list.like_list')->with(['users' => $users]);
     }
 }

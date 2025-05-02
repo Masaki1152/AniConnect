@@ -29,14 +29,14 @@ class UserController extends Controller
         })->paginate(10);
         // ログインしているユーザー
         $auth_user_id = Auth::id();
-        return view('users.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id]);
+        return view('user_interactions.users.index')->with(['users' => $users, 'auth_user_id' => $auth_user_id]);
     }
 
     // 詳細なユーザー情報を表示する
     public function show($user_id)
     {
         $user = User::where('id', $user_id)->first();
-        return view('users.show')->with(['user' => $user]);
+        return view('user_interactions.users.show')->with(['user' => $user]);
     }
 
     // ユーザーのフォロー行う
@@ -89,15 +89,15 @@ class UserController extends Controller
         $actions = [
             'impressions' => [
                 'method' => fn() => $user->fetchPosts($user_id, $type, $keyword),
-                'view'   => 'components.post-cell'
+                'view'   => 'components.molecules.cell.post-cell'
             ],
             'comments' => [
                 'method' => fn() => $user->fetchComments($user_id, $type, $keyword),
-                'view'   => 'components.comment-cell'
+                'view'   => 'components.molecules.cell.comment-cell'
             ],
             'likes' => [
                 'method' => fn() => $user->fetchLikePosts($user_id, $type, $keyword),
-                'view'   => 'components.post-cell'
+                'view'   => 'components.molecules.cell.post-cell'
             ]
         ];
 

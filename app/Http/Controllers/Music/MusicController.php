@@ -67,7 +67,7 @@ class MusicController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('music.index')->with([
+        return view('entities.music.index')->with([
             'music' => $music,
             'music_object' => $music_object,
             'categories' => $category->get(),
@@ -92,7 +92,7 @@ class MusicController extends Controller
             }
         }
 
-        return view('music.show')->with(['music' => $music, 'categories' => $categories]);
+        return view('entities.music.show')->with(['music' => $music, 'categories' => $categories]);
     }
 
     // 音楽に「気になる」登録をする

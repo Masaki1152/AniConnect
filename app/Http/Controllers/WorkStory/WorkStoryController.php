@@ -64,7 +64,7 @@ class WorkStoryController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('work_stories.index')->with([
+        return view('entities.work_stories.index')->with([
             'work_stories' => $work_stories,
             'work_story_model' => $work_story_model,
             'categories' => $category->get(),
@@ -87,7 +87,7 @@ class WorkStoryController extends Controller
                 array_push($categories, $category->name);
             }
         }
-        return view('work_stories.show')->with(['work_story' => $work_story, 'categories' => $categories]);
+        return view('entities.work_stories.show')->with(['work_story' => $work_story, 'categories' => $categories]);
     }
 
     // 作品に「気になる」登録をする

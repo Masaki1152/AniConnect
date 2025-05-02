@@ -42,7 +42,7 @@ class NotificationCommentController extends Controller
         $status = is_null($notification_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
 
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', [
+        $commentHtml = view('user_interactions.comments.input_comment', [
             'comment' => $notification_comment,
             'status' => $status,
             'inputName' => 'notification_comment',
@@ -124,7 +124,7 @@ class NotificationCommentController extends Controller
         $replies = $notification_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
-            $reply->html = view('comments.input_comment', [
+            $reply->html = view('user_interactions.comments.input_comment', [
                 'comment' => $reply,
                 'status' => 'show',
                 'inputName' => 'notification_comment',

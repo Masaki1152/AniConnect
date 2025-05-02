@@ -13,6 +13,6 @@ class CharacterInterestedController extends Controller
     {
         // 登場人物テーブルから、今回開いているあらすじを「気になる」登録したユーザーidを取得
         $users = Character::whereId($character_id)->first()->users()->get();
-        return view('components.interested_list')->with(['users' => $users]);
+        return view('components.molecules.list.interested_list')->with(['users' => $users]);
     }
 }

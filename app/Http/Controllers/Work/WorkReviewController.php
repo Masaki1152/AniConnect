@@ -43,7 +43,7 @@ class WorkReviewController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('work_reviews.index')->with([
+        return view('posts.work_reviews.index')->with([
             'work_reviews' => $work_reviews,
             'work_review_first' => $work_review_first,
             'work' => $work,
@@ -58,7 +58,7 @@ class WorkReviewController extends Controller
     // 'work_review'はbladeファイルで使う変数。
     public function show(WorkReview $workreview, WorkReviewCategory $category, $work_id, $work_review_id)
     {
-        return view('work_reviews.show')->with(['work_review' => $workreview->getDetailPost($work_id, $work_review_id), 'categories' => $category->get()]);
+        return view('posts.work_reviews.show')->with(['work_review' => $workreview->getDetailPost($work_id, $work_review_id), 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
@@ -66,7 +66,7 @@ class WorkReviewController extends Controller
     {
         // 作品のオブジェクトを取得
         $work = Work::find($work_id);
-        return view('work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id), 'work' => $work, 'categories' => $category->get()]);
+        return view('posts.work_reviews.create')->with(['workreview' => $workreview->getRestrictedPost('work_id', $work_id), 'work' => $work, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
@@ -103,7 +103,7 @@ class WorkReviewController extends Controller
     // 感想投稿編集画面を表示する
     public function edit(WorkReview $workreview, WorkReviewCategory $category, $work_id, $work_review_id)
     {
-        return view('work_reviews.edit')->with(['work_review' => $workreview->getDetailPost($work_id, $work_review_id), 'categories' => $category->get()]);
+        return view('posts.work_reviews.edit')->with(['work_review' => $workreview->getDetailPost($work_id, $work_review_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する

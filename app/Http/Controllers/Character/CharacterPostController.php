@@ -42,7 +42,7 @@ class CharacterPostController extends Controller
             array_push($selectedCategories, $category->name);
         }
 
-        return view('character_posts.index')->with([
+        return view('posts.character_posts.index')->with([
             'character_posts' => $character_posts,
             'character_first' => $character_first,
             'character' => $character,
@@ -58,7 +58,7 @@ class CharacterPostController extends Controller
     {
         // 登場人物のオブジェクトを取得
         $character = Character::find($character_id);
-        return view('character_posts.show')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'character' => $character, 'categories' => $category->get()]);
+        return view('posts.character_posts.show')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'character' => $character, 'categories' => $category->get()]);
     }
 
     // 新規投稿作成画面を表示する
@@ -66,7 +66,7 @@ class CharacterPostController extends Controller
     {
         // 登場人物のオブジェクトを取得
         $character = Character::find($character_id);
-        return view('character_posts.create')->with(['character_post' => $characterPost->getRestrictedPost('character_id', $character_id), 'character' => $character, 'categories' => $category->get()]);
+        return view('posts.character_posts.create')->with(['character_post' => $characterPost->getRestrictedPost('character_id', $character_id), 'character' => $character, 'categories' => $category->get()]);
     }
 
     // 新しく記述した内容を保存する
@@ -103,7 +103,7 @@ class CharacterPostController extends Controller
     // 感想投稿編集画面を表示する
     public function edit(CharacterPost $characterPost, CharacterPostCategory $category, $character_id, $character_post_id)
     {
-        return view('character_posts.edit')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'categories' => $category->get()]);
+        return view('posts.character_posts.edit')->with(['character_post' => $characterPost->getDetailPost($character_id, $character_post_id), 'categories' => $category->get()]);
     }
 
     // 感想投稿の編集を実行する

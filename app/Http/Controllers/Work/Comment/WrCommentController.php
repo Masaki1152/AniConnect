@@ -43,7 +43,7 @@ class WrCommentController extends Controller
         $status = is_null($wr_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
 
         // Bladeテンプレートをレンダリング
-        $commentHtml = view('comments.input_comment', [
+        $commentHtml = view('user_interactions.comments.input_comment', [
             'comment' => $wr_comment,
             'status' => $status,
             'inputName' => 'work_review_comment',
@@ -124,7 +124,7 @@ class WrCommentController extends Controller
         $replies = $wr_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
-            $reply->html = view('comments.input_comment', [
+            $reply->html = view('user_interactions.comments.input_comment', [
                 'comment' => $reply,
                 'status' => 'show',
                 'inputName' => 'work_review_comment',

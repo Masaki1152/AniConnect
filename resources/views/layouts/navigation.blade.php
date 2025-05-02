@@ -6,38 +6,38 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('main.index') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                        <x-atom.application-logo class="block h-9 w-auto fill-current text-gray-800" />
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
                     @if (Auth::user()->is_admin === 1)
-                        <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                        <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
                             {{ __('管理画面') }}
-                        </x-nav-link>
+                        </x-atom.nav-link>
                     @endif
-                    <x-nav-link :href="route('works.index')" :active="request()->routeIs('works.index')">
+                    <x-atom.nav-link :href="route('works.index')" :active="request()->routeIs('works.index')">
                         {{ __('作品一覧') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('characters.index')" :active="request()->routeIs('characters.index')">
+                    </x-atom.nav-link>
+                    <x-atom.nav-link :href="route('characters.index')" :active="request()->routeIs('characters.index')">
                         {{ __('登場人物一覧') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('music.index')" :active="request()->routeIs('music.index')">
+                    </x-atom.nav-link>
+                    <x-atom.nav-link :href="route('music.index')" :active="request()->routeIs('music.index')">
                         {{ __('音楽一覧') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('pilgrimages.index')" :active="request()->routeIs('pilgrimages.index')">
+                    </x-atom.nav-link>
+                    <x-atom.nav-link :href="route('pilgrimages.index')" :active="request()->routeIs('pilgrimages.index')">
                         {{ __('聖地一覧') }}
-                    </x-nav-link>
-                    <x-nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                    </x-atom.nav-link>
+                    <x-atom.nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('登録メンバー') }}
-                    </x-nav-link>
+                    </x-atom.nav-link>
                 </div>
             </div>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-dropdown align="right" width="48">
+                <x-atom.dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
                             class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
@@ -60,22 +60,22 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link :href="route('profile.index')">
+                        <x-atom.dropdown-link :href="route('profile.index')">
                             {{ __('Profile') }}
-                        </x-dropdown-link>
+                        </x-atom.dropdown-link>
 
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf
 
-                            <x-dropdown-link :href="route('logout')"
+                            <x-atom.dropdown-link :href="route('logout')"
                                 onclick="event.preventDefault();
                                                 this.closest('form').submit();">
                                 {{ __('Log Out') }}
-                            </x-dropdown-link>
+                            </x-atom.dropdown-link>
                         </form>
                     </x-slot>
-                </x-dropdown>
+                </x-atom.dropdown>
             </div>
 
             <!-- Hamburger -->
@@ -97,9 +97,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('main.index')" :active="request()->routeIs('dashboard')">
+            <x-atom.responsive-nav-link :href="route('main.index')" :active="request()->routeIs('dashboard')">
                 {{ __('Dashboard') }}
-            </x-responsive-nav-link>
+            </x-atom.responsive-nav-link>
         </div>
 
         <!-- Responsive Settings Options -->
@@ -110,19 +110,19 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.index')">
+                <x-atom.responsive-nav-link :href="route('profile.index')">
                     {{ __('Profile') }}
-                </x-responsive-nav-link>
+                </x-atom.responsive-nav-link>
 
                 <!-- Authentication -->
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
 
-                    <x-responsive-nav-link :href="route('logout')"
+                    <x-atom.responsive-nav-link :href="route('logout')"
                         onclick="event.preventDefault();
                                         this.closest('form').submit();">
                         {{ __('Log Out') }}
-                    </x-responsive-nav-link>
+                    </x-atom.responsive-nav-link>
                 </form>
             </div>
         </div>

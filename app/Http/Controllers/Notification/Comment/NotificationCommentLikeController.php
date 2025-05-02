@@ -13,6 +13,6 @@ class NotificationCommentLikeController extends Controller
     {
         // お知らせのコメントテーブルから、今回開いているコメントにいいねしたユーザーidを取得
         $users = NotificationComment::find($comment_id)->users()->get();
-        return view('like_list')->with(['users' => $users]);
+        return view('components.molecules.list.like_list')->with(['users' => $users]);
     }
 }
