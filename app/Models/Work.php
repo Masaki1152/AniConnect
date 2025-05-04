@@ -21,7 +21,7 @@ class Work extends Model
     ];
 
     // 作品の検索処理
-    public function fetchWorks($search, $categoryIds)
+    public function fetchWorks($search, $categoryIds = [])
     {
         $works = Work::with(['creator', 'animePilgrimages', 'characters', 'characters.voiceArtist', 'music', 'music.singer', 'workStories'])
             ->where(function ($query) use ($search, $categoryIds) {
