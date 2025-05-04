@@ -47,7 +47,11 @@ return [
     'search_keyword' => 'キーワードを検索',
     'filter_category' => 'カテゴリーで絞り込む',
     'no_result' => 'に一致する結果はありませんでした',
+    'not_found' => 'が見つかりませんでした',
     'search_result' => 'の検索結果：',
     'all_post' => '全投稿：',
     'delete_notification' => 'お知らせを削除する',
+    'add_suggestion' => 'を追加しますか？',
+    // 関係者
+    'creator' => '制作会社',
 ];
