@@ -14,6 +14,9 @@
                 <div class="notification p-6 text-gray-900">
                     <a href="{{ route('admin.notifications.index') }}">お知らせ一覧（管理者用）へ</a>
                 </div>
+                <div class="work p-6 text-gray-900">
+                    <a href="{{ route('admin.works.index') }}">作品一覧（管理者用）へ</a>
+                </div>
             </div>
         </div>
     </div>
