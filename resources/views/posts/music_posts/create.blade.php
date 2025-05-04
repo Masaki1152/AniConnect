@@ -19,12 +19,12 @@
                             <input type="hidden" name="music_post[work_id]" value="{{ $music->work_id }}">
                         </div>
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null"
-                            postTypeString="music_post" characterMaxLength="40" />
-                        <x-molecules.select-box.star-num-select-box :postType="$music" postTypeString="music_post"
+                            targetTableName="music_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$music" targetTableName="music_post"
                             :isCreateType="true" />
-                        <x-molecules.select-box.category-select-box :postType="null" postTypeString="music_post"
+                        <x-molecules.select-box.category-select-box :postType="null" targetTableName="music_post"
                             :categories="$categories" />
-                        <x-molecules.text-field.body-text-area :postType="null" postTypeString="music_post" />
+                        <x-molecules.text-field.body-text-area :postType="null" targetTableName="music_post" />
                         <x-molecules.preview.preview-image-create />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.post" />

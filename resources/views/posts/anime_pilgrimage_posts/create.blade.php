@@ -16,14 +16,14 @@
                                 value="{{ $pilgrimage->id }}">
                         </div>
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null"
-                            postTypeString="pilgrimage_post" characterMaxLength="40" />
-                        <x-molecules.select-box.star-num-select-box :postType="$pilgrimage" postTypeString="pilgrimage_post"
+                            targetTableName="pilgrimage_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$pilgrimage" targetTableName="pilgrimage_post"
                             :isCreateType="true" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Scene" :postType="null"
-                            postTypeString="pilgrimage_post" characterMaxLength="40" />
-                        <x-molecules.select-box.category-select-box :postType="null" postTypeString="pilgrimage_post"
+                            targetTableName="pilgrimage_post" characterMaxLength="40" />
+                        <x-molecules.select-box.category-select-box :postType="null" targetTableName="pilgrimage_post"
                             :categories="$categories" />
-                        <x-molecules.text-field.body-text-area :postType="null" postTypeString="pilgrimage_post" />
+                        <x-molecules.text-field.body-text-area :postType="null" targetTableName="pilgrimage_post" />
                         <x-molecules.preview.preview-image-create />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.post" />

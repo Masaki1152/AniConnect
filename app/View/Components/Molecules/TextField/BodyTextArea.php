@@ -7,12 +7,12 @@ use Illuminate\View\Component;
 class BodyTextArea extends Component
 {
     public $postType;
-    public $postTypeString;
+    public $targetTableName;
 
-    public function __construct($postType = null, $postTypeString)
+    public function __construct($postType = null, $targetTableName)
     {
         $this->postType = $postType;
-        $this->postTypeString = $postTypeString;
+        $this->targetTableName = $targetTableName;
     }
 
     public function render()

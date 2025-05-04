@@ -27,12 +27,12 @@
                                 value="{{ $work_story_post->sub_title_id }}">
                         </div>
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="$work_story_post"
-                            postTypeString="work_story_post" characterMaxLength="40" />
-                        <x-molecules.select-box.star-num-select-box :postType="$work_story_post" postTypeString="work_story_post"
+                            targetTableName="work_story_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$work_story_post" targetTableName="work_story_post"
                             :isCreateType="false" />
-                        <x-molecules.select-box.category-select-box :postType="$work_story_post" postTypeString="work_story_post"
+                        <x-molecules.select-box.category-select-box :postType="$work_story_post" targetTableName="work_story_post"
                             :categories="$categories" />
-                        <x-molecules.text-field.body-text-area :postType="$work_story_post" postTypeString="work_story_post" />
+                        <x-molecules.text-field.body-text-area :postType="$work_story_post" targetTableName="work_story_post" />
                         <x-molecules.preview.preview-image-edit :postType="$work_story_post" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.update_post" />
