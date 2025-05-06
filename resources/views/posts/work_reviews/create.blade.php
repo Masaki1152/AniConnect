@@ -16,13 +16,13 @@
                             <input type="hidden" name="work_review[work_id]" value="{{ $work->id }}">
                         </div>
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null"
-                            postTypeString="work_review" characterMaxLength="40" />
-                        <x-molecules.select-box.star-num-select-box :postType="$work" postTypeString="work_review"
+                            targetTableName="work_review" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$work" targetTableName="work_review"
                             :isCreateType="true" />
-                        <x-molecules.select-box.category-select-box :postType="null" postTypeString="work_review"
+                        <x-molecules.select-box.category-select-box :postType="null" targetTableName="work_review"
                             :categories="$categories" />
-                        <x-molecules.text-field.body-text-area :postType="null" postTypeString="work_review" />
-                        <x-molecules.preview.preview-image-create />
+                        <x-molecules.text-field.body-text-area :postType="null" targetTableName="work_review" />
+                        <x-molecules.preview.preview-image-create :isMultiple="true" :isVertical="false" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.post" />
                     </form>

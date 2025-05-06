@@ -42,12 +42,24 @@ return [
     'update_post' => '変更を保存する',
     'evaluation' => '評価',
     'evaluation_colon' => '評価：',
+    'add_suggestion' => 'を追加しますか？',
+    'register' => '登録する',
     // 検索
     'search' => '検索',
     'search_keyword' => 'キーワードを検索',
     'filter_category' => 'カテゴリーで絞り込む',
     'no_result' => 'に一致する結果はありませんでした',
+    'not_found' => 'が見つかりませんでした',
     'search_result' => 'の検索結果：',
     'all_post' => '全投稿：',
     'delete_notification' => 'お知らせを削除する',
+    // 関係者
+    'creator' => '制作会社',
+    // エンティティの登録
+    'name' => '名前',
+    'copyright' => 'コピーライト',
+    'term' => '放映期間',
+    'official_site_link' => '公式サイトのリンク',
+    'wiki_link' => 'Wikipediaのリンク',
+    'twitter_link' => 'Twitterのリンク',
 ];

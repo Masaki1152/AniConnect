@@ -7,13 +7,13 @@ use Illuminate\View\Component;
 class CategorySelectBox extends Component
 {
     public $postType;
-    public $postTypeString;
+    public $targetTableName;
     public $categories;
 
-    public function __construct($postType = null, $postTypeString, $categories)
+    public function __construct($postType = null, $targetTableName, $categories)
     {
         $this->postType = $postType;
-        $this->postTypeString = $postTypeString;
+        $this->targetTableName = $targetTableName;
         $this->categories = $categories;
     }
 

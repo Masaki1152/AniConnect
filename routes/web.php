@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Main\MainController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
+use App\Http\Controllers\Admin\AdminWorkController;
 use App\Http\Controllers\Work\WorkController;
 use App\Http\Controllers\Work\WorkInterestedController;
 use App\Http\Controllers\Work\WorkReviewController;
@@ -69,6 +70,7 @@ Route::prefix('admin')
     ->group(function () {
         // 管理画面トップ
         Route::get('dashboard', [AdminController::class, 'index'])->name('dashboard');
+
         // お知らせ一覧
         Route::get('notification', [AdminNotificationController::class, 'index'])->name('notifications.index');
         // お知らせ作成画面表示
@@ -85,6 +87,23 @@ Route::prefix('admin')
         Route::delete('notification/delete/{notification_id}', [AdminNotificationController::class, 'delete'])->name('notifications.delete');
         // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
         Route::post('notification/like/{notification_id}', [AdminNotificationController::class, 'like'])->name('notifications.like');
+
+        // 作品
+        Route::prefix('work')
+            ->name('works.')
+            ->controller(AdminWorkController::class)
+            ->group(function () {
+                // 作品一覧の表示
+                Route::get('/', 'index')->name('index');
+                // 新規登録ボタン押下で、createメソッドを実行
+                Route::get('create', 'create')->name('create');
+                // // 登録前に内容を確認するconfirmメソッドを実行
+                // Route::post('confirm', 'confirm')->name('confirm');
+                // 登録ボタン押下で、storeメソッドを実行
+                Route::post('store', 'store')->name('store');
+                // 各作品の詳細表示
+                Route::get('{work_id}', 'show')->name('show');
+            });
     });
 
 // NotificationControllerに関するルーティング
@@ -213,6 +232,8 @@ Route::controller(WorkReviewLikeController::class)->middleware(['auth'])->group(
 
 // CreatorControllerに関するルーティング
 Route::controller(CreatorController::class)->middleware(['auth'])->group(function () {
+    // 制作会社の検索
+    Route::get('/creator/search', 'search')->name('creator.search');
     // 制作会社の詳細表示
     Route::get('/creator/{creator_id}', 'show')->name('creator.show');
 });

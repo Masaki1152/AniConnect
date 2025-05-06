@@ -7,16 +7,16 @@ use Illuminate\View\Component;
 class InputText extends Component
 {
     public $postType;
-    public $postTypeString;
+    public $targetTableName;
     public $characterMaxLength;
     public $className;
     public $column;
     public $titleText;
 
-    public function __construct($inputTextType, $postType = null, $postTypeString, $characterMaxLength)
+    public function __construct($inputTextType, $postType = null, $targetTableName, $characterMaxLength)
     {
         $this->postType = $postType;
-        $this->postTypeString = $postTypeString;
+        $this->targetTableName = $targetTableName;
         $this->characterMaxLength = $characterMaxLength;
 
         $this->className = $inputTextType->className();

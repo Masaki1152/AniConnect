@@ -7,13 +7,13 @@ use Illuminate\View\Component;
 class StarNumSelectBox extends Component
 {
     public $postType;
-    public $postTypeString;
+    public $targetTableName;
     public $isCreateType;
 
-    public function __construct($postType, $postTypeString, $isCreateType)
+    public function __construct($postType, $targetTableName, $isCreateType)
     {
         $this->postType = $postType;
-        $this->postTypeString = $postTypeString;
+        $this->targetTableName = $targetTableName;
         $this->isCreateType = $isCreateType;
     }
 
