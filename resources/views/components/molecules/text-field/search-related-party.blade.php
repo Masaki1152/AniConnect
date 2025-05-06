@@ -15,6 +15,7 @@
     <div id="{{ $relatedPartyName }}-not-found" class="mt-2 text-sm text-red-600 hidden">
         {{ __('common.creator') . __('common.not_found') }}
         <a id="{{ $relatedPartyName }}-create-link" href="#"
+            data-base-url="{{ route('admin.creators.create') }}"
             class="text-blue-600 underline ml-2">{{ __('common.creator') . __('common.add_suggestion') }}</a>
     </div>
     <p class="text-sm text-red-500 mt-1">
