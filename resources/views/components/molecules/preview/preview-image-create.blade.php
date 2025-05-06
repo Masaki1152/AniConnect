@@ -1,9 +1,11 @@
 <div class="image">
-    <label class="block font-medium text-sm text-gray-700 mb-2">{{ __('common.image_up_to_four') }}</label>
+    <label
+        class="block font-medium text-sm text-gray-700 mb-2">{{ $isMultiple ? __('common.image_up_to_four') : __('common.image') }}</label>
     <label
         class="inline-flex items-center gap-2 cursor-pointer text-blue-500 bg-blue-20 border-2 border-gray-300 rounded-lg py-1 px-2 hover:bg-blue-50">
-        <input id="inputElm" type="file" name="images[]" multiple class="hidden"
-            onchange="loadImage(this);"><span>{{ __('common.add_images') }}</span>
+        <input id="inputElm" type="file" name="{{ $isMultiple ? 'images[]' : 'image' }}"
+            {{ $isMultiple ? 'multiple' : '' }} class="hidden"
+            onchange="loadImage(this, {{ json_encode($isVertical) }});"><span>{{ __('common.add_images') }}</span>
     </label>
     <div id="count" class="text-sm text-gray-600 mt-1">{{ __('common.image_num_zero') }}</div>
     <x-molecules.preview.crop-image-modal />
