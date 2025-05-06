@@ -3,13 +3,16 @@
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
 
-    <h1 class="title">
-        {{ $work->name }}
-    </h1>
     <div class="content">
         <div class="content__post">
             <h3>作品名</h3>
             <p>{{ $work->name }}</p>
+            @if ($work->image)
+                <div class="relative w-full max-w-md aspect-[3/4] overflow-hidden rounded-md border border-gray-300">
+                    <img src="{{ $work->image }}" alt="画像が読み込めません。" class="absolute inset-0 w-full h-full object-cover">
+                </div>
+                <p>{{ $work->copyright }}</p>
+            @endif
             <h3>放映期間</h3>
             <p>{{ $work->term }}</p>
             <div class='creator'>
@@ -71,6 +74,6 @@
         <a href="{{ route('work_stories.index', ['work_id' => $work->id]) }}">あらすじ一覧</a>
     </div>
     <div class="footer">
-        <a href="/admin.works">作品一覧へ</a>
+        <a href="/admin/work">作品一覧へ</a>
     </div>
 </x-app-layout>

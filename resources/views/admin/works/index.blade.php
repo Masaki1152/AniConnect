@@ -52,6 +52,14 @@
                                 {{ $work->name }}
                             </a>
                         </h2>
+                        @if ($work->image)
+                            <div
+                                class="relative w-full max-w-md aspect-[3/4] overflow-hidden rounded-md border border-gray-300">
+                                <img src="{{ $work->image }}" alt="画像が読み込めません。"
+                                    class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+                            <p>{{ $work->copyright }}</p>
+                        @endif
                         <x-molecules.evaluation.star-num-detail :starNum="$work->average_star_num" :postNum="$work->post_num" />
                         <p class="text-gray-600">{{ $work->term }}</p>
                     </div>
