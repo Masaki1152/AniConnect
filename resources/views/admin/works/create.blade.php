@@ -8,12 +8,25 @@
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl lg:max-w-2xl">
                     <h2 class="text-lg font-medium text-gray-900">{{ __('admin.work_registration') }}</h2>
-                    <form action="{{ route('work_reviews.store', ['work_id' => 1]) }}" method="POST"
-                        enctype="multipart/form-data" class="mt-6 space-y-6">
+                    <form action="{{ route('admin.works.store') }}" method="POST" enctype="multipart/form-data"
+                        class="mt-6 space-y-6">
                         @csrf
                         <x-molecules.text-field.search-related-party targetTableName="works" :relatedPartyType="\App\Enums\RelatedPartyType::Creator" />
-                        <!-- 投稿ボタン -->
-                        <x-molecules.button.post-button buttonText="common.post" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="null" targetTableName="works"
+                            characterMaxLength="200" />
+                        <x-molecules.preview.preview-image-create :isMultiple="false" :isVertical="true" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Copyright" :postType="null" targetTableName="works"
+                            characterMaxLength="200" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Term" :postType="null" targetTableName="works"
+                            characterMaxLength="200" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::OfficialSiteLink" :postType="null" targetTableName="works"
+                            characterMaxLength="200" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::WikiLink" :postType="null" targetTableName="works"
+                            characterMaxLength="200" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::TwitterLink" :postType="null" targetTableName="works"
+                            characterMaxLength="200" />
+                        <!-- 登録ボタン -->
+                        <x-molecules.button.post-button buttonText="common.register" />
                     </form>
                 </div>
             </div>
@@ -30,7 +43,7 @@
     </div>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <!-- <script src="{{ asset('/js/create_preview.js') }}"></script> -->
+    <script src="{{ asset('/js/create_single_preview.js') }}"></script>
     <script src="{{ asset('/js/count_character.js') }}"></script>
     <script src="{{ asset('/js/admin/search_creator.js') }}"></script>
 </x-app-layout>

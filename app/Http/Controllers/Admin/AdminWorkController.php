@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Http\Requests\Auth\WorkRequest;
 use App\Models\Work;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
@@ -40,36 +41,27 @@ class AdminWorkController extends Controller
         return view('admin.works.create');
     }
 
-    // // 新しく記述した内容を保存する
-    // public function store(WorkReview $workreview, WorkReviewRequest $request)
-    // {
-    //     $input_review = $request['work_review'];
-    //     $input_categories = $request->work_review['categories_array'];
-    //     //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
-    //     //画像ファイルが送られた時だけ処理が実行される
-    //     if ($request->file('images')) {
-    //         $counter = 1;
-    //         foreach ($request->file('images') as $image) {
-    //             $image_url = Cloudinary::upload($image->getRealPath(), [
-    //                 'transformation' => [
-    //                     'width' => 800,
-    //                     'height' => 600,
-    //                     'crop' => 'pad',
-    //                     'background' => 'white',
-    //                 ]
-    //             ])->getSecurePath();
-    //             $input_review += ["image$counter" => $image_url];
-    //             $counter++;
-    //         }
-    //     }
-    //     // ログインしているユーザーidの登録
-    //     $input_review['user_id'] = Auth::id();
-    //     $workreview->fill($input_review)->save();
-    //     // カテゴリーとの中間テーブルにデータを保存
-    //     $workreview->categories()->attach($input_categories);
-    //     $message = __('messages.new_post_created');
-    //     return redirect()->route('work_reviews.show', ['work_id' => $workreview->work_id, 'work_review_id' => $workreview->id])->with('message', $message);
-    // }
+    // 新しく記述した内容を保存する
+    public function store(Work $work, WorkRequest $request)
+    {
+        $input_work = $request['works'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if ($request->file('image')) {
+            $image_url = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'transformation' => [
+                    'width' => 600,
+                    'height' => 800,
+                    'crop' => 'pad',
+                    'background' => 'white',
+                ]
+            ])->getSecurePath();
+            $input_work['image'] = $image_url;
+        }
+        $work->fill($input_work)->save();
+        $message = __('messages.new_work_registered');
+        return redirect()->route('admin.works.show', ['work_id' => $work->id])->with('message', $message);
+    }
 
     // // 感想投稿編集画面を表示する
     // public function edit(WorkReview $workreview, WorkReviewCategory $category, $work_id, $work_review_id)

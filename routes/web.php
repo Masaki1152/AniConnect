@@ -99,8 +99,8 @@ Route::prefix('admin')
                 Route::get('create', 'create')->name('create');
                 // // 登録前に内容を確認するconfirmメソッドを実行
                 // Route::post('confirm', 'confirm')->name('confirm');
-                // // 登録ボタン押下で、storeメソッドを実行
-                // Route::post('store', 'store')->name('store');
+                // 登録ボタン押下で、storeメソッドを実行
+                Route::post('store', 'store')->name('store');
                 // 各作品の詳細表示
                 Route::get('{work_id}', 'show')->name('show');
                 // // 作品の編集画面の表示

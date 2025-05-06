@@ -13,6 +13,18 @@ class Work extends Model
     use HasFactory;
     use CommonFunction;
 
+    // fillを実行するための記述
+    protected $fillable = [
+        'creator_id',
+        'name',
+        'image',
+        'copyright',
+        'term',
+        'official_site_link',
+        'wiki_link',
+        'twitter_link'
+    ];
+
     // 参照させたいworksを指定
     protected $table = 'works';
 
