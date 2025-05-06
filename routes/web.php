@@ -6,6 +6,7 @@ use App\Http\Controllers\Main\MainController;
 use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\NotificationController as AdminNotificationController;
 use App\Http\Controllers\Admin\AdminWorkController;
+use App\Http\Controllers\Admin\RelatedParty\AdminCreatorController;
 use App\Http\Controllers\Work\WorkController;
 use App\Http\Controllers\Work\WorkInterestedController;
 use App\Http\Controllers\Work\WorkReviewController;
@@ -103,6 +104,23 @@ Route::prefix('admin')
                 Route::post('store', 'store')->name('store');
                 // 各作品の詳細表示
                 Route::get('{work_id}', 'show')->name('show');
+            });
+
+        // 制作会社
+        Route::prefix('creator')
+            ->name('creators.')
+            ->controller(AdminCreatorController::class)
+            ->group(function () {
+                // 制作会社一覧の表示
+                Route::get('/', 'index')->name('index');
+                // 新規登録ボタン押下で、createメソッドを実行
+                Route::get('create', 'create')->name('create');
+                // // 登録前に内容を確認するconfirmメソッドを実行
+                // Route::post('confirm', 'confirm')->name('confirm');
+                // 登録ボタン押下で、storeメソッドを実行
+                Route::post('store', 'store')->name('store');
+                // 制作会社の詳細表示
+                Route::get('{creator_id}', 'show')->name('show');
             });
     });
 

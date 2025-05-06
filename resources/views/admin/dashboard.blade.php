@@ -17,6 +17,9 @@
                 <div class="work p-6 text-gray-900">
                     <a href="{{ route('admin.works.index') }}">作品一覧（管理者用）へ</a>
                 </div>
+                <div class="creator p-6 text-gray-900">
+                    <a href="{{ route('admin.creators.index') }}">制作会社一覧（管理者用）へ</a>
+                </div>
             </div>
         </div>
     </div>
