@@ -298,7 +298,15 @@ return [
         'work_story_post_comment.body' => 'コメント',
         'character_post_comment.body' => 'コメント',
         'music_post_comment.body' => 'コメント',
-        'pilgrimage_post_comment.body' => 'コメント'
+        'pilgrimage_post_comment.body' => 'コメント',
+        // 作品登録のバリデーション
+        'works.creator_id' => '制作会社',
+        'works.name' => '作品名',
+        'works.copyright' => '著作権表示',
+        'works.term' => '放映期間',
+        'works.official_site_link' => '公式サイトのリンク',
+        'works.wiki_link' => 'Wikipediaのリンク',
+        'works.twitter_link' => 'Twitterのリンク'
     ],
 
 ];

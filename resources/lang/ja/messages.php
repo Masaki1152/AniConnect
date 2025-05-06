@@ -5,6 +5,7 @@ return [
     'post_edited' => '投稿を編集しました',
     'post_deleted' => '投稿を削除しました',
     'new_post_created' => '新しい投稿を作成しました',
+    'new_work_registered' => '新しい作品を登録しました',
     'all_related_replies_deleted' => 'コメントと関連するすべての返信を削除しました',
     'failed_to_delete_comment' => 'コメントの削除に失敗しました',
     'comment_posted' => 'コメントを投稿しました',
