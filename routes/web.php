@@ -103,12 +103,6 @@ Route::prefix('admin')
                 Route::post('store', 'store')->name('store');
                 // 各作品の詳細表示
                 Route::get('{work_id}', 'show')->name('show');
-                // // 作品の編集画面の表示
-                // Route::get('edit/{work_id}', 'edit')->name('edit');
-                // // 作品の編集を保存
-                // Route::put('update/{work_id}', 'update')->name('update');
-                // // 作品を削除する
-                // Route::delete('delete/{work_id}', 'delete')->name('delete');
             });
     });
 
