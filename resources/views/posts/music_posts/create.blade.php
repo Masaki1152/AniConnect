@@ -25,7 +25,7 @@
                         <x-molecules.select-box.category-select-box :postType="null" targetTableName="music_post"
                             :categories="$categories" />
                         <x-molecules.text-field.body-text-area :postType="null" targetTableName="music_post" />
-                        <x-molecules.preview.preview-image-create />
+                        <x-molecules.preview.preview-image-create :isMultiple="true" :isVertical="false" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.post" />
                     </form>
