@@ -1,3 +1,7 @@
+@php
+    $fieldName = $targetTableName . '.' . $column;
+@endphp
+
 <div class="{{ $relatedPartyName }} relative">
     <label class="block text-sm font-medium text-gray-700 mb-1">{{ __($titleText) }}</label>
     <input type="text" id="{{ $relatedPartyName }}-name" name="{{ $relatedPartyName }}_name"
@@ -13,4 +17,7 @@
         <a id="{{ $relatedPartyName }}-create-link" href="#"
             class="text-blue-600 underline ml-2">{{ __('common.creator') . __('common.add_suggestion') }}</a>
     </div>
+    <p class="text-sm text-red-500 mt-1">
+        {{ $errors->first($fieldName) }}
+    </p>
 </div>
