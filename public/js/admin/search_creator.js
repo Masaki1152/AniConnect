@@ -51,7 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     suggestions.classList.add('hidden');
                     creatorId.value = '';
                     notFound.classList.remove('hidden');
-                    createLink.href = `/creator/create?name=${encodeURIComponent(query)}`;
+                    const baseUrl = createLink.dataset.baseUrl;
+                    createLink.href = `${baseUrl}?name=${encodeURIComponent(query)}`;
                 }
             } catch (error) {
                 console.error('検索中にエラーが発生しました:', error);

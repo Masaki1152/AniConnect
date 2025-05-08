@@ -1,7 +1,7 @@
 @php
     $dataCounterId = $className . '.CharacterCount';
     $fieldName = $targetTableName . '.' . $column;
-    $inputValue = is_null($postType) ? old($fieldName) : old($fieldName, $postType->$column);
+    $inputValue = is_null($postType) ? old($fieldName, request($column)) : old($fieldName, $postType->$column);
 @endphp
 
 <div class="{{ $className }}">

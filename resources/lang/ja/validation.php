@@ -306,7 +306,10 @@ return [
         'works.term' => '放映期間',
         'works.official_site_link' => '公式サイトのリンク',
         'works.wiki_link' => 'Wikipediaのリンク',
-        'works.twitter_link' => 'Twitterのリンク'
+        'works.twitter_link' => 'Twitterのリンク',
+        // 作品登録のバリデーション
+        'creators.name' => '作品名',
+        'creators.wiki_link' => 'Wikipediaのリンク',
     ],
 
 ];
