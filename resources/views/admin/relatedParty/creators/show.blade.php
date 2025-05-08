@@ -41,7 +41,7 @@
         @method('DELETE')
         <button type="button" data-post-id="{{ $creator->id }}"
             class="delete-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-            投稿を削除する
+            データを削除する
         </button>
     </form>
     <div class="footer">

@@ -67,7 +67,7 @@ class AdminCreatorController extends Controller
         return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
     }
 
-    // 感想投稿を削除する
+    // 制作会社を削除する
     public function delete($creator_id)
     {
         // 削除の対象となるデータを取得
