@@ -75,7 +75,6 @@
             @endif
         </div>
 
-
         <!-- ページネーション -->
         <div class="mt-8">
             {{ $creators->appends(request()->query())->links() }}
