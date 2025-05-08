@@ -61,14 +61,26 @@
                                 {{ $creator->name }}
                             </a>
                         </h2>
+                        <form action="{{ route('admin.creators.delete', ['creator_id' => $creator->id]) }}"
+                            id="form_{{ $creator->id }}" method="post">
+                            @csrf
+                            @method('DELETE')
+                            <button type="button" data-post-id="{{ $creator->id }}"
+                                class="delete-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
+                                投稿を削除する
+                            </button>
+                        </form>
                     </div>
                 @endforeach
             @endif
         </div>
+
 
         <!-- ページネーション -->
         <div class="mt-8">
             {{ $creators->appends(request()->query())->links() }}
         </div>
     </div>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/delete_post.js') }}"></script>
 </x-app-layout>

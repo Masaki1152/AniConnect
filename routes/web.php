@@ -125,6 +125,8 @@ Route::prefix('admin')
                 Route::get('edit/{creator_id}', 'edit')->name('edit');
                 // 制作会社の編集を保存
                 Route::put('update/{creator_id}', 'update')->name('update');
+                // 制作会社を削除する
+                Route::delete('delete/{creator_id}', 'delete')->name('delete');
             });
     });
 

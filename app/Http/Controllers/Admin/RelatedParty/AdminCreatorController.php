@@ -66,4 +66,15 @@ class AdminCreatorController extends Controller
         $message = __('messages.new_creator_updated');
         return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
     }
+
+    // 感想投稿を削除する
+    public function delete($creator_id)
+    {
+        // 削除の対象となるデータを取得
+        $creator = Creator::find($creator_id);
+        // データの削除
+        $creator->delete();
+        $message = __('messages.new_creator_deleted');
+        return redirect()->route('admin.creators.index', ['creator_id' => $creator->id])->with('message', $message);
+    }
 }
