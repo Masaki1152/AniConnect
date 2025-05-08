@@ -61,6 +61,10 @@ if (!function_exists('getCategoryColor')) {
             // 気になる登録をした場合
             __('messages.marked_as_interested') => '#3b82f680',
             __('messages.unmarked_as_interested') => '#3b82f680',
+            // エンティティの登録、編集、削除をしたとき
+            __('messages.new_creator_registered') => '#22c55e80',
+            __('messages.new_creator_updated') => '#22c55e80',
+            __('messages.new_creator_deleted') => '#ef444480',
         ];
 
         // 見つからない場合はデフォルトのものを使用

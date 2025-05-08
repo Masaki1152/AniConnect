@@ -21,7 +21,7 @@ class AdminCreatorController extends Controller
         // 検索結果の件数を取得
         $totalResults = $creators->total();
 
-        return view('admin.creators.index')->with([
+        return view('admin.relatedParty.creators.index')->with([
             'creators' => $creators,
             'totalResults' => $totalResults,
             'search' => $search
@@ -31,13 +31,13 @@ class AdminCreatorController extends Controller
     public function show($creator_id)
     {
         $creator = Creator::find($creator_id);
-        return view('admin.creators.show')->with(['creator' => $creator]);
+        return view('admin.relatedParty.creators.show')->with(['creator' => $creator]);
     }
 
-    // 新規投稿作成画面を表示する
+    // 制作会社登録画面を表示する
     public function create()
     {
-        return view('admin.creators.create');
+        return view('admin.relatedParty.creators.create');
     }
 
     // 新しく記述した内容を保存する
@@ -47,5 +47,34 @@ class AdminCreatorController extends Controller
         $creator->fill($input_creator)->save();
         $message = __('messages.new_creator_registered');
         return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
+    }
+
+    // 制作会社編集画面を表示する
+    public function edit($creator_id)
+    {
+        $creator = Creator::find($creator_id);
+        return view('admin.relatedParty.creators.edit')->with(['creator' => $creator]);
+    }
+
+    // 制作会社の編集を実行する
+    public function update(CreatorRequest $request, $creator_id)
+    {
+        $input_creator = $request['creators'];
+        // 編集の対象となるデータを取得
+        $creator = Creator::find($creator_id);
+        $creator->fill($input_creator)->save();
+        $message = __('messages.new_creator_updated');
+        return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
+    }
+
+    // 制作会社を削除する
+    public function delete($creator_id)
+    {
+        // 削除の対象となるデータを取得
+        $creator = Creator::find($creator_id);
+        // データの削除
+        $creator->delete();
+        $message = __('messages.new_creator_deleted');
+        return redirect()->route('admin.creators.index', ['creator_id' => $creator->id])->with('message', $message);
     }
 }

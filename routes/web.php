@@ -115,12 +115,18 @@ Route::prefix('admin')
                 Route::get('/', 'index')->name('index');
                 // 新規登録ボタン押下で、createメソッドを実行
                 Route::get('create', 'create')->name('create');
-                // // 登録前に内容を確認するconfirmメソッドを実行
+                // TODO: 登録前に内容を確認するconfirmメソッドの追加 by Masaki1152
                 // Route::post('confirm', 'confirm')->name('confirm');
                 // 登録ボタン押下で、storeメソッドを実行
                 Route::post('store', 'store')->name('store');
                 // 制作会社の詳細表示
                 Route::get('{creator_id}', 'show')->name('show');
+                // 制作会社の編集画面の表示
+                Route::get('edit/{creator_id}', 'edit')->name('edit');
+                // 制作会社の編集を保存
+                Route::put('update/{creator_id}', 'update')->name('update');
+                // 制作会社を削除する
+                Route::delete('delete/{creator_id}', 'delete')->name('delete');
             });
     });
 

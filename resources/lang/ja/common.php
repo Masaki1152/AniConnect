@@ -62,4 +62,5 @@ return [
     'official_site_link' => '公式サイトのリンク',
     'wiki_link' => 'Wikipediaのリンク',
     'twitter_link' => 'Twitterのリンク',
+    'target_edit' => '「:target」の編集'
 ];
