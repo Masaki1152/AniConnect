@@ -21,7 +21,7 @@ class AdminCreatorController extends Controller
         // 検索結果の件数を取得
         $totalResults = $creators->total();
 
-        return view('admin.creators.index')->with([
+        return view('admin.relatedParty.creators.index')->with([
             'creators' => $creators,
             'totalResults' => $totalResults,
             'search' => $search
@@ -31,13 +31,13 @@ class AdminCreatorController extends Controller
     public function show($creator_id)
     {
         $creator = Creator::find($creator_id);
-        return view('admin.creators.show')->with(['creator' => $creator]);
+        return view('admin.relatedParty.creators.show')->with(['creator' => $creator]);
     }
 
-    // 新規投稿作成画面を表示する
+    // 制作会社登録画面を表示する
     public function create()
     {
-        return view('admin.creators.create');
+        return view('admin.relatedParty.creators.create');
     }
 
     // 新しく記述した内容を保存する
@@ -46,6 +46,13 @@ class AdminCreatorController extends Controller
         $input_creator = $request['creators'];
         $creator->fill($input_creator)->save();
         $message = __('messages.new_creator_registered');
-        return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
+        return redirect()->route('admin.relatedParty.creators.show', ['creator_id' => $creator->id])->with('message', $message);
+    }
+
+    // 感想投稿編集画面を表示する
+    public function edit($creator_id)
+    {
+        $creator = Creator::find($creator_id);
+        return view('admin.relatedParty.creators.edit')->with(['creator' => $creator]);
     }
 }
