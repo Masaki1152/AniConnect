@@ -45,5 +45,7 @@ return [
     // エンティティの登録
     'new_creator_registered' => '制作会社が登録されました',
     // エンティティの編集
-    'new_creator_updated' => '制作会社が編集されました'
+    'new_creator_updated' => '制作会社が編集されました',
+    // エンティティの削除
+    'new_creator_deleted' => '制作会社が削除されました'
 ];

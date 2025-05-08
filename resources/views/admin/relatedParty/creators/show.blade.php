@@ -1,4 +1,13 @@
 <x-app-layout>
+    @if (session('message'))
+        <div x-data="{ show: true }" x-show="show" x-transition x-init="setTimeout(() => show = false, 3000)"
+            class="fixed top-[15%] left-1/2 transform -translate-x-1/2 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50"
+            style="background-color: {{ getCategoryColor(session('message')) }};">
+            <div class="text-white">
+                {{ session('message') }}
+            </div>
+        </div>
+    @endif
     <div id="message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
