@@ -7,16 +7,18 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
                 <div class="max-w-xl lg:max-w-2xl">
-                    <h2 class="text-lg font-medium text-gray-900">{{ __('admin.target_edit', ['target' => $creator->name]) }}</h2>
-                    <form action="{{ route('admin.creators.store') }}" method="POST" enctype="multipart/form-data"
-                        class="mt-6 space-y-6">
+                    <h2 class="text-lg font-medium text-gray-900">
+                        {{ __('admin.target_edit', ['target' => $creator->name]) }}</h2>
+                    <form action="{{ route('admin.creators.update', ['creator_id' => $creator->id]) }}" method="POST"
+                        enctype="multipart/form-data" class="mt-6 space-y-6">
                         @csrf
+                        @method('PUT')
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="$creator"
                             targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::WikiLink" :postType="$creator"
                             targetTableName="creators" characterMaxLength="200" />
                         <!-- 登録ボタン -->
-                        <x-molecules.button.post-button buttonText="common.register" />
+                        <x-molecules.button.post-button buttonText="common.edit" />
                     </form>
                 </div>
             </div>

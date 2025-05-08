@@ -123,6 +123,8 @@ Route::prefix('admin')
                 Route::get('{creator_id}', 'show')->name('show');
                 // 制作会社の編集画面の表示
                 Route::get('edit/{creator_id}', 'edit')->name('edit');
+                // 制作会社の編集を保存
+                Route::put('update/{creator_id}', 'update')->name('update');
             });
     });
 

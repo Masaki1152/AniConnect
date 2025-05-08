@@ -46,13 +46,24 @@ class AdminCreatorController extends Controller
         $input_creator = $request['creators'];
         $creator->fill($input_creator)->save();
         $message = __('messages.new_creator_registered');
-        return redirect()->route('admin.relatedParty.creators.show', ['creator_id' => $creator->id])->with('message', $message);
+        return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
     }
 
-    // 感想投稿編集画面を表示する
+    // 制作会社編集画面を表示する
     public function edit($creator_id)
     {
         $creator = Creator::find($creator_id);
         return view('admin.relatedParty.creators.edit')->with(['creator' => $creator]);
+    }
+
+    // 制作会社の編集を実行する
+    public function update(CreatorRequest $request, $creator_id)
+    {
+        $input_creator = $request['creators'];
+        // 編集の対象となるデータを取得
+        $creator = Creator::find($creator_id);
+        $creator->fill($input_creator)->save();
+        $message = __('messages.new_creator_updated');
+        return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
     }
 }
