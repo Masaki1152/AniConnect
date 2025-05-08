@@ -4,6 +4,7 @@
     </div>
 
     <div class="content">
+        <a href="{{ route('admin.creators.edit', ['creator_id' => $creator->id]) }}">{{ __('common.edit') }}</a>
         <div class="content__post">
             <h3>会社名</h3>
             <p>{{ $creator->name }}</p>
