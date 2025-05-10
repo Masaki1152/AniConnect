@@ -14,7 +14,9 @@ class Creator extends Model
     // fillを実行するための記述
     protected $fillable = [
         'name',
-        'wiki_link'
+        'official_site_link',
+        'wiki_link',
+        'twitter_link'
     ];
 
     // 参照させたいcreatorsを指定

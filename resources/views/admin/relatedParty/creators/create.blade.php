@@ -13,7 +13,11 @@
                         @csrf
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="null"
                             targetTableName="creators" characterMaxLength="200" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::OfficialSiteLink" :postType="null"
+                            targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::WikiLink" :postType="null"
+                            targetTableName="creators" characterMaxLength="200" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::TwitterLink" :postType="null"
                             targetTableName="creators" characterMaxLength="200" />
                         <!-- 登録ボタン -->
                         <x-molecules.button.post-button buttonText="common.register" />

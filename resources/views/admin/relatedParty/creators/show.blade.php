@@ -17,8 +17,12 @@
         <div class="content__post">
             <h3>会社名</h3>
             <p>{{ $creator->name }}</p>
+            <h3>公式サイトへのリンク</h3>
+            <p>{{ $creator->official_site_link }}</p>
             <h3>Wikipediaへのリンク</h3>
             <p>{{ $creator->wiki_link }}</p>
+            <h3>Twitterへのリンク</h3>
+            <p>{{ $creator->twitter_link }}</p>
             <div class='works'>
                 <h3>作品一覧</h3>
                 @if ($creator->works->isEmpty())
