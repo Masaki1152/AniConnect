@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin\RelatedParty;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Http\Requests\Admin\CreatorRequest;
+use App\Http\Requests\Admin\RelatedParty\CreatorRequest;
 use App\Models\Creator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
