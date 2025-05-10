@@ -13,6 +13,7 @@
                         @csrf
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="null"
                             targetTableName="creators" characterMaxLength="200" />
+                        <x-molecules.preview.preview-image-create :isMultiple="false" :isVertical="false" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::OfficialSiteLink" :postType="null"
                             targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::WikiLink" :postType="null"
@@ -37,5 +38,6 @@
     </div>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/create_single_preview.js') }}"></script>
     <script src="{{ asset('/js/count_character.js') }}"></script>
 </x-app-layout>

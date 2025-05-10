@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests\Admin\RelatedParty\CreatorRequest;
 use App\Models\Creator;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 
 class AdminCreatorController extends Controller
 {
@@ -44,6 +45,19 @@ class AdminCreatorController extends Controller
     public function store(Creator $creator, CreatorRequest $request)
     {
         $input_creator = $request['creators'];
+        //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
+        //画像ファイルが送られた時だけ処理が実行される
+        if ($request->file('image')) {
+            $image_url = Cloudinary::upload($request->file('image')->getRealPath(), [
+                'transformation' => [
+                    'width' => 800,
+                    'height' => 600,
+                    'crop' => 'pad',
+                    'background' => 'white',
+                ]
+            ])->getSecurePath();
+            $input_creator['image'] = $image_url;
+        }
         $creator->fill($input_creator)->save();
         $message = __('messages.new_creator_registered');
         return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);
@@ -72,9 +86,30 @@ class AdminCreatorController extends Controller
     {
         // 削除の対象となるデータを取得
         $creator = Creator::find($creator_id);
+        // 削除する投稿の画像も削除する処理
+        $removed_image_path = $creator->image;
+        // DBのimageの中身がnullでなければ処理を行う
+        if ($removed_image_path !== null) {
+            $public_id = $this->extractPublicIdFromUrl($removed_image_path);
+            Cloudinary::destroy($public_id);
+        }
         // データの削除
         $creator->delete();
         $message = __('messages.new_creator_deleted');
         return redirect()->route('admin.creators.index', ['creator_id' => $creator->id])->with('message', $message);
+    }
+
+    // Cloudinaryにある画像のURLからpublic_Idを取得する
+    public function extractPublicIdFromUrl($url)
+    {
+        // URLの中からpublic_idを抽出するための正規表現
+        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
+
+        if (preg_match($pattern, $url, $matches)) {
+            // 抽出されたpublic_id
+            return $matches[1];
+        }
+        // 該当しない場合はnull
+        return null;
     }
 }

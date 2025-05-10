@@ -14,6 +14,7 @@ class Creator extends Model
     // fillを実行するための記述
     protected $fillable = [
         'name',
+        'image',
         'official_site_link',
         'wiki_link',
         'twitter_link'
