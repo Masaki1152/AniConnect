@@ -11,10 +11,12 @@ use App\Models\WorkStoryPostCategory;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Traits\CommonFunction;
 
 class WorkStoryPostController extends Controller
 {
     use SoftDeletes;
+    use CommonFunction;
 
     // あらすじ感想投稿一覧の表示
     public function index(Request $request, WorkStoryPost $workStoryPost, WorkStoryPostCategory $category, $work_id, $work_story_id)
@@ -228,19 +230,5 @@ class WorkStoryPostController extends Controller
         // いいねしたユーザー数の取得
         $count = count($work_story_post->users()->pluck('work_story_post_id')->toArray());
         return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
-    }
-
-    // Cloudinaryにある画像のURLからpublic_Idを取得する
-    public function extractPublicIdFromUrl($url)
-    {
-        // URLの中からpublic_idを抽出するための正規表現
-        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
-
-        if (preg_match($pattern, $url, $matches)) {
-            // 抽出されたpublic_id
-            return $matches[1];
-        }
-        // 該当しない場合はnull
-        return null;
     }
 }
