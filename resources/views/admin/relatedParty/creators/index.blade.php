@@ -67,6 +67,7 @@
                                 <img src="{{ $creator->image }}" alt="画像が読み込めません。"
                                     class="absolute inset-0 w-full h-full object-cover">
                             </div>
+                            <p>{{ $creator->copyright }}</p>
                         @endif
                         <form action="{{ route('admin.creators.delete', ['creator_id' => $creator->id]) }}"
                             id="form_{{ $creator->id }}" method="post">
