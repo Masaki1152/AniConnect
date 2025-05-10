@@ -9,10 +9,12 @@ use App\Models\WorkStoryPostComment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Traits\CommonFunction;
 
 class WspCommentController extends Controller
 {
     use SoftDeletes;
+    use CommonFunction;
 
     // 新しく記述した内容を保存する
     public function store(WorkStoryPostComment $wsp_comment, WspCommentRequest $request)
@@ -102,20 +104,6 @@ class WspCommentController extends Controller
         $count = count($comment->users()->pluck('wsp_comment_id')->toArray());
 
         return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
-    }
-
-    // Cloudinaryにある画像のURLからpublic_Idを取得する
-    public function extractPublicIdFromUrl($url)
-    {
-        // URLの中からpublic_idを抽出するための正規表現
-        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
-
-        if (preg_match($pattern, $url, $matches)) {
-            // 抽出されたpublic_id
-            return $matches[1];
-        }
-        // 該当しない場合はnull
-        return null;
     }
 
     // ネスト化したコメントの表示
