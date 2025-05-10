@@ -102,4 +102,18 @@ trait CommonFunction
 
         return $objects;
     }
+
+    // Cloudinaryにある画像のURLからpublic_Idを取得する
+    public function extractPublicIdFromUrl($url)
+    {
+        // URLの中からpublic_idを抽出するための正規表現
+        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
+
+        if (preg_match($pattern, $url, $matches)) {
+            // 抽出されたpublic_id
+            return $matches[1];
+        }
+        // 該当しない場合はnull
+        return null;
+    }
 }
