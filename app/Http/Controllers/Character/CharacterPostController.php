@@ -11,10 +11,12 @@ use App\Models\CharacterPostCategory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Traits\CommonFunction;
 
 class CharacterPostController extends Controller
 {
     use SoftDeletes;
+    use CommonFunction;
 
     // 登場人物感想投稿一覧の表示
     public function index(Request $request, CharacterPost $characterPost, CharacterPostCategory $category, $character_id)
@@ -229,19 +231,5 @@ class CharacterPostController extends Controller
         // いいねしたユーザー数の取得
         $count = count($character_post->users()->pluck('character_post_id')->toArray());
         return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
-    }
-
-    // Cloudinaryにある画像のURLからpublic_Idを取得する
-    public function extractPublicIdFromUrl($url)
-    {
-        // URLの中からpublic_idを抽出するための正規表現
-        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
-
-        if (preg_match($pattern, $url, $matches)) {
-            // 抽出されたpublic_id
-            return $matches[1];
-        }
-        // 該当しない場合はnull
-        return null;
     }
 }

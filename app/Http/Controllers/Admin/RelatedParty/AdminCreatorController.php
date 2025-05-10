@@ -8,10 +8,12 @@ use App\Http\Requests\Admin\RelatedParty\CreatorRequest;
 use App\Models\Creator;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Traits\CommonFunction;
 
 class AdminCreatorController extends Controller
 {
     use SoftDeletes;
+    use CommonFunction;
 
     public function index(Request $request, Creator $creator)
     {
@@ -97,19 +99,5 @@ class AdminCreatorController extends Controller
         $creator->delete();
         $message = __('messages.new_creator_deleted');
         return redirect()->route('admin.creators.index', ['creator_id' => $creator->id])->with('message', $message);
-    }
-
-    // Cloudinaryにある画像のURLからpublic_Idを取得する
-    public function extractPublicIdFromUrl($url)
-    {
-        // URLの中からpublic_idを抽出するための正規表現
-        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
-
-        if (preg_match($pattern, $url, $matches)) {
-            // 抽出されたpublic_id
-            return $matches[1];
-        }
-        // 該当しない場合はnull
-        return null;
     }
 }

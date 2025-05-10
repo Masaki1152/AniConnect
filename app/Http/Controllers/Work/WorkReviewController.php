@@ -11,10 +11,12 @@ use App\Http\Requests\WorkReviewRequest;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
+use App\Traits\CommonFunction;
 
 class WorkReviewController extends Controller
 {
     use SoftDeletes;
+    use CommonFunction;
 
     // インポートしたWorkreviewをインスタンス化して$work_reviewsとして使用。
     public function index(Request $request, WorkReview $workReview, WorkReviewCategory $category, $work_id)
@@ -232,19 +234,5 @@ class WorkReviewController extends Controller
         $count = count($work_review->users()->pluck('work_review_id')->toArray());
 
         return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
-    }
-
-    // Cloudinaryにある画像のURLからpublic_Idを取得する
-    public function extractPublicIdFromUrl($url)
-    {
-        // URLの中からpublic_idを抽出するための正規表現
-        $pattern = '/upload\/(?:v\d+\/)?([^\.]+)\./';
-
-        if (preg_match($pattern, $url, $matches)) {
-            // 抽出されたpublic_id
-            return $matches[1];
-        }
-        // 該当しない場合はnull
-        return null;
     }
 }
