@@ -61,6 +61,13 @@
                                 {{ $creator->name }}
                             </a>
                         </h2>
+                        @if ($creator->image)
+                            <div
+                                class="relative w-full max-w-md aspect-[4/3] overflow-hidden rounded-md border border-gray-300">
+                                <img src="{{ $creator->image }}" alt="画像が読み込めません。"
+                                    class="absolute inset-0 w-full h-full object-cover">
+                            </div>
+                        @endif
                         <form action="{{ route('admin.creators.delete', ['creator_id' => $creator->id]) }}"
                             id="form_{{ $creator->id }}" method="post">
                             @csrf

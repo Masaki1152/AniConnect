@@ -17,8 +17,18 @@
         <div class="content__post">
             <h3>会社名</h3>
             <p>{{ $creator->name }}</p>
+            @if ($creator->image)
+                <div class="relative w-full max-w-md aspect-[4/3] overflow-hidden rounded-md border border-gray-300">
+                    <img src="{{ $creator->image }}" alt="画像が読み込めません。"
+                        class="absolute inset-0 w-full h-full object-cover">
+                </div>
+            @endif
+            <h3>公式サイトへのリンク</h3>
+            <p>{{ $creator->official_site_link }}</p>
             <h3>Wikipediaへのリンク</h3>
             <p>{{ $creator->wiki_link }}</p>
+            <h3>Twitterへのリンク</h3>
+            <p>{{ $creator->twitter_link }}</p>
             <div class='works'>
                 <h3>作品一覧</h3>
                 @if ($creator->works->isEmpty())
