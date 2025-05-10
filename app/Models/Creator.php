@@ -15,6 +15,7 @@ class Creator extends Model
     protected $fillable = [
         'name',
         'image',
+        'copyright',
         'official_site_link',
         'wiki_link',
         'twitter_link'

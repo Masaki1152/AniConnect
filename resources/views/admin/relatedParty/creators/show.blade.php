@@ -22,6 +22,7 @@
                     <img src="{{ $creator->image }}" alt="画像が読み込めません。"
                         class="absolute inset-0 w-full h-full object-cover">
                 </div>
+                <p>{{ $creator->copyright }}</p>
             @endif
             <h3>公式サイトへのリンク</h3>
             <p>{{ $creator->official_site_link }}</p>

@@ -14,6 +14,8 @@
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="null"
                             targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.preview.preview-image-create :isMultiple="false" :isVertical="false" />
+                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Copyright" :postType="null"
+                            targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::OfficialSiteLink" :postType="null"
                             targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::WikiLink" :postType="null"

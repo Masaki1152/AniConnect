@@ -309,6 +309,7 @@ return [
         'works.twitter_link' => 'Twitterのリンク',
         // 作品登録のバリデーション
         'creators.name' => '作品名',
+        'creators.copyright' => '著作権表示',
         'creators.official_site_link' => '公式サイトのリンク',
         'creators.wiki_link' => 'Wikipediaのリンク',
         'creators.twitter_link' => 'Twitterのリンク',
