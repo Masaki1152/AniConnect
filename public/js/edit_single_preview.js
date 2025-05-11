@@ -1,7 +1,3 @@
-// 元々選択されているファイルのリスト
-let selectedImages = [];
-// 既存の画像URLを保持
-let existingImages = [];
 const inputElm = document.getElementById('inputElm');
 const cropModal = document.getElementById('crop-modal');
 const cropPreview = document.getElementById('crop-preview');
@@ -13,7 +9,7 @@ const preview = document.getElementById('preview');
 const existingImagePath = document.getElementById('existing_image_path');
 const existingImage = existingImagePath.dataset.phpVariable;
 // 画像がない場合の画像パス
-const noImagePath = 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png';
+const noImagePath = 'https://res.cloudinary.com/dnumegejl/image/upload/v1746976861/No_Image_udwwqo.png';
 // 既存の画像
 let currentImage = existingImage != '' ? existingImage : noImagePath;
 
@@ -63,12 +59,15 @@ function renderExistingImages(currentImage) {
     figure.appendChild(img);
     figure.appendChild(rmBtn);
     preview.appendChild(figure);
+
+    // 画像追加ボタンの表示切替
+    toggleAddImageButton();
 }
 
 // 画像の削除
 function removeExistingImage() {
     // 選択なし画像のパスを代入
-    const currentImage = noImagePath;
+    currentImage = noImagePath;
     // プレビューを再描画
     renderExistingImages(currentImage);
     // プレビューのうち、削除ボタンを削除する
@@ -76,11 +75,13 @@ function removeExistingImage() {
     deleteButton.remove();
     // 現在の画像のURLを削除してフォームに反映
     document.getElementById('existingImage').value = null;
+    // 画像追加ボタンの表示切替
+    toggleAddImageButton();
 }
 
 // 画像の変更をリセットする
 function resetImage() {
-    const currentImage = existingImage != '' ? existingImage : noImagePath;
+    currentImage = existingImage != '' ? existingImage : noImagePath;
 
     // プレビューを再描画
     renderExistingImages(currentImage);
@@ -93,6 +94,8 @@ function resetImage() {
     inputElm.value = '';
     // 再度、現在の画像のURLをフォームに反映
     document.getElementById('existingImage').value = existingImage != '' ? existingImage : null;
+    // 画像追加ボタンの表示切替
+    toggleAddImageButton();
 }
 
 function loadImage(obj, isVertical) {
@@ -192,6 +195,8 @@ function renderNewImage(currentImage) {
     preview.appendChild(figure);
 
     updateInputElement();
+    // 画像追加ボタンの表示切替
+    toggleAddImageButton();
 }
 
 // キャンセルボタンの動作
@@ -226,4 +231,16 @@ function updateInputElement() {
 
     // 選択されたファイルを反映
     inputElm.files = dataTransfer.files;
+}
+
+function toggleAddImageButton() {
+    const addImageButton = document.getElementById('add-image-button');
+
+    // 画像があるなら非表示、それ以外は表示
+    //const imageFigures = preview.querySelectorAll('figure');
+    if (currentImage != noImagePath) {
+        addImageButton.style.display = 'none';
+    } else {
+        addImageButton.style.display = 'inline-flex';
+    }
 }
