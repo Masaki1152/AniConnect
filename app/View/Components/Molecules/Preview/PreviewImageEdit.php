@@ -6,12 +6,15 @@ use Illuminate\View\Component;
 
 class PreviewImageEdit extends Component
 {
-
+    public $isMultiple;
     public $postType;
+    public $isVertical;
 
-    public function __construct($postType)
+    public function __construct($isMultiple, $postType, $isVertical)
     {
+        $this->isMultiple = $isMultiple;
         $this->postType = $postType;
+        $this->isVertical = $isVertical;
     }
 
     public function render()
