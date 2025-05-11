@@ -91,7 +91,6 @@ document.getElementById('image').addEventListener('change', function (event) {
         figure.appendChild(img);
         figure.appendChild(rmBtn);
         preview.appendChild(figure);
-        //};
 
         reader.readAsDataURL(file);
     }

@@ -7,7 +7,7 @@ let remainedImages = [];
 // 既存の画像のうち、削除された画像のURLを保持
 let removedImages = [];
 // HTMLのdata属性から既存画像のURLを取得
-const existingImagePaths = document.getElementById('existing_image_paths');
+const existingImagePaths = document.getElementById('existing_image_path');
 const phpVariable = existingImagePaths.dataset.phpVariable;
 
 // 画像トリミングの準備

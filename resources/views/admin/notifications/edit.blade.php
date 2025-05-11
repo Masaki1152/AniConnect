@@ -51,7 +51,7 @@
                     }
                     $existingImages = json_encode($existingImages);
                 @endphp
-                <div id="existing_image_paths" data-php-variable="{{ $existingImages }}"></div>
+                <div id="existing_image_path" data-php-variable="{{ $existingImages }}"></div>
                 <label>
                     <input id="inputElm" type="file" style="display:none" name="images[]" multiple
                         onchange="loadImage(this);">{{ __('common.add_image') }}
