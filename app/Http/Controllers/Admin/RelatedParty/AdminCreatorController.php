@@ -78,6 +78,31 @@ class AdminCreatorController extends Controller
         $input_creator = $request['creators'];
         // 編集の対象となるデータを取得
         $creator = Creator::find($creator_id);
+        // 画像の編集
+        // 元々ファイルがあり、さらにそのファイルを変更する場合
+        if ($creator->image && $request->hasFile('image')) {
+            // 既存のファイルパスの削除
+            $currentImage = $creator->image;
+            $public_id = $this->extractPublicIdFromUrl($currentImage);
+            Cloudinary::destroy($public_id);
+            // 新しいファイルの追加
+            $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
+            $creator->image = $path;
+        } elseif ($request->hasFile('image')) {
+            // 元々ファイルがなく、ファイルの変更がある場合
+            // 新しいファイルの追加
+            $path = Cloudinary::upload($request['image']->getRealPath())->getSecurePath();
+            $creator->image = $path;
+        } elseif ($creator->image && $request['existingImage'] == null) {
+            // 元々ファイルがあり、画像が削除された場合
+            // 既存のファイルパスの削除
+            $currentImage = $creator->image;
+            $public_id = $this->extractPublicIdFromUrl($currentImage);
+            Cloudinary::destroy($public_id);
+            $creator->image = null;
+            // 元々ファイルがないor元々ファイルがある場合で、ファイルの変更がない場合は何もしない
+        }
+
         $creator->fill($input_creator)->save();
         $message = __('messages.new_creator_updated');
         return redirect()->route('admin.creators.show', ['creator_id' => $creator->id])->with('message', $message);

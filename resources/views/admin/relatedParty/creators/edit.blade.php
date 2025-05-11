@@ -15,6 +15,7 @@
                         @method('PUT')
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="$creator"
                             targetTableName="creators" characterMaxLength="200" />
+                        <x-molecules.preview.preview-image-edit :isMultiple="false" :postType="$creator" :isVertical="false" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Copyright" :postType="$creator"
                             targetTableName="creators" characterMaxLength="200" />
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::OfficialSiteLink" :postType="$creator"
@@ -41,5 +42,6 @@
     </div>
 
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <script src="{{ asset('/js/edit_single_preview.js') }}"></script>
     <script src="{{ asset('/js/count_character.js') }}"></script>
 </x-app-layout>
