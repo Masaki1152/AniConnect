@@ -33,7 +33,7 @@ function cropImage(file, isVertical) {
         // Cropper.jsを初期化
         if (cropper) cropper.destroy();
         cropper = new Cropper(cropPreview, {
-            // 正方形のトリミング
+            // 長方形のトリミング
             aspectRatio: isVertical ? 3 / 4 : 4 / 3,
             // トリミング領域を画像内に収める
             viewMode: 1
