@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 })
 
-// 既存画像をプレビューとして表示
+// 画像をプレビュー表示
 function renderImage(currentImage, changeImage, isNewImage) {
     // プレビューを初期化
     preview.innerHTML = '';
