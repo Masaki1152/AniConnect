@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 現在の画像のURLをフォームに反映
     document.getElementById('existingImage').value = existingImage != '' ? existingImage : null;
     // 既存画像をプレビューとして表示
-    renderExistingImages(currentImage);
+    renderImage(currentImage, removeExistingImage, false, window.Lang.common.delete);
 
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する
@@ -32,28 +32,28 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 // 既存画像をプレビューとして表示
-function renderExistingImages(currentImage) {
+function renderImage(currentImage, changeImage, isNewImage, textContent) {
     // プレビューを初期化
     preview.innerHTML = '';
 
     const figure = document.createElement('figure');
-    figure.setAttribute('id', `existing-img`);
+    figure.setAttribute('id', `img-block`);
     figure.className = 'relative flex flex-col items-center mb-4';
 
     const img = document.createElement('img');
     // サーバー上の画像URLを使用
     img.src = currentImage;
-    img.alt = 'existing preview';
+    img.alt = 'preview';
     img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-w-4 aspect-h-3';
 
     // 削除ボタン
     const rmBtn = document.createElement('button');
     rmBtn.type = 'button';
     rmBtn.setAttribute('id', 'delete_button');
-    rmBtn.textContent = window.Lang.common.delete;
+    rmBtn.textContent = textContent;
     rmBtn.className = 'px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 mt-2';
     rmBtn.onclick = function () {
-        removeExistingImage();
+        changeImage();
     };
 
     figure.appendChild(img);
@@ -62,6 +62,10 @@ function renderExistingImages(currentImage) {
 
     // 画像追加ボタンの表示切替
     toggleAddImageButton();
+
+    if (isNewImage) {
+        updateInputElement();
+    }
 }
 
 // 画像の削除
@@ -69,7 +73,7 @@ function removeExistingImage() {
     // 選択なし画像のパスを代入
     currentImage = noImagePath;
     // プレビューを再描画
-    renderExistingImages(currentImage);
+    renderImage(currentImage, removeExistingImage, false, window.Lang.common.delete);
     // プレビューのうち、削除ボタンを削除する
     const deleteButton = document.getElementById('delete_button');
     deleteButton.remove();
@@ -84,7 +88,7 @@ function resetImage() {
     currentImage = existingImage != '' ? existingImage : noImagePath;
 
     // プレビューを再描画
-    renderExistingImages(currentImage);
+    renderImage(currentImage, removeExistingImage, false, window.Lang.common.delete);
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する
         const deleteButton = document.getElementById('delete_button');
@@ -162,42 +166,9 @@ cropNextButton.addEventListener('click', function (event) {
         // モーダルを閉じる
         cropModal.classList.remove('show');
         // トリミング後の画像をプレビューとして表示
-        renderNewImage(currentImage);
+        renderImage(currentImage, resetImage, true, window.Lang.messages.reset_image_change);
     }
 });
-
-function renderNewImage(currentImage) {
-    // プレビューを初期化
-    preview.innerHTML = '';
-
-    const figure = document.createElement('figure');
-    figure.setAttribute('id', `existing-img`);
-    figure.className = 'relative flex flex-col items-center mb-4';
-
-    const img = document.createElement('img');
-    // サーバー上の画像URLを使用
-    img.src = currentImage;
-    img.alt = 'preview';
-    img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-w-4 aspect-h-3';
-
-    // 削除ボタン
-    const rmBtn = document.createElement('button');
-    rmBtn.type = 'button';
-    rmBtn.setAttribute('id', 'delete_button');
-    rmBtn.textContent = window.Lang.messages.reset_image_change;
-    rmBtn.className = 'px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 mt-2';
-    rmBtn.onclick = function () {
-        resetImage();
-    };
-
-    figure.appendChild(img);
-    figure.appendChild(rmBtn);
-    preview.appendChild(figure);
-
-    updateInputElement();
-    // 画像追加ボタンの表示切替
-    toggleAddImageButton();
-}
 
 // キャンセルボタンの動作
 cropCancelButton.addEventListener('click', () => {
@@ -237,7 +208,6 @@ function toggleAddImageButton() {
     const addImageButton = document.getElementById('add-image-button');
 
     // 画像があるなら非表示、それ以外は表示
-    //const imageFigures = preview.querySelectorAll('figure');
     if (currentImage != noImagePath) {
         addImageButton.style.display = 'none';
     } else {
