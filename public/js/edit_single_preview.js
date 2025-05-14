@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 現在の画像のURLをフォームに反映
     document.getElementById('existingImage').value = existingImage != '' ? existingImage : null;
     // 既存画像をプレビューとして表示
-    renderImage(currentImage, removeExistingImage, false, window.Lang.common.delete);
+    renderImage(currentImage, removeExistingImage, false);
 
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', function () {
 })
 
 // 既存画像をプレビューとして表示
-function renderImage(currentImage, changeImage, isNewImage, textContent) {
+function renderImage(currentImage, changeImage, isNewImage) {
     // プレビューを初期化
     preview.innerHTML = '';
 
@@ -46,11 +46,18 @@ function renderImage(currentImage, changeImage, isNewImage, textContent) {
     img.alt = 'preview';
     img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-w-4 aspect-h-3';
 
+    // 削除ボタンの文言のハンドリング
+    const isNewImageSelected = currentImage.startsWith('data:image/');
+    const hasExistingImage = existingImage !== '';
+    const deleteLabel = (isNewImageSelected && hasExistingImage)
+        ? window.Lang.messages.reset_image_change
+        : window.Lang.common.delete;
+
     // 削除ボタン
     const rmBtn = document.createElement('button');
     rmBtn.type = 'button';
     rmBtn.setAttribute('id', 'delete_button');
-    rmBtn.textContent = textContent;
+    rmBtn.textContent = deleteLabel;
     rmBtn.className = 'px-2 py-1 bg-red-500 text-white rounded hover:bg-red-600 mt-2';
     rmBtn.onclick = function () {
         changeImage();
@@ -73,7 +80,7 @@ function removeExistingImage() {
     // 選択なし画像のパスを代入
     currentImage = noImagePath;
     // プレビューを再描画
-    renderImage(currentImage, removeExistingImage, false, window.Lang.common.delete);
+    renderImage(currentImage, removeExistingImage, false);
     // プレビューのうち、削除ボタンを削除する
     const deleteButton = document.getElementById('delete_button');
     deleteButton.remove();
@@ -88,7 +95,7 @@ function resetImage() {
     currentImage = existingImage != '' ? existingImage : noImagePath;
 
     // プレビューを再描画
-    renderImage(currentImage, removeExistingImage, false, window.Lang.common.delete);
+    renderImage(currentImage, removeExistingImage, false);
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する
         const deleteButton = document.getElementById('delete_button');
@@ -166,7 +173,7 @@ cropNextButton.addEventListener('click', function (event) {
         // モーダルを閉じる
         cropModal.classList.remove('show');
         // トリミング後の画像をプレビューとして表示
-        renderImage(currentImage, resetImage, true, window.Lang.messages.reset_image_change);
+        renderImage(currentImage, resetImage, true);
     }
 });
 
