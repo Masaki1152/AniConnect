@@ -1,5 +1,3 @@
-// 元々選択されているファイルのリスト
-let selectedImages = [];
 const inputElm = document.getElementById('inputElm');
 const cropModal = document.getElementById('crop-modal');
 const cropPreview = document.getElementById('crop-preview');
@@ -8,7 +6,7 @@ const cropCancelButton = document.getElementById('crop-cancel-button');
 const preview = document.getElementById('preview');
 let cropper;
 let newImages = [];
-let currentIndex = 0;
+let currentImage = '';
 
 function loadImage(obj, isVertical) {
     // 新しく選択されたファイル
@@ -56,7 +54,7 @@ cropNextButton.addEventListener('click', function (event) {
 
         // トリミング結果をBase64データとして取得
         const croppedImage = croppedCanvas.toDataURL('image/jpeg');
-        selectedImages.push(croppedImage);
+        currentImage = croppedImage;
 
         // メッセージを表示
         const croppedMessage = document.getElementById('message');
@@ -73,7 +71,7 @@ cropNextButton.addEventListener('click', function (event) {
 
         // モーダルを閉じる
         cropModal.classList.remove('show');
-        renderPreviews();
+        renderImage(currentImage);
     }
 });
 
@@ -81,39 +79,34 @@ cropNextButton.addEventListener('click', function (event) {
 cropCancelButton.addEventListener('click', () => {
     if (cropper) cropper.destroy();
     cropModal.classList.remove('show');
-    // 新しく選択した画像の消去
-    if (newImages) {
-        newImages.forEach(newImage => {
-            selectedImages = selectedImages.filter(selectedImage => selectedImage !== newImage);
-        })
-    }
-    renderPreviews();
+    currentImage = ''
+    removeImage();
 });
 
-function renderPreviews() {
+// 画像の削除
+function removeImage() {
+    currentImage = ''
+    // 画像追加ボタンの表示切替
+    toggleAddImageButton();
+    // 選択した画像をinputから削除する
+    inputElm.value = '';
+    // プレビューを再描画
+    renderImage(currentImage);
+}
+
+function renderImage(currentImage) {
     // プレビューを取得後、クリア
     preview.innerHTML = '';
-    // 選択している画像の枚数を表示する
-    countImages();
 
-    selectedImages.forEach((image, index) => {
+    if (currentImage != '') {
         const figure = document.createElement('figure');
-        figure.setAttribute('id', `img-${index}`);
+        figure.setAttribute('id', `img-block`);
         figure.className = 'relative flex flex-col items-center mb-4';
 
         const img = document.createElement('img');
+        img.src = currentImage;
         img.alt = 'preview';
         img.className = 'w-full h-full object-cover rounded-lg border border-gray-300 aspect-w-4 aspect-h-3';
-        // ファイルがBase64文字列かFileオブジェクトかをチェック
-        if (typeof image === 'string') {
-            img.src = image;
-        } else if (image instanceof File) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-                img.src = e.target.result;
-            };
-            reader.readAsDataURL(image);
-        }
 
         // 削除ボタン
         const rmBtn = document.createElement('button');
@@ -121,61 +114,55 @@ function renderPreviews() {
         rmBtn.textContent = window.Lang.common.delete;
         rmBtn.className = 'bg-red-500 text-white mt-2 px-2 py-1 rounded hover:bg-red-600';
         rmBtn.onclick = function () {
-            removeImage(index);
+            removeImage();
         };
 
         figure.appendChild(img);
         figure.appendChild(rmBtn);
         preview.appendChild(figure);
-    });
 
-    // 選択しているファイルを反映
-    updateInputElement();
-}
+        // 選択しているファイルを反映
+        updateInputElement();
+    }
 
-function removeImage(index) {
-    // 選択済みファイルリストから該当インデックスのファイルを削除
-    selectedImages = selectedImages.filter((_, i) => i !== index);
-
-    // プレビューを再描画
-    renderPreviews();
+    // 画像追加ボタンの表示切替
+    toggleAddImageButton();
 }
 
 function updateInputElement() {
     const dataTransfer = new DataTransfer();
-    selectedImages.forEach((image, index) => {
-        if (typeof image === 'string') {
-            // Base64文字列をFileオブジェクトに変換
-            const arr = image.split(',');
-            // MIMEタイプを取得
-            const mime = arr[0].match(/:(.*?);/)[1];
-            // Base64データをデコード
-            const bstr = atob(arr[1]);
-            let n = bstr.length;
-            const u8arr = new Uint8Array(n);
-            while (n--) {
-                u8arr[n] = bstr.charCodeAt(n);
-            }
-
-            // Fileオブジェクトを作成
-            const file = new File([u8arr], `cropped-image-${index + 1}.jpg`, { type: mime });
-            dataTransfer.items.add(file);
-        } else if (image instanceof File) {
-            // File型の場合そのまま追加
-            dataTransfer.items.add(image);
+    if (typeof currentImage === 'string') {
+        // Base64文字列をFileオブジェクトに変換
+        const arr = currentImage.split(',');
+        // MIMEタイプを取得
+        const mime = arr[0].match(/:(.*?);/)[1];
+        // Base64データをデコード
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+            u8arr[n] = bstr.charCodeAt(n);
         }
-    });
+
+        // Fileオブジェクトを作成
+        const file = new File([u8arr], `cropped-image.jpg`, { type: mime });
+        dataTransfer.items.add(file);
+    } else if (currentImage instanceof File) {
+        // File型の場合そのまま追加
+        dataTransfer.items.add(currentImage);
+    }
 
     // 選択されたファイルを反映
     inputElm.files = dataTransfer.files;
 }
 
-// 選択している画像の枚数を表示する
-function countImages() {
-    const count = document.getElementById('count');
-    count.innerHTML = '';
-    const countText = document.createElement('p');
-    const imageCount = selectedImages.length;
-    countText.textContent = window.Lang.messages.image_count.replace(':count', imageCount);
-    count.appendChild(countText);
+function toggleAddImageButton() {
+    const addImageButton = document.getElementById('add-image-button');
+
+    // 画像があるなら非表示、それ以外は表示
+    if (currentImage != '') {
+        addImageButton.style.display = 'none';
+    } else {
+        addImageButton.style.display = 'inline-flex';
+    }
 }
