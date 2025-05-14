@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // 現在の画像のURLをフォームに反映
     document.getElementById('existingImage').value = existingImage != '' ? existingImage : null;
     // 既存画像をプレビューとして表示
-    renderImage(currentImage, removeExistingImage, false);
+    renderImage(currentImage, removeImage, false);
 
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する
@@ -76,11 +76,11 @@ function renderImage(currentImage, changeImage, isNewImage) {
 }
 
 // 画像の削除
-function removeExistingImage() {
+function removeImage() {
     // 選択なし画像のパスを代入
     currentImage = noImagePath;
     // プレビューを再描画
-    renderImage(currentImage, removeExistingImage, false);
+    renderImage(currentImage, removeImage, false);
     // プレビューのうち、削除ボタンを削除する
     const deleteButton = document.getElementById('delete_button');
     deleteButton.remove();
@@ -95,7 +95,7 @@ function resetImage() {
     currentImage = existingImage != '' ? existingImage : noImagePath;
 
     // プレビューを再描画
-    renderImage(currentImage, removeExistingImage, false);
+    renderImage(currentImage, removeImage, false);
     if (currentImage == noImagePath) {
         // プレビューのうち、削除ボタンを削除する
         const deleteButton = document.getElementById('delete_button');
