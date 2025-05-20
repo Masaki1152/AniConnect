@@ -27,7 +27,7 @@
                         <x-molecules.select-box.category-select-box :postType="$work_review" targetTableName="work_review"
                             :categories="$categories" />
                         <x-molecules.text-field.body-text-area :postType="$work_review" targetTableName="work_review" />
-                        <x-molecules.preview.preview-image-edit :postType="$work_review" />
+                        <x-molecules.preview.preview-image-edit :isMultiple="true" :postType="$work_review" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.update_post" />
                     </form>

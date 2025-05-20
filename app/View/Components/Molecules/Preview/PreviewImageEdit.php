@@ -10,7 +10,7 @@ class PreviewImageEdit extends Component
     public $postType;
     public $isVertical;
 
-    public function __construct($isMultiple, $postType, $isVertical)
+    public function __construct($isMultiple, $postType, $isVertical = false)
     {
         $this->isMultiple = $isMultiple;
         $this->postType = $postType;
