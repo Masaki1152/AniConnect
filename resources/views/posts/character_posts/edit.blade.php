@@ -27,7 +27,7 @@
                         <x-molecules.select-box.category-select-box :postType="$character_post" targetTableName="character_post"
                             :categories="$categories" />
                         <x-molecules.text-field.body-text-area :postType="$character_post" targetTableName="character_post" />
-                        <x-molecules.preview.preview-image-edit :postType="$character_post" />
+                        <x-molecules.preview.preview-image-edit :isMultiple="true" :postType="$character_post" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.update_post" />
                     </form>

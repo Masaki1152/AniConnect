@@ -31,7 +31,7 @@
                         <x-molecules.select-box.category-select-box :postType="$pilgrimage_post" targetTableName="pilgrimage_post"
                             :categories="$categories" />
                         <x-molecules.text-field.body-text-area :postType="$pilgrimage_post" targetTableName="pilgrimage_post" />
-                        <x-molecules.preview.preview-image-edit :postType="$pilgrimage_post" />
+                        <x-molecules.preview.preview-image-edit :isMultiple="true" :postType="$pilgrimage_post" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.update_post" />
                     </form>
