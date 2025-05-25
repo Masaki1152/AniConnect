@@ -15,6 +15,14 @@ enum RelatedPartyType: string
         };
     }
 
+    public function targetTableName(): string
+    {
+        return match ($this) {
+            self::Creator => 'creators',
+            self::Singer => 'singers'
+        };
+    }
+
     public function targetColumn(): string
     {
         return match ($this) {
