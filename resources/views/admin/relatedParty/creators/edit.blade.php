@@ -5,30 +5,7 @@
 
     <div class="container mx-auto px-4 py-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
         <div class="lg:col-span-2 space-y-6">
-            <div class="p-4 sm:p-8 bg-white shadow sm:rounded-lg">
-                <div class="max-w-xl lg:max-w-2xl">
-                    <h2 class="text-lg font-medium text-gray-900">
-                        {{ __('common.target_edit', ['target' => $creator->name]) }}</h2>
-                    <form action="{{ route('admin.creators.update', ['creator_id' => $creator->id]) }}" method="POST"
-                        enctype="multipart/form-data" class="mt-6 space-y-6">
-                        @csrf
-                        @method('PUT')
-                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Name" :postType="$creator"
-                            targetTableName="creators" characterMaxLength="200" />
-                        <x-molecules.preview.preview-image-edit :isMultiple="false" :postType="$creator" :isVertical="false" />
-                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Copyright" :postType="$creator"
-                            targetTableName="creators" characterMaxLength="200" />
-                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::OfficialSiteLink" :postType="$creator"
-                            targetTableName="creators" characterMaxLength="200" />
-                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::WikiLink" :postType="$creator"
-                            targetTableName="creators" characterMaxLength="200" />
-                        <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::TwitterLink" :postType="$creator"
-                            targetTableName="creators" characterMaxLength="200" />
-                        <!-- 登録ボタン -->
-                        <x-molecules.button.post-button buttonText="common.edit" />
-                    </form>
-                </div>
-            </div>
+            <x-organisms.related-party-registration :targetTableType="\App\Enums\RelatedPartyType::Creator" :postType="$creator" />
         </div>
         <!-- 右側サイドバーブロック -->
         <div class="lg:col-span-1 bg-gray-100 rounded-lg shadow-md p-6">
