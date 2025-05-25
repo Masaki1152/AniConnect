@@ -1,9 +1,22 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const inputName = document.getElementById('creator-name');
-    const suggestions = document.getElementById('creator-suggestions');
-    const creatorId = document.getElementById('creator-id');
-    const notFound = document.getElementById('creator-not-found');
-    const createLink = document.getElementById('creator-create-link');
+    setupRelatedPartyAutoComplete('creator');
+    setupRelatedPartyAutoComplete('composer');
+    setupRelatedPartyAutoComplete('lyric_writer');
+    setupRelatedPartyAutoComplete('singer');
+    setupRelatedPartyAutoComplete('voice_artist');
+});
+
+function setupRelatedPartyAutoComplete(target) {
+    const inputName = document.getElementById(`${target}-name`);
+    const suggestions = document.getElementById(`${target}-suggestions`);
+    const targetId = document.getElementById(`${target}-id`);
+    const notFound = document.getElementById(`${target}-not-found`);
+    const targetLink = document.getElementById(`${target}-create-link`);
+
+    // DOMが1つでも見つからなければ何もせずに終了
+    if (!inputName || !suggestions || !targetId || !notFound || !targetLink) {
+        return;
+    }
 
     let timeout = null;
 
@@ -19,16 +32,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
         timeout = setTimeout(async () => {
             try {
-                const response = await fetch(`/creator/search?q=${encodeURIComponent(query)}`);
+                const response = await fetch(`/${target}/search?q=${encodeURIComponent(query)}`);
                 if (!response.ok) throw new Error('予期せぬエラー');
 
                 const data = await response.json();
                 suggestions.innerHTML = '';
 
                 if (data.length > 0) {
-                    data.forEach(creator => {
+                    data.forEach(item => {
                         const li = document.createElement('li');
-                        li.textContent = creator.name;
+                        li.textContent = item.name;
                         li.classList.add(
                             'px-4',
                             'py-2',
@@ -38,8 +51,8 @@ document.addEventListener('DOMContentLoaded', () => {
                             'last:border-b-0'
                         );
                         li.addEventListener('click', () => {
-                            inputName.value = creator.name;
-                            creatorId.value = creator.id;
+                            inputName.value = item.name;
+                            targetId.value = item.id;
                             suggestions.classList.add('hidden');
                             notFound.classList.add('hidden');
                         });
@@ -49,10 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     notFound.classList.add('hidden');
                 } else {
                     suggestions.classList.add('hidden');
-                    creatorId.value = '';
+                    targetId.value = '';
                     notFound.classList.remove('hidden');
                     const baseUrl = createLink.dataset.baseUrl;
-                    createLink.href = `${baseUrl}?name=${encodeURIComponent(query)}`;
+                    targetLink.href = `${baseUrl}?name=${encodeURIComponent(query)}`;
                 }
             } catch (error) {
                 console.error('検索中にエラーが発生しました:', error);
@@ -61,4 +74,4 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }, 300);
     });
-});
+}
