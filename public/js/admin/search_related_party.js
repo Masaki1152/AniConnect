@@ -64,7 +64,7 @@ function setupRelatedPartyAutoComplete(target) {
                     suggestions.classList.add('hidden');
                     targetId.value = '';
                     notFound.classList.remove('hidden');
-                    const baseUrl = createLink.dataset.baseUrl;
+                    const baseUrl = targetLink.dataset.baseUrl;
                     targetLink.href = `${baseUrl}?name=${encodeURIComponent(query)}`;
                 }
             } catch (error) {
