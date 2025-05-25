@@ -45,5 +45,5 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <script src="{{ asset('/js/create_single_preview.js') }}"></script>
     <script src="{{ asset('/js/count_character.js') }}"></script>
-    <script src="{{ asset('/js/admin/search_creator.js') }}"></script>
+    <script src="{{ asset('/js/admin/search_related_party.js') }}"></script>
 </x-app-layout>
