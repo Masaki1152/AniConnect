@@ -61,7 +61,7 @@ use App\Http\Controllers\Notification\Comment\NotificationCommentLikeController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return redirect()->route('main.index');
 });
 
 // 管理者用ルートグループ
@@ -170,7 +170,7 @@ Route::controller(NotificationLikeController::class)->middleware(['auth'])->grou
 
 // 誰でも閲覧できるメイン画面の表示
 // MainControllerに関するルーティング
-Route::controller(MainController::class)->middleware(['auth'])->group(function () {
+Route::controller(MainController::class)->group(function () {
     // 一覧の表示
     Route::get('/main', 'index')->name('main.index');
 });
