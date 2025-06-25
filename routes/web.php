@@ -149,13 +149,16 @@ Route::controller(NotificationCommentLikeController::class)->middleware(['auth']
 });
 
 // NotificationControllerに関するルーティング
-Route::controller(NotificationController::class)->middleware(['auth'])->group(function () {
+Route::controller(NotificationController::class)->group(function () {
     // お知らせ一覧の表示
     Route::get('/notification', 'index')->name('notifications.index');
     // お知らせの詳細表示
     Route::get('/notification/{notification_id}', 'show')->name('notifications.show');
-    // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/notification/like/{notification_id}', 'like')->name('notifications.like');
+
+    Route::middleware(['auth'])->group(function () {
+        // お知らせのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/notification/like/{notification_id}', 'like')->name('notifications.like');
+    });
 });
 
 // NotificationLikeControllerに関するルーティング
