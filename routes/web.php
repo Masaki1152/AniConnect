@@ -261,7 +261,7 @@ Route::controller(WorkReviewLikeController::class)->middleware(['auth'])->group(
 });
 
 // CreatorControllerに関するルーティング
-Route::controller(CreatorController::class)->middleware(['auth'])->group(function () {
+Route::controller(CreatorController::class)->group(function () {
     // 制作会社の検索
     Route::get('/creator/search', 'search')->name('creator.search');
     // 制作会社の詳細表示
@@ -335,7 +335,7 @@ Route::controller(CharacterPostLikeController::class)->middleware(['auth'])->gro
 });
 
 // VoiceArtistControllerに関するルーティング
-Route::controller(VoiceArtistController::class)->middleware(['auth'])->group(function () {
+Route::controller(VoiceArtistController::class)->group(function () {
     // 声優の詳細表示
     Route::get('/voice_artist/{voice_artist_id}', 'show')->name('voice_artist.show');
 });
@@ -407,19 +407,19 @@ Route::controller(MusicPostLikeController::class)->middleware(['auth'])->group(f
 });
 
 // SingerControllerに関するルーティング
-Route::controller(SingerController::class)->middleware(['auth'])->group(function () {
+Route::controller(SingerController::class)->group(function () {
     // 歌手の詳細表示
     Route::get('/singer/{singer_id}', 'show')->name('singer.show');
 });
 
 // LyricWriterControllerに関するルーティング
-Route::controller(LyricWriterController::class)->middleware(['auth'])->group(function () {
+Route::controller(LyricWriterController::class)->group(function () {
     // 作詞者の詳細表示
     Route::get('/lyric_writer/{lyric_writer_id}', 'show')->name('lyric_writer.show');
 });
 
 // ComposerControllerに関するルーティング
-Route::controller(ComposerController::class)->middleware(['auth'])->group(function () {
+Route::controller(ComposerController::class)->group(function () {
     // 作曲者の詳細表示
     Route::get('/composer/{composer_id}', 'show')->name('composer.show');
 });
