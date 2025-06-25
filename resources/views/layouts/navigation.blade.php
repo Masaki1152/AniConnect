@@ -12,11 +12,13 @@
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    @if (Auth::user()->is_admin === 1)
-                        <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                            {{ __('管理画面') }}
-                        </x-atom.nav-link>
-                    @endif
+                    @auth
+                        @if (Auth::user()->is_admin === 1)
+                            <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
+                                {{ __('管理画面') }}
+                            </x-atom.nav-link>
+                        @endif
+                    @endauth
                     <x-atom.nav-link :href="route('works.index')" :active="request()->routeIs('works.index')">
                         {{ __('作品一覧') }}
                     </x-atom.nav-link>
@@ -37,45 +39,54 @@
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
-                <x-atom.dropdown align="right" width="48">
-                    <x-slot name="trigger">
-                        <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            <!-- アイコン画像 -->
-                            <img src="{{ Auth::user()->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
-                                alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover mr-1">
+                @auth
+                    <x-atom.dropdown align="right" width="48">
+                        <x-slot name="trigger">
+                            <button
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                <!-- アイコン画像 -->
+                                <img src="{{ Auth::user()->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
+                                    alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover mr-1">
 
-                            <!-- アカウント名 -->
-                            <div>{{ Auth::user()->name }}</div>
+                                <!-- アカウント名 -->
+                                <div>{{ Auth::user()->name }}</div>
 
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                    viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd"
-                                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                            </div>
-                        </button>
-                    </x-slot>
+                                <div class="ms-1">
+                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 20 20">
+                                        <path fill-rule="evenodd"
+                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                </div>
+                            </button>
+                        </x-slot>
 
-                    <x-slot name="content">
-                        <x-atom.dropdown-link :href="route('profile.index')">
-                            {{ __('Profile') }}
-                        </x-atom.dropdown-link>
-
-                        <!-- Authentication -->
-                        <form method="POST" action="{{ route('logout') }}">
-                            @csrf
-
-                            <x-atom.dropdown-link :href="route('logout')"
-                                onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                {{ __('Log Out') }}
+                        <x-slot name="content">
+                            <x-atom.dropdown-link :href="route('profile.index')">
+                                {{ __('Profile') }}
                             </x-atom.dropdown-link>
-                        </form>
-                    </x-slot>
-                </x-atom.dropdown>
+
+                            <!-- Authentication -->
+                            <form method="POST" action="{{ route('logout') }}">
+                                @csrf
+
+                                <x-atom.dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                                    {{ __('Log Out') }}
+                                </x-atom.dropdown-link>
+                            </form>
+                        </x-slot>
+                    </x-atom.dropdown>
+                @else
+                    <div class="space-x-4">
+                        <a href="{{ route('login') }}"
+                            class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('ログイン') }}</a>
+                        <a href="{{ route('register') }}"
+                            class="ms-4 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('会員登録') }}</a>
+                    </div>
+                @endauth
             </div>
 
             <!-- Hamburger -->
@@ -104,27 +115,39 @@
 
         <!-- Responsive Settings Options -->
         <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
+            @auth
+                <div class="px-4">
+                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                </div>
 
-            <div class="mt-3 space-y-1">
-                <x-atom.responsive-nav-link :href="route('profile.index')">
-                    {{ __('Profile') }}
-                </x-atom.responsive-nav-link>
-
-                <!-- Authentication -->
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-
-                    <x-atom.responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault();
-                                        this.closest('form').submit();">
-                        {{ __('Log Out') }}
+                <div class="mt-3 space-y-1">
+                    <x-atom.responsive-nav-link :href="route('profile.index')">
+                        {{ __('Profile') }}
                     </x-atom.responsive-nav-link>
-                </form>
-            </div>
+
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+
+                        <x-atom.responsive-nav-link :href="route('logout')"
+                            onclick="event.preventDefault();
+                                        this.closest('form').submit();">
+                            {{ __('Log Out') }}
+                        </x-atom.responsive-nav-link>
+                    </form>
+                </div>
+            @else
+                {{-- 未ログインユーザー向けのレスポンシブメニュー --}}
+                <div class="mt-3 space-y-1">
+                    <x-atom.responsive-nav-link :href="route('login')">
+                        {{ __('ログイン') }}
+                    </x-atom.responsive-nav-link>
+                    <x-atom.responsive-nav-link :href="route('register')">
+                        {{ __('会員登録') }}
+                    </x-atom.responsive-nav-link>
+                </div>
+            @endauth
         </div>
     </div>
 </nav>
