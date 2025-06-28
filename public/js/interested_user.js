@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //「気になる」登録ボタンクリックによる非同期処理
         button.addEventListener('click', async function () {
+
+            // ログイン状態を確認
+            if (!window.checkLoginAndShowDialog(this)) return;
+
             const targetType = button.getAttribute('data-type');
             const targetFirstId = button.getAttribute('data-first-id');
             let path = '';
