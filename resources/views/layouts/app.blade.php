@@ -19,18 +19,23 @@
     <link rel="stylesheet" href="/css/cropper.css" />
 
     <!-- Scripts -->
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <script>
         window.Lang = {!! json_encode([
             'messages' => trans('messages'),
             'common' => trans('common'),
             'validation' => trans('validation'),
         ]) !!};
-    </script>
-    <!-- categoryColors を全ページに適用 -->
-    <script>
+
         window.categoryColors = {!! json_encode($categoryColors) !!};
+
+        window.App = window.App || {};
+        window.App.userLoggedIn = @auth true
+        @else
+            false
+        @endauth ;
     </script>
+
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
 <body class="font-sans antialiased">
@@ -52,8 +57,11 @@
             <!-- Lightbox JS -->
             <script src="/js/lightbox-plus-jquery.min.js"></script>
             <script src="/js/cropper.js"></script>
+            <script src="/js/login_dialog.js"></script>
         </main>
     </div>
+
+    <x-molecules.dialog.login-dialog />
 </body>
 
 </html>

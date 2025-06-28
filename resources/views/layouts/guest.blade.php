@@ -18,6 +18,12 @@
             'common' => trans('common'),
             'validation' => trans('validation'),
         ]) !!};
+
+        window.App = window.App || {};
+        window.App.userLoggedIn = @auth true
+        @else
+            false
+        @endauth ;
     </script>
 
     <!-- Scripts -->
@@ -36,7 +42,10 @@
             {{ $slot }}
         </div>
     </div>
+    <x-molecules.dialog.login-dialog />
+
     <script src="{{ asset('/js/count_character.js') }}"></script>
+    <script src="/js/login_dialog.js"></script>
 </body>
 
 </html>
