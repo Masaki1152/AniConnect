@@ -12,6 +12,14 @@
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600&display=swap" rel="stylesheet" />
 
+    <script>
+        window.Lang = {!! json_encode([
+            'messages' => trans('messages'),
+            'common' => trans('common'),
+            'validation' => trans('validation'),
+        ]) !!};
+    </script>
+
     <!-- Scripts -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
