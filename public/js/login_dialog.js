@@ -39,3 +39,15 @@ function checkLoginAndShowDialog(element) {
     return true;
 }
 
+document.addEventListener('DOMContentLoaded', () => {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('login_required') === '1') {
+        showLoginDialog('この操作を行う');
+
+        params.delete('login_required');
+
+        const newUrl = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+        window.history.replaceState({}, '', newUrl);
+    }
+});
+
