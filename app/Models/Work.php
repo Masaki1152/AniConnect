@@ -105,18 +105,18 @@ class Work extends Model
     public function updateTopCategories()
     {
         // 作品ごとに各カテゴリーとその出現回数を取得
-        $topCategoriesData = DB::table('work_review_work_review_category')
-            ->join('work_reviews', 'work_reviews.id', '=', 'work_review_work_review_category.work_review_id')
-            ->join('works', 'works.id', '=', 'work_reviews.work_id')
+        $topCategoriesData = DB::table('work_post_work_post_category')
+            ->join('work_posts', 'work_posts.id', '=', 'work_post_work_post_category.work_post_id')
+            ->join('works', 'works.id', '=', 'work_posts.work_id')
             ->select(
                 'works.id as work_id',
-                'work_review_work_review_category.work_review_category_id',
+                'work_post_work_post_category.work_post_category_id',
                 DB::raw('COUNT(*) as count')
             )
-            ->groupBy('works.id', 'work_review_work_review_category.work_review_category_id')
+            ->groupBy('works.id', 'work_post_work_post_category.work_post_category_id')
             ->orderBy('works.id')
             ->orderByDesc('count')
-            ->orderBy('work_review_work_review_category.work_review_category_id', 'asc')
+            ->orderBy('work_post_work_post_category.work_post_category_id', 'asc')
             ->get()
             ->groupBy('work_id');
 
@@ -126,7 +126,7 @@ class Work extends Model
             // キャッシュキーの作成
             $cacheKey = "work_top_categories_{$workId}";
             // 上位3つのカテゴリを抽出
-            $topCategories = $categories->take(3)->pluck('work_review_category_id')->toArray();
+            $topCategories = $categories->take(3)->pluck('work_post_category_id')->toArray();
 
             // カテゴリを更新
             Work::where('id', $workId)->update([
@@ -152,23 +152,23 @@ class Work extends Model
     }
 
     // 指定の投稿数以上の作品を取得
-    public function fetchSufficientReviewNumWorks()
+    public function fetchSufficientPostNumWorks()
     {
         // 人気度を算出する際の最低投稿数
-        $minReviewNum = 3;
-        $sufficientReviewsWorks = Work::with(['workReviews' => function ($query) {
+        $minPostNum = 3;
+        $sufficientPostsWorks = Work::with(['workPosts' => function ($query) {
             $query->select('id', 'work_id', 'star_num', 'created_at');
         }])
-            ->withCount('workReviews')
-            ->having('work_reviews_count', '>=', $minReviewNum)
+            ->withCount('workPosts')
+            ->having('work_posts_count', '>=', $minPostNum)
             ->get();
-        return $sufficientReviewsWorks;
+        return $sufficientPostsWorks;
     }
 
-    // WorkReviewに対するリレーション 1対多の関係
-    public function workReviews()
+    // WorkPostに対するリレーション 1対多の関係
+    public function workPosts()
     {
-        return $this->hasMany(WorkReview::class, 'work_id');
+        return $this->hasMany(WorkPost::class, 'work_id');
     }
 
     // AnimePilgrimageに対するリレーション 多対多の関係

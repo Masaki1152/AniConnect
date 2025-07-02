@@ -7,14 +7,14 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use DateTime;
 
-class Work_Review_Seeder extends Seeder
+class work_post_Seeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        DB::table('work_reviews')->insert([
+        DB::table('work_posts')->insert([
             'work_id' => 2,
             'user_id' => 1,
             'post_title' => '謎多き村、雛見沢',
@@ -22,7 +22,7 @@ class Work_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_reviews')->insert([
+        DB::table('work_posts')->insert([
             'work_id' => 6,
             'user_id' => 2,
             'post_title' => '旧作のリメイクだと思ってたら…',
@@ -30,7 +30,7 @@ class Work_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_reviews')->insert([
+        DB::table('work_posts')->insert([
             'work_id' => 1,
             'user_id' => 3,
             'post_title' => '初見です',
@@ -38,7 +38,7 @@ class Work_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_reviews')->insert([
+        DB::table('work_posts')->insert([
             'work_id' => 1,
             'user_id' => 4,
             'post_title' => 'ほむらに共感',
@@ -46,7 +46,7 @@ class Work_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_reviews')->insert([
+        DB::table('work_posts')->insert([
             'work_id' => 3,
             'user_id' => 5,
             'post_title' => '青春だね',
@@ -54,7 +54,7 @@ class Work_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-        DB::table('work_reviews')->insert([
+        DB::table('work_posts')->insert([
             'work_id' => 5,
             'user_id' => 6,
             'post_title' => 'FateといえばZero',
@@ -62,6 +62,5 @@ class Work_Review_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-
     }
 }

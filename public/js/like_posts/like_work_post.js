@@ -15,10 +15,10 @@ document.addEventListener('DOMContentLoaded', function () {
         //いいねボタンクリックによる非同期処理
         button.addEventListener('click', async function () {
             const workId = button.getAttribute('data-work-id');
-            const reviewId = button.getAttribute('data-review-id');
+            const postId = button.getAttribute('data-post-id');
             try {
                 const response = await fetch(
-                    `/work_reviews/${workId}/reviews/${reviewId}/like`, {
+                    `/work_posts/${workId}/posts/${postId}/like`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',

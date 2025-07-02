@@ -80,7 +80,7 @@
             <p>{{ $work->twitter_link }}</p>
             <x-molecules.button.interested type="works" :root="$work" path="work.interested.index"
                 :prop="['work_id' => $work->id]" isMultiple="false" />
-            <a href="{{ route('work_reviews.index', ['work_id' => $work->id]) }}">作品感想一覧</a>
+            <a href="{{ route('work_posts.index', ['work_id' => $work->id]) }}">作品感想一覧</a>
         </div>
     </div>
     <div class="work_story_link">

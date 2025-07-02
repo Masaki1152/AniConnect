@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Work;
 
 use App\Http\Controllers\Controller;
 use App\Models\Work;
-use App\Models\WorkReviewCategory;
+use App\Models\WorkPostCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -12,15 +12,15 @@ use Illuminate\Support\Facades\Cache;
 class WorkController extends Controller
 {
     // 作品一覧画面の表示
-    public function index(Request $request, Work $work, WorkReviewCategory $category)
+    public function index(Request $request, Work $work, WorkPostCategory $category)
     {
         // 人気上位の作品を取得
         $topPopularityWorks = Cache::get('top_popular_works');
         // キャッシュが見つからない場合
         if (!$topPopularityWorks) {
-            $sufficientReviewsWorks = $work->fetchSufficientReviewNumWorks();
+            $sufficientPostsWorks = $work->fetchSufficientPostNumWorks();
             // updateTopPopularityWorksを実行して人気度の高い作品を再計算
-            $work->updateTopPopularityItems($sufficientReviewsWorks, 'workReviews', 'top_popular_works');
+            $work->updateTopPopularityItems($sufficientPostsWorks, 'workPosts', 'top_popular_works');
             // 再度キャッシュから人気度の高い作品を取得
             $topPopularityWorks = Cache::get('top_popular_works');
         }
@@ -40,7 +40,7 @@ class WorkController extends Controller
 
         // 各作品の投稿数を追加　
         // 平均評価と異なりリアルタイム性が必要なため作品一覧表示の度に取得
-        $works = $work->countPosts($works, 'workReviews');
+        $works = $work->countPosts($works, 'workPosts');
 
         // カテゴリー情報をまとめる
         foreach ($works as $work) {
@@ -51,7 +51,7 @@ class WorkController extends Controller
             ])
                 ->filter()
                 ->map(function ($categoryId) {
-                    $category = WorkReviewCategory::find($categoryId);
+                    $category = WorkPostCategory::find($categoryId);
                     return [
                         'name' => $category->name ?? __('messages.unknown_category'),
                         'color' => getCategoryColor($category->name ?? ''),
@@ -63,7 +63,7 @@ class WorkController extends Controller
         $selectedCategories = [];
         // カテゴリーの情報を取得する
         foreach ($categoryIds as $categoryId) {
-            $category = WorkReviewCategory::find($categoryId);
+            $category = WorkPostCategory::find($categoryId);
             array_push($selectedCategories, $category->name);
         }
 
@@ -84,7 +84,7 @@ class WorkController extends Controller
         $categories = [];
         // カテゴリーの情報を取得する
         foreach ([$work->category_top_1, $work->category_top_2, $work->category_top_3] as $categoryId) {
-            $category = WorkReviewCategory::find($categoryId);
+            $category = WorkPostCategory::find($categoryId);
             if (!empty($category)) {
                 array_push($categories, $category->name);
             }

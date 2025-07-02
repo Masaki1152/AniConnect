@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkReview extends Model
+class WorkPost extends Model
 {
     use HasFactory;
     use SerializeDate;
@@ -23,18 +23,18 @@ class WorkReview extends Model
         'image4',
     ];
 
-    // 参照させたいwork_reviewsを指定
-    protected $table = 'work_reviews';
+    // 参照させたいwork_postsを指定
+    protected $table = 'work_posts';
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
     // 作品投稿の検索処理
-    public function fetchWorkReviews($work_id, $search, $categoryIds)
+    public function fetchWorkPosts($work_id, $search, $categoryIds)
     {
         // 指定したidのアニメの投稿のみを表示
-        $work_reviews = WorkReview::where('work_id', $work_id)
+        $work_posts = WorkPost::where('work_id', $work_id)
             ->with(['user', 'categories'])
             ->where(function ($query) use ($search, $categoryIds) {
                 // キーワード検索がなされた場合
@@ -60,14 +60,14 @@ class WorkReview extends Model
                 if (!empty($categoryIds)) {
                     foreach ($categoryIds as $categoryId) {
                         $query->whereHas('categories', function ($categoryQuery) use ($categoryId) {
-                            $categoryQuery->where('work_review_categories.id', $categoryId);
+                            $categoryQuery->where('work_post_categories.id', $categoryId);
                         });
                     }
                 }
             })
             ->orderBy('created_at', 'DESC')
             ->paginate(5);
-        return $work_reviews;
+        return $work_posts;
     }
 
     // created_atで降順に並べたあと、limitで件数制限をかける
@@ -77,11 +77,11 @@ class WorkReview extends Model
     }
 
     // 作品idと投稿idを指定して、投稿の詳細表示を行う
-    public function getDetailPost($work_id, $work_review_id)
+    public function getDetailPost($work_id, $work_post_id)
     {
         return $this->where([
             ['work_id', $work_id],
-            ['id', $work_review_id],
+            ['id', $work_post_id],
         ])->first();
     }
 
@@ -106,19 +106,19 @@ class WorkReview extends Model
     // カテゴリーに対するリレーション 多対多の関係
     public function categories()
     {
-        return $this->belongsToMany(WorkReviewCategory::class, 'work_review_work_review_category', 'work_review_id', 'work_review_category_id');
+        return $this->belongsToMany(WorkPostCategory::class, 'work_post_work_post_category', 'work_post_id', 'work_post_category_id');
     }
 
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_work_review', 'work_review_id', 'user_id')
+        return $this->belongsToMany(User::class, 'user_work_post', 'work_post_id', 'user_id')
             ->withPivot('created_at');
     }
 
     // コメントに対するリレーション 一対多の関係
-    public function workReviewComments()
+    public function workPostComments()
     {
-        return $this->hasMany(WorkReviewComment::class, 'work_review_id', 'id');
+        return $this->hasMany(WorkPostComment::class, 'work_post_id', 'id');
     }
 }

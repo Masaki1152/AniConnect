@@ -63,7 +63,7 @@ function handleLikeAction(button) {
         url = `/works/${workId}/stories/${workStoryId}/posts/${postId}/like`;
     } else if (workId && postId) {
         // work_postの場合
-        url = `/work_reviews/${workId}/reviews/${postId}/like`;
+        url = `/work_posts/${workId}/posts/${postId}/like`;
     } else if (musicId && postId) {
         // music_postの場合
         url = `/music_posts/${musicId}/posts/${postId}/like`;
