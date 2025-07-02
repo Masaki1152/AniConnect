@@ -9,8 +9,8 @@ use App\Http\Controllers\Admin\AdminWorkController;
 use App\Http\Controllers\Admin\RelatedParty\AdminCreatorController;
 use App\Http\Controllers\Work\WorkController;
 use App\Http\Controllers\Work\WorkInterestedController;
-use App\Http\Controllers\Work\WorkReviewController;
-use App\Http\Controllers\Work\WorkReviewLikeController;
+use App\Http\Controllers\Work\WorkPostController;
+use App\Http\Controllers\Work\WorkPostLikeController;
 use App\Http\Controllers\RelatedParty\CreatorController;
 use App\Http\Controllers\Character\CharacterController;
 use App\Http\Controllers\Character\CharacterInterestedController;
@@ -36,8 +36,8 @@ use App\Http\Controllers\User\UserController;
 use App\Http\Controllers\User\UserFollowController;
 use App\Http\Controllers\Notification\NotificationController;
 use App\Http\Controllers\Notification\NotificationLikeController;
-use App\Http\Controllers\Work\Comment\WrCommentController;
-use App\Http\Controllers\Work\Comment\WrCommentLikeController;
+use App\Http\Controllers\Work\Comment\WpCommentController;
+use App\Http\Controllers\Work\Comment\WpCommentLikeController;
 use App\Http\Controllers\WorkStory\Comment\WspCommentController;
 use App\Http\Controllers\WorkStory\Comment\WspCommentLikeController;
 use App\Http\Controllers\Music\Comment\MpCommentController;
@@ -216,51 +216,51 @@ Route::controller(WorkInterestedController::class)->middleware(['auth'])->group(
     Route::get('/works/{work_id}/interested/index', 'index')->name('work.interested.index');
 });
 
-// WrCommentControllerに関するルーティング
-Route::controller(WrCommentController::class)->middleware(['auth'])->group(function () {
+// WpCommentControllerに関するルーティング
+Route::controller(WpCommentController::class)->middleware(['auth'])->group(function () {
     // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/work_reviews/comments/store', 'store')->name('work_review.comments.store');
+    Route::post('/work_posts/comments/store', 'store')->name('work_post.comments.store');
     // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/work_reviews/comments/{comment_id}/delete', 'delete')->name('work_review.comments.delete');
+    Route::delete('/work_posts/comments/{comment_id}/delete', 'delete')->name('work_post.comments.delete');
     // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/work_reviews/comments/{comment_id}/like', 'like')->name('work_review.comments.like');
+    Route::post('/work_posts/comments/{comment_id}/like', 'like')->name('work_post.comments.like');
     // ネスト化したコメントを表示するreplyメソッドを実行
-    Route::get('/work_reviews/comments/{comment_id}/replies', 'replies')->name('work_review.comments.replies');
+    Route::get('/work_posts/comments/{comment_id}/replies', 'replies')->name('work_post.comments.replies');
 });
 
-// WorkReviewCommentLikeControllerに関するルーティング
-Route::controller(WrCommentLikeController::class)->middleware(['auth'])->group(function () {
+// WorkPostCommentLikeControllerに関するルーティング
+Route::controller(WpCommentLikeController::class)->middleware(['auth'])->group(function () {
     // 作品一覧の表示
-    Route::get('/work_reviews/comments/{comment_id}/like/index', 'index')->name('work_review_comment.like.index');
+    Route::get('/work_posts/comments/{comment_id}/like/index', 'index')->name('work_post_comment.like.index');
 });
 
-// WorkReviewControllerに関するルーティング
-Route::controller(WorkReviewController::class)->group(function () {
+// WorkPostControllerに関するルーティング
+Route::controller(WorkPostController::class)->group(function () {
     // 各作品ごとの感想投稿一覧の表示
-    Route::get('/work_reviews/{work_id}', 'index')->name('work_reviews.index');
+    Route::get('/work_posts/{work_id}', 'index')->name('work_posts.index');
     // 各作品の感想投稿一覧ボタン押下で、showメソッドを実行
-    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}', 'show')->name('work_reviews.show');
+    Route::get('/work_posts/{work_id}/posts/{work_post_id}', 'show')->name('work_posts.show');
 
     Route::middleware(['auth'])->group(function () {
         // 新規投稿作成ボタン押下で、createメソッドを実行
-        Route::get('/work_reviews/{work_id}/create', 'create')->name('work_reviews.create');
+        Route::get('/work_posts/{work_id}/create', 'create')->name('work_posts.create');
         // 作成するボタン押下で、storeメソッドを実行
-        Route::post('/work_reviews/{work_id}/store', 'store')->name('work_reviews.store');
+        Route::post('/work_posts/{work_id}/store', 'store')->name('work_posts.store');
         // 感想投稿編集画面を表示するeditメソッドを実行
-        Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/edit', 'edit')->name('work_reviews.edit');
+        Route::get('/work_posts/{work_id}/posts/{work_post_id}/edit', 'edit')->name('work_posts.edit');
         // 感想投稿の編集を実行するupdateメソッドを実行
-        Route::put('/work_reviews/{work_id}/update/{work_review_id}', 'update')->name('work_reviews.update');
+        Route::put('/work_posts/{work_id}/update/{work_post_id}', 'update')->name('work_posts.update');
         // 感想投稿の削除を行うdeleteメソッドを実行
-        Route::delete('/work_reviews/{work_id}/reviews/{work_review_id}/delete', 'delete')->name('work_reviews.delete');
+        Route::delete('/work_posts/{work_id}/posts/{work_post_id}/delete', 'delete')->name('work_posts.delete');
         // 感想投稿のいいねボタン押下で、いいねを追加するlikeメソッドを実行
-        Route::post('/work_reviews/{work_id}/reviews/{work_review_id}/like', 'like')->name('work_reviews.like');
+        Route::post('/work_posts/{work_id}/posts/{work_post_id}/like', 'like')->name('work_posts.like');
     });
 });
 
-// WorkReviewLikeControllerに関するルーティング
-Route::controller(WorkReviewLikeController::class)->middleware(['auth'])->group(function () {
+// WorkPostLikeControllerに関するルーティング
+Route::controller(WorkPostLikeController::class)->middleware(['auth'])->group(function () {
     // いいね一覧の表示
-    Route::get('/work_reviews/{work_id}/reviews/{work_review_id}/like/index', 'index')->name('work_review_like.index');
+    Route::get('/work_posts/{work_id}/posts/{work_post_id}/like/index', 'index')->name('work_post_like.index');
 });
 
 // CreatorControllerに関するルーティング

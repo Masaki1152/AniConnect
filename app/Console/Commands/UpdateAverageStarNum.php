@@ -35,11 +35,11 @@ class UpdateAverageStarNum extends Command
     public function handle()
     {
         // 各作品の平均評価を取得
-        $sufficientReviewsWorks = $this->work->fetchSufficientReviewNumWorks();
+        $sufficientPostsWorks = $this->work->fetchSufficientPostNumWorks();
         $works = $this->work->all();
-        $this->work->updateAverageStarNum($works, $sufficientReviewsWorks, 'workReviews');
+        $this->work->updateAverageStarNum($works, $sufficientPostsWorks, 'workPosts');
         // 各あらすじの平均評価を取得
-        $sufficientPostsWorkStories = $this->workStory->fetchSufficientReviewNumWorkStories();
+        $sufficientPostsWorkStories = $this->workStory->fetchSufficientPostNumWorkStories();
         $workStories = $this->workStory->all();
         $this->workStory->updateAverageStarNum($workStories, $sufficientPostsWorkStories, 'workStoryPosts');
         // 各登場人物の平均評価を取得

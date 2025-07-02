@@ -4,22 +4,22 @@ namespace App\Http\Controllers\Work\Comment;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\WrCommentRequest;
-use App\Models\WorkReviewComment;
+use App\Http\Requests\WpCommentRequest;
+use App\Models\WorkPostComment;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\Auth;
 use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use App\Traits\CommonFunction;
 
-class WrCommentController extends Controller
+class WpCommentController extends Controller
 {
     use SoftDeletes;
     use CommonFunction;
 
     // 新しく記述した内容を保存する
-    public function store(WorkReviewComment $wr_comment, WrCommentRequest $request)
+    public function store(WorkPostComment $wp_comment, WpCommentRequest $request)
     {
-        $input_comment = $request['work_review_comment'];
+        $input_comment = $request['work_post_comment'];
         //cloudinaryへ画像を送信し、画像のURLを$image_urlに代入
         //画像ファイルが送られた時だけ処理が実行される
         if ($request->file('images')) {
@@ -39,30 +39,30 @@ class WrCommentController extends Controller
         }
         // ログインしているユーザーidの登録
         $input_comment['user_id'] = Auth::id();
-        $wr_comment->fill($input_comment)->save();
+        $wp_comment->fill($input_comment)->save();
 
         // statusの確認
-        $status = is_null($wr_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
+        $status = is_null($wp_comment->parent_id) ? 'comment_stored' : 'child_comment_stored';
 
         // Bladeテンプレートをレンダリング
         $commentHtml = view('user_interactions.comments.input_comment', [
-            'comment' => $wr_comment,
+            'comment' => $wp_comment,
             'status' => $status,
-            'inputName' => 'work_review_comment',
-            'baseRoute' => 'work_review',
-            'inputPostIdName' => 'work_review_id',
-            'postCommentId' => $wr_comment->work_review_id,
-            'parentId' => $wr_comment->parent_id
+            'inputName' => 'work_post_comment',
+            'baseRoute' => 'work_post',
+            'inputPostIdName' => 'work_post_id',
+            'postCommentId' => $wp_comment->work_post_id,
+            'parentId' => $wp_comment->parent_id
         ])->render();
         $message = __('messages.comment_posted');
-        return response()->json(['message' => $message, 'new_comment_id' => $wr_comment->id, 'commentHtml' => $commentHtml]);
+        return response()->json(['message' => $message, 'new_comment_id' => $wp_comment->id, 'commentHtml' => $commentHtml]);
     }
 
     // コメントを削除する
-    public function delete(WorkReviewComment $wr_comment, $comment_id)
+    public function delete(WorkPostComment $wp_comment, $comment_id)
     {
         try {
-            $parentCommentArray = $wr_comment->getParentCommentArray($comment_id);
+            $parentCommentArray = $wp_comment->getParentCommentArray($comment_id);
             // 子コメントがあれば全て削除
             foreach ($parentCommentArray as $target_comment_id) {
                 $this->deleteComment($target_comment_id);
@@ -82,7 +82,7 @@ class WrCommentController extends Controller
     public function like($comment_id)
     {
         // コメントが見つからない場合の処理
-        $comment = WorkReviewComment::find($comment_id);
+        $comment = WorkPostComment::find($comment_id);
         if (!$comment) {
             return response()->json(['message' => 'Post not found'], 404);
         }
@@ -100,25 +100,25 @@ class WrCommentController extends Controller
             $message = __('messages.liked');
         }
         // いいねしたユーザー数の取得
-        $count = count($comment->users()->pluck('wr_comment_id')->toArray());
+        $count = count($comment->users()->pluck('wp_comment_id')->toArray());
 
         return response()->json(['status' => $status, 'like_user' => $count, 'message' => $message]);
     }
 
     // ネスト化したコメントの表示
-    public function replies(WorkReviewComment $wr_comment, $comment_id)
+    public function replies(WorkPostComment $wp_comment, $comment_id)
     {
-        $wr_comment = WorkReviewComment::find($comment_id);
-        $replies = $wr_comment->replies()->with('user', 'users', 'replies')->get();
+        $wp_comment = WorkPostComment::find($comment_id);
+        $replies = $wp_comment->replies()->with('user', 'users', 'replies')->get();
         $replies = $replies->map(function ($reply) {
             // Bladeテンプレートをレンダリング
             $reply->html = view('user_interactions.comments.input_comment', [
                 'comment' => $reply,
                 'status' => 'show',
-                'inputName' => 'work_review_comment',
-                'baseRoute' => 'work_review',
-                'inputPostIdName' => 'work_review_id',
-                'postCommentId' => $reply->work_review_id,
+                'inputName' => 'work_post_comment',
+                'baseRoute' => 'work_post',
+                'inputPostIdName' => 'work_post_id',
+                'postCommentId' => $reply->work_post_id,
                 'parentId' => $reply->parent_id
             ])->render();
             return $reply;
@@ -131,7 +131,7 @@ class WrCommentController extends Controller
     public function deleteComment($comment_id)
     {
         // 編集の対象となるデータを取得
-        $targetComment = WorkReviewComment::find($comment_id);
+        $targetComment = WorkPostComment::find($comment_id);
         // 削除する投稿の画像も削除する処理
         for ($counter = 1; $counter < 5; $counter++) {
             $removed_image_path = $targetComment->{'image' . $counter};

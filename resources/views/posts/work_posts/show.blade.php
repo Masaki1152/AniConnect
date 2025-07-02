@@ -17,21 +17,21 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="text-lg font-semibold">
                 「
-                <a href="{{ route('works.show', ['work' => $work_review->work_id]) }}"
+                <a href="{{ route('works.show', ['work' => $work_post->work_id]) }}"
                     class="text-blue-500 hover:text-blue-700 underline">
-                    {{ $work_review->work->name }}
+                    {{ $work_post->work->name }}
                 </a>
                 」への感想投稿
             </div>
             <!-- 感想詳細ブロック -->
             <div class="bg-white rounded-lg shadow-md">
                 <div class="bg-pink-100 rounded-t-lg px-6 py-4">
-                    <h1 class="text-2xl font-bold">{{ $work_review->post_title }}</h1>
+                    <h1 class="text-2xl font-bold">{{ $work_post->post_title }}</h1>
                 </div>
                 <div class='p-6 space-y-4'>
                     <div class='flex items-center justify-between'>
                         <div class="flex gap-2">
-                            @foreach ($work_review->categories as $category)
+                            @foreach ($work_post->categories as $category)
                                 <span class="text-white px-2 py-1 rounded-full text-sm"
                                     style="background-color: {{ getCategoryColor($category->name) }};">
                                     {{ $category->name }}
@@ -47,13 +47,13 @@
                             </x-slot>
                             <x-slot name="content">
                                 <x-atom.dropdown-link
-                                    href="{{ route('work_reviews.edit', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">投稿を編集する</x-atom.dropdown-link>
+                                    href="{{ route('work_posts.edit', ['work_id' => $work_post->work_id, 'work_post_id' => $work_post->id]) }}">投稿を編集する</x-atom.dropdown-link>
                                 <form
-                                    action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}"
-                                    id="form_{{ $work_review->id }}" method="post">
+                                    action="{{ route('work_posts.delete', ['work_id' => $work_post->work_id, 'work_post_id' => $work_post->id]) }}"
+                                    id="form_{{ $work_post->id }}" method="post">
                                     @csrf
                                     @method('DELETE')
-                                    <button type="button" data-post-id="{{ $work_review->id }}"
+                                    <button type="button" data-post-id="{{ $work_post->id }}"
                                         class="delete-button block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                                         投稿を削除する
                                     </button>
@@ -64,34 +64,34 @@
                     <div class="flex flex-col md:flex-row gap-4">
                         <div class="left_block flex-1">
                             <div class="flex items-center gap-4">
-                                <img src="{{ $work_review->user->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
+                                <img src="{{ $work_post->user->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
                                     alt="画像が読み込めません。" class="w-16 h-16 rounded-full object-cover">
                                 <div>
                                     <!-- 自分のアカウントを選択した場合 -->
-                                    @if (Auth::id() === $work_review->user->id)
+                                    @if (Auth::id() === $work_post->user->id)
                                         <a href="{{ route('profile.index') }}" class="font-medium">
-                                            {{ $work_review->user->name }}
+                                            {{ $work_post->user->name }}
                                         </a>
                                     @else
-                                        <a href="{{ route('users.show', ['user_id' => $work_review->user->id]) }}"
+                                        <a href="{{ route('users.show', ['user_id' => $work_post->user->id]) }}"
                                             class="font-medium">
-                                            {{ $work_review->user->name }}
+                                            {{ $work_post->user->name }}
                                         </a>
                                     @endif
                                     <p class="text-gray-500 text-sm">
-                                        {{ $work_review->created_at->format('Y/m/d H:i') }}</p>
+                                        {{ $work_post->created_at->format('Y/m/d H:i') }}</p>
                                 </div>
                             </div>
-                            <x-molecules.evaluation.star-num :starNum="$work_review->star_num" />
-                            <p class="mt-4 text-gray-800">{!! nl2br(e($work_review->body)) !!}</p>
+                            <x-molecules.evaluation.star-num :starNum="$work_post->star_num" />
+                            <p class="mt-4 text-gray-800">{!! nl2br(e($work_post->body)) !!}</p>
                         </div>
                         <div class="right_block flex-1">
                             @php
                                 $images = [];
                                 foreach ([1, 2, 3, 4] as $number) {
                                     $image = 'image' . $number;
-                                    if ($work_review->$image) {
-                                        $images[] = $work_review->$image;
+                                    if ($work_post->$image) {
+                                        $images[] = $work_post->$image;
                                     }
                                 }
                             @endphp
@@ -119,15 +119,15 @@
                         </div>
                         <div class='like flex items-center gap-2'>
                             <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                            <button id="like_button" data-work-id="{{ $work_review->work_id }}"
-                                data-review-id="{{ $work_review->id }}" type="submit"
+                            <button id="like_button" data-work-id="{{ $work_post->work_id }}"
+                                data-post-id="{{ $work_post->id }}" type="submit"
                                 class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
-                                {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                                {{ $work_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                             </button>
                             <div class="like_user">
-                                <a href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}"
+                                <a href="{{ route('work_post_like.index', ['work_id' => $work_post->work_id, 'work_post_id' => $work_post->id]) }}"
                                     class="text-lg font-medium text-gray-700">
-                                    <p id="like_count">{{ $work_review->users->count() }}件
+                                    <p id="like_count">{{ $work_post->users->count() }}件
                                     </p>
                                 </a>
                             </div>
@@ -136,27 +136,27 @@
                     <!-- コメント作成フォーム -->
                     <div id='addCommentBlock' class="w-full p-4 border rounded-lg bg-gray-50" style="display: none;">
                         @include('user_interactions.comments.input_create_comment', [
-                            'comment' => $work_review,
-                            'inputName' => 'work_review_comment',
-                            'inputPostIdName' => 'work_review_id',
-                            'baseRoute' => 'work_review',
-                            'postCommentId' => $work_review->id,
+                            'comment' => $work_post,
+                            'inputName' => 'work_post_comment',
+                            'inputPostIdName' => 'work_post_id',
+                            'baseRoute' => 'work_post',
+                            'postCommentId' => $work_post->id,
                             'parentId' => null,
                         ])
                     </div>
                 </div>
             </div>
             <div class="text-lg font-semibold">
-                「<span class="text-blue-500">{{ $work_review->post_title }}</span>」へのコメント：<span
-                    id='comment_count'>{{ count($work_review->workReviewComments) }}</span>件
+                「<span class="text-blue-500">{{ $work_post->post_title }}</span>」へのコメント：<span
+                    id='comment_count'>{{ count($work_post->workPostComments) }}</span>件
                 </p>
             </div>
             <div id="comments-section">
-                @if (!empty($work_review->workReviewComments) && $work_review->workReviewComments->isNotEmpty())
+                @if (!empty($work_post->workPostComments) && $work_post->workPostComments->isNotEmpty())
                     <!-- コメント表示 -->
                     <div id='comment_block' class='bg-white rounded-lg shadow-md p-6'>
-                        @foreach ($work_review->workReviewComments->where('parent_id', null) as $comment)
-                            <div id='replies-{{ $work_review->id }}'>
+                        @foreach ($work_post->workPostComments->where('parent_id', null) as $comment)
+                            <div id='replies-{{ $work_post->id }}'>
                                 <!-- コメントの区切り線（ただし最後のコメントには表示しない） -->
                                 @if (!$loop->first)
                                     <hr class="border-t my-4" id="border-{{ $comment->id }}">
@@ -164,10 +164,10 @@
                                 @include('user_interactions.comments.input_comment', [
                                     'comment' => $comment,
                                     'status' => 'show',
-                                    'inputName' => 'work_review_comment',
-                                    'baseRoute' => 'work_review',
-                                    'inputPostIdName' => 'work_review_id',
-                                    'postCommentId' => $comment->work_review_id,
+                                    'inputName' => 'work_post_comment',
+                                    'baseRoute' => 'work_post',
+                                    'inputPostIdName' => 'work_post_id',
+                                    'postCommentId' => $comment->work_post_id,
                                     'parentId' => $comment->id,
                                 ])
                             </div>

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_wr_comment', function (Blueprint $table) {
+        Schema::create('work_post_work_post_category', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('wr_comment_id')->constrained('work_review_comments')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->foreignId('work_post_category_id')->constrained('work_post_categories')->onDelete('cascade');
+            $table->foreignId('work_post_id')->constrained('work_posts')->onDelete('cascade');
             $table->timestamp('created_at')->useCurrent();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_wr_comment');
+        Schema::dropIfExists('work_post_work_post_category');
     }
 };

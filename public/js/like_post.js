@@ -14,11 +14,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //いいねボタンクリックによる非同期処理
         button.addEventListener('click', async function () {
-            const workId = button.getAttribute('data-work-id');
-            const postId = button.getAttribute('data-post-id');
+            const url = handleLikeAction(button);
             try {
-                const response = await fetch(
-                    `/work_posts/${workId}/posts/${postId}/like`, {
+                const response = await fetch(url, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -50,3 +48,34 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+function handleLikeAction(button) {
+    let url = '';
+    const workId = button.getAttribute('data-work-id');
+    const workStoryId = button.getAttribute('data-work_story-id');
+    const musicId = button.getAttribute('data-music-id');
+    const characterId = button.getAttribute('data-character-id');
+    const pilgrimageId = button.getAttribute('data-pilgrimage-id');
+    const postId = button.getAttribute('data-post-id');
+
+    if (workId && workStoryId && postId) {
+        // work_story_postの場合
+        url = `/works/${workId}/stories/${workStoryId}/posts/${postId}/like`;
+    } else if (workId && postId) {
+        // work_postの場合
+        url = `/work_posts/${workId}/posts/${postId}/like`;
+    } else if (musicId && postId) {
+        // music_postの場合
+        url = `/music_posts/${musicId}/posts/${postId}/like`;
+    } else if (characterId && postId) {
+        // character_postの場合
+        url = `/character_posts/${characterId}/posts/${postId}/like`;
+    } else if (pilgrimageId && postId) {
+        // pilgrimage_postの場合
+        url = `/pilgrimage_posts/${pilgrimageId}/posts/${postId}/like`;
+    } else {
+        return;
+    }
+
+    return url;
+}

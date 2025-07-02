@@ -110,15 +110,15 @@ class WorkStory extends Model
     }
 
     // 指定の投稿数以上のあらすじを取得
-    public function fetchSufficientReviewNumWorkStories($work_id = null)
+    public function fetchSufficientPostNumWorkStories($work_id = null)
     {
         // 人気度を算出する際の最低投稿数
-        $minReviewNum = 3;
+        $minPostNum = 3;
         $query = WorkStory::with(['workStoryPosts' => function ($query) {
             $query->select('id', 'sub_title_id', 'star_num', 'created_at');
         }])
             ->withCount('workStoryPosts')
-            ->having('work_story_posts_count', '>=', $minReviewNum);
+            ->having('work_story_posts_count', '>=', $minPostNum);
 
         if (!is_null($work_id)) {
             $query->where('work_id', $work_id);

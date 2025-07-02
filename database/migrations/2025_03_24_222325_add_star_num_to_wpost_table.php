@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('work_reviews', function (Blueprint $table) {
+        Schema::table('work_posts', function (Blueprint $table) {
             $table->integer('star_num')->after('post_title');
         });
     }
@@ -21,7 +21,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::table('work_reviews', function (Blueprint $table) {
+        Schema::table('work_posts', function (Blueprint $table) {
             $table->dropColumn('star_num');
         });
     }

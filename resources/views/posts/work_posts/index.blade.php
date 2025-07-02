@@ -12,17 +12,16 @@
     </div>
 
     <!-- 投稿がない場合 -->
-    @if (is_null($work_review_first))
+    @if (is_null($work_post_first))
         <h2 class='no_post_result'>「{{ $work->name }}」への感想投稿はまだありません。<br>1人目の投稿者になってみましょう！</h2>
-        <a href="{{ route('work_reviews.create', ['work_id' => $work_id]) }}">新規投稿作成</a>
+        <a href="{{ route('work_posts.create', ['work_id' => $work_id]) }}">新規投稿作成</a>
         <!-- 投稿がある場合 -->
     @else
-        <h1>「{{ $work_review_first->work->name }}」の感想投稿一覧</h1>
-        <a href="{{ route('work_reviews.create', ['work_id' => $work_id]) }}">新規投稿作成</a>
+        <h1>「{{ $work_post_first->work->name }}」の感想投稿一覧</h1>
+        <a href="{{ route('work_posts.create', ['work_id' => $work_id]) }}">新規投稿作成</a>
         <!-- 検索機能 -->
         <div class=search>
-            <form action="{{ route('work_reviews.index', ['work_id' => $work_review_first->work->id]) }}"
-                method="GET">
+            <form action="{{ route('work_posts.index', ['work_id' => $work_post_first->work->id]) }}" method="GET">
                 <!-- キーワード検索 -->
                 <input type="text" name="search" id="search", value="{{ request('search') }}"
                     placeholder="キーワードを検索" aria-label="検索...">
@@ -49,12 +48,12 @@
                 <input type="submit" value="検索">
             </form>
             <div class="cancel">
-                <a href="{{ route('work_reviews.index', ['work_id' => $work_review_first->work->id]) }}">キャンセル</a>
+                <a href="{{ route('work_posts.index', ['work_id' => $work_post_first->work->id]) }}">キャンセル</a>
             </div>
         </div>
-        <div class='work_reviews'>
+        <div class='work_posts'>
             <!-- 検索結果がない場合 -->
-            @if ($work_reviews->isEmpty())
+            @if ($work_posts->isEmpty())
                 <h2 class="col-span-full text-center text-gray-500 text-lg font-semibold">
                     @if (!empty($search))
                         キーワード 「{{ $search }}」
@@ -87,64 +86,64 @@
                         全投稿：<span class="text-blue-500">{{ $totalResults }}</span>件
                     </p>
                 @endif
-                <div class='work_review'>
-                    @foreach ($work_reviews as $work_review)
-                        <div class='work_review'>
+                <div class='work_post'>
+                    @foreach ($work_posts as $work_post)
+                        <div class='work_post'>
                             <h2 class='title'>
                                 <a
-                                    href="{{ route('work_reviews.show', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">{{ $work_review->post_title }}</a>
+                                    href="{{ route('work_posts.show', ['work_id' => $work_post->work_id, 'work_post_id' => $work_post->id]) }}">{{ $work_post->post_title }}</a>
                             </h2>
                             <div class='user'>
-                                <p>{{ $work_review->user->name }}</p>
+                                <p>{{ $work_post->user->name }}</p>
                             </div>
                             <div class='created_at'>
-                                <p>{{ $work_review->created_at->format('Y/m/d H:i') }}</p>
+                                <p>{{ $work_post->created_at->format('Y/m/d H:i') }}</p>
                             </div>
-                            <x-molecules.evaluation.star-num :starNum="$work_review->star_num" />
+                            <x-molecules.evaluation.star-num :starNum="$work_post->star_num" />
                             <div class="like">
                                 <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                <button id="like_button" data-work-id="{{ $work_review->work_id }}"
-                                    data-review-id="{{ $work_review->id }}" type="submit">
-                                    {{ $work_review->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
+                                <button id="like_button" data-work-id="{{ $work_post->work_id }}"
+                                    data-post-id="{{ $work_post->id }}" type="submit">
+                                    {{ $work_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
                                 </button>
                                 <div class="like_user">
                                     <a
-                                        href="{{ route('work_review_like.index', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}">
-                                        <p id="like_count">{{ $work_review->users->count() }}</p>
+                                        href="{{ route('work_post_like.index', ['work_id' => $work_post->work_id, 'work_post_id' => $work_post->id]) }}">
+                                        <p id="like_count">{{ $work_post->users->count() }}</p>
                                     </a>
                                 </div>
                             </div>
                             <h5 class='category flex gap-2'>
-                                @foreach ($work_review->categories as $category)
+                                @foreach ($work_post->categories as $category)
                                     <span class="text-white px-2 py-1 rounded-full text-sm"
                                         style="background-color: {{ getCategoryColor($category->name) }};">
                                         {{ $category->name }}
                                     </span>
                                 @endforeach
                             </h5>
-                            <p class='body'>{{ $work_review->body }}</p>
-                            @if ($work_review->image1)
+                            <p class='body'>{{ $work_post->body }}</p>
+                            @if ($work_post->image1)
                                 <div>
-                                    <a href="{{ $work_review->image1 }}" data-lightbox="{{ $work_review->image1 }}"
+                                    <a href="{{ $work_post->image1 }}" data-lightbox="{{ $work_post->image1 }}"
                                         data-title="画像">
-                                        <img src="{{ $work_review->image1 }}" alt="画像が読み込めません。"
+                                        <img src="{{ $work_post->image1 }}" alt="画像が読み込めません。"
                                             class='w-36 h-36 object-cover rounded-md border border-gray-300 mb-2'>
                                     </a>
                                 </div>
                             @endif
                             <div class='comment_num'>
-                                @if ($work_review->workReviewComments)
-                                    <p>コメント:{{ count($work_review->workReviewComments) }}件</p>
+                                @if ($work_post->workPostComments)
+                                    <p>コメント:{{ count($work_post->workPostComments) }}件</p>
                                 @else
                                     <p>コメント:0件</p>
                                 @endif
                             </div>
                             <form
-                                action="{{ route('work_reviews.delete', ['work_id' => $work_review->work_id, 'work_review_id' => $work_review->id]) }}"
-                                id="form_{{ $work_review->id }}" method="post">
+                                action="{{ route('work_posts.delete', ['work_id' => $work_post->work_id, 'work_post_id' => $work_post->id]) }}"
+                                id="form_{{ $work_post->id }}" method="post">
                                 @csrf
                                 @method('DELETE')
-                                <button type="button" data-post-id="{{ $work_review->id }}"
+                                <button type="button" data-post-id="{{ $work_post->id }}"
                                     class="delete-button">投稿を削除する</button>
                             </form>
                         </div>
@@ -153,10 +152,10 @@
             @endif
         </div>
         <div class="footer">
-            <a href="/works/{{ $work_review_first->work->id }}">作品詳細画面へ</a>
+            <a href="/works/{{ $work_post_first->work->id }}">作品詳細画面へ</a>
         </div>
         <div class='paginate'>
-            {{ $work_reviews->appends(request()->query())->links() }}
+            {{ $work_posts->appends(request()->query())->links() }}
         </div>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <script src="{{ asset('/js/like_posts/like_work_post.js') }}"></script>
