@@ -11,11 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('work_review_categories', function (Blueprint $table) {
+        Schema::create('user_wp_comment', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->timestamps();
-            $table->softDeletes();
+            $table->foreignId('wp_comment_id')->constrained('work_post_comments')->onDelete('cascade');
+            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
+            $table->timestamp('created_at')->useCurrent();
         });
     }
 
@@ -24,7 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('work_review_work_review_category');
-        Schema::dropIfExists('work_review_categories');
+        Schema::dropIfExists('user_wp_comment');
     }
 };

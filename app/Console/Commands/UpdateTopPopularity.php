@@ -32,8 +32,8 @@ class UpdateTopPopularity extends Command
     public function handle()
     {
         // 作品の上位3つを取得
-        $sufficientReviewsWorks = $this->work->fetchSufficientReviewNumWorks();
-        $this->work->updateTopPopularityItems($sufficientReviewsWorks, 'workReviews', 'top_popular_works');
+        $sufficientPostsWorks = $this->work->fetchSufficientPostNumWorks();
+        $this->work->updateTopPopularityItems($sufficientPostsWorks, 'workPosts', 'top_popular_works');
 
         // あらすじは話数に上限があるため上位3つを取得するためにKernelは使用しない
         // 登場人物の上位3つを取得

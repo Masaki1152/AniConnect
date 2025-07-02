@@ -264,11 +264,11 @@ return [
         // ログイン画面のバリデーション
         'introduction' => '紹介文',
         // 作品感想投稿のバリデーション
-        'work_review.work_id' => '作品名',
-        'work_review.user_id' => '投稿者名',
-        'work_review.post_title' => 'タイトル',
-        'work_review.body' => '内容',
-        'work_review.categories_array' => 'カテゴリー',
+        'work_post.work_id' => '作品名',
+        'work_post.user_id' => '投稿者名',
+        'work_post.post_title' => 'タイトル',
+        'work_post.body' => '内容',
+        'work_post.categories_array' => 'カテゴリー',
         'images' => '画像',
         // 登場人物の感想投稿のバリデーション
         'character_post.post_title' => 'タイトル',
@@ -294,7 +294,7 @@ return [
         'notification.body' => '内容',
         'notification.categories_array' => 'カテゴリー',
         // コメントのバリデーション
-        'work_review_comment.body' => 'コメント',
+        'work_post_comment.body' => 'コメント',
         'work_story_post_comment.body' => 'コメント',
         'character_post_comment.body' => 'コメント',
         'music_post_comment.body' => 'コメント',

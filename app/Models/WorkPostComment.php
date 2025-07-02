@@ -5,14 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class WorkReviewComment extends Model
+class WorkPostComment extends Model
 {
     use HasFactory;
     use SerializeDate;
 
     // fillを実行するための記述
     protected $fillable = [
-        'work_review_id',
+        'work_post_id',
         'parent_id',
         'user_id',
         'body',
@@ -22,17 +22,17 @@ class WorkReviewComment extends Model
         'image4',
     ];
 
-    // 参照させたいwork_review_commentsを指定
-    protected $table = 'work_review_comments';
+    // 参照させたいwork_post_commentsを指定
+    protected $table = 'work_post_comments';
 
     protected $casts = [
         'created_at' => 'datetime',
     ];
 
     // 作品投稿とのリレーション 多対一の関係
-    public function workReview()
+    public function workPost()
     {
-        return $this->belongsTo(WorkReview::class, 'work_review_id', 'id');
+        return $this->belongsTo(WorkPost::class, 'work_post_id', 'id');
     }
 
     // Userに対するリレーション 1対1の関係
@@ -44,19 +44,19 @@ class WorkReviewComment extends Model
     // 親コメントとのリレーション 多対一の関係
     public function parent()
     {
-        return $this->belongsTo(WorkReviewComment::class, 'parent_id', 'id');
+        return $this->belongsTo(WorkPostComment::class, 'parent_id', 'id');
     }
 
     // 子コメントとのリレーション 一対多の関係
     public function replies()
     {
-        return $this->hasMany(WorkReviewComment::class, 'parent_id', 'id');
+        return $this->hasMany(WorkPostComment::class, 'parent_id', 'id');
     }
 
     // いいねをしたUserに対するリレーション　多対多の関係
     public function users()
     {
-        return $this->belongsToMany(User::class, 'user_wr_comment', 'wr_comment_id', 'user_id')
+        return $this->belongsToMany(User::class, 'user_wp_comment', 'wp_comment_id', 'user_id')
             ->withPivot('created_at');
     }
 

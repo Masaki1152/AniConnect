@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class WorkReviewRequest extends FormRequest
+class WorkPostRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,9 +18,9 @@ class WorkReviewRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'work_review.post_title' => 'required|string|max:40',
-            'work_review.body' => 'required|string|max:4000',
-            'work_review.categories_array' => 'required|array|max:3',
+            'work_post.post_title' => 'required|string|max:40',
+            'work_post.body' => 'required|string|max:4000',
+            'work_post.categories_array' => 'required|array|max:3',
             'images' => 'array|max:4'
         ];
     }

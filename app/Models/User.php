@@ -43,12 +43,12 @@ class User extends Authenticatable
         $this->postMaps = [
             'work' => [
                 'name' => __('common.work_post'),
-                'model' => WorkReview::class,
-                'commentModel' => WorkReviewComment::class,
+                'model' => WorkPost::class,
+                'commentModel' => WorkPostComment::class,
                 'relations' => [
                     'work' => ['name', 'term']
                 ],
-                'post_id' => 'work_review_id'
+                'post_id' => 'work_post_id'
             ],
             'workStory' => [
                 'name' => __('common.work_story_post'),
@@ -266,7 +266,7 @@ class User extends Authenticatable
         $urls = [
             // 作品感想の詳細ページ
             'work' => function ($post) {
-                return "/work_reviews/{$post->work_id}/reviews";
+                return "/work_posts/{$post->work_id}/posts";
             },
             // あらすじ感想の詳細ページ
             'workStory' => function ($post) {
@@ -315,16 +315,16 @@ class User extends Authenticatable
         return $query;
     }
 
-    // WorkReviewに対するリレーション 1対1の関係
-    public function workreview()
+    // WorkPostに対するリレーション 1対1の関係
+    public function workPost()
     {
-        return $this->belongsTo(WorkReview::class, 'id', 'user_id');
+        return $this->belongsTo(WorkPost::class, 'id', 'user_id');
     }
 
-    // いいねをしたWorkReviewに対するリレーション 多対多の関係
-    public function workreviews()
+    // いいねをしたWorkPostに対するリレーション 多対多の関係
+    public function workPosts()
     {
-        return $this->belongsToMany(WorkReview::class);
+        return $this->belongsToMany(WorkPost::class);
     }
 
     // CharacterPostに対するリレーション 1対1の関係
@@ -404,16 +404,16 @@ class User extends Authenticatable
         );
     }
 
-    // WorkReviewCommentに対するリレーション 1対1の関係
-    public function workReviewComment()
+    // WorkPostCommentに対するリレーション 1対1の関係
+    public function workPostComment()
     {
-        return $this->hasOne(WorkReviewComment::class, 'id', 'work_review_id');
+        return $this->hasOne(WorkPostComment::class, 'id', 'work_post_id');
     }
 
-    // いいねをしたWorkReviewCommentに対するリレーション 多対多の関係
-    public function workReviewComments()
+    // いいねをしたWorkPostCommentに対するリレーション 多対多の関係
+    public function workPostComments()
     {
-        return $this->belongsToMany(WorkReviewComment::class, 'user_wr_comment', 'user_id', 'wr_comment_id');
+        return $this->belongsToMany(WorkPostComment::class, 'user_wp_comment', 'user_id', 'wp_comment_id');
     }
 
     // WorkStoryPostCommentに対するリレーション 1対1の関係

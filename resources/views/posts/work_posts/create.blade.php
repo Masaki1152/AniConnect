@@ -9,19 +9,19 @@
                 <div class="max-w-xl lg:max-w-2xl">
                     <h2 class="text-lg font-medium text-gray-900">「{{ $work->name }}」への新規感想投稿</h2>
                     <p class="mt-1 text-sm text-gray-600">作品の感想を書いてみんなと共有しましょう！</p>
-                    <form action="{{ route('work_reviews.store', ['work_id' => $work->id]) }}" method="POST"
+                    <form action="{{ route('work_posts.store', ['work_id' => $work->id]) }}" method="POST"
                         enctype="multipart/form-data" class="mt-6 space-y-6">
                         @csrf
                         <div class="work_id">
-                            <input type="hidden" name="work_review[work_id]" value="{{ $work->id }}">
+                            <input type="hidden" name="work_post[work_id]" value="{{ $work->id }}">
                         </div>
                         <x-molecules.text-field.input-text :inputTextType="\App\Enums\InputTextType::Title" :postType="null"
-                            targetTableName="work_review" characterMaxLength="40" />
-                        <x-molecules.select-box.star-num-select-box :postType="$work" targetTableName="work_review"
+                            targetTableName="work_post" characterMaxLength="40" />
+                        <x-molecules.select-box.star-num-select-box :postType="$work" targetTableName="work_post"
                             :isCreateType="true" />
-                        <x-molecules.select-box.category-select-box :postType="null" targetTableName="work_review"
+                        <x-molecules.select-box.category-select-box :postType="null" targetTableName="work_post"
                             :categories="$categories" />
-                        <x-molecules.text-field.body-text-area :postType="null" targetTableName="work_review" />
+                        <x-molecules.text-field.body-text-area :postType="null" targetTableName="work_post" />
                         <x-molecules.preview.preview-image-create :isMultiple="true" :isVertical="false" />
                         <!-- 投稿ボタン -->
                         <x-molecules.button.post-button buttonText="common.post" />

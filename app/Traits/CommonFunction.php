@@ -8,18 +8,18 @@ use Illuminate\Support\Carbon;
 trait CommonFunction
 {
     // 各項目の感想から星の評価と投稿数を取得、計算し、人気度を算出
-    public function updateTopPopularityItems($sufficientReviewsItems, $relation, $cacheName)
+    public function updateTopPopularityItems($sufficientPostsItems, $relation, $cacheName)
     {
         // 30日で影響度が半減する設定
         $halfLife = 30;
 
         $popularityScores = [];
 
-        foreach ($sufficientReviewsItems as $sufficientReviewsItem) {
+        foreach ($sufficientPostsItems as $sufficientPostsItem) {
             $totalScore = 0;
             $totalWeight = 0;
 
-            foreach ($sufficientReviewsItem->$relation as $post) {
+            foreach ($sufficientPostsItem->$relation as $post) {
                 $daysSincePost = Carbon::now()->diffInDays($post->created_at);
                 // 各投稿の重み 指数関数を使って重みつけ
                 $weight = exp(-$daysSincePost / $halfLife);
@@ -27,10 +27,10 @@ trait CommonFunction
                 $totalWeight += $weight;
             }
             // 投稿数が多いほど信頼性が上がるよう補正
-            $numReviews = $sufficientReviewsItem->$relation->count();
+            $numPosts = $sufficientPostsItem->$relation->count();
             $finalScore = ($totalWeight > 0) ? ($totalScore / $totalWeight) : 0;
-            $finalScore *= log($numReviews + 1) + 1;
-            $popularityScores[] = ['item' => $sufficientReviewsItem, 'score' => $finalScore];
+            $finalScore *= log($numPosts + 1) + 1;
+            $popularityScores[] = ['item' => $sufficientPostsItem, 'score' => $finalScore];
         }
 
         // 人気度で並べる
@@ -43,22 +43,22 @@ trait CommonFunction
     }
 
     // 各投稿数と星の数から平均を取得
-    public function updateAverageStarNum($items, $sufficientReviewsItems, $relation)
+    public function updateAverageStarNum($items, $sufficientPostsItems, $relation)
     {
 
         $itemEvaluations = [];
 
-        foreach ($sufficientReviewsItems as $sufficientReviewsItem) {
+        foreach ($sufficientPostsItems as $sufficientPostsItem) {
             $totalScore = 0;
 
-            foreach ($sufficientReviewsItem->$relation as $post) {
+            foreach ($sufficientPostsItem->$relation as $post) {
                 // 各投稿の評価を合計
                 $totalScore += $post->star_num;
             }
             // 投稿数が多いほど信頼性が上がるよう補正
-            $numReviews = $sufficientReviewsItem->$relation->count();
-            $averageEvaluation = round($totalScore / $numReviews, 1);
-            $itemEvaluations[$sufficientReviewsItem->id] = ['evaluation' => $averageEvaluation, 'count' => $numReviews];
+            $numPosts = $sufficientPostsItem->$relation->count();
+            $averageEvaluation = round($totalScore / $numPosts, 1);
+            $itemEvaluations[$sufficientPostsItem->id] = ['evaluation' => $averageEvaluation, 'count' => $numPosts];
         }
 
         // 各アイテムの平均評価をテーブルに反映
