@@ -31,7 +31,7 @@ class LikePostButton extends Component
             ]);
         } else {
             $this->dataTypeAttributes = [
-                $type . 'id' => $post->$typeColumnId,
+                $type . '-id' => $post->$typeColumnId,
                 'post-id' => $post->id,
             ];
             $this->likeCountUrl = route($type . '_post_like.index', [
