@@ -84,29 +84,9 @@
         </div>
         <div class='flex items-center gap-4'>
             <!-- コメントを追加したい場合 -->
-            <button id='toggleChildComments-{{ $comment->id }}' type='button'
-                class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
-                onclick="toggleChildCommentForm({{ $comment->id }})">コメントする</button>
-            <button id='closeChildComments-{{ $comment->id }}' type='button'
-                class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden"
-                onclick="toggleChildCommentForm({{ $comment->id }})">閉じる</button>
+            <x-molecules.button.show-comment-form-button :comment="$comment" />
             <!-- いいねボタンといいね件数 -->
-            <div class='comment-like flex items-center gap-2'>
-                <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                <button id="comment-like_button-{{ $comment->id }}" data-comment-id="{{ $comment->id }}"
-                    onclick="toggleLike({{ $comment->id }}, 'comment-like_button-{{ $comment->id }}', 'comment-like_count-{{ $comment->id }}', '{{ $baseRoute }}s')"
-                    class="comment-like_button px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
-                    {{ $comment->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                </button>
-                <div class="comment-like_user">
-                    <a href="{{ route($baseRoute . '_comment.like.index', ['comment_id' => $comment->id]) }}"
-                        class="text-lg font-medium text-gray-700">
-                        <p id="comment-like_count-{{ $comment->id }}">
-                            {{ $comment->users->count() }}件
-                        </p>
-                    </a>
-                </div>
-            </div>
+            <x-molecules.button.like-comment-button :comment="$comment" :baseRoute="$baseRoute" />
         </div>
     </div>
     <!-- 子コメント作成フォーム -->
