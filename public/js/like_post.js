@@ -14,6 +14,10 @@ document.addEventListener('DOMContentLoaded', function () {
 
         //いいねボタンクリックによる非同期処理
         button.addEventListener('click', async function () {
+
+            // ログイン状態を確認
+            if (!window.checkLoginAndShowDialog(this)) return;
+
             const url = handleLikeAction(button);
             try {
                 const response = await fetch(url, {
