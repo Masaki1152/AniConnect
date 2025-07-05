@@ -1,5 +1,9 @@
 // 投稿のコメントフォームの表示/非表示を切り替える関数
-function toggleCommentForm() {
+function toggleCommentForm(buttonElement) {
+
+    // ログイン状態を確認
+    if (!window.checkLoginAndShowDialog(buttonElement)) return;
+
     const toggleCommentButton = document.getElementById('toggleComments');
     const closeCommentButton = document.getElementById('closeComments');
     const addCommentBlock = document.getElementById('addCommentBlock');
@@ -15,7 +19,11 @@ function toggleCommentForm() {
 }
 
 // 各コメントのコメントフォームの表示/非表示を切り替える関数
-function toggleChildCommentForm(replyId) {
+function toggleChildCommentForm(buttonElement, replyId) {
+
+    // ログイン状態を確認
+    if (!window.checkLoginAndShowDialog(buttonElement)) return;
+
     const addChildCommentBlock = document.getElementById(`addChildCommentBlock-${replyId}`);
     const toggleChildCommentButton = document.getElementById(`toggleChildComments-${replyId}`);
     const closeChildCommentButtton = document.getElementById(`closeChildComments-${replyId}`);

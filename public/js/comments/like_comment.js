@@ -1,5 +1,9 @@
 // いいね処理を関数として定義
-async function toggleLike(commentId, buttonId, userCountId, baseRoute) {
+async function toggleLike(buttonElement, commentId, buttonId, userCountId, baseRoute) {
+
+    // ログイン状態を確認
+    if (!window.checkLoginAndShowDialog(buttonElement)) return;
+
     const button = document.getElementById(buttonId);
     const userCount = document.getElementById(userCountId);
     try {
