@@ -102,7 +102,7 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
             const imageCount = document.getElementById(`count-${postId}`);
             imageCount.innerText = "現在、0枚の画像を選択しています。";
             // フォームを閉じる
-            toggleCommentForm();
+            toggleCommentForm(this);
             return;
         }
 
@@ -190,9 +190,9 @@ async function storeComment(dataCommentId, inputName, baseRoute, inputPostIdName
 
         // フォームを閉じる
         if (parentId) {
-            toggleChildCommentForm(parentId);
+            toggleChildCommentForm(this, parentId);
         } else {
-            toggleCommentForm();
+            toggleCommentForm(this);
         }
 
     } catch (error) {
