@@ -117,21 +117,7 @@
                                 class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden"
                                 onclick="toggleCommentForm()">閉じる</button>
                         </div>
-                        <div class='like flex items-center gap-2'>
-                            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                            <button id="like_button" data-character-id="{{ $character_post->character_id }}"
-                                data-post-id="{{ $character_post->id }}" type="submit"
-                                class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600">
-                                {{ $character_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                            </button>
-                            <div class="like_user">
-                                <a href="{{ route('character_post_like.index', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}"
-                                    class="text-lg font-medium text-gray-700">
-                                    <p id="like_count">{{ $character_post->users->count() }}件
-                                    </p>
-                                </a>
-                            </div>
-                        </div>
+                        <x-molecules.button.like-post-button type="character" :post="$character_post" />
                     </div>
                     <!-- コメント作成フォーム -->
                     <div id='addCommentBlock' class="w-full p-4 border rounded-lg bg-gray-50" style="display: none;">
@@ -187,7 +173,7 @@
         </div>
     </div>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <script src="{{ asset('/js/like_posts/like_character_post.js') }}"></script>
+    <script src="{{ asset('/js/like_post.js') }}"></script>
     <script src="{{ asset('/js/delete_post.js') }}"></script>
     <script src="{{ asset('/js/comments/like_comment.js') }}"></script>
     <script src="{{ asset('/js/comments/delete_comment.js') }}"></script>
