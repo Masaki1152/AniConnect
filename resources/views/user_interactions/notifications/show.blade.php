@@ -64,7 +64,7 @@
                         </div>
                     </div>
                     <div class='flex gap-4 items-center justify-end'>
-                        <x-molecules.button.show-comment-form-button />
+                        <x-molecules.button.show-comment-form-button :comment="null" />
                         <x-molecules.button.like-post-button type="notification" :post="$notification" />
                     </div>
                     <!-- コメント作成フォーム -->

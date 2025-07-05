@@ -6,6 +6,12 @@ use Illuminate\View\Component;
 
 class ShowCommentFormButton extends Component
 {
+    public $comment;
+
+    public function __construct($comment)
+    {
+        $this->comment = $comment;
+    }
 
     public function render()
     {
