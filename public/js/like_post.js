@@ -56,6 +56,7 @@ function handleLikeAction(button) {
     const musicId = button.getAttribute('data-music-id');
     const characterId = button.getAttribute('data-character-id');
     const pilgrimageId = button.getAttribute('data-pilgrimage-id');
+    const notificationId = button.getAttribute('data-notification-id');
     const postId = button.getAttribute('data-post-id');
 
     if (workId && workStoryId && postId) {
@@ -73,6 +74,9 @@ function handleLikeAction(button) {
     } else if (pilgrimageId && postId) {
         // pilgrimage_postの場合
         url = `/pilgrimage_posts/${pilgrimageId}/posts/${postId}/like`;
+    } else if (notificationId) {
+        // notification_postの場合
+        url = `/notification/like/${notificationId}`;
     } else {
         return;
     }

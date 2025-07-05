@@ -29,6 +29,13 @@ class LikePostButton extends Component
                 $typeId => $post->sub_title_id,
                 $typePostId => $post->id
             ]);
+        } else if ($type === 'notification') {
+            $this->dataTypeAttributes = [
+                $type . '-id' => $post->id,
+            ];
+            $this->likeCountUrl = route($type . '_like.index', [
+                $type . '_id' => $post->id,
+            ]);
         } else {
             $this->dataTypeAttributes = [
                 $type . '-id' => $post->$typeColumnId,
