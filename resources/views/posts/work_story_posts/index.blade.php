@@ -7,7 +7,7 @@
             </div>
         </div>
     @endif
-    <div id="like-message"
+    <div id="message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
 
@@ -115,20 +115,7 @@
                                 @endforeach
                             </h5>
                             <x-molecules.evaluation.star-num :starNum="$work_story_post->star_num" />
-                            <div class="like">
-                                <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                <button id="like_button" data-work-id="{{ $work_story_post->work_id }}"
-                                    data-work_story-id="{{ $work_story_post->sub_title_id }}"
-                                    data-post-id="{{ $work_story_post->id }}" type="submit">
-                                    {{ $work_story_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                                </button>
-                                <div class="like_user">
-                                    <a
-                                        href="{{ route('work_story_post_like.index', ['work_id' => $work_story_post->work_id, 'work_story_id' => $work_story_post->sub_title_id, 'work_story_post_id' => $work_story_post->id]) }}">
-                                        <p id="like_count">{{ $work_story_post->users->count() }}</p>
-                                    </a>
-                                </div>
-                            </div>
+                            <x-molecules.button.like-post-button type="work_story" :post="$work_story_post" />
                             <div class='image'>
                                 @if ($work_story_post->image1)
                                     <div>
@@ -168,7 +155,7 @@
             {{ $work_story_posts->appends(request()->query())->links() }}
         </div>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <script src="{{ asset('/js/like_posts/like_work_story_post.js') }}"></script>
+        <script src="{{ asset('/js/like_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
         <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif
