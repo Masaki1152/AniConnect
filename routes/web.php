@@ -131,15 +131,19 @@ Route::prefix('admin')
     });
 
 // NotificationControllerに関するルーティング
-Route::controller(NotificationCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/notifications/comments/store', 'store')->name('notification.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/notifications/comments/{comment_id}/delete', 'delete')->name('notification.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/notifications/comments/{comment_id}/like', 'like')->name('notification.comments.like');
+Route::controller(NotificationCommentController::class)->group(function () {
+
     // ネスト化したコメントを表示するreplyメソッドを実行
     Route::get('/notifications/comments/{comment_id}/replies', 'replies')->name('notification.comments.replies');
+
+    Route::middleware(['auth'])->group(function () {
+        // 作成するボタン押下で、storeメソッドを実行
+        Route::post('/notifications/comments/store', 'store')->name('notification.comments.store');
+        // コメントの削除を行うdeleteメソッドを実行
+        Route::delete('/notifications/comments/{comment_id}/delete', 'delete')->name('notification.comments.delete');
+        // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/notifications/comments/{comment_id}/like', 'like')->name('notification.comments.like');
+    });
 });
 
 // NotificationCommentLikeControllerに関するルーティング
@@ -217,15 +221,19 @@ Route::controller(WorkInterestedController::class)->middleware(['auth'])->group(
 });
 
 // WpCommentControllerに関するルーティング
-Route::controller(WpCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/work_posts/comments/store', 'store')->name('work_post.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/work_posts/comments/{comment_id}/delete', 'delete')->name('work_post.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/work_posts/comments/{comment_id}/like', 'like')->name('work_post.comments.like');
+Route::controller(WpCommentController::class)->group(function () {
+
     // ネスト化したコメントを表示するreplyメソッドを実行
     Route::get('/work_posts/comments/{comment_id}/replies', 'replies')->name('work_post.comments.replies');
+
+    Route::middleware(['auth'])->group(function () {
+        // 作成するボタン押下で、storeメソッドを実行
+        Route::post('/work_posts/comments/store', 'store')->name('work_post.comments.store');
+        // コメントの削除を行うdeleteメソッドを実行
+        Route::delete('/work_posts/comments/{comment_id}/delete', 'delete')->name('work_post.comments.delete');
+        // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/work_posts/comments/{comment_id}/like', 'like')->name('work_post.comments.like');
+    });
 });
 
 // WorkPostCommentLikeControllerに関するルーティング
@@ -291,15 +299,19 @@ Route::controller(CharacterInterestedController::class)->middleware(['auth'])->g
 });
 
 // CpCommentControllerに関するルーティング
-Route::controller(CpCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/character_posts/comments/store', 'store')->name('character_post.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/character_posts/comments/{comment_id}/delete', 'delete')->name('character_post.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/character_posts/comments/{comment_id}/like', 'like')->name('character_post.comments.like');
+Route::controller(CpCommentController::class)->group(function () {
+
     // ネスト化したコメントを表示するreplyメソッドを実行
     Route::get('/character_posts/comments/{comment_id}/replies', 'replies')->name('character_post.comments.replies');
+
+    Route::middleware(['auth'])->group(function () {
+        // 作成するボタン押下で、storeメソッドを実行
+        Route::post('/character_posts/comments/store', 'store')->name('character_post.comments.store');
+        // コメントの削除を行うdeleteメソッドを実行
+        Route::delete('/character_posts/comments/{comment_id}/delete', 'delete')->name('character_post.comments.delete');
+        // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/character_posts/comments/{comment_id}/like', 'like')->name('character_post.comments.like');
+    });
 });
 
 // CpCommentLikeControllerに関するルーティング
@@ -363,15 +375,19 @@ Route::controller(MusicInterestedController::class)->middleware(['auth'])->group
 });
 
 // MpCommentControllerに関するルーティング
-Route::controller(MpCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/music_posts/comments/store', 'store')->name('music_post.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/music_posts/comments/{comment_id}/delete', 'delete')->name('music_post.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/music_posts/comments/{comment_id}/like', 'like')->name('music_post.comments.like');
+Route::controller(MpCommentController::class)->group(function () {
+
     // ネスト化したコメントを表示するreplyメソッドを実行
     Route::get('/music_posts/comments/{comment_id}/replies', 'replies')->name('music_post.comments.replies');
+
+    Route::middleware(['auth'])->group(function () {
+        // 作成するボタン押下で、storeメソッドを実行
+        Route::post('/music_posts/comments/store', 'store')->name('music_post.comments.store');
+        // コメントの削除を行うdeleteメソッドを実行
+        Route::delete('/music_posts/comments/{comment_id}/delete', 'delete')->name('music_post.comments.delete');
+        // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/music_posts/comments/{comment_id}/like', 'like')->name('music_post.comments.like');
+    });
 });
 
 // MpCommentLikeControllerに関するルーティング
@@ -447,15 +463,19 @@ Route::controller(AnimePilgrimageInterestedController::class)->middleware(['auth
 });
 
 // AppCommentControllerに関するルーティング
-Route::controller(AppCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/pilgrimage_posts/comments/store', 'store')->name('pilgrimage_post.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/pilgrimage_posts/comments/{comment_id}/delete', 'delete')->name('pilgrimage_post.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/pilgrimage_posts/comments/{comment_id}/like', 'like')->name('pilgrimage_post.comments.like');
+Route::controller(AppCommentController::class)->group(function () {
+
     // ネスト化したコメントを表示するreplyメソッドを実行
     Route::get('/pilgrimage_posts/comments/{comment_id}/replies', 'replies')->name('pilgrimage_post.comments.replies');
+
+    Route::middleware(['auth'])->group(function () {
+        // 作成するボタン押下で、storeメソッドを実行
+        Route::post('/pilgrimage_posts/comments/store', 'store')->name('pilgrimage_post.comments.store');
+        // コメントの削除を行うdeleteメソッドを実行
+        Route::delete('/pilgrimage_posts/comments/{comment_id}/delete', 'delete')->name('pilgrimage_post.comments.delete');
+        // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/pilgrimage_posts/comments/{comment_id}/like', 'like')->name('pilgrimage_post.comments.like');
+    });
 });
 
 // AppCommentLikeControllerに関するルーティング
@@ -513,15 +533,19 @@ Route::controller(WorkStoryInterestedController::class)->middleware(['auth'])->g
 });
 
 // WspCommentControllerに関するルーティング
-Route::controller(WspCommentController::class)->middleware(['auth'])->group(function () {
-    // 作成するボタン押下で、storeメソッドを実行
-    Route::post('/work_story_posts/comments/store', 'store')->name('work_story_post.comments.store');
-    // コメントの削除を行うdeleteメソッドを実行
-    Route::delete('/work_story_posts/comments/{comment_id}/delete', 'delete')->name('work_story_post.comments.delete');
-    // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
-    Route::post('/work_story_posts/comments/{comment_id}/like', 'like')->name('work_story_post.comments.like');
+Route::controller(WspCommentController::class)->group(function () {
+
     // ネスト化したコメントを表示するreplyメソッドを実行
     Route::get('/work_story_posts/comments/{comment_id}/replies', 'replies')->name('work_story_post.comments.replies');
+
+    Route::middleware(['auth'])->group(function () {
+        // 作成するボタン押下で、storeメソッドを実行
+        Route::post('/work_story_posts/comments/store', 'store')->name('work_story_post.comments.store');
+        // コメントの削除を行うdeleteメソッドを実行
+        Route::delete('/work_story_posts/comments/{comment_id}/delete', 'delete')->name('work_story_post.comments.delete');
+        // コメントのいいねボタン押下で、いいねを追加するlikeメソッドを実行
+        Route::post('/work_story_posts/comments/{comment_id}/like', 'like')->name('work_story_post.comments.like');
+    });
 });
 
 // WspCommentLikeControllerに関するルーティング
