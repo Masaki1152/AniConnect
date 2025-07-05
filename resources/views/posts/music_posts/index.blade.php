@@ -7,7 +7,7 @@
             </div>
         </div>
     @endif
-    <div id="like-message"
+    <div id="message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
 
@@ -96,19 +96,7 @@
                                 <p>{{ $music_post->created_at->format('Y/m/d H:i') }}</p>
                             </div>
                             <x-molecules.evaluation.star-num :starNum="$music_post->star_num" />
-                            <div class="like">
-                                <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                <button id="like_button" data-music-id="{{ $music_post->music_id }}"
-                                    data-post-id="{{ $music_post->id }}" type="submit">
-                                    {{ $music_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                                </button>
-                                <div class="like_user">
-                                    <a
-                                        href="{{ route('music_post_like.index', ['music_id' => $music_post->music_id, 'music_post_id' => $music_post->id]) }}">
-                                        <p id="like_count">{{ $music_post->users->count() }}</p>
-                                    </a>
-                                </div>
-                            </div>
+                            <x-molecules.button.like-post-button type="music" :post="$music_post" />
                             <h5 class='category flex gap-2'>
                                 @foreach ($music_post->categories as $category)
                                     <span class="text-white px-2 py-1 rounded-full text-sm"
@@ -154,7 +142,7 @@
             {{ $music_posts->appends(request()->query())->links() }}
         </div>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <script src="{{ asset('/js/like_posts/like_music_post.js') }}"></script>
+        <script src="{{ asset('/js/like_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
         <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif

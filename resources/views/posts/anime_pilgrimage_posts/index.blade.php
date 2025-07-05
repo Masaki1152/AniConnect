@@ -105,20 +105,7 @@
                                 {{ $pilgrimage_post->scene }}
                             </h3>
                             <x-molecules.evaluation.star-num :starNum="$pilgrimage_post->star_num" />
-                            <div class="like">
-                                <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                <button id="like_button"
-                                    data-pilgrimage-id="{{ $pilgrimage_post->anime_pilgrimage_id }}"
-                                    data-post-id="{{ $pilgrimage_post->id }}" type="submit">
-                                    {{ $pilgrimage_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                                </button>
-                                <div class="like_user">
-                                    <a
-                                        href="{{ route('pilgrimage_post_like.index', ['pilgrimage_id' => $pilgrimage_post->anime_pilgrimage_id, 'pilgrimage_post_id' => $pilgrimage_post->id]) }}">
-                                        <p id="like_count">{{ $pilgrimage_post->users->count() }}</p>
-                                    </a>
-                                </div>
-                            </div>
+                            <x-molecules.button.like-post-button type="pilgrimage" :post="$pilgrimage_post" />
                             <h5 class='category flex gap-2'>
                                 @foreach ($pilgrimage_post->categories as $category)
                                     <span class="text-white px-2 py-1 rounded-full text-sm"
@@ -165,7 +152,7 @@
             {{ $pilgrimage_posts->appends(request()->query())->links() }}
         </div>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <script src="{{ asset('/js/like_posts/like_anime_pilgrimage_post.js') }}"></script>
+        <script src="{{ asset('/js/like_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
         <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif

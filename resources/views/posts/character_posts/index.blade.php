@@ -106,19 +106,7 @@
                                 @endforeach
                             </p>
                             <x-molecules.evaluation.star-num :starNum="$character_post->star_num" />
-                            <div class="like">
-                                <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                                <button id="like_button" data-character-id="{{ $character_post->character_id }}"
-                                    data-post-id="{{ $character_post->id }}" type="submit">
-                                    {{ $character_post->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                                </button>
-                                <div class="like_user">
-                                    <a
-                                        href="{{ route('character_post_like.index', ['character_id' => $character_post->character_id, 'character_post_id' => $character_post->id]) }}">
-                                        <p id="like_count">{{ $character_post->users->count() }}</p>
-                                    </a>
-                                </div>
-                            </div>
+                            <x-molecules.button.like-post-button type="character" :post="$character_post" />
 
                             <h5 class='category flex gap-2'>
                                 @foreach ($character_post->categories as $category)
@@ -165,7 +153,7 @@
             {{ $character_posts->appends(request()->query())->links() }}
         </div>
         <meta name="csrf-token" content="{{ csrf_token() }}">
-        <script src="{{ asset('/js/like_posts/like_character_post.js') }}"></script>
+        <script src="{{ asset('/js/like_post.js') }}"></script>
         <script src="{{ asset('/js/delete_post.js') }}"></script>
         <script src="{{ asset('/js/search_category.js') }}"></script>
     @endif

@@ -1,5 +1,5 @@
 <x-app-layout>
-    <div id="like-message"
+    <div id="message"
         class="hidden fixed top-[15%] left-1/2 transform -translate-x-1/2 bg-green-500/50 text-white px-6 py-3 rounded-lg shadow-lg flex items-center space-x-4 z-50">
     </div>
 
@@ -96,18 +96,7 @@
                                 <p>コメント:0件</p>
                             @endif
                         </div>
-                        <div class="like">
-                            <!-- ボタンの見た目は後のデザイン作成の際に設定する予定 -->
-                            <button id="like_button" data-notification-id="{{ $notification->id }}" type="submit">
-                                {{ $notification->users->contains(auth()->user()) ? 'いいね取り消し' : 'いいね' }}
-                            </button>
-                            <div class="like_user">
-                                <a
-                                    href="{{ route('notification_like.index', ['notification_id' => $notification->id]) }}">
-                                    <p id="like_count">{{ $notification->users->count() }}</p>
-                                </a>
-                            </div>
-                        </div>
+                        <x-molecules.button.like-post-button type="notification" :post="$notification" />
                     </div>
                 @endforeach
             </div>
@@ -116,6 +105,6 @@
     <div class='paginate'>
         {{ $notifications->appends(request()->query())->links() }}
     </div>
-    <script src="{{ asset('/js/like_notification.js') }}"></script>
+    <script src="{{ asset('/js/like_post.js') }}"></script>
     <script src="{{ asset('/js/search_category.js') }}"></script>
 </x-app-layout>
