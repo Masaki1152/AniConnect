@@ -116,15 +116,7 @@
                         </div>
                     </div>
                     <div class='flex gap-4 items-center justify-end'>
-                        <div class='content_fotter_comment'>
-                            <!-- コメントを追加したい場合 -->
-                            <button id='toggleComments' type='button'
-                                class="px-2 py-1 bg-blue-500 text-white rounded-lg shadow-md hover:bg-blue-600"
-                                onclick="toggleCommentForm()">コメントする</button>
-                            <button id='closeComments' type='button'
-                                class="px-2 py-1 bg-gray-300 text-gray-700 rounded-lg shadow-md hover:bg-gray-400 hidden"
-                                onclick="toggleCommentForm()">閉じる</button>
-                        </div>
+                        <x-molecules.button.show-comment-form-button />
                         <x-molecules.button.like-post-button type="work_story" :post="$work_story_post" />
                     </div>
                     <!-- コメント作成フォーム -->
