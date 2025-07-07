@@ -20,6 +20,6 @@
 
 
 ## 関連するリンク
-  - 画面一覧(準備中)
+  - [画面一覧](https://docs.google.com/spreadsheets/d/1V50E-s1CA3g-2Zb46BSC8FSmufMckggonRc2fUrXjNo/edit?gid=1113482260#gid=1113482260)
   - [文言管理シート](https://docs.google.com/spreadsheets/d/14dOopMUXiOFD89ERaZwE1EUqKab4xkgLTNonRC1XnG8/edit?gid=0#gid=0)
   - [画面デザイン](https://www.figma.com/design/Lj9JfRH9o8GTwuYk5fufBC/Aniconnect?node-id=0-1&p=f&t=QkBxNl2ebiZFNAe4-0)
