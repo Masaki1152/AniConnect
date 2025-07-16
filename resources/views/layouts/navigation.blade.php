@@ -15,24 +15,24 @@
                     @auth
                         @if (Auth::user()->is_admin === 1)
                             <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
-                                {{ __('管理画面') }}
+                                {{ __('admin.admin_screen') }}
                             </x-atom.nav-link>
                         @endif
                     @endauth
                     <x-atom.nav-link :href="route('works.index')" :active="request()->routeIs('works.index')">
-                        {{ __('作品一覧') }}
+                        {{ __('common.work_list') }}
                     </x-atom.nav-link>
                     <x-atom.nav-link :href="route('characters.index')" :active="request()->routeIs('characters.index')">
-                        {{ __('登場人物一覧') }}
+                        {{ __('common.character_list') }}
                     </x-atom.nav-link>
                     <x-atom.nav-link :href="route('music.index')" :active="request()->routeIs('music.index')">
-                        {{ __('音楽一覧') }}
+                        {{ __('common.music_list') }}
                     </x-atom.nav-link>
                     <x-atom.nav-link :href="route('pilgrimages.index')" :active="request()->routeIs('pilgrimages.index')">
-                        {{ __('聖地一覧') }}
+                        {{ __('common.anime_pilgrimage_list') }}
                     </x-atom.nav-link>
                     <x-atom.nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
-                        {{ __('登録メンバー') }}
+                        {{ __('common.registered_member_list') }}
                     </x-atom.nav-link>
                 </div>
             </div>
@@ -64,7 +64,7 @@
 
                         <x-slot name="content">
                             <x-atom.dropdown-link :href="route('profile.index')">
-                                {{ __('Profile') }}
+                                {{ __('common.profile') }}
                             </x-atom.dropdown-link>
 
                             <!-- Authentication -->
@@ -74,7 +74,7 @@
                                 <x-atom.dropdown-link :href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                    {{ __('Log Out') }}
+                                    {{ __('common.log_out') }}
                                 </x-atom.dropdown-link>
                             </form>
                         </x-slot>
@@ -82,9 +82,9 @@
                 @else
                     <div class="space-x-4">
                         <a href="{{ route('login') }}"
-                            class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('ログイン') }}</a>
+                            class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('common.login') }}</a>
                         <a href="{{ route('register') }}"
-                            class="ms-4 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('会員登録') }}</a>
+                            class="ms-4 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('common.member_registration') }}</a>
                     </div>
                 @endauth
             </div>
@@ -141,10 +141,10 @@
                 {{-- 未ログインユーザー向けのレスポンシブメニュー --}}
                 <div class="mt-3 space-y-1">
                     <x-atom.responsive-nav-link :href="route('login')">
-                        {{ __('ログイン') }}
+                        {{ __('common.login') }}
                     </x-atom.responsive-nav-link>
                     <x-atom.responsive-nav-link :href="route('register')">
-                        {{ __('会員登録') }}
+                        {{ __('common.member_registration') }}
                     </x-atom.responsive-nav-link>
                 </div>
             @endauth

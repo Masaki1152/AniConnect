@@ -7,6 +7,18 @@ return [
     'character_post' => '登場人物感想',
     'music_post' => '音楽感想',
     'anime_pilgrimage_post' => '聖地感想',
+    // ヘッダー
+    'work_list' => '作品一覧',
+    'work_story_list' => 'あらすじ一覧',
+    'character_list' => '登場人物一覧',
+    'music_list' => '音楽一覧',
+    'anime_pilgrimage_list' => '聖地一覧',
+    'registered_member_list' => '登録メンバー',
+    'other' => 'その他',
+    'login' => 'ログイン',
+    'member_registration' => 'メンバー登録',
+    'log_out' => 'ログアウト',
+    'profile' => 'プロフィール',
     // 新規投稿
     'new_notification_post' => '新規お知らせ投稿',
     'edit_notification_post' => 'お知らせ編集画面',
