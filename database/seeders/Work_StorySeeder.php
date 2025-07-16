@@ -9,9 +9,6 @@ use DateTime;
 
 class Work_StorySeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('work_stories')->insert([
@@ -29,6 +26,8 @@ class Work_StorySeeder extends Seeder
 まどかが夢で見た少女と瓜二つの容姿をした少女。
 
 偶然の一致に戸惑うまどかに、ほむらは意味深な言葉を投げかけるのだった・・・。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623977/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE1%E8%A9%B1_a85ipz.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/01.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -49,6 +48,8 @@ class Work_StorySeeder extends Seeder
 
 どんな望みをも叶えるチャンスと、その先に待つ過酷な使命。
 悩む二人に、マミは「自分の魔女退治に付き合わないか」と提案をするのだった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623978/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE2%E8%A9%B1_yr6iqe.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/02.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -69,6 +70,8 @@ class Work_StorySeeder extends Seeder
 恭介の見舞いに行ったとさやかと付き添いのまどかは、
 その帰り道、偶然にも病院の駐輪場で孵化しかけたグリーフシードを発見する。
 放置すれば、大惨事になりかねない事態に、さやかはキュゥべえと共に見張りを、まどかはマミを助けに呼びに走るのだった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623977/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE3%E8%A9%B1_lfifvi.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/03.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -86,6 +89,8 @@ class Work_StorySeeder extends Seeder
 夕日の中、並んで歩く二人。
 
 魔法少女としての死ぬことの現実を語るほむらに、まどかは切ないほど優しい言葉をかけるのだった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623977/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE4%E8%A9%B1_ocwcyn.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/04.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -105,6 +110,8 @@ class Work_StorySeeder extends Seeder
 その光景を見たさやかは、至福の喜びをかみ締める。
 
 一方展望台には、そんな病院屋上でのさやかの動向をうかがう杏子の姿があった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623979/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE5%E8%A9%B1_sg6d5n.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/05.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -125,6 +132,8 @@ class Work_StorySeeder extends Seeder
 
 そんな二人のやりとりの一方、
 ゲームセンターでは、とある目的のため、ほむらは杏子と接触するのだった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623984/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE6%E8%A9%B1_c69nqd.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/06.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -141,6 +150,8 @@ class Work_StorySeeder extends Seeder
 
 そこで杏子の口から語られたのは、自身が魔法少女となった理由。
 果たして彼女の真意とは――',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623984/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE7%E8%A9%B1_k9kwob.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/07.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -159,6 +170,8 @@ class Work_StorySeeder extends Seeder
 雨の中をはしりながら、自己嫌悪に悔し泣きをするさやか――
 
 彼女のソウルジェムは、黒く黒く濁っていくのであった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623984/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE8%E8%A9%B1_ios6ro.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/08.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -178,6 +191,8 @@ class Work_StorySeeder extends Seeder
 その日の深夜、杏子の元に現れたのはキュゥべえ。
 キュゥべえとさやかの身体を元に戻すことについて話す杏子は、その会話の中で一縷の可能性を見出す。
 翌朝、杏子は仁美と登校途中のまどかをテレパシーで呼び出し、驚きの提案をするのだった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623984/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE9%E8%A9%B1_a7mxd7.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/09.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -197,6 +212,8 @@ class Work_StorySeeder extends Seeder
 長らくの入院生活により、学力も体力も他の生徒に劣る彼女は、
 劣等感に肩を落として帰宅する途中、ふとしたことで魔女の結界に迷いこんでしまう。
 彼女の絶対絶命のピンチに現れたのは、二人の魔法少女だった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623976/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE10%E8%A9%B1_ic1jci.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/10.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -211,6 +228,8 @@ class Work_StorySeeder extends Seeder
 さやか達の死について冷たい口調で語るその姿に、さすがのまどかも怒りを感じる。
 そんなまどかの態度が理解できないキュゥべえは、
 自分たちと人類がこれまで共に歩んできた歴史を語るのだった。',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623977/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE11%E8%A9%B1_pypmgm.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
             'official_link' => 'https://www.madoka-magica.com/tv/story/11.html',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
@@ -226,7 +245,31 @@ class Work_StorySeeder extends Seeder
 
 魔法少女となる者の運命を全て知った彼女は、
 果たして何を願い、どんな決断を下すのか？',
-            'official_link' => 'https://www.madoka-magica.com/tv/story/12.html',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623977/%E3%81%BE%E3%81%A9%E3%83%9E%E3%82%AE12%E8%A9%B1_pmyyxr.png',
+            'copyright' => '©Magica Quartet／Aniplex・Madoka Partners・MBS',
+            'official_link' => 'https://www.madoka-magica.com/tv/story/?id=ep12',
+            'created_at' => new DateTime(),
+            'updated_at' => new DateTime(),
+        ]);
+        DB::table('work_stories')->insert([
+            'work_id' => 1,
+            'episode' => '鬼隠し編　其の壱',
+            'sub_title' => 'ハジマリ',
+            'body' => '『あの時うるさい程に鳴いていたひぐらしは、
+　今にして思えば、
+　これから始まる全ての事を
+　教えようとしていたのかもしれない…
+　これからおこる全ての事を…』
+
+
+…昭和58年初夏。
+
+山奥の寒村・雛見沢村にて、前原圭一はごくありふれた毎日を過ごしていた。都会から引っ越してきたばかりの圭一だったが、毎朝一緒に登校してくれるレナや、ゲームに真剣に興じる魅音・沙都子・梨花ら仲良しグループのおかげで、楽しい日常を築き始めていた。
+
+そんなある日、圭一は偶然会ったカメラマンの男性から、村にまつわる怪死事件の存在を知る…',
+            'image' => 'https://res.cloudinary.com/dnumegejl/image/upload/v1752623977/%E3%81%B2%E3%81%90%E3%82%89%E3%81%971%E6%9C%9F1%E8%A9%B1_v3ldbo.png',
+            'copyright' => '©2006竜騎士０７／ひぐらしのなく頃に製作委員会・創通',
+            'official_link' => 'http://www.oyashirosama.com/web/story/onikakushi.htm#1',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
