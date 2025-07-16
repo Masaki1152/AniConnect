@@ -21,27 +21,27 @@ class Pilgrimage_Post_Category_Seeder extends Seeder
         ]);
         DB::table('pilgrimage_post_category')->insert([
             'pilgrimage_post_category_id' => 3,
-            'anime_pilgrimage_post_id' => 7,
+            'anime_pilgrimage_post_id' => 2,
             'created_at' => new DateTime(),
         ]);
         DB::table('pilgrimage_post_category')->insert([
             'pilgrimage_post_category_id' => 5,
-            'anime_pilgrimage_post_id' => 7,
+            'anime_pilgrimage_post_id' => 1,
             'created_at' => new DateTime(),
         ]);
         DB::table('pilgrimage_post_category')->insert([
             'pilgrimage_post_category_id' => 6,
-            'anime_pilgrimage_post_id' => 8,
+            'anime_pilgrimage_post_id' => 3,
             'created_at' => new DateTime(),
         ]);
         DB::table('pilgrimage_post_category')->insert([
             'pilgrimage_post_category_id' => 2,
-            'anime_pilgrimage_post_id' => 6,
+            'anime_pilgrimage_post_id' => 4,
             'created_at' => new DateTime(),
         ]);
         DB::table('pilgrimage_post_category')->insert([
             'pilgrimage_post_category_id' => 3,
-            'anime_pilgrimage_post_id' => 6,
+            'anime_pilgrimage_post_id' => 4,
             'created_at' => new DateTime(),
         ]);
     }

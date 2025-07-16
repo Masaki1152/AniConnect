@@ -15,7 +15,6 @@ class Character_Post_Seeder extends Seeder
     public function run(): void
     {
         DB::table('character_posts')->insert([
-            'work_id' => 2,
             'character_id' => 1,
             'user_id' => 1,
             'post_title' => '最高のトラップ使い',
@@ -25,7 +24,6 @@ class Character_Post_Seeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('character_posts')->insert([
-            'work_id' => 1,
             'character_id' => 4,
             'user_id' => 3,
             'post_title' => 'めっちゃ共感しかない。',
@@ -35,7 +33,6 @@ class Character_Post_Seeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('character_posts')->insert([
-            'work_id' => 2,
             'character_id' => 1,
             'user_id' => 5,
             'post_title' => 'すばらしいの一言',
@@ -45,7 +42,6 @@ class Character_Post_Seeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('character_posts')->insert([
-            'work_id' => 5,
             'character_id' => 5,
             'user_id' => 5,
             'post_title' => '剣裁きがかっこいい',
@@ -55,7 +51,6 @@ class Character_Post_Seeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('character_posts')->insert([
-            'work_id' => 1,
             'character_id' => 6,
             'user_id' => 4,
             'post_title' => '見た目だけ',
@@ -65,7 +60,6 @@ class Character_Post_Seeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('character_posts')->insert([
-            'work_id' => 1,
             'character_id' => 6,
             'user_id' => 2,
             'post_title' => 'うーん',
@@ -74,6 +68,5 @@ class Character_Post_Seeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-
     }
 }
