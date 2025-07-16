@@ -123,6 +123,14 @@
                             CV:{{ $character->voiceArtist->name }}
                         </a>
                     </p>
+                    @if ($character->image)
+                        <div
+                            class="relative w-full max-w-md aspect-[4/3] overflow-hidden rounded-md border border-gray-300">
+                            <img src="{{ $character->image }}" alt="画像が読み込めません。"
+                                class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+                        <p>{{ $character->copyright }}</p>
+                    @endif
                     <x-molecules.evaluation.star-num-detail :starNum="$character->average_star_num" :postNum="$character->post_num" />
                     <x-molecules.button.interested type="characters" :root="$character"
                         path="characters.interested.index" :prop="['character_id' => $character->id]" isMultiple="false" />

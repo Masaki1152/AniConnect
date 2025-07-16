@@ -9,9 +9,6 @@ use DateTime;
 
 class MusicSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
     public function run(): void
     {
         DB::table('music')->insert([
@@ -86,6 +83,5 @@ class MusicSeeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-
     }
 }
