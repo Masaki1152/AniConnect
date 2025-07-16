@@ -1,4 +1,4 @@
-# AniConnect（[リンク](https://aniconnect.net/）))
+# AniConnect（[リンク](https://aniconnect.net/)）
 
 アニメファン同士が多面的に交流できる「AniConnect(アニコネクト)」。<br>
 従来、アニメ作品に関する感想の投稿、各話あらすじや感想を語るブログ、ファン同士で交流する掲示板、アニメに関わる情報を閲覧できるサイトなどはそれぞれが独立している。<br>
