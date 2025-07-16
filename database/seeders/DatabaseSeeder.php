@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             work_post_Seeder::class,
             work_post_Categories_Seeder::class,
             work_post_work_post_Category_Seeder::class,
-            User_work_post_Seeder::class,
+            User_Work_Post_Seeder::class,
             Work_StorySeeder::class,
             Work_Story_Post_Seeder::class,
             Work_Story_Post_Like_Seeder::class,
