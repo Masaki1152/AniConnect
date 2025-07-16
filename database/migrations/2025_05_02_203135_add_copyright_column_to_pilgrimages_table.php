@@ -9,7 +9,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('anime_pilgrimages', function (Blueprint $table) {
-            $table->string('image')->after('place');
+            $table->string('image')->after('place')->nullable();
             $table->string('copyright')->after('image')->nullable();
         });
     }
