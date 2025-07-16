@@ -18,8 +18,8 @@ class MusicSeeder extends Seeder
             'composer_id' => 2,
             'name' => 'コネクト',
             'release_date' => date('2011-2-2'),
-            'wiki_link' => 'https://www.youtube-nocookie.com/embed/7EuTPTVpuNI?si=L9E0kdOoOjJeGHNk',
-            'youtube_link' => 'https://www.youtube.com/watch?v=7EuTPTVpuNI',
+            'wiki_link' => 'https://ja.wikipedia.org/wiki/%E3%82%B3%E3%83%8D%E3%82%AF%E3%83%88_(%E6%9B%B2)',
+            'youtube_link' => 'https://www.youtube-nocookie.com/embed/7EuTPTVpuNI?si=L9E0kdOoOjJeGHNk',
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
