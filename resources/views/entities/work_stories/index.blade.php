@@ -114,6 +114,14 @@
                             <p>カテゴリー情報がありません。</p>
                         @endif
                     </h5>
+                    @if ($work_story->image)
+                        <div
+                            class="relative w-full max-w-md aspect-[4/3] overflow-hidden rounded-md border border-gray-300">
+                            <img src="{{ $work_story->image }}" alt="画像が読み込めません。"
+                                class="absolute inset-0 w-full h-full object-cover">
+                        </div>
+                        <p>{{ $work_story->copyright }}</p>
+                    @endif
                     <x-molecules.evaluation.star-num-detail :starNum="$work_story->average_star_num" :postNum="$work_story->post_num" />
                     <x-molecules.button.interested type="workStories" :root="$work_story"
                         path="work_stories.interested.index" :prop="['work_id' => $work_story->work_id, 'work_story_id' => $work_story->id]" isMultiple="true" />
