@@ -1,8 +1,8 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+<nav x-data="{ open: false }" class="bg-baseColor border-b-2 border-mainColor">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex items-center">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
                     <a href="{{ route('main.index') }}">
@@ -11,7 +11,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                <div class="hidden space-x-8 pt-2 sm:-my-px sm:ml-64 sm:flex">
                     @auth
                         @if (Auth::user()->is_admin === 1)
                             <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">
@@ -34,6 +34,10 @@
                     <x-atom.nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
                         {{ __('common.registered_member_list') }}
                     </x-atom.nav-link>
+                    <!-- TODO: その他は別途実装 -->
+                    <x-atom.nav-link :href="route('users.index')" :active="request()->routeIs('users.index')">
+                        {{ __('common.other') }}
+                    </x-atom.nav-link>
                 </div>
             </div>
 
@@ -43,22 +47,10 @@
                     <x-atom.dropdown align="right" width="48">
                         <x-slot name="trigger">
                             <button
-                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
                                 <!-- アイコン画像 -->
                                 <img src="{{ Auth::user()->image ?? 'https://res.cloudinary.com/dnumegejl/image/upload/v1732628038/No_User_Image_wulbjv.png' }}"
-                                    alt="{{ Auth::user()->name }}" class="w-8 h-8 rounded-full object-cover mr-1">
-
-                                <!-- アカウント名 -->
-                                <div>{{ Auth::user()->name }}</div>
-
-                                <div class="ms-1">
-                                    <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20">
-                                        <path fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                </div>
+                                    alt="{{ Auth::user()->name }}" class="w-10 h-10 rounded-full object-cover mr-1">
                             </button>
                         </x-slot>
 
@@ -80,11 +72,11 @@
                         </x-slot>
                     </x-atom.dropdown>
                 @else
-                    <div class="space-x-4">
+                    <div class="flex space-x-6">
                         <a href="{{ route('login') }}"
-                            class="text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('common.login') }}</a>
+                            class="px-3 py-2 rounded-xl bg-mainColor hover:bg-mainColorHover text-white text-base font-bold transition-colors duration-200">{{ __('common.login') }}</a>
                         <a href="{{ route('register') }}"
-                            class="ms-4 text-gray-600 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">{{ __('common.member_registration') }}</a>
+                            class="px-3 py-2 rounded-xl bg-accentColor hover:bg-accentColorHover text-white text-base font-bold transition-colors duration-200">{{ __('common.member_registration') }}</a>
                     </div>
                 @endauth
             </div>

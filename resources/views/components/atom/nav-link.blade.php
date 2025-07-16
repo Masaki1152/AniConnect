@@ -1,11 +1,21 @@
 @props(['active'])
 
 @php
-$classes = ($active ?? false)
-            ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-            : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out';
+    $linkClasses =
+        'inline-flex items-center px-1 pt-4 pb-4 border-b-2 focus:outline-none transition duration-150 ease-in-out';
+    $spanClasses = 'font-semibold leading-5';
+
+    if ($active) {
+        $linkClasses .= ' border-b-4 border-activeBorderBlue';
+        $spanClasses .= ' text-activeTextDark';
+    } else {
+        $linkClasses .= ' border-transparent hover:border-activeBorderBlue';
+        $spanClasses .= ' text-textColor hover:text-textColorHover';
+    }
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
-    {{ $slot }}
+<a {{ $attributes->merge(['class' => $linkClasses]) }}>
+    <span class="{{ $spanClasses }}">
+        {{ $slot }}
+    </span>
 </a>
