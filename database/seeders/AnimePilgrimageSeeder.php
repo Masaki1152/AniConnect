@@ -15,7 +15,6 @@ class AnimePilgrimageSeeder extends Seeder
     public function run(): void
     {
         DB::table('anime_pilgrimages')->insert([
-            'work_id' => 2,
             'prefecture_id' => 21,
             'name' => '城山天守閣 展望台',
             'place' => '〒501-5627 岐阜県大野郡白川村荻町２２６９−１',
@@ -25,7 +24,6 @@ class AnimePilgrimageSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('anime_pilgrimages')->insert([
-            'work_id' => 2,
             'prefecture_id' => 21,
             'name' => '白川八幡神社',
             'place' => '〒501-5627 岐阜県大野郡白川村荻町５５９',
@@ -35,7 +33,6 @@ class AnimePilgrimageSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('anime_pilgrimages')->insert([
-            'work_id' => 3,
             'prefecture_id' => 13,
             'name' => '神田明神',
             'place' => '〒101-0021 東京都千代田区外神田２丁目１６−２',
@@ -45,7 +42,6 @@ class AnimePilgrimageSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('anime_pilgrimages')->insert([
-            'work_id' => 6,
             'prefecture_id' => 22,
             'name' => '伊豆・三津シーパラダイス',
             'place' => '〒410-0295 静岡県沼津市内浦長浜３−１',
@@ -55,7 +51,6 @@ class AnimePilgrimageSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('anime_pilgrimages')->insert([
-            'work_id' => 6,
             'prefecture_id' => 26,
             'name' => '清水寺',
             'place' => '〒605-0862 京都府京都市東山区清水１丁目２９４',
@@ -65,7 +60,6 @@ class AnimePilgrimageSeeder extends Seeder
             'updated_at' => new DateTime(),
         ]);
         DB::table('anime_pilgrimages')->insert([
-            'work_id' => 6,
             'prefecture_id' => 26,
             'name' => '渡月橋',
             'place' => '〒616-8384 京都府京都市右京区嵯峨天龍寺芒ノ馬場町１−５',
@@ -74,6 +68,5 @@ class AnimePilgrimageSeeder extends Seeder
             'created_at' => new DateTime(),
             'updated_at' => new DateTime(),
         ]);
-
     }
 }
