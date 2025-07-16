@@ -15,8 +15,9 @@ class WorkStoryPostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'work_story_post.post_title' => 'required|string|max:100',
+            'work_story_post.post_title' => 'required|string|max:40',
             'work_story_post.body' => 'required|string|max:4000',
+            'work_story_post.categories_array' => 'required|array|max:3',
             'images' => 'array|max:4'
         ];
     }

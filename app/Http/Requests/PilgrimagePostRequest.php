@@ -15,9 +15,10 @@ class PilgrimagePostRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'pilgrimage_post.title' => 'required|string|max:100',
-            'pilgrimage_post.scene' => 'required|string|max:200',
+            'pilgrimage_post.post_title' => 'required|string|max:40',
+            'pilgrimage_post.scene' => 'required|string|max:40',
             'pilgrimage_post.body' => 'required|string|max:4000',
+            'pilgrimage_post.categories_array' => 'required|array|max:3',
             'images' => 'array|max:4'
         ];
     }

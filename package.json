@@ -12,12 +12,14 @@
         "axios": "^1.6.4",
         "laravel-vite-plugin": "^1.0.0",
         "postcss": "^8.4.31",
-        "tailwindcss": "^3.1.0",
+        "tailwindcss": "^3.4.17",
         "vite": "^5.0.0"
     },
     "dependencies": {
+        "@tailwindcss/line-clamp": "^0.4.4",
         "autoprefixer": "^9.8.8",
-        "postcss": "^7.0.39",
-        "tailwindcss": "npm:@tailwindcss/postcss7-compat@^2.2.17"
+        "cropper": "^4.1.0",
+        "cropperjs": "^1.6.2",
+        "postcss": "^7.0.39"
     }
 }

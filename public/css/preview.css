@@ -1,0 +1,61 @@
+/* 画像のラッパー（画像部分のみ白背景） */
+.image-wrapper {
+    width: 12rem;
+    height: 9rem;
+    background-color: #F3F4F6; /* 白背景を画像部分に限定 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.375rem; 
+    border: 1px solid #d1d5db; 
+    overflow: hidden; /* 子要素がはみ出さないように */
+    position: relative;
+}
+
+/* プレビュー用の画像 */
+.img-preview {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* 縦横比を維持 */
+}
+
+/* 削除ボタン */
+.rm-btn {
+    display: block;
+    width: auto;
+    margin-top: 0.25rem;
+    padding: 0.5rem 1rem;
+    background-color: #ef4444;
+    color: white;
+    font-size: 0.875rem; /* text-sm */
+    border: none;
+    border-radius: 0.375rem;
+    text-align: center;
+    cursor: pointer;
+}
+
+/* 画像トリミング用のモーダルウィンドウ*/
+.crop-modal {
+    /* デフォルトで非表示 */
+    display: none; 
+}
+
+.crop-modal.show {
+    /* 表示時はフレックスボックスで中央揃え */
+    display: flex;
+}
+
+/* モーダルウィンドウ内の画像のサイズ設定 */
+.crop-preview {
+    max-width: 100%;
+    max-height: 60vh; /* ビューポートの80%の高さに制限 */
+    width: auto;
+    height: auto;
+    object-fit: contain; /* 画像全体を表示して、縦横比を保持 */
+}
+
+/* ユーザーアイコン用の追加スタイル */
+.circle-cropper .cropper-view-box,
+.circle-cropper .cropper-face {
+  border-radius: 50%;
+}

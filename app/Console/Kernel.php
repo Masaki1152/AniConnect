@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use Illuminate\Support\Facades\Log;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,7 +13,18 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        // $schedule->command('inspire')->hourly();
+        Log::info('Schedule method called.');
+        $schedule->command('categories:update-top')->daily();
+        $schedule->command('popularity:update-top')->daily();
+        $schedule->command('average-star-num:update')->daily();
+
+        // 毎日0時にキャッシュを削除
+        $schedule->call(function () {
+            Cache::forget('top_popular_works');
+            Cache::forget('top_popular_characters');
+            Cache::forget('top_popular_music');
+            Cache::forget('top_popular_pilgrimages');
+        })->dailyAt('00:00');
     }
 
     /**
@@ -20,7 +32,7 @@ class Kernel extends ConsoleKernel
      */
     protected function commands(): void
     {
-        $this->load(__DIR__.'/Commands');
+        $this->load(__DIR__ . '/Commands');
 
         require base_path('routes/console.php');
     }
