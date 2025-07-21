@@ -29,6 +29,10 @@ export default {
                 activeBorderBlue: '#1DA1F2',
                 activeTextDark: '#000000',
             },
+            screens: {
+                // ヘッダー用 header_custom
+                hc: '1060px',
+            },
         },
     },
 
