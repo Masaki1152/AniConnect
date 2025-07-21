@@ -28,6 +28,7 @@ export default {
                 accentColorHover: '#E75428',
                 activeBorderBlue: '#1DA1F2',
                 activeTextDark: '#000000',
+                linkColor: '#0000EE',
             },
             screens: {
                 // ヘッダー用 header_custom

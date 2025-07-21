@@ -67,7 +67,7 @@ class Notification extends Model
     {
         $recentNotifications = Notification::orderBy('created_at', 'desc')
             ->orderBy('id', 'DESC')
-            ->take(5)
+            ->take(4)
             ->get();
         return $recentNotifications;
     }
