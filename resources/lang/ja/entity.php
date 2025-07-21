@@ -9,4 +9,6 @@ return [
 あなたの「好き」が、きっと何かとつながる。
 アニメをもっと深く楽しめる体験がここに。',
     'main.introduction_detail' => 'もっとAniConnectについて知る！',
+    'main.notification_title' => '最新のお知らせ',
+    'main.notification_detail' => 'もっとお知らせを見る！',
 ];

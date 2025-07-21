@@ -13,16 +13,31 @@
                     </div>
                 </div>
                 <div class="notifications">
-                    <h2>お知らせ</h2>
-                    <ul>
+                    <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.notification_title') }}</h2>
+                    <div
+                        class="notification_list mt-4 lg:mx-14 border-2 border-mainColor p-4 rounded-xl divide-y divide-mainColor">
                         @foreach ($notifications as $notification)
-                            <li><a
-                                    href="{{ route('notifications.show', ['notification_id' => $notification->id]) }}">{{ $notification->title }}</a>
-                            </li>
-                            <li>{{ $notification->created_at->format('Y/m/d H:i') }}</li>
+                            <div class="flex flex-wrap items-center gap-2 py-2">
+                                <p class="text-xs text-textColor">
+                                    {{ $notification->created_at->format('Y/m/d') }}
+                                </p>
+                                <a href="{{ route('notifications.show', ['notification_id' => $notification->id]) }}"
+                                    class="ml-4 text-xs text-textColor">{{ $notification->title }}
+                                </a>
+                                @foreach ($notification->categories as $category)
+                                    <span class="text-xs text-white px-2 py-1 rounded-full"
+                                        style="background-color: {{ getCategoryColor($category->name) }};">
+                                        {{ $category->name }}
+                                    </span>
+                                @endforeach
+                            </div>
                         @endforeach
-                    </ul>
-                    <a href="{{ route('notifications.index') }}">お知らせ一覧へ</a>
+                    </div>
+                    <div class="mt-2 flex justify-end">
+                        <a href="{{ route('notifications.index') }}" class="text-xs text-linkColor hover:underline">
+                            {{ __('entity.main.notification_detail') }}
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
