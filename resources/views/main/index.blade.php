@@ -1,16 +1,16 @@
 <x-app-layout>
-    <x-slot name="header">
-        <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-            {{ __('Main') }}
-        </h2>
-    </x-slot>
-
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 text-gray-900">
-                    {{ __("You're logged in!") }}
-                    <p>メイン画面</p>
+    <div class="py-10">
+        <div class="w-full max-w-[960px] mx-auto px-4 lg:px-0">
+            <div class="bg-white main-content px-4 flex-col gap-6">
+                <div class="introduction">
+                    <h2 class="text-2xl font-bold text-textColor">{{ __('entity.main.introduction_title') }}</h2>
+                    <p class="mt-4 text-base font-medium text-textColor border-2 border-mainColor px-6 py-3 rounded-xl">
+                        {!! __('entity.main.introduction_description') !!}</p>
+                    <div class="mt-2 flex justify-end">
+                        <a href="{{ route('notifications.index') }}" class="text-xs text-linkColor hover:underline">
+                            {{ __('entity.main.introduction_detail') }}
+                        </a>
+                    </div>
                 </div>
                 <div class="notifications">
                     <h2>お知らせ</h2>
