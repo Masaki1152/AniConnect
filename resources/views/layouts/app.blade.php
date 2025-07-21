@@ -50,6 +50,7 @@
             <script src="/js/cropper.js"></script>
             <script src="/js/login_dialog.js"></script>
         </main>
+        <x-atom.footer />
     </div>
 
     <x-molecules.dialog.login-dialog />

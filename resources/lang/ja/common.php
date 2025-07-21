@@ -19,6 +19,11 @@ return [
     'member_registration' => 'メンバー登録',
     'log_out' => 'ログアウト',
     'profile' => 'プロフィール',
+    // フッター
+    'right' => 'AniConnect © 2025 All Rights Reserved.',
+    'privacy_policy' => 'プライバシーポリシー',
+    'terms' => '利用規約',
+    'contact' => 'お問い合わせ',
     // 新規投稿
     'new_notification_post' => '新規お知らせ投稿',
     'edit_notification_post' => 'お知らせ編集画面',
