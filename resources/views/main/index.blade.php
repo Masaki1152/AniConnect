@@ -1,7 +1,7 @@
 <x-app-layout>
     <div class="py-10">
         <div class="w-full max-w-[960px] mx-auto px-4 lg:px-0">
-            <div class="bg-white main-content px-4 flex flex-col gap-6">
+            <div class="main-content px-4 flex flex-col gap-6">
                 <div class="introduction">
                     <h2 class="text-2xl font-bold text-textColor">{{ __('entity.main.introduction_title') }}</h2>
                     <p class="mt-4 text-base font-medium text-textColor border-2 border-mainColor px-6 py-3 rounded-xl">
