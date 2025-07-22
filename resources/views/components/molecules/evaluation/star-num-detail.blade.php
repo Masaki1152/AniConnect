@@ -1,11 +1,13 @@
 @if ($starNum == 9.9)
     <p class="text-sm text-gray-500">評価数が足りません</p>
 @else
-    <div class="content mt-2">
-        <p class="flex items-center text-lg font-semibold text-gray-800 gap-1 leading-none">
-            <span>{{ __('common.evaluation_colon') }} {{ $starNum }}</span>
-            <span class="text-sm text-gray-500">（{{ $postNum }}件の評価）</span>
-        </p>
+    <div class="content">
+        @if ($postNum !== null)
+            <p class="flex items-center text-lg font-semibold text-gray-800 gap-1 leading-none">
+                <span>{{ __('common.evaluation_colon') }} {{ $starNum }}</span>
+                <span class="text-sm text-gray-500">（{{ $postNum }}件の評価）</span>
+            </p>
+        @endif
         <div class="relative flex">
             @for ($i = 1; $i <= 5; $i++)
                 <div class="relative w-6 h-6">
