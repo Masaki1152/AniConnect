@@ -80,6 +80,8 @@ return [
     'wiki_link' => 'Wikipediaのリンク',
     'twitter_link' => 'Twitterのリンク',
     'target_edit' => '「:target」の編集',
+    // 人気度
+    'updated_at' => '最終更新：',
     // コメント
     'comment' => 'コメントする',
 ];
