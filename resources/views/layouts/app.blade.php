@@ -38,30 +38,19 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 
-<body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-        @include('layouts.navigation')
+<body class="font-sans antialiased min-h-screen flex flex-col">
+    @include('layouts.navigation')
 
-        <!-- Page Heading -->
-        @if (isset($header))
-            <header class="bg-white shadow">
-                <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                    {{ $header }}
-                </div>
-            </header>
-        @endif
-
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-            <!-- Lightbox JS -->
-            <script src="/js/lightbox-plus-jquery.min.js"></script>
-            <script src="/js/cropper.js"></script>
-            <script src="/js/login_dialog.js"></script>
-        </main>
-    </div>
-
+    <!-- Page Content -->
+    <main class="flex-grow bg-baseColor">
+        {{ $slot }}
+    </main>
+    <x-atom.footer />
     <x-molecules.dialog.login-dialog />
+    <!-- Lightbox JS -->
+    <script src="/js/lightbox-plus-jquery.min.js"></script>
+    <script src="/js/cropper.js"></script>
+    <script src="/js/login_dialog.js"></script>
 </body>
 
 </html>
