@@ -49,7 +49,7 @@
                         </div>
                         <div class="flex justify-end">
                             <a href="{{ route('works.index') }}"
-                                class="my-2 mr-[56px] text-xs text-linkColor hover:underline">
+                                class="my-2 sm:mr-[56px] mr-[40px] text-xs text-linkColor hover:underline">
                                 {{ __('entity.main.popularity_work_detail') }}
                             </a>
                         </div>
