@@ -20,7 +20,7 @@
                         </p>
                     </div>
                     <div class="mt-4 border-2 border-mainColor rounded-xl lg:mx-14">
-                        <div class="px-[124px]">
+                        <div class="sm:px-[124px] px-[40px]">
                             <h3
                                 class="mt-1 text-base font-semibold text-textColor text-center border-b-2 border-mainColor">
                                 {{ __('entity.main.popularity_work_department') }}
