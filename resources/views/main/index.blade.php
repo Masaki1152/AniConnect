@@ -13,24 +13,25 @@
                     </div>
                 </div>
                 <div class="popularity">
-                    <div class="flex gap-4 items-end">
+                    <div class="flex lg:gap-4 gap-2 items-end">
                         <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.popularity_title') }}</h2>
                         <p class="mb-1 text-xs text-subTextColor">
                             {{ __('common.updated_at') . (count($topPopularityWorks) > 0 ? $topPopularityWorks[0]['item']->updated_at->format('Y/m/d H:i') : 'N/A') }}
                         </p>
                     </div>
                     <div class="mt-4 border-2 border-mainColor rounded-xl lg:mx-14">
-                        <div class="px-[124px]">
+                        <div class="sm:px-[124px] px-[40px]">
                             <h3
                                 class="mt-1 text-base font-semibold text-textColor text-center border-b-2 border-mainColor">
                                 {{ __('entity.main.popularity_work_department') }}
                             </h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[72px] justify-items-center mt-3">
                                 @foreach ($topPopularityWorks as $topPopularityWork)
-                                    <div class="data-cell flex flex-col items-center w-[160px]">
+                                    <div
+                                        class="data-cell flex flex-col items-center w-[160px] h-full min-h-[280px] justify-start">
                                         <a href="{{ route('works.show', ['work' => $topPopularityWork['item']->id]) }}"
-                                            class="mb-1 text-base text-textColor text-center h-[24px] leading-tight overflow-hidden break-words hover:underline">
-                                            {{ $topPopularityWork['item']->name }}
+                                            class="mb-1 flex items-center justify-center text-base text-textColor text-center h-[40px] overflow-hidden leading-tight hover:underline">
+                                            <span class="line-clamp-2">{{ $topPopularityWork['item']->name }}</span>
                                         </a>
                                         <x-molecules.evaluation.star-num-detail :starNum="$topPopularityWork['item']->average_star_num" :postNum="null" />
                                         @if ($topPopularityWork['item']->image)
@@ -39,8 +40,7 @@
                                                 <img src="{{ $topPopularityWork['item']->image }}" alt="画像が読み込めません。"
                                                     class="w-full h-full object-cover">
                                             </div>
-                                            <p
-                                                class="text-xs text-subTextColor mt-px leading-none text-center break-words whitespace-pre-wrap">
+                                            <p class="mt-1 text-xs text-subTextColor">
                                                 {{ $topPopularityWork['item']->copyright }}</p>
                                         @endif
                                     </div>
@@ -49,7 +49,7 @@
                         </div>
                         <div class="flex justify-end">
                             <a href="{{ route('works.index') }}"
-                                class="my-2 mr-[56px] text-xs text-linkColor hover:underline">
+                                class="my-2 sm:mr-[56px] mr-[40px] text-xs text-linkColor hover:underline">
                                 {{ __('entity.main.popularity_work_detail') }}
                             </a>
                         </div>
