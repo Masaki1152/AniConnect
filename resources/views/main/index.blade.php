@@ -27,7 +27,8 @@
                             </h3>
                             <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[72px] justify-items-center mt-3">
                                 @foreach ($topPopularityWorks as $topPopularityWork)
-                                    <div class="data-cell flex flex-col items-center w-[160px]">
+                                    <div
+                                        class="data-cell flex flex-col items-center w-[160px] h-full min-h-[280px] justify-start">
                                         <a href="{{ route('works.show', ['work' => $topPopularityWork['item']->id]) }}"
                                             class="mb-1 text-base text-textColor text-center h-[24px] leading-tight overflow-hidden break-words hover:underline">
                                             {{ $topPopularityWork['item']->name }}
@@ -39,8 +40,7 @@
                                                 <img src="{{ $topPopularityWork['item']->image }}" alt="画像が読み込めません。"
                                                     class="w-full h-full object-cover">
                                             </div>
-                                            <p
-                                                class="text-xs text-subTextColor mt-px leading-none text-center break-words whitespace-pre-wrap">
+                                            <p class="mt-1 text-xs text-subTextColor">
                                                 {{ $topPopularityWork['item']->copyright }}</p>
                                         @endif
                                     </div>
