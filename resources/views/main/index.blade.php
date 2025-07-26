@@ -13,7 +13,7 @@
                     </div>
                 </div>
                 <div class="popularity">
-                    <div class="flex gap-4 items-end">
+                    <div class="flex lg:gap-4 gap-2 items-end">
                         <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.popularity_title') }}</h2>
                         <p class="mb-1 text-xs text-subTextColor">
                             {{ __('common.updated_at') . (count($topPopularityWorks) > 0 ? $topPopularityWorks[0]['item']->updated_at->format('Y/m/d H:i') : 'N/A') }}
