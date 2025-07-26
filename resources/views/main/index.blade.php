@@ -30,8 +30,8 @@
                                     <div
                                         class="data-cell flex flex-col items-center w-[160px] h-full min-h-[280px] justify-start">
                                         <a href="{{ route('works.show', ['work' => $topPopularityWork['item']->id]) }}"
-                                            class="mb-1 text-base text-textColor text-center h-[24px] leading-tight overflow-hidden break-words hover:underline">
-                                            {{ $topPopularityWork['item']->name }}
+                                            class="mb-1 flex items-center justify-center text-base text-textColor text-center h-[40px] overflow-hidden leading-tight hover:underline">
+                                            <span class="line-clamp-2">{{ $topPopularityWork['item']->name }}</span>
                                         </a>
                                         <x-molecules.evaluation.star-num-detail :starNum="$topPopularityWork['item']->average_star_num" :postNum="null" />
                                         @if ($topPopularityWork['item']->image)
