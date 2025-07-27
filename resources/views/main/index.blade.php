@@ -29,7 +29,7 @@
                                 @foreach ($topPopularityWorks as $topPopularityWork)
                                     <div
                                         class="data-cell flex flex-col items-center w-[160px] h-full min-h-[280px] justify-start">
-                                        <a href="{{ route('works.show', ['work' => $topPopularityWork['item']->id]) }}"
+                                        <a href="{{ route('works.show', ['work_id' => $topPopularityWork['item']->id]) }}"
                                             class="mb-1 flex items-center justify-center text-base text-textColor text-center h-[40px] overflow-hidden leading-tight hover:underline">
                                             <span class="line-clamp-2">{{ $topPopularityWork['item']->name }}</span>
                                         </a>

@@ -111,7 +111,7 @@
                         @endif
                     </h5>
                     <p class='work'>
-                        <a href="{{ route('works.show', ['work' => $music_object->work_id]) }}">
+                        <a href="{{ route('works.show', ['work_id' => $music_object->work_id]) }}">
                             {{ $music_object->work->name }}
                         </a>
                     </p>

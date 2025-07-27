@@ -17,7 +17,7 @@
         <div class="lg:col-span-2 space-y-6">
             <div class="text-lg font-semibold">
                 「
-                <a href="{{ route('works.show', ['work' => $work_story_post->work_id]) }}"
+                <a href="{{ route('works.show', ['work_id' => $work_story_post->work_id]) }}"
                     class="text-blue-500 hover:text-blue-700 underline">
                     {{ $work_story_post->workStory->work->name }}
                 </a>

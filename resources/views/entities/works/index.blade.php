@@ -98,7 +98,7 @@
                 @foreach ($works as $work)
                     <div class="p-6 border border-gray-200 rounded-lg shadow-sm">
                         <h2 class="text-xl font-semibold mb-2 text-blue-600">
-                            <a href="{{ route('works.show', ['work' => $work->id]) }}" class="hover:underline">
+                            <a href="{{ route('works.show', ['work_id' => $work->id]) }}" class="hover:underline">
                                 {{ $work->name }}
                             </a>
                         </h2>
