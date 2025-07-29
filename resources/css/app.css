@@ -5,3 +5,13 @@
 html {
     overflow-y: scroll;
 }
+
+.swiper-button-prev::after,
+.swiper-button-next::after {
+  display: none;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #ABE1FA;
+  opacity: 1;
+}
