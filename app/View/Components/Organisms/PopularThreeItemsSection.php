@@ -12,6 +12,7 @@ class PopularThreeItemsSection extends Component
 
     public function __construct($popularItems)
     {
+        dd($popularItems);
         $this->popularItems = $popularItems;
         $this->itemType = $popularItems[0]['itemType'];
     }
