@@ -30,7 +30,7 @@
             </h5>
             <div class='work'>
                 <h3>登場作品</h3>
-                <a href="{{ route('works.show', ['work' => $music->work_id]) }}">
+                <a href="{{ route('works.show', ['work_id' => $music->work_id]) }}">
                     {{ $music->work->name }}
                 </a>
             </div>

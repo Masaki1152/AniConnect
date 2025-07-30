@@ -17,6 +17,7 @@
     <link rel="stylesheet" href="/css/preview.css">
     <link rel="stylesheet" href="/css/category_form.css">
     <link rel="stylesheet" href="/css/cropper.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
 
     <!-- Scripts -->
     <script>
@@ -51,6 +52,7 @@
     <script src="/js/lightbox-plus-jquery.min.js"></script>
     <script src="/js/cropper.js"></script>
     <script src="/js/login_dialog.js"></script>
+    <script type="module" src="{{ asset('js/popular_carousel.js') }}"></script>
 </body>
 
 </html>
