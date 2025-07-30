@@ -116,4 +116,13 @@ trait CommonFunction
         // 該当しない場合はnull
         return null;
     }
+
+    // 各項目の人気アイテムにタイプを渡す
+    public function addTypeToItem($items, $type)
+    {
+        foreach ($items as &$item) {
+            $item['itemType'] = $type;
+        }
+        return $items;
+    }
 }

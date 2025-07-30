@@ -145,7 +145,7 @@
                     <p class='work'>
                         {{-- 関連する作品の数だけ繰り返す --}}
                         @foreach ($pilgrimage->works as $pilgrimage_work)
-                            <a href="{{ route('works.show', ['work' => $pilgrimage_work->id]) }}">
+                            <a href="{{ route('works.show', ['work_id' => $pilgrimage_work->id]) }}">
                                 {{ $pilgrimage_work->name }}
                             </a>
                         @endforeach
