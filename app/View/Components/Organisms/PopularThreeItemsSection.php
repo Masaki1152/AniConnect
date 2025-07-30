@@ -10,27 +10,10 @@ class PopularThreeItemsSection extends Component
     public $itemType;
     public $imageAspect;
 
-    public function __construct($popularItems, $itemType)
+    public function __construct($popularItems)
     {
         $this->popularItems = $popularItems;
-        $this->itemType = $itemType;
-
-        $vertical = "w-[123px] h-[164px]";
-        $horizontal = "w-[164px] h-[123px]";
-        $square = "w-[123px] h-[123px]";
-        switch ($itemType) {
-            case "work":
-                $this->imageAspect = $vertical;
-                break;
-            case "work_story":
-            case "character":
-            case "pilgrimage":
-                $this->imageAspect = $horizontal;
-                break;
-            case "music":
-                $this->imageAspect = $square;
-                break;
-        }
+        $this->itemType = $popularItems[0]['itemType'];
     }
 
     public function render()

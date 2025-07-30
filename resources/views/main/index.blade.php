@@ -19,7 +19,7 @@
                             {{ __('common.updated_at') . (count($topPopularityWorks) > 0 ? $topPopularityWorks[0]['item']->updated_at->format('Y/m/d H:i') : 'N/A') }}
                         </p>
                     </div>
-                    <div class="mt-4 border-2 border-mainColor rounded-xl lg:mx-14">
+                    <div class="mt-4 md:border-2 border-mainColor rounded-xl lg:mx-14">
                         <x-organisms.popular-item-caroucel :topPopularityWorks="$topPopularityWorks" :topPopularityWorkStories="$topPopularityWorkStories" :topPopularityCharacters="$topPopularityCharacters"
                             :topPopularityMusic="$topPopularityMusic" :topPopularityPilgrimages="$topPopularityPilgrimages" />
                     </div>
