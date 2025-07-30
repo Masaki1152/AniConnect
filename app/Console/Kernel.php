@@ -24,8 +24,6 @@ class Kernel extends ConsoleKernel
             Cache::forget('top_popular_characters');
             Cache::forget('top_popular_music');
             Cache::forget('top_popular_pilgrimages');
-
-            Artisan::call('popularity:update-top');
         })->dailyAt('00:00');
     }
 
