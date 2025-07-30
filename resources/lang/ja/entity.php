@@ -17,6 +17,7 @@ return [
     'episode_in_work' => 'より',
     'main.popularity_character_department' => '登場人物部門',
     'main.popularity_character_detail' => '登場人物一覧を見てみる！',
+    'main.character_in_work' => '主な登場作品',
     'main.popularity_music_department' => '音楽部門',
     'main.popularity_music_detail' => '音楽一覧を見てみる！',
     'main.popularity_pilgrimage_department' => '聖地部門',

@@ -20,9 +20,8 @@
                         </p>
                     </div>
                     <div class="mt-4 border-2 border-mainColor rounded-xl lg:mx-14">
-                        <x-organisms.popular-three-items-section :popularItems="$topPopularityWorks" itemType="work" />
-                        <x-organisms.popular-three-items-section :popularItems="$topPopularityWorkStories" itemType="work_story" />
-                        <x-organisms.popular-three-items-section :popularItems="$topPopularityCharacters" itemType="character" />
+                        <x-organisms.popular-item-caroucel :topPopularityWorks="$topPopularityWorks" :topPopularityWorkStories="$topPopularityWorkStories" :topPopularityCharacters="$topPopularityCharacters"
+                            :topPopularityMusic="$topPopularityMusic" :topPopularityPilgrimages="$topPopularityPilgrimages" />
                     </div>
                 </div>
                 <div class="notifications">
