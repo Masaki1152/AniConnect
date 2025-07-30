@@ -25,8 +25,5 @@
                 </div>
             </div>
         @endforeach
-        <x-atom.swiper-button-prev />
-        <x-atom.swiper-button-next />
-        <div class="swiper-pagination"></div>
     </div>
 </div>
