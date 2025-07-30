@@ -20,10 +20,6 @@ const mobileSwiper = new Swiper('.swiper-mobile', {
         delay: 5000,
     },
     spaceBetween: 8,
-    navigation: {
-        nextEl: '.swiper-mobile .swiper-button-next',
-        prevEl: '.swiper-mobile .swiper-button-prev',
-    },
     breakpoints: {
         0: {
             slidesPerView: 1.7,
