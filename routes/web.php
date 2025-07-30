@@ -206,7 +206,7 @@ Route::controller(WorkController::class)->group(function () {
     // 作品一覧の表示
     Route::get('/works', 'index')->name('works.index');
     // 各作品の詳細表示
-    Route::get('/works/{work}', 'show')->name('works.show');
+    Route::get('/works/{work_id}', 'show')->name('works.show');
 
     Route::middleware(['auth'])->group(function () {
         // 各作品の「気になる」ボタン押下で「気になる」登録をする処理
