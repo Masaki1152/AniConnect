@@ -43,7 +43,7 @@
     @include('layouts.navigation')
 
     <!-- Page Content -->
-    <main class="flex-grow bg-baseColor">
+    <main class="flex-grow bg-baseColor pt-16">
         {{ $slot }}
     </main>
     <x-atom.footer />
