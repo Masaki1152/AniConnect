@@ -20,6 +20,8 @@ const mobileSwiper = new Swiper('.swiper-mobile', {
         delay: 5000,
     },
     spaceBetween: 8,
+    centeredSlides: true,
+    loop: true,
     breakpoints: {
         0: {
             slidesPerView: 1.7,
