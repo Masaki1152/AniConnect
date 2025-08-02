@@ -52,7 +52,7 @@
     <script src="/js/lightbox-plus-jquery.min.js"></script>
     <script src="/js/cropper.js"></script>
     <script src="/js/login_dialog.js"></script>
-    <script type="module" src="{{ asset('js/popular_carousel.js') }}"></script>
+    @vite(['resources/js/app.js'])
 </body>
 
 </html>
