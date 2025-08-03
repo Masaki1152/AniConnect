@@ -23,6 +23,8 @@
   - [画面一覧](https://docs.google.com/spreadsheets/d/1V50E-s1CA3g-2Zb46BSC8FSmufMckggonRc2fUrXjNo/edit?gid=1113482260#gid=1113482260)
   - [文言管理シート](https://docs.google.com/spreadsheets/d/14dOopMUXiOFD89ERaZwE1EUqKab4xkgLTNonRC1XnG8/edit?gid=0#gid=0)
   - [画面デザイン](https://www.figma.com/design/Lj9JfRH9o8GTwuYk5fufBC/Aniconnect?node-id=0-1&p=f&t=QkBxNl2ebiZFNAe4-0)
+  - [設計書](https://drive.google.com/drive/folders/1dCWjiyW62QmACeq_DhzTtZc9toIozFcD?usp=drive_link)
+  - [レイアウト項目書](https://drive.google.com/drive/folders/1SdV4ZOOc4XcnDVd8gQ5yfyrYfWfQfdM_?usp=drive_link)
 
 ## デザイン完成イメージ
 <img width="1332" height="837" alt="スクリーンショット 2025-07-17 044109" src="https://github.com/user-attachments/assets/7808aa0a-5274-44a2-aaba-a52626b5d691" />
