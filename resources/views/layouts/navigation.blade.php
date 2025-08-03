@@ -1,6 +1,6 @@
 <nav x-data="{ open: false }" class="fixed top-0 left-0 w-full z-50 bg-baseColor border-b-2 border-mainColor">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <!-- Logo -->
@@ -18,7 +18,7 @@
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden pt-2 hc:flex hc:items-center space-x-8 ml-64">
+                <div class="hidden pt-2 hc:flex hc:items-center space-x-8 ml-40">
                     @auth
                         @if (Auth::user()->is_admin === 1)
                             <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">

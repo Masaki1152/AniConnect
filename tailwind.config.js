@@ -33,7 +33,7 @@ export default {
             },
             screens: {
                 // ヘッダー用 header_custom
-                hc: '1060px',
+                hc: '1080px',
             },
         },
     },
