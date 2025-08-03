@@ -4,10 +4,17 @@
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('main.index') }}">
-                        <x-atom.application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
+                <div class="shrink-0 flex items-center gap-2">
+                    <div class="block">
+                        <a href="{{ route('main.index') }}">
+                            <x-atom.svg.ani-connect-logo class="h-10 w-auto fill-current" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:block">
+                        <a href="{{ route('main.index') }}">
+                            <x-atom.svg.ani-connect-character class="h-7 w-auto fill-current" />
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->
