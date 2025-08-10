@@ -1,4 +1,4 @@
-<footer class="bg-mainColor text-subTextColor text-base font-semibold py-6">
+<footer class="bg-mainColor text-subTextColor text-sm lg:text-base font-semibold py-6">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex flex-col lg:flex-row justify-between gap-4">
             <div class="flex flex-col lg:flex-row gap-2 lg:gap-8 ml-0 lg:ml-8">
