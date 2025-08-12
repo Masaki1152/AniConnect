@@ -16,7 +16,9 @@ return [
     'registered_member_list' => 'メンバー',
     'other' => 'その他',
     'login' => 'ログイン',
+    'do_login' => 'ログインする',
     'member_registration' => 'メンバー登録',
+    'do_member_registration' => 'メンバー登録する',
     'log_out' => 'ログアウト',
     'profile' => 'プロフィール',
     // フッター
