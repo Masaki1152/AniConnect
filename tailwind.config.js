@@ -35,6 +35,13 @@ export default {
                 // ヘッダー用 header_custom
                 hc: '1080px',
             },
+            listStyleType: {
+                none: 'none',
+                disc: 'disc',
+                decimal: 'decimal',
+                circle: 'circle',
+                square: 'square',
+            }
         },
     },
 
