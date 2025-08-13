@@ -48,6 +48,7 @@ use App\Http\Controllers\AnimePilgrimage\Comment\AppCommentController;
 use App\Http\Controllers\AnimePilgrimage\Comment\AppCommentLikeController;
 use App\Http\Controllers\Notification\Comment\NotificationCommentController;
 use App\Http\Controllers\Notification\Comment\NotificationCommentLikeController;
+use App\Http\Controllers\Main\OtherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -206,7 +207,7 @@ Route::controller(WorkController::class)->group(function () {
     // 作品一覧の表示
     Route::get('/works', 'index')->name('works.index');
     // 各作品の詳細表示
-    Route::get('/works/{work}', 'show')->name('works.show');
+    Route::get('/works/{work_id}', 'show')->name('works.show');
 
     Route::middleware(['auth'])->group(function () {
         // 各作品の「気になる」ボタン押下で「気になる」登録をする処理
@@ -601,6 +602,14 @@ Route::controller(UserFollowController::class)->middleware(['auth'])->group(func
     Route::get('/users/{user_id}/following/index', 'indexFollowingUser')->name('user_follows.indexFollowingUser');
     // フォロワーの表示
     Route::get('/users/{user_id}/followed/index', 'indexFollowedUser')->name('user_follows.indexFollowedUser');
+});
+
+// OtherControllerに関するルーティング
+Route::controller(OtherController::class)->group(function () {
+    // プライバシーポリシーの表示
+    Route::get('/other/privacy_policy/show', 'show')->name('privacy_policy.show');
+    // 利用規約の表示
+    Route::get('/other/terms/show', 'showTerms')->name('terms.show');
 });
 
 require __DIR__ . '/auth.php';
