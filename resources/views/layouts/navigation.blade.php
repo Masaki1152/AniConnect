@@ -1,17 +1,24 @@
 <nav x-data="{ open: false }" class="fixed top-0 left-0 w-full z-50 bg-baseColor border-b-2 border-mainColor">
     <!-- Primary Navigation Menu -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto px-4">
         <div class="flex justify-between h-16">
             <div class="flex items-center">
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('main.index') }}">
-                        <x-atom.application-logo class="block h-9 w-auto fill-current text-gray-800" />
-                    </a>
+                <div class="shrink-0 flex items-center gap-2">
+                    <div class="block">
+                        <a href="{{ route('main.index') }}">
+                            <x-atom.svg.ani-connect-logo class="h-10 w-auto fill-current" />
+                        </a>
+                    </div>
+                    <div class="hidden sm:block">
+                        <a href="{{ route('main.index') }}">
+                            <x-atom.svg.ani-connect-character class="h-7 w-auto fill-current" />
+                        </a>
+                    </div>
                 </div>
 
                 <!-- Navigation Links -->
-                <div class="hidden pt-2 hc:flex hc:items-center space-x-8 ml-64">
+                <div class="hidden pt-2 hc:flex hc:items-center space-x-8 ml-40">
                     @auth
                         @if (Auth::user()->is_admin === 1)
                             <x-atom.nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.dashboard')">

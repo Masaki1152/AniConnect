@@ -10,8 +10,8 @@
             <x-organisms.popular-three-items-section :popularItems="$topPopularityCharacters" />
         </div>
     </div>
-    <x-atom.swiper-button-prev />
-    <x-atom.swiper-button-next />
+    <x-atom.svg.swiper-button-prev />
+    <x-atom.svg.swiper-button-next />
     <div class="swiper-pagination"></div>
 </div>
 <!-- モバイルでの表示 -->
