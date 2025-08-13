@@ -7,6 +7,7 @@ return [
     'character_post' => '登場人物感想',
     'music_post' => '音楽感想',
     'anime_pilgrimage_post' => '聖地感想',
+    'here' => 'こちら',
     // ヘッダー
     'work_list' => '作品',
     'work_story_list' => 'あらすじ',
@@ -16,7 +17,9 @@ return [
     'registered_member_list' => 'メンバー',
     'other' => 'その他',
     'login' => 'ログイン',
+    'do_login' => 'ログインする',
     'member_registration' => 'メンバー登録',
+    'do_member_registration' => 'メンバー登録する',
     'log_out' => 'ログアウト',
     'profile' => 'プロフィール',
     // フッター
