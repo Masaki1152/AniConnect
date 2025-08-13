@@ -7,6 +7,7 @@ return [
     'character_post' => '登場人物感想',
     'music_post' => '音楽感想',
     'anime_pilgrimage_post' => '聖地感想',
+    'here' => 'こちら',
     // ヘッダー
     'work_list' => '作品',
     'work_story_list' => 'あらすじ',
