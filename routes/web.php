@@ -608,6 +608,8 @@ Route::controller(UserFollowController::class)->middleware(['auth'])->group(func
 Route::controller(OtherController::class)->group(function () {
     // プライバシーポリシーの表示
     Route::get('/other/privacy_policy/show', 'show')->name('privacy_policy.show');
+    // 利用規約の表示
+    Route::get('/other/terms/show', 'showTerms')->name('terms.show');
 });
 
 require __DIR__ . '/auth.php';
