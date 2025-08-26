@@ -27,4 +27,5 @@
   - [画面設計書](https://drive.google.com/drive/folders/1dCWjiyW62QmACeq_DhzTtZc9toIozFcD?usp=drive_link)
 
 ## デザイン完成イメージ
-<img width="1332" height="837" alt="スクリーンショット 2025-07-17 044109" src="https://github.com/user-attachments/assets/7808aa0a-5274-44a2-aaba-a52626b5d691" />
+<img width="1296" height="813" alt="image" src="https://github.com/user-attachments/assets/6e4d60fe-b2be-496b-a283-afde6ae9556c" />
+
