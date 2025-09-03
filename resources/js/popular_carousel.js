@@ -24,40 +24,40 @@ const mobileSwiper = new Swiper('.swiper-mobile', {
     loop: true,
     breakpoints: {
         0: {
-            slidesPerView: 1.7,
-        },
-        380: {
-            slidesPerView: 1.8,
-        },
-        420: {
             slidesPerView: 2,
         },
-        460: {
+        380: {
             slidesPerView: 2.2,
         },
-        500: {
+        420: {
             slidesPerView: 2.4,
         },
-        540: {
+        460: {
             slidesPerView: 2.6,
         },
-        580: {
+        500: {
             slidesPerView: 2.8,
         },
-        620: {
+        540: {
             slidesPerView: 3,
         },
-        660: {
+        580: {
             slidesPerView: 3.2,
         },
-        700: {
+        620: {
             slidesPerView: 3.4,
         },
-        740: {
+        660: {
             slidesPerView: 3.6,
         },
-        780: {
+        700: {
             slidesPerView: 3.8,
+        },
+        740: {
+            slidesPerView: 4,
+        },
+        780: {
+            slidesPerView: 4.2,
         },
     },
 });
