@@ -79,8 +79,10 @@ class WorkController extends Controller
     }
 
     // 詳細な作品情報を表示する
-    public function show(Work $work)
+    public function show($work_id)
     {
+        $work = Work::find($work_id);
+
         $categories = [];
         // カテゴリーの情報を取得する
         foreach ([$work->category_top_1, $work->category_top_2, $work->category_top_3] as $categoryId) {

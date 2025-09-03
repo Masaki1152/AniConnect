@@ -16,6 +16,9 @@ return [
     'followings' => 'フォロー中',
     'followers' => 'フォロワー',
     'confirm_delete' => "削除すると復元できません。\n本当に削除しますか？",
+    // ログイン訴求
+    'login_appeal_title' => 'ログインが必要です',
+    'login_appeal_discription' => '{%}を行うには、ログインまたはメンバー登録をお願いします。',
     // 画像のトリミング
     'all_images_cropped' => 'すべての画像のトリミングが完了しました',
     'image_cropped' => '画像のトリミングが完了しました',

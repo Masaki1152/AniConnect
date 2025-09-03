@@ -4,7 +4,7 @@ function showLoginDialog(messageText) {
 
     if (dialog) {
         if (messageParagraph) {
-            messageParagraph.textContent = `${messageText}にはログインが必要です。`;
+            messageParagraph.textContent = `${messageText}には、ログインまたはメンバー登録をお願いします。`;
         }
 
         dialog.classList.remove('hidden');

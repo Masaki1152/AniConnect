@@ -37,7 +37,7 @@
                 @else
                     @foreach ($creator->works as $work)
                         <div class='work_name'>
-                            <a href="{{ route('works.show', ['work' => $work->id]) }}">
+                            <a href="{{ route('works.show', ['work_id' => $work->id]) }}">
                                 {{ $work->name }}
                             </a>
                         </div>

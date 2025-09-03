@@ -30,7 +30,7 @@
             <div class='work'>
                 {{-- 関連する登場作品の数だけ繰り返す --}}
                 @foreach ($character->works as $character_work)
-                    <a href="{{ route('works.show', ['work' => $character_work->id]) }}">
+                    <a href="{{ route('works.show', ['work_id' => $character_work->id]) }}">
                         {{ $character_work->name }}
                     </a>
                 @endforeach

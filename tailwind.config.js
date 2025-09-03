@@ -9,7 +9,8 @@ export default {
         './resources/views/**/*.blade.php',
         './resources/**/*.js',
         './public/js/*.js',
-        './src/**/*.{html,js}'
+        './src/**/*.{html,js}',
+        './app/View/Components/**/*.php',
     ],
 
     theme: {
@@ -32,8 +33,15 @@ export default {
             },
             screens: {
                 // ヘッダー用 header_custom
-                hc: '1060px',
+                hc: '1080px',
             },
+            listStyleType: {
+                none: 'none',
+                disc: 'disc',
+                decimal: 'decimal',
+                circle: 'circle',
+                square: 'square',
+            }
         },
     },
 
