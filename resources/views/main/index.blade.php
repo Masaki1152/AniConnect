@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="py-10">
-        <div class="w-full max-w-[960px] mx-auto px-4 lg:px-0">
-            <div class="main-content px-4 flex flex-col gap-6">
-                <div class="introduction">
+        <div class="w-full max-w-[960px] mx-auto lg:px-0">
+            <div class="main-content flex flex-col gap-6">
+                <div class="introduction px-8">
                     <h2 class="text-2xl font-bold text-textColor">{{ __('entity.main.introduction_title') }}</h2>
                     <p class="mt-4 text-base font-medium text-textColor border-2 border-mainColor px-6 py-3 rounded-xl">
                         {!! __('entity.main.introduction_description') !!}</p>
@@ -12,8 +12,8 @@
                         </a>
                     </div>
                 </div>
-                <div class="popularity">
-                    <div class="flex lg:gap-4 gap-2 items-end">
+                <div class="popularity md:px-8">
+                    <div class="flex lg:gap-4 gap-2 items-end px-8 md:px-0">
                         <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.popularity_title') }}</h2>
                         <p class="mb-1 text-xs text-subTextColor">
                             {{ __('common.updated_at') . (count($topPopularityWorks) > 0 ? $topPopularityWorks[0]['item']->updated_at->format('Y/m/d H:i') : 'N/A') }}
@@ -24,7 +24,7 @@
                             :topPopularityMusic="$topPopularityMusic" :topPopularityPilgrimages="$topPopularityPilgrimages" />
                     </div>
                 </div>
-                <div class="notifications">
+                <div class="notifications px-8">
                     <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.notification_title') }}</h2>
                     <div
                         class="notification_list mt-4 lg:mx-14 border-2 border-mainColor p-4 rounded-xl divide-y divide-mainColor">
