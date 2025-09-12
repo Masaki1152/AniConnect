@@ -1,8 +1,8 @@
 <x-app-layout>
     <div class="py-10">
-        <div class="w-full max-w-[960px] mx-auto px-4 lg:px-0">
-            <div class="main-content px-4 flex flex-col gap-6">
-                <div class="introduction">
+        <div class="w-full max-w-[960px] mx-auto lg:px-0">
+            <div class="main-content flex flex-col gap-6">
+                <div class="introduction px-8">
                     <h2 class="text-2xl font-bold text-textColor">{{ __('entity.main.introduction_title') }}</h2>
                     <p class="mt-4 text-base font-medium text-textColor border-2 border-mainColor px-6 py-3 rounded-xl">
                         {!! __('entity.main.introduction_description') !!}</p>
@@ -12,50 +12,19 @@
                         </a>
                     </div>
                 </div>
-                <div class="popularity">
-                    <div class="flex gap-4 items-end">
+                <div class="popularity md:px-8">
+                    <div class="flex lg:gap-4 gap-2 items-end px-8 md:px-0">
                         <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.popularity_title') }}</h2>
                         <p class="mb-1 text-xs text-subTextColor">
                             {{ __('common.updated_at') . (count($topPopularityWorks) > 0 ? $topPopularityWorks[0]['item']->updated_at->format('Y/m/d H:i') : 'N/A') }}
                         </p>
                     </div>
-                    <div class="mt-4 border-2 border-mainColor rounded-xl lg:mx-14">
-                        <div class="px-[124px]">
-                            <h3
-                                class="mt-1 text-base font-semibold text-textColor text-center border-b-2 border-mainColor">
-                                {{ __('entity.main.popularity_work_department') }}
-                            </h3>
-                            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-[72px] justify-items-center mt-3">
-                                @foreach ($topPopularityWorks as $topPopularityWork)
-                                    <div class="data-cell flex flex-col items-center w-[160px]">
-                                        <a href="{{ route('works.show', ['work' => $topPopularityWork['item']->id]) }}"
-                                            class="mb-1 text-base text-textColor text-center h-[24px] leading-tight overflow-hidden break-words hover:underline">
-                                            {{ $topPopularityWork['item']->name }}
-                                        </a>
-                                        <x-molecules.evaluation.star-num-detail :starNum="$topPopularityWork['item']->average_star_num" :postNum="null" />
-                                        @if ($topPopularityWork['item']->image)
-                                            <div
-                                                class="mt-1 mb-0 relative w-[123px] h-[164px] overflow-hidden border border-gray-300">
-                                                <img src="{{ $topPopularityWork['item']->image }}" alt="画像が読み込めません。"
-                                                    class="w-full h-full object-cover">
-                                            </div>
-                                            <p
-                                                class="text-xs text-subTextColor mt-px leading-none text-center break-words whitespace-pre-wrap">
-                                                {{ $topPopularityWork['item']->copyright }}</p>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                        <div class="flex justify-end">
-                            <a href="{{ route('works.index') }}"
-                                class="my-2 mr-[56px] text-xs text-linkColor hover:underline">
-                                {{ __('entity.main.popularity_work_detail') }}
-                            </a>
-                        </div>
+                    <div class="mt-4 md:border-2 border-mainColor rounded-xl lg:mx-14">
+                        <x-organisms.popular-item-caroucel :topPopularityWorks="$topPopularityWorks" :topPopularityWorkStories="$topPopularityWorkStories" :topPopularityCharacters="$topPopularityCharacters"
+                            :topPopularityMusic="$topPopularityMusic" :topPopularityPilgrimages="$topPopularityPilgrimages" />
                     </div>
                 </div>
-                <div class="notifications">
+                <div class="notifications px-8">
                     <h2 class="text-[22px] font-bold text-textColor">{{ __('entity.main.notification_title') }}</h2>
                     <div
                         class="notification_list mt-4 lg:mx-14 border-2 border-mainColor p-4 rounded-xl divide-y divide-mainColor">

@@ -10,16 +10,16 @@
             <p>{{ $creator->wiki_link }}</p>
             <div class='works'>
                 <h3>作品一覧</h3>
-                @if($creator->works->isEmpty())
-                <h3 class='no_work'>結果がありません。</h3>
+                @if ($creator->works->isEmpty())
+                    <h3 class='no_work'>結果がありません。</h3>
                 @else
-                @foreach ($creator->works as $work)
-                <div class='work_name'>
-                    <a href="{{ route('works.show', ['work' => $work->id]) }}">
-                        {{ $work->name }}
-                    </a>
-                </div>
-                @endforeach
+                    @foreach ($creator->works as $work)
+                        <div class='work_name'>
+                            <a href="{{ route('works.show', ['work_id' => $work->id]) }}">
+                                {{ $work->name }}
+                            </a>
+                        </div>
+                    @endforeach
                 @endif
             </div>
         </div>
